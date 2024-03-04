@@ -348,3 +348,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+src/.DS_Store
+.DS_Store
+*.pem
+src/SFA.DAS.ApprenticeApp.Pwa.MockServer/appsettings.Development.json
+src/SFA.DAS.ApprenticeApp.Pwa.MockServer/appsettings.json
+src/SFA.DAS.ApprenticeApp.Pwa/appsettings.json
+src/SFA.DAS.ApprenticeApp.Pwa/appsettings.Development.json

@@ -1,0 +1,22 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Not Authorised";
+}
+
+<h1 class="text-danger">Restricted Page</h1>
+<h2 class="text-danger">You cannot view this page as you are not logged in.</h2>
+
+<p>Click 'Log me in' or select Login from the main menu.</p>
+<a class="govuk-button" asp-controller="Account" asp-action="Authenticated">Log me in</a>
+<br />
+<br />
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+
+

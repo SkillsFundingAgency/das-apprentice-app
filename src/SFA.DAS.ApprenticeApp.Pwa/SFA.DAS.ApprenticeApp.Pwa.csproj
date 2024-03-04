@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.10.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.3.0" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.3.0" />
+    <PackageReference Include="Microsoft.IdentityModel.KeyVaultExtensions" Version="7.3.0" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
+    <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
+    <PackageReference Include="SFA.DAS.Configuration" Version="3.0.84" />
+    <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="3.0.84" />
+    <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.22.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="AppStart\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="keys\" />
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ApprenticeAppMockApi\ApprenticeAppMockApi\ApprenticeAppMockApi.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="ViewModels\" />
+    <None Remove="AppStart\" />
+    <None Remove="Helpers\" />
+    <None Remove="keys\" />
+    <None Remove="Configuration\" />
+  </ItemGroup>
+</Project>
