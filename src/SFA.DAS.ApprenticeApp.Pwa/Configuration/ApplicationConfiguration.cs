@@ -25,7 +25,7 @@ public class ApplicationConfiguration
 
     public string? CookieName { get; set; }
 
-    public OuterApiConfiguration? ApprenticePwaApi { get; set; }
+    public OuterApiConfiguration? ApprenticeAppApimApi { get; set; }
 }
 
 public class ConnectionStringsConfiguration

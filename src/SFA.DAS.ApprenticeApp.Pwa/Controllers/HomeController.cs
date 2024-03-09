@@ -31,8 +31,7 @@ public class HomeController : Controller
     // example
     public async Task<IActionResult> Profile()
     {
-        Guid id = Guid.NewGuid();
-        var apprenticeDetails = await _client.GetApprenticeHomepage(id);
+        var apprenticeDetails = await _client.GetApprenticeHomepage(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
         return View();
 
     }
