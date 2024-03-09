@@ -17,6 +17,9 @@ builder.Services.AddServiceRegistration();
 builder.Services.AddAndConfigureEmployerAuthentication(applicationConfiguration);
 builder.Services.AddDataProtection();
 
+// Add outerapi
+builder.Services.AddOuterApi(applicationConfiguration.ApprenticePwaApi);
+
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 
 builder.Services.AddSession(options =>

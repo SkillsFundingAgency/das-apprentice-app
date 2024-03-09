@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using SFA.DAS.ApprenticePortal.SharedUi;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Configuration;
@@ -23,6 +24,8 @@ public class ApplicationConfiguration
     public string? ProductInfoHeaderValue { get; set; }
 
     public string? CookieName { get; set; }
+
+    public OuterApiConfiguration? ApprenticePwaApi { get; set; }
 }
 
 public class ConnectionStringsConfiguration
