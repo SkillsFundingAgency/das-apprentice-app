@@ -18,7 +18,7 @@ builder.Services.AddAndConfigureEmployerAuthentication(applicationConfiguration)
 builder.Services.AddDataProtection();
 
 // Add outerapi
-builder.Services.AddOuterApi(applicationConfiguration.ApprenticePwaApi);
+builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
 
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 

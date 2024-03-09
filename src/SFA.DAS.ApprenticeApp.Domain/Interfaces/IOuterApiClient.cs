@@ -1,16 +1,14 @@
 ﻿using RestEase;
-using System;
-using System.Threading.Tasks;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 
 namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 {
     public interface IOuterApiClient
     {
+        [Get("/apprentices/{id}")]
+        Task<Apprentice> GetApprentice([Path] Guid id);
 
-    }
-
-    public static class OuterApiExtensions
-    {
-
+        [Get("/apprentices/{id}/homepage")]
+        Task<ApprenticeHomepage> GetApprenticeHomepage([Path] Guid id);
     }
 }

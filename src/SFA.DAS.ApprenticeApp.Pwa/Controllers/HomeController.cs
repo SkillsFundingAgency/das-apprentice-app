@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
@@ -8,19 +10,31 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IOuterApiClient _client;
 
     public HomeController
         (
-        ILogger<HomeController> logger
+        ILogger<HomeController> logger,
+        IOuterApiClient client
         )
     {
         _logger = logger;
+        _client = client;
     }
 
     public IActionResult Index()
     {
         var vm = new HomeViewModel();
         return View(vm);
+    }
+
+    // example
+    public async Task<IActionResult> Profile()
+    {
+        Guid id = Guid.NewGuid();
+        var apprenticeDetails = await _client.GetApprenticeHomepage(id);
+        return View();
+
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
