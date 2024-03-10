@@ -1,6 +1,8 @@
-﻿namespace SFA.DAS.ApprenticeApp.Domain.Models
+﻿using SFA.DAS.ApprenticeApp.Domain.Models;
+
+namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
 {
-    public class ApprenticeHomepage
+    public class ProfileViewModel
     {
         public Apprentice? Apprentice { get; set; }
         public MyApprenticeship? MyApprenticeship { get; set; }

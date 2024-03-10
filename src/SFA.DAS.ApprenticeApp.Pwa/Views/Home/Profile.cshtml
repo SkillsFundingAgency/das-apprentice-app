@@ -1,9 +1,42 @@
-﻿@{
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+
+@{
     ViewData["Title"] = "Profile";
 }
 
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<table>
+    <tr>
+        <th>Info</th>
+        <th>Api</th>
+    </tr>
+    <tr>
+        <td>Firstname</td>
+        <td>@Model?.Apprentice?.FirstName</td>
+    </tr>
+    <tr>
+        <td>LastName</td>
+        <td>@Model?.Apprentice?.LastName</td>
+    </tr>
+    <tr>
+        <td>DOB</td>
+        <td>@Model?.Apprentice?.DateOfBirth</td>
+    </tr>
+    <tr>
+        <td>Apprenticeship Id</td>
+        <td>@Model.MyApprenticeship?.ApprenticeshipId</td>
+    </tr>
+    <tr>
+        <td>Apprenticeship EmployerName</td>
+        <td>@Model.MyApprenticeship?.EmployerName</td>
+    </tr>
+    <tr>
+        <td>Apprenticeship StartDate</td>
+        <td>@Model.MyApprenticeship?.StartDate</td>
+    </tr>
+    <tr>
+        <td>Apprenticeship TrainingProviderName</td>
+        <td>@Model.MyApprenticeship?.TrainingProviderName</td>
+    </tr>
+</table>
