@@ -51,6 +51,12 @@ public class HomeController : Controller
         return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship  });
     }
 
+    // example
+    public IActionResult TermsDecline()
+    {
+        return RedirectToAction("SigningOut", "Account");
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
