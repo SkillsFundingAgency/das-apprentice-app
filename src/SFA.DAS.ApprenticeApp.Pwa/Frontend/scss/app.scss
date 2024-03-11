@@ -1,0 +1,8 @@
+$govuk-global-styles: true;
+@import "govuk/all";
+@import "core/all";
+@import "components/all";
+
+* {
+  box-sizing: border-box;
+}
