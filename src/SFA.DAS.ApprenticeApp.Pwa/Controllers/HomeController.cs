@@ -32,7 +32,6 @@ public class HomeController : Controller
     public async Task<IActionResult> Profile()
     {
         var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
-
         return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship  });
     }
 
