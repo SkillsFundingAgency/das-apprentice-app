@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -34,6 +35,22 @@ public class HomeController : Controller
         var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
         return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship  });
     }
+
+    // example
+    public async Task<IActionResult> TermsAccept()
+    {
+
+        var patch = new JsonPatchDocument<Apprentice>()
+                           .Replace(x => x.TermsOfUseAccepted, true);
+
+        await _client.UpdateApprentice(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"), patch);
+
+
+        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
+
+        return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship  });
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

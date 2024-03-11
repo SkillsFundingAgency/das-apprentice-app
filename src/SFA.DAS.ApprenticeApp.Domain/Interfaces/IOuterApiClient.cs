@@ -1,5 +1,6 @@
 ﻿using RestEase;
 using SFA.DAS.ApprenticeApp.Domain.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 {
@@ -10,5 +11,8 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Get("/apprentices/{id}/details")]
         Task<ApprenticeDetails> GetApprenticeDetails([Path] Guid id);
+
+        [Patch("/apprentices/{apprenticeId}")]
+        Task UpdateApprentice([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
     }
 }

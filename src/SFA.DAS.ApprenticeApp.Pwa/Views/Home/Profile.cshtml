@@ -38,3 +38,9 @@
 
 <p><strong>Planned training start date:</strong></p>
 <p>@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</p>
+
+<p><strong>Planned training end date:</strong></p>
+<p>@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</p>
+
+<p><strong>Apprenticeship Length:</strong></p>
+<p>@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</p>

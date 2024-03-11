@@ -15,5 +15,18 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public string StandardUId { get; set; }
         public string Title { get; set; }
         public int Level { get; set; }
+
+        public TimeSpan? ApprenticeshipLength
+        {
+            get
+            {
+                if (EndDate.HasValue && StartDate.HasValue)
+                {
+                    return EndDate.Value - StartDate.Value;
+                }
+                return null;
+            }
+        }
+
     }
 }
