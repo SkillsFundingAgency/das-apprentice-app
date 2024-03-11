@@ -37,18 +37,28 @@ public class HomeController : Controller
     }
 
     // example
+    public async Task<IActionResult> Terms()
+    {
+        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
+
+        if (apprenticeDetails?.Apprentice?.TermsOfUseAccepted != true)
+        {
+            return View();
+        }
+
+        return RedirectToAction("Profile", "Home");
+    }
+
+
+    // example
     public async Task<IActionResult> TermsAccept()
     {
-
         var patch = new JsonPatchDocument<Apprentice>()
                            .Replace(x => x.TermsOfUseAccepted, true);
 
         await _client.UpdateApprentice(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"), patch);
 
-
-        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
-
-        return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship  });
+        return RedirectToAction("Profile", "Home");
     }
 
     // example
