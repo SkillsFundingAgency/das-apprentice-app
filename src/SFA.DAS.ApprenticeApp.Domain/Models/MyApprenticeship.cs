@@ -14,5 +14,6 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public string TrainingCode { get; set; }
         public string StandardUId { get; set; }
         public string Title { get; set; }
+        public int Level { get; set; }
     }
 }
