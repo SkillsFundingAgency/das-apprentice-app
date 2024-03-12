@@ -3,11 +3,30 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
+using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+        private readonly IStubAuthenticationService _stubAuthenticationService;
+        public static ApplicationConfiguration _config { get; set; }
+
+        public AccountController(ILogger<HomeController> logger,
+        IStubAuthenticationService stubAuthenticationService,
+        ApplicationConfiguration configuration
+        )
+        {
+            _logger = logger;
+            _stubAuthenticationService = stubAuthenticationService;
+            _config = configuration;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -23,7 +42,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("sign-out")]
         public async Task<IActionResult> SigningOut()
         {
             var idToken = await HttpContext.GetTokenAsync("id_token");
@@ -31,9 +49,52 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             var authenticationProperties = new AuthenticationProperties();
             authenticationProperties.Parameters.Clear();
             authenticationProperties.Parameters.Add("id_token", idToken);
+
+            var schemes = new List<string>
+        {
+            CookieAuthenticationDefaults.AuthenticationScheme
+        };
+
+            _ = bool.TryParse(_config.StubAuth, out var stubAuth);
+            if (!stubAuth)
+            {
+                schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
+            }
+
             return SignOut(
-                authenticationProperties, CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme);
+                authenticationProperties, schemes.ToArray());
         }
 
+        [HttpGet]
+        public IActionResult AccountDetails()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AccountDetails(StubAuthUserDetails model)
+        {
+            if(model.Id != null) {
+            var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
+                new AuthenticationProperties());
+                        
+            return RedirectToAction("StubSignedIn");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult StubSignedIn()
+        {
+            var viewModel = new StubAuthUserDetails
+            {
+                Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
+                Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
+            };
+            return View(viewModel);
+        }
     }
 }

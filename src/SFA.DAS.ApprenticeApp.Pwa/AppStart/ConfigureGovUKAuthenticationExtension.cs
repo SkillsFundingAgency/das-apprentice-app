@@ -12,6 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using Microsoft.Extensions.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.ApprenticeApp.AppStart;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
@@ -19,20 +22,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
     {
         public static ApplicationConfiguration _config { get; set; }
 
-        public static void AddAndConfigureEmployerAuthentication(this IServiceCollection services, ApplicationConfiguration config)
+        public static void AddAndConfigureApprenticeAuthentication(this IServiceCollection services, ApplicationConfiguration config)
         {
             _config = config;
+           
+            bool.TryParse(_config.StubAuth, out var stubAuth);
+            if(stubAuth)
+            {
+                services.AddApprenticeStubAuthentication("/signed-out",
+                    "/Account/AccountDetails",
+                    "",
+                    "");
+            }
+            else
+            {
+                services.AddAuthentication(options =>
+                {
+                    ConfigureSharedAuthenticationOptions(options);
+                }).AddOpenIdConnect(options =>
+                {
+                    ConfigureOpenIdConnectOptions(options);
+                }).AddCookie(options =>
+                {
+                    ConfigureCookieOptions(options);
+                });
 
-            services.AddAuthentication(options =>
-            {
-                ConfigureSharedAuthenticationOptions(options);
-            }).AddOpenIdConnect(options =>
-            {
-                ConfigureOpenIdConnectOptions(options);
-            }).AddCookie(options =>
-            {
-                ConfigureCookieOptions(options);
-            });
+            }
 
             services.AddAuthorization(options => { });
         }
