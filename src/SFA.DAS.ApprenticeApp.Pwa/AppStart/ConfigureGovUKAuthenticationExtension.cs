@@ -29,27 +29,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             bool.TryParse(_config.StubAuth, out var stubAuth);
             if(stubAuth)
             {
-                services.AddApprenticeStubAuthentication("/signed-out",
-                    "/Account/AccountDetails",
-                    "",
-                    "");
+                services.AddApprenticeStubAuthentication("/signed-out","/Account/AccountDetails", "", "");
             }
             else
             {
                 services.AddAuthentication(options =>
                 {
-                    ConfigureSharedAuthenticationOptions(options);
-                }).AddOpenIdConnect(options =>
-                {
-                    ConfigureOpenIdConnectOptions(options);
-                }).AddCookie(options =>
-                {
-                    ConfigureCookieOptions(options);
-                });
-
+                   ConfigureSharedAuthenticationOptions(options); })
+                    .AddOpenIdConnect(options => { ConfigureOpenIdConnectOptions(options); })
+                    .AddCookie(options => {  ConfigureCookieOptions(options); });
             }
-
-            services.AddAuthorization(options => { });
+                services.AddAuthorization(options => { });
         }
 
         private static void ConfigureSharedAuthenticationOptions(AuthenticationOptions options)

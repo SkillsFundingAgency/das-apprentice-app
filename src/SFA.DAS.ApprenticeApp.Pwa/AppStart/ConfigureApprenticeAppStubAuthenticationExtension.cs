@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using System.Security.Claims;
@@ -11,7 +10,6 @@ namespace SFA.DAS.ApprenticeApp.AppStart
 {
     internal static class ConfigureApprenticeAppStubAuthenticationExtension
     {
-
         public static void AddApprenticeStubAuthentication(this IServiceCollection services, string redirectUrl, string loginRedirect, string localRedirect, string cookieDomain)
         {
             services
@@ -68,15 +66,11 @@ namespace SFA.DAS.ApprenticeApp.AppStart
                                 if (claims.FirstOrDefault(c => c.Type == additionalClaim.Type) == null)
                                     claims.Add(additionalClaim);
                             }
-
                         }
                         ctx.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
                         await ctx.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, ctx.Principal);
                     };
-
                 });
-
         }
-
     }
 }

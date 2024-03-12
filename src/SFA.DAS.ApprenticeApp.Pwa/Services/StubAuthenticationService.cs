@@ -7,7 +7,6 @@ using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using System.Security.Claims;
 
-
 namespace SFA.DAS.ApprenticeApp.Pwa.Services
 {
     public interface IStubAuthenticationService

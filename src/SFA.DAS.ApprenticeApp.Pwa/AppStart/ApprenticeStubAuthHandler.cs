@@ -15,9 +15,7 @@ namespace SFA.DAS.ApprenticeApp.AppStart
         private readonly ICustomClaims _customClaims;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ApprenticeStubAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
-            UrlEncoder encoder, ISystemClock clock, ICustomClaims customClaims, IHttpContextAccessor httpContextAccessor) : base(
-            options, logger, encoder, clock)
+        public ApprenticeStubAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ICustomClaims customClaims, IHttpContextAccessor httpContextAccessor) : base(options, logger, encoder, clock)
         {
             _customClaims = customClaims;
             _httpContextAccessor = httpContextAccessor;
@@ -29,7 +27,6 @@ namespace SFA.DAS.ApprenticeApp.AppStart
             {
                 return AuthenticateResult.Fail("");
             }
-
             var authCookieValue = JsonConvert.DeserializeObject<StubAuthUserDetails>(_httpContextAccessor.HttpContext.Request.Cookies[Constants.StubAuthCookieName]);
             var claims = new List<Claim>
             {
@@ -37,28 +34,18 @@ namespace SFA.DAS.ApprenticeApp.AppStart
                 new Claim(ClaimTypes.NameIdentifier, authCookieValue.Id),
                 new Claim("stub", authCookieValue.Id)
             };
-
-
             var identity = new ClaimsIdentity(claims, "Apprentice-stub");
             var principal = new ClaimsPrincipal(identity);
-
+            
             if (_customClaims != null)
             {
                 var additionalClaims = await _customClaims.GetClaims(new TokenValidatedContext(_httpContextAccessor.HttpContext, Scheme, new OpenIdConnectOptions(), principal, new AuthenticationProperties()));
                 claims.AddRange(additionalClaims);
                 principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Apprentice-stub"));
             }
-
             var ticket = new AuthenticationTicket(principal, "Apprentice-stub");
-
-
             var result = AuthenticateResult.Success(ticket);
-
             return result;
         }
     }
-
-    
-       
-    
 }
