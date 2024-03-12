@@ -7438,7 +7438,7 @@ p + .govuk-heading-s,
   font-weight: 700;
   background: #fff;
   font-size: 19px;
-  height: 4rem;
+  height: 4.5rem;
   text-align: center;
   border-bottom: 1px solid #b1b4b6;
   position: fixed;
@@ -7455,6 +7455,10 @@ p + .govuk-heading-s,
   }
 }
 
+.app-header__logo {
+  max-height: 2.5rem;
+}
+
 .app-footer {
   border-top: 1px solid #b1b4b6;
   background: #fff;
@@ -7462,15 +7466,15 @@ p + .govuk-heading-s,
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4rem;
+  height: 4.5rem;
 }
 
 .app-main {
   background: #f3f2f1;
   padding: 1rem;
   position: absolute;
-  top: 4rem;
-  bottom: 4rem;
+  top: 4.5rem;
+  bottom: 4.5rem;
   overflow: auto;
 }
 

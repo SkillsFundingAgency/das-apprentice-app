@@ -3,7 +3,7 @@
   font-weight: $govuk-font-weight-bold;
   background: #fff;
   font-size: 19px;
-  height: 4rem;
+  height: 4.5rem;
   text-align: center;
   border-bottom: 1px solid $govuk-border-colour;
   position: fixed;
@@ -13,4 +13,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.app-header__logo {
+  max-height: 2.5rem;
 }
