@@ -23,6 +23,7 @@ public class ApplicationConfiguration
     public string? ProductInfoHeaderValue { get; set; }
 
     public string? CookieName { get; set; }
+    public string? StubAuth { get; set; }
 }
 
 public class ConnectionStringsConfiguration
