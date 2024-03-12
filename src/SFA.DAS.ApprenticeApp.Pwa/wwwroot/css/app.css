@@ -7431,6 +7431,29 @@ p + .govuk-heading-s,
 
 
 
+.app-content-list {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0 0 -1rem;
+}
+@media print {
+  .app-content-list {
+    font-family: sans-serif;
+  }
+}
+
+.app-content-list__title {
+  color: #505a5f;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.app-content-list__content {
+  margin: 0 0 1rem;
+}
+
 .app-header {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -7470,7 +7493,7 @@ p + .govuk-heading-s,
 }
 
 .app-main {
-  background: #f3f2f1;
+  background: #fafafa;
   padding: 1rem;
   position: absolute;
   top: 4.5rem;
@@ -7488,6 +7511,13 @@ p + .govuk-heading-s,
   flex-grow: 1;
   height: 4rem;
   padding-top: 1.2rem;
+}
+
+.app-pane {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 2rem;
 }
 
 * {
