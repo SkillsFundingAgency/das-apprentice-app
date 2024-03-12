@@ -1,0 +1,15 @@
+.app-content-list {
+  @include govuk-typography-common;
+  margin: 0 0 -1rem;
+}
+
+.app-content-list__title {
+  color: $govuk-secondary-text-colour;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.app-content-list__content {
+  margin: 0 0 1rem;
+}
