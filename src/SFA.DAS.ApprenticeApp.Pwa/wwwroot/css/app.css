@@ -7454,6 +7454,26 @@ p + .govuk-heading-s,
   margin: 0 0 1rem;
 }
 
+.govuk-button-group {
+  margin-right: -15px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.govuk-button {
+  width: auto;
+  margin: 0 0.5rem;
+  min-width: 120px;
+  font-weight: 700;
+  border-radius: 5px;
+}
+
+.govuk-button--secondary {
+  font-weight: inherit;
+}
+
 .app-header {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
