@@ -29,45 +29,6 @@ public class HomeController : Controller
         return View(vm);
     }
 
-    // example
-    public async Task<IActionResult> Profile()
-    {
-        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
-        return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship  });
-    }
-
-    // example
-    public async Task<IActionResult> Terms()
-    {
-        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
-
-        if (apprenticeDetails?.Apprentice?.TermsOfUseAccepted == true)
-        {
-            return RedirectToAction("Profile", "Home");
-        }
-
-        return View();
-    }
-
-
-    // example
-    public async Task<IActionResult> TermsAccept()
-    {
-        var patch = new JsonPatchDocument<Apprentice>()
-                           .Replace(x => x.TermsOfUseAccepted, true);
-
-        await _client.UpdateApprentice(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"), patch);
-
-        return RedirectToAction("Profile", "Home");
-    }
-
-    // example
-    public IActionResult TermsDecline()
-    {
-        return RedirectToAction("SigningOut", "Account");
-    }
-
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

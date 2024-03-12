@@ -35,6 +35,8 @@
     <Folder Include="Configuration\" />
     <Folder Include="Services\" />
     <Folder Include="Services\OuterApi\" />
+    <Folder Include="Views\Terms\" />
+    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ApprenticeAppMockApi\ApprenticeAppMockApi\ApprenticeAppMockApi.csproj">
@@ -55,5 +57,7 @@
     <None Remove="Configuration\" />
     <None Remove="Services\" />
     <None Remove="Services\OuterApi\" />
+    <None Remove="Views\Terms\" />
+    <None Remove="Views\Profile\" />
   </ItemGroup>
 </Project>
