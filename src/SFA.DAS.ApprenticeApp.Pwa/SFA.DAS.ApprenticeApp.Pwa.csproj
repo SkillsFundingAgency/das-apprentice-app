@@ -29,8 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="AppStart\" />
     <Folder Include="Helpers\" />
     <Folder Include="keys\" />
     <Folder Include="Configuration\" />
@@ -40,15 +38,13 @@
     <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ApprenticeAppMockApi\ApprenticeAppMockApi\ApprenticeAppMockApi.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa.MockServer\SFA.DAS.ApprenticeApp.Pwa.MockServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="ViewModels\" />

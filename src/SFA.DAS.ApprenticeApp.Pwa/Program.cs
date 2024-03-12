@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 using WebEssentials.AspNetCore.Pwa;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +14,12 @@ builder.Services.AddSingleton(applicationConfiguration!);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddServiceRegistration();
-builder.Services.AddAndConfigureEmployerAuthentication(applicationConfiguration);
-builder.Services.AddDataProtection();
+builder.Services.AddServiceRegistration(applicationConfiguration);
 
 // Add outerapi
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
+
+builder.Services.AddDataProtection();
 
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 

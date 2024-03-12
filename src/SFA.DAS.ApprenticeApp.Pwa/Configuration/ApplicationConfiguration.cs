@@ -26,6 +26,8 @@ public class ApplicationConfiguration
     public string? CookieName { get; set; }
 
     public OuterApiConfiguration? ApprenticeAppApimApi { get; set; }
+
+    public string? StubAuth { get; set; }
 }
 
 public class ConnectionStringsConfiguration
