@@ -1,5 +1,8 @@
 .app-main {
   background: govuk-colour("light-grey");
   padding: 1rem;
-  margin: 4rem 0;
+  position: absolute;
+  top: 4rem;
+  bottom: 4rem;
+  overflow: auto;
 }
