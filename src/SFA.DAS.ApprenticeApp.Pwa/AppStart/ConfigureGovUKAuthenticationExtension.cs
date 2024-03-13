@@ -1,8 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,11 +6,13 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using SFA.DAS.ApprenticeApp.Pwa.Models;
-using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using Microsoft.Extensions.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticeApp.AppStart;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {

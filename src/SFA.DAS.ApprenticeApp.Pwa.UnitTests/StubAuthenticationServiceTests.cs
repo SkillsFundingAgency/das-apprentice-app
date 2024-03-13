@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<IResponseCookies> responseCookies,
             [Frozen] Mock<IConfiguration> configuration)
         {
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
+            configuration.Setup(x => x["StubAuth"]).Returns("true");
             var service = new StubAuthenticationService(configuration.Object, null, null);
             service.AddStubApprenticeAuth(responseCookies.Object, model);
             responseCookies.Verify(x => x.Append(Constants.StubAuthCookieName, JsonConvert.SerializeObject(model), It.Is<CookieOptions>(c => c.Domain!.Equals("localhost") && !c.IsEssential)));
@@ -38,7 +38,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<IResponseCookies> responseCookies,
             [Frozen] Mock<IConfiguration> configuration)
         {
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
+            configuration.Setup(x => x["StubAuth"]).Returns("true");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
             service.AddStubApprenticeAuth(responseCookies.Object, model, true);
@@ -59,7 +59,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<IResponseCookies> responseCookies,
             [Frozen] Mock<IConfiguration> configuration)
         {
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("prd");
+            configuration.Setup(x => x["EnvironmentName"]).Returns("prd");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
             service.AddStubApprenticeAuth(responseCookies.Object, model);
