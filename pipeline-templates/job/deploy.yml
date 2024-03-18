@@ -4,7 +4,7 @@ parameters:
   Environment:
 
 jobs:
-- deployment: DeployWebApps
+- deployment: DeployWebApp
   pool:
     name: DAS - Continuous Deployment Agents
   environment: ${{ parameters.Environment }}
@@ -50,7 +50,7 @@ jobs:
           parameters:
             EnvironmentName: $(EnvironmentName)
             ServiceConnection: ${{ parameters.ServiceConnection }}
-            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-apprenticeships-web
+            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-apprenticeships-app
             StorageAccountName: $(ConfigurationStorageAccountName)
             StorageAccountResourceGroup: $(SharedEnvResourceGroup)
             TargetFileName: '*.schema.json'

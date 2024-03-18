@@ -85,7 +85,7 @@
         "employerAuthType": "Employer",
         "providersAppServiceName": "[concat(variables('resourceNamePrefix'), '-prv-as')]",
         "providerAuthType": "Provider",
-        "configNames": "SFA.DAS.Apprenticeships.Web,SFA.DAS.Provider.DfeSignIn,SFA.DAS.Employer.GovSignIn"
+        "configNames": "SFA.DAS.ApprenticeApp,SFA.DAS.Provider.DfeSignIn,SFA.DAS.Employer.GovSignIn"
     },
     "resources": [
         {
