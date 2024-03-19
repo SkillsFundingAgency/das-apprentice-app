@@ -10,11 +10,9 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using SFA.DAS.ApprenticeApp.Pwa.Models;
-using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using Microsoft.Extensions.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticeApp.AppStart;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {

@@ -17,10 +17,7 @@
     nec quis duis mus!
 </p>
 
-<p>
-    <input type="submit" value="Decline" id="Decline" class="btn btn-default" onclick="location.href='@Url.Action("TermsDecline", "Terms")'" />
-</p>
-
-<p>
-    <input type="submit" value="Accept" id="Accept" class="btn btn-default" onclick="location.href='@Url.Action("TermsAccept", "Terms")'" />
-</p>
+<div class="govuk-button-group">
+    <button class="govuk-button" onclick="location.href='@Url.Action("TermsAccept", "Terms")'">Accept</button>
+    <button class="govuk-button govuk-button--secondary" onclick="location.href='@Url.Action("TermsDecline", "Terms")'">Decline</button>
+</div>

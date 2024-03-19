@@ -1,15 +1,22 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model SFA.DAS.ApprenticeApp.Pwa.Models.StubAuthUserDetails
+﻿@model SFA.DAS.ApprenticeApp.Pwa.Models.StubAuthUserDetails
 @{
     Layout = "_Layout";
 }
 
-<h1 class="govuk-heading-xl">POC Auth - Enter sign in details</h1>
-<form method="POST" asp-action="AccountDetails" asp-controller="Account">
-    <label asp-for="Id">Id</label>
-    <input asp-for="Id" />
-    <label asp-for="Email">Email</label>
-    <input asp-for="Email" />
-    <button class="govuk-button" type="submit">Log me in</button>
-</form>
+<h1 class="govuk-heading-xl">Sign in (stub)</h1>
+<dl class="app-content-list">
+    <div class="app-pane">
+        <form method="POST" asp-action="AccountDetails" asp-controller="Account">
+            <dt class="app-content-list__title">
+                <label asp-for="Id">Id</label>:
+            </dt>
+            <dd class="app-content-list__content"><input asp-for="Id" /></dd>
+            <dt class="app-content-list__title">
+                <label asp-for="Email">Email</label>:
+            </dt>
+            <dd class="app-content-list__content"><input asp-for="Email" /></dd>
+            <p><button class="govuk-button" type="submit" style="margin-top: 14px;">Log me in</button></p>
+        </form>
+        <p><button class="govuk-button" onclick="location.href='@Url.Action("Error", "Account")'">Fake error signing in</button></p>
+    </div>
+</dl>

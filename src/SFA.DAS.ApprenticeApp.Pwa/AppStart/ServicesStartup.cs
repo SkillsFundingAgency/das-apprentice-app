@@ -1,8 +1,8 @@
-﻿using RestEase.HttpClientFactory;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+﻿using System.Diagnostics.CodeAnalysis;
+using RestEase.HttpClientFactory;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.Http.Configuration;
-using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {

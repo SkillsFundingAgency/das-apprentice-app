@@ -30,12 +30,8 @@
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
     <Folder Include="Helpers\" />
-    <Folder Include="keys\" />
     <Folder Include="Configuration\" />
-    <Folder Include="Services\" />
-    <Folder Include="Services\OuterApi\" />
     <Folder Include="Views\Terms\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj">
@@ -50,12 +46,8 @@
     <None Remove="ViewModels\" />
     <None Remove="AppStart\" />
     <None Remove="Helpers\" />
-    <None Remove="keys\" />
     <None Remove="Configuration\" />
-    <None Remove="Services\" />
-    <None Remove="Services\OuterApi\" />
     <None Remove="Views\Terms\" />
-    <None Remove="Views\Profile\" />
   </ItemGroup>
   <Target Name="NpmInstall" Inputs="package.json" Outputs="node_modules/.install-stamp">
     <Exec Command="npm ci" Condition="'$(RestorePackagesWithLockFile)' == 'true'" />

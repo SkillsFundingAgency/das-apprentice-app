@@ -15,8 +15,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />  
     <PackageReference Include="Moq" Version="4.20.70" />
-    <PackageReference Include="NUnit" Version="4.1.0" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
     <PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
     <PackageReference Include="WireMock.Net" Version="1.5.48" />
@@ -25,5 +26,12 @@
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa\SFA.DAS.ApprenticeApp.Pwa.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa.MockServer\SFA.DAS.ApprenticeApp.Pwa.MockServer.csproj" />
+    <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="AppStart\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppStart\" />
   </ItemGroup>
 </Project>

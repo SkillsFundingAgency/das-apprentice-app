@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SFA.DAS.ApprenticeApp.Domain.Models
+﻿namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
     public class MyApprenticeship
     {

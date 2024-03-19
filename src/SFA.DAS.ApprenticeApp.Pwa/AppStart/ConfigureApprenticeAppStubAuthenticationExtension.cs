@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using System.Web;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
-using System.Security.Claims;
-using System.Web;
 
 namespace SFA.DAS.ApprenticeApp.AppStart
 {
@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeApp.AppStart
                     options.Events.OnSigningOut = c =>
                     {
                         c.Response.Cookies.Delete(Constants.StubAuthCookieName);
-                        c.Response.Redirect("/Account/Login");
+                        c.Response.Redirect("/Home/Index");
                         return Task.CompletedTask;
                     };
                     if (!string.IsNullOrEmpty(loginRedirect))

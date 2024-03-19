@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -6,20 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
-using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
-using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
         public static ApplicationConfiguration _config { get; set; }
 
-        public AccountController(ILogger<HomeController> logger,
-        IStubAuthenticationService stubAuthenticationService,
-        ApplicationConfiguration configuration
+        public AccountController(ILogger<AccountController> logger,
+            IStubAuthenticationService stubAuthenticationService,
+            ApplicationConfiguration configuration
         )
         {
             _logger = logger;
@@ -37,7 +36,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult Authenticated()
         {
-            return View();
+            return RedirectToAction("Index", "Profile");
         }
 
         [Authorize]
@@ -51,9 +50,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             authenticationProperties.Parameters.Add("id_token", idToken);
 
             var schemes = new List<string>
-        {
-            CookieAuthenticationDefaults.AuthenticationScheme
-        };
+            {
+                CookieAuthenticationDefaults.AuthenticationScheme
+            };
 
             _ = bool.TryParse(_config.StubAuth, out var stubAuth);
             if (!stubAuth)
@@ -74,14 +73,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> AccountDetails(StubAuthUserDetails model)
         {
-            if(model.Id != null) {
-            var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
+            if (model.Id != null)
+            {
+                var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-                new AuthenticationProperties());
-                        
-            return RedirectToAction("StubSignedIn");
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
+                    new AuthenticationProperties());
+
+                return RedirectToAction("Index", "Terms");
             }
+
             return View();
         }
 
@@ -96,5 +97,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             };
             return View(viewModel);
         }
+
+        [HttpGet]
+        public IActionResult Error()
+        {
+            return View();
+        }
+
     }
 }

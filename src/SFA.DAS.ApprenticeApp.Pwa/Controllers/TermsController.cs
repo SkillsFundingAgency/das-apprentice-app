@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 
@@ -20,28 +22,47 @@ public class TermsController : Controller
         _client = client;
     }
 
+    [Authorize]
     public async Task<IActionResult> Index()
     {
-        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"));
+        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-        if (apprenticeDetails?.Apprentice?.TermsOfUseAccepted == true)
+        if (!string.IsNullOrEmpty(apprenticeId))
         {
-            return RedirectToAction("Index", "Profile");
+            var apprentice = await _client.GetApprentice(new Guid(apprenticeId));
+
+            if (apprentice?.TermsOfUseAccepted == true)
+            {
+                return RedirectToAction("Index", "Profile");
+            }
+            else
+            {
+                return View();
+            }
         }
 
-        return View();
+        return RedirectToAction("Error", "Account");
     }
 
+    [Authorize]
     public async Task<IActionResult> TermsAccept()
     {
-        var patch = new JsonPatchDocument<Apprentice>()
-                           .Replace(x => x.TermsOfUseAccepted, true);
+        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-        await _client.UpdateApprentice(new Guid("fd0daf58-af19-440d-b52f-7e1d47267d3b"), patch);
+        if (apprenticeId != null)
+        {
+            var patch = new JsonPatchDocument<Apprentice>()
+                               .Replace(x => x.TermsOfUseAccepted, true);
+
+            await _client.UpdateApprentice(new Guid(apprenticeId), patch);
+
+            return RedirectToAction("Index", "Profile");
+        }
 
         return RedirectToAction("Index", "Home");
     }
 
+    [Authorize]
     public IActionResult TermsDecline()
     {
         return RedirectToAction("SigningOut", "Account");

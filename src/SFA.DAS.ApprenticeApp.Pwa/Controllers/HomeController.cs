@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeApp.Domain.Interfaces;
-using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
@@ -11,16 +8,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IOuterApiClient _client;
 
     public HomeController
         (
-        ILogger<HomeController> logger,
-        IOuterApiClient client
+        ILogger<HomeController> logger
         )
     {
         _logger = logger;
-        _client = client;
     }
 
     public IActionResult Index()

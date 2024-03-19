@@ -1,11 +1,11 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Newtonsoft.Json;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.AppStart;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
-using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Services
 {
@@ -25,7 +25,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Services
         {
             _customClaims = customClaims;
             _httpContextAccessor = httpContextAccessor;
-            _environment = configuration["ResourceEnvironmentName"]?.ToUpper();
+            _environment = configuration["EnvironmentName"]?.ToUpper();
         }
 
         public void AddStubApprenticeAuth(IResponseCookies cookies, StubAuthUserDetails model, bool isEssential = false)
@@ -46,8 +46,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Services
                 SameSite = SameSiteMode.None
             };
             cookies.Append(Constants.StubAuthCookieName, JsonConvert.SerializeObject(model), authCookie);
-
-            
         }
 
         public async Task<ClaimsPrincipal> GetStubSignInClaims(StubAuthUserDetails model)
@@ -63,7 +61,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Services
                 new Claim(ClaimTypes.NameIdentifier, model.Id),
                 new Claim("sub", model.Id)  
             };
-
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);

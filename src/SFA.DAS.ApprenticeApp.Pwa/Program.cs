@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
 using WebEssentials.AspNetCore.Pwa;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuration
 var rootConfiguration = builder.Configuration.LoadConfiguration(builder.Services);
-var environmentName = rootConfiguration["EnvironmentName"];
 var applicationConfiguration = rootConfiguration.Get<ApplicationConfiguration>();
 builder.Services.AddSingleton(applicationConfiguration!);
 
