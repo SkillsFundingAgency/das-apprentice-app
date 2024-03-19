@@ -12,7 +12,7 @@ variables:
 - name: BuildPlatform
   value: any cpu
 - group: RELEASE Management Resources
-- group: RELEASE das-apprenticeships-app
+- group: RELEASE das-apprentice-app
 - name: Deploy
   value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
@@ -50,7 +50,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: AT DevTest Shared Resources
-  - group: AT das-apprenticeships-app
+  - group: AT das-apprentice-app
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -64,7 +64,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: DEMO DevTest Shared Resources
-  - group: DEMO das-apprenticeships-app
+  - group: DEMO das-apprentice-app
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -78,7 +78,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
-  - group: TEST das-apprenticeships-app
+  - group: TEST das-apprentice-app
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -93,7 +93,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: TEST2 DevTest Shared Resources
-  - group: TEST2 das-apprenticeships-app
+  - group: TEST2 das-apprentice-app
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -107,7 +107,7 @@ stages:
   variables:
   - group: PreProd Management Resources
   - group: PreProd Shared Resources
-  - group: PreProd das-apprenticeships-web
+  - group: PreProd das-apprentice-app
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
@@ -115,30 +115,30 @@ stages:
       SolutionBaseName: $(SolutionBaseName)
       ServiceConnection: SFA-DIG-PreProd-ARM
 
-- stage: Deploy_PROD
-  dependsOn: Build
-  displayName: Deploy to PROD
-  variables:
-  - group: PROD Management Resources
-  - group: PROD Shared Resources
-  - group: PROD das-apprenticeships-app
-  jobs:
-  - template: pipeline-templates/job/deploy.yml
-    parameters:
-      Environment: PROD
-      SolutionBaseName: $(SolutionBaseName)
-      ServiceConnection: SFA-DIG-Prod-ARM
+# - stage: Deploy_PROD
+#   dependsOn: Build
+#   displayName: Deploy to PROD
+#   variables:
+#   - group: PROD Management Resources
+#   - group: PROD Shared Resources
+#   - group: PROD das-apprenticeships-app
+#   jobs:
+#   - template: pipeline-templates/job/deploy.yml
+#     parameters:
+#       Environment: PROD
+#       SolutionBaseName: $(SolutionBaseName)
+#       ServiceConnection: SFA-DIG-Prod-ARM
 
-- stage: Deploy_MO
-  dependsOn: Build
-  displayName: Deploy to MO
-  variables:
-  - group: MO Management Resources
-  - group: MO Shared Resources
-  - group: MO das-apprenticeships-app
-  jobs:
-  - template: pipeline-templates/job/deploy.yml
-    parameters:
-      Environment: MO
-      SolutionBaseName: $(SolutionBaseName)
-      ServiceConnection: SFA-ASM-ModelOffice-ARM
+# - stage: Deploy_MO
+#   dependsOn: Build
+#   displayName: Deploy to MO
+#   variables:
+#   - group: MO Management Resources
+#   - group: MO Shared Resources
+#   - group: MO das-apprenticeships-app
+#   jobs:
+#   - template: pipeline-templates/job/deploy.yml
+#     parameters:
+#       Environment: MO
+#       SolutionBaseName: $(SolutionBaseName)
+#       ServiceConnection: SFA-ASM-ModelOffice-ARM
