@@ -50,7 +50,7 @@ jobs:
           parameters:
             EnvironmentName: $(EnvironmentName)
             ServiceConnection: ${{ parameters.ServiceConnection }}
-            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-apprenticeships-app
+            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-apprentice-app
             StorageAccountName: $(ConfigurationStorageAccountName)
             StorageAccountResourceGroup: $(SharedEnvResourceGroup)
             TargetFileName: '*.schema.json'
