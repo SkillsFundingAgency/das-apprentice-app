@@ -7,15 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.78" />
-    <PackageReference Include="RestEase" Version="1.6.4" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="RestEase" Version="1.6.4" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.3" />
+    <PackageReference Include="SFA.DAS.ApprenticePortal.Authentication" Version="1.1.78" />
   </ItemGroup>
 </Project>

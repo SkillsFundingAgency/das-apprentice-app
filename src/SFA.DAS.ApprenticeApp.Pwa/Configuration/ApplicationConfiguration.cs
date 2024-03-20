@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using SFA.DAS.ApprenticePortal.SharedUi;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Configuration;
