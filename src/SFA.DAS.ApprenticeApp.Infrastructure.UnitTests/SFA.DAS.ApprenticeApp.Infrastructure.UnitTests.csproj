@@ -5,7 +5,7 @@
     <ProjectGuid>29EF260E-F154-4EEE-8312-4AEDFC35BF7A</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-      <PackageReference Include="AutoFixture.AutoMoq" Version="4.18.1" />
+       <PackageReference Include="AutoFixture.AutoMoq" Version="4.18.1" />
     <PackageReference Include="AutoFixture.NUnit3" Version="4.18.1" />
     <PackageReference Include="coverlet.msbuild" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>
@@ -23,8 +23,7 @@
     </PackageReference>
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
-  </ItemGroup>
+    <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Infrastructure\SFA.DAS.ApprenticeApp.Infrastructure.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj" />
