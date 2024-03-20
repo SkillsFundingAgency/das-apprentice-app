@@ -30,4 +30,10 @@
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Infrastructure\SFA.DAS.ApprenticeApp.Infrastructure.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Api\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Api\" />
+  </ItemGroup>
 </Project>
