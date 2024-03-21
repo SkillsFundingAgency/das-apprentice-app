@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -49,7 +50,7 @@ public class TermsController : Controller
     {
         var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-        if (apprenticeId != null)
+        if (!string.IsNullOrEmpty(apprenticeId))
         {
             var patch = new JsonPatchDocument<Apprentice>()
                                .Replace(x => x.TermsOfUseAccepted, true);
@@ -68,4 +69,3 @@ public class TermsController : Controller
         return RedirectToAction("SigningOut", "Account");
     }
 }
-

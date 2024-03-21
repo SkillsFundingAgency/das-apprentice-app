@@ -10,7 +10,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Services;
 
 namespace SFA.DAS.ApprenticeApp.AppStart
 {
-    internal class ApprenticeStubAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class ApprenticeStubAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private readonly ICustomClaims _customClaims;
         private readonly IHttpContextAccessor _httpContextAccessor;

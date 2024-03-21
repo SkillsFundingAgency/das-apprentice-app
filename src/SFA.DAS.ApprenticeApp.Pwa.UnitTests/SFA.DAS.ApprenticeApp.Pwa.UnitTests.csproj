@@ -28,10 +28,8 @@
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa.MockServer\SFA.DAS.ApprenticeApp.Pwa.MockServer.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Remove="AppStart\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AppStart\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>

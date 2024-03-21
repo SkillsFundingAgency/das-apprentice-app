@@ -49,6 +49,11 @@
     <None Remove="Configuration\" />
     <None Remove="Views\Terms\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\assets\fonts\bold-affa96571d-v2.woff">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Target Name="NpmInstall" Inputs="package.json" Outputs="node_modules/.install-stamp">
     <Exec Command="npm ci" Condition="'$(RestorePackagesWithLockFile)' == 'true'" />
     <Exec Command="npm install" Condition="'$(RestorePackagesWithLockFile)' != 'true'" />
