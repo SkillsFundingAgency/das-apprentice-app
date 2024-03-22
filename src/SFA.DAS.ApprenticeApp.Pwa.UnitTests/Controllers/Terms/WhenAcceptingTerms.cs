@@ -60,7 +60,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             actual.ActionName.Should().Be("Index");
             actual.ControllerName.Should().Be("Home");
         }
-
-       
     }
 }

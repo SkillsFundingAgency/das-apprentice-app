@@ -25,7 +25,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Services
         {
             _customClaims = customClaims;
             _httpContextAccessor = httpContextAccessor;
-            _environment = configuration["EnvironmentName"]?.ToUpper();
+            _environment = configuration["ResourceEnvironmentName"]?.ToUpper();
         }
 
         public void AddStubApprenticeAuth(IResponseCookies cookies, StubAuthUserDetails model, bool isEssential = false)

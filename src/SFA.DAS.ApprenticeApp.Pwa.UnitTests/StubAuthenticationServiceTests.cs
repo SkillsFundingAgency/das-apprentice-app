@@ -59,7 +59,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<IResponseCookies> responseCookies,
             [Frozen] Mock<IConfiguration> configuration)
         {
-            configuration.Setup(x => x["EnvironmentName"]).Returns("prd");
+            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("prd");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
             service.AddStubApprenticeAuth(responseCookies.Object, model);
