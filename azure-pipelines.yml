@@ -2,7 +2,7 @@ trigger:
   batch: true
   branches:
     include:
-      - "PACAKGE-SCAN-FALSE"
+      - "main"
 
 variables:
 - name: SolutionBaseName
@@ -22,7 +22,7 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/heads/PACAKGE-SCAN-FALSE
+    ref: refs/heads/main
     endpoint: SkillsFundingAgency
   - repository: das-platform-automation
     type: github
