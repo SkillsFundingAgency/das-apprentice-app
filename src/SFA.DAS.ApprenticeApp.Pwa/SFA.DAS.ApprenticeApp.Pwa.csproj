@@ -11,8 +11,6 @@
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.3" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.4.1" />
-    <PackageReference Include="Microsoft.IdentityModel.KeyVaultExtensions" Version="7.4.1" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
     <PackageReference Include="SFA.DAS.Configuration" Version="3.0.84" />
