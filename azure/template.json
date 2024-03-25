@@ -81,7 +81,7 @@
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
-        "employersAppServiceName": "[concat(variables('resourceNamePrefix'), '-emp-as')]",
+        "apprenticeAppServiceName": "[concat(variables('resourceNamePrefix'), '-emp-as')]",
         "employerAuthType": "Employer",
         "providersAppServiceName": "[concat(variables('resourceNamePrefix'), '-prv-as')]",
         "providerAuthType": "Provider",
@@ -98,7 +98,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('employersAppServiceName'), '-app-service-certificate-', parameters('utcValue'))]",
+            "name": "[concat(variables('apprenticeAppServiceName'), '-app-service-certificate-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
@@ -109,7 +109,7 @@
                 },
                 "parameters": {
                     "keyVaultCertificateName": {
-                        "value": "[parameters('employersKeyVaultCertificateName')]"
+                        "value": "[parameters('apprenticeappKeyVaultCertificateName')]"
                     },
                     "keyVaultName": {
                         "value": "[parameters('sharedKeyVaultName')]"
@@ -122,7 +122,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('employersAppServiceName'), '-application-insights-', parameters('utcValue'))]",
+            "name": "[concat(variables('apprenticeAppServiceName'), '-application-insights-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -133,10 +133,10 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[variables('employersAppServiceName')]"
+                        "value": "[variables('apprenticeAppServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[variables('employersAppServiceName')]"
+                        "value": "[variables('apprenticeAppServiceName')]"
                     },
                     "logAnalyticsWorkspaceId": {
                         "value": "[resourceId(parameters('logAnalyticsSubscriptionId'),parameters('sharedManagementResourceGroup'),'Microsoft.OperationalInsights/workspaces',parameters('logAnalyticsWorkspaceName'))]"
@@ -149,7 +149,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('employersAppServiceName'), '-', parameters('utcValue'))]",
+            "name": "[concat(variables('apprenticeAppServiceName'), '-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -160,7 +160,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('employersAppServiceName')]"
+                        "value": "[variables('apprenticeAppServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedFrontEndAppServicePlanName')]"
@@ -196,7 +196,7 @@
                                 },
                                 {
                                     "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-                                    "value": "[reference(concat(variables('employersAppServiceName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
+                                    "value": "[reference(concat(variables('apprenticeAppServiceName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
                                 },
                                 {
                                     "name": "LoggingRedisConnectionString",
@@ -221,7 +221,7 @@
                         "value": "[parameters('employersCustomHostName')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(concat(variables('employersAppServiceName'), '-app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(variables('apprenticeAppServiceName'), '-app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('frontEndAccessRestrictions')]"
@@ -234,7 +234,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('employersAppServiceName'), '-apim-subscription-', parameters('utcValue'))]",
+            "name": "[concat(variables('apprenticeAppServiceName'), '-apim-subscription-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedApimResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -248,7 +248,7 @@
                         "value": "[parameters('sharedApimName')]"
                     },
                     "subscriptionName": {
-                        "value": "[variables('employersAppServiceName')]"
+                        "value": "[variables('apprenticeAppServiceName')]"
                     },
                     "subscriptionScope": {
                         "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/ApprenticeshipsOuterApi')]"
@@ -422,9 +422,9 @@
             "type": "string",
             "value": "[variables('resourceGroupName')]"
         },
-        "EmployersAppServiceName": {
+        "ApprenticeAppServiceName": {
             "type": "string",
-            "value": "[variables('employersAppServiceName')]"
+            "value": "[variables('apprenticeAppServiceName')]"
         },
         "ProvidersAppServiceName": {
             "type": "string",
