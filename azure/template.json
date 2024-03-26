@@ -41,7 +41,7 @@
         "sharedApimName": {
             "type": "string"
         },
-        "apprenticeAppCustomHostName": {
+        "customHostName": {
             "type": "string"
         },
         "providersCustomHostName": {
@@ -218,7 +218,7 @@
                         }
                     },
                     "customHostName": {
-                        "value": "[parameters('apprenticeAppCustomHostName')]"
+                        "value": "[parameters('customHostName')]"
                     },
                     "certificateThumbprint": {
                         "value": "[reference(concat(variables('apprenticeAppServiceName'), '-app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
