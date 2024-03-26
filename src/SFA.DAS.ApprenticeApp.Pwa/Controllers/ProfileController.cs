@@ -32,7 +32,16 @@ public class ProfileController : Controller
 
             if (apprenticeDetails != null)
             {
-                return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship });
+                if (apprenticeDetails.Apprentice?.TermsOfUseAccepted != false)
+                {
+                    return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship });
+                }
+                else
+                {
+                    _logger.LogInformation($"Profile attempted load but user not accepted terms 'apprenticeDetails' {apprenticeId}");
+
+                    return RedirectToAction("Index", "Terms");
+                }
             }
 
             _logger.LogInformation($"Profile Index 'apprenticeDetails' is null for {apprenticeId}");
