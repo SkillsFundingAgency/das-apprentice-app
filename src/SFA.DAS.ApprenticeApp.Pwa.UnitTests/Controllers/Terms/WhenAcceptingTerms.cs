@@ -2,10 +2,8 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
-using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
@@ -19,7 +17,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
 
         [Test, MoqAutoData]
         public async Task Then_The_Profile_Page_Is_Displayed_For_Valid_Apprentice(
-            [Frozen] Mock<IOuterApiClient> _client,
             [Greedy] TermsController controller)
         {
             var httpContext = new DefaultHttpContext();

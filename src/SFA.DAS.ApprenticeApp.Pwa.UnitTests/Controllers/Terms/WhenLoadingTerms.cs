@@ -79,12 +79,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             {
                 HttpContext = httpContext
             };
-
-
-            Apprentice apprentice = new()
-            {
-                ApprenticeId = Guid.NewGuid()
-            };
+            
             _client.Setup(x => x.GetApprentice(apprenticeId));
 
             var actual = await controller.Index() as ViewResult;

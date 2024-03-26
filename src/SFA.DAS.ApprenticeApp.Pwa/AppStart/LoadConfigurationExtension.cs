@@ -14,13 +14,20 @@ public static class LoadConfigurationExtension
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddEnvironmentVariables();
 
-        if (!config["ResourceEnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+
+
+        if (!config["ResourceEnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
         {
+#if DEBUG
+            configBuilder.AddJsonFile("appsettings", true)
+                .AddJsonFile("appsettings.Development.json", true);
+#endif
+
             configBuilder.AddAzureTableStorage(options =>
             {
                 options.ConfigurationKeys = config["ConfigNames"]!.Split(",");
                 options.StorageConnectionString = config["ConfigurationStorageConnectionString"];
-                options.EnvironmentName = config["ResourceEnvironmentName"];
+                options.EnvironmentName = config["EnvironmentName"];
                 options.PreFixConfigurationKeys = false;
             });
         }
