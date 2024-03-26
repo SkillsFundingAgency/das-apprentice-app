@@ -14,8 +14,6 @@ public static class LoadConfigurationExtension
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddEnvironmentVariables();
 
-
-
         if (!config["ResourceEnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
         {
 #if DEBUG
