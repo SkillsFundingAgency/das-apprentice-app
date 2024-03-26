@@ -1,4 +1,4 @@
-parameters:
+  parameters:
   ServiceConnection:
   SolutionBaseName:
   Environment:
@@ -30,22 +30,6 @@ jobs:
             TemplateSecrets:
               LoggingRedisConnectionString: $(LoggingRedisConnectionString)
               ConfigurationStorageConnectionString: $(ConfigurationStorageConnectionString)
-        - template: azure-pipelines-templates/deploy/step/get-apim-subscription-key.yml@das-platform-building-blocks
-          parameters:
-            ServiceConnection: ${{ parameters.ServiceConnection }}
-            ApimResourceGroup: $(SharedApimResourceGroup)
-            ApimName: $(SharedApimName)
-            SubscriptionId: $(AppServiceName)
-            PipelineVariableName: ApprenticeAppApimSubscriptionKey
-            IsMultiRepoCheckout: true
-        - template: azure-pipelines-templates/deploy/step/get-apim-subscription-key.yml@das-platform-building-blocks
-          parameters:
-            ServiceConnection: ${{ parameters.ServiceConnection }}
-            ApimResourceGroup: $(SharedApimResourceGroup)
-            ApimName: $(SharedApimName)
-            SubscriptionId: $(ProvidersAppServiceName)
-            PipelineVariableName: ApprenticeAppApimSubscriptionKey
-            IsMultiRepoCheckout: true
         - template: azure-pipelines-templates/deploy/step/generate-config.yml@das-platform-building-blocks
           parameters:
             EnvironmentName: $(EnvironmentName)
@@ -55,16 +39,9 @@ jobs:
             StorageAccountResourceGroup: $(SharedEnvResourceGroup)
             TargetFileName: '*.schema.json'
             TableName: Configuration
-            ConfigurationSecrets: 
-              ApprenticeAppApimSubscriptionKey: $(ApprenticeAppApimSubscriptionKey)
-              DefaultSessionRedisConnectionString: $(DefaultSessionRedisConnectionString)
+            ConfigurationSecrets: {}
         - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
             AppServiceName: $(AppServiceName)
-            DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.zip
-        - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
-          parameters:
-            ServiceConnection: ${{ parameters.ServiceConnection }}
-            AppServiceName: $(ProvidersAppServiceName)
-            DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.zip
+            DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.zip           
