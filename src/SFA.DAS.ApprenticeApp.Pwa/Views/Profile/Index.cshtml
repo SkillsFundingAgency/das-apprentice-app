@@ -1,0 +1,57 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1 class="govuk-heading-xl">Your profile</h1>
+<h2 class="govuk-heading-l">Your details</h2>
+<div class="app-pane">
+    <dl class="app-content-list">
+        <dt class="app-content-list__title">
+            Name:
+        </dt>
+        <dd class="app-content-list__content">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
+        <dt class="app-content-list__title">
+            Email address:
+        </dt>
+        <dd class="app-content-list__content">@Model?.Apprentice?.Email</dd>
+        <dt class="app-content-list__title">
+            Date of birth:
+        </dt>
+        <dd class="app-content-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
+    </dl>
+</div>
+<h2 class="govuk-heading-l">Your apprenticeship</h2>
+<div class="app-pane">
+    <dl class="app-content-list">
+        <dt class="app-content-list__title">
+            Current employer:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.EmployerName</dd>
+        <dt class="app-content-list__title">
+            Training provider:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.TrainingProviderName</dd>
+        <dt class="app-content-list__title">
+            Apprenticeship:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.Title</dd>
+        <dt class="app-content-list__title">
+            Level:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.Level</dd>
+        <dt class="app-content-list__title">
+            Planned training start date:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</dd>
+        <dt class="app-content-list__title">
+            Planned training end date:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="app-content-list__title">
+            Apprenticeship duration:
+        </dt>
+        <dd class="app-content-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
+    </dl>
+</div>
