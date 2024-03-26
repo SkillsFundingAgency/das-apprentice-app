@@ -41,6 +41,12 @@
         "keyVaultCertificateName": {
             "type": "string"
         },
+        "sharedApimName": {
+            "type": "string"
+        },
+        "sharedApimResourceGroup": {
+            "type": "string"
+        },
         "sharedFrontEndAppServicePlanName": {
             "type": "string"
         },
