@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<h1 class="govuk-heading-xl">POC Auth - You've signed in</h1>
+
+<ul>
+    @foreach (var claim in User.Claims)
+    {
+        <li><strong>@claim.Type:</strong> @claim.Value</li>
+    }
+</ul>
+
+<a asp-action="SigningOut" asp-controller="Account" class="govuk-button">Sign Out</a>

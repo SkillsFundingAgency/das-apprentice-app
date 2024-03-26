@@ -1,0 +1,11 @@
+.app-nav {
+  display: flex;
+  height: 4rem;
+}
+
+.app-nav__link {
+  text-align: center;
+  flex-grow: 1;
+  height: 4rem;
+  padding-top: 1.2rem;
+}

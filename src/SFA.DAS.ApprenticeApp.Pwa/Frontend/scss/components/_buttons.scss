@@ -1,0 +1,19 @@
+.govuk-button-group {
+  margin-right: -15px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.govuk-button {
+  width: auto;
+  margin: 0 0.5rem;
+  min-width: 120px;
+  font-weight: $govuk-font-weight-bold;
+  border-radius: 5px;
+}
+
+.govuk-button--secondary {
+  font-weight: inherit;
+}
