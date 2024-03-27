@@ -4,12 +4,14 @@
   "description": "SFA.DAS.ApprenticeApp.Pwa",
   "icons": [
     {
-      "src": "/img/icon192x192.png",
-      "sizes": "192x192"
+      "src": "/assets/images/govuk-icon-192.png",
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "/img/icon512x512.png",
-      "sizes": "512x512"
+      "src": "/assets/images/govuk-icon-512.png",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
   "display": "standalone",
