@@ -6,7 +6,6 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
-using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
@@ -64,8 +63,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
 
         [Test, MoqAutoData]
         public async Task Then_The_Terms_Page_Is_Displayed_For_Valid_Apprentice_Not_Yet_Accepted(
-            [Frozen] Mock<IOuterApiClient> _client,
-       [Greedy] TermsController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Greedy] TermsController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -80,7 +79,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
                 HttpContext = httpContext
             };
             
-            _client.Setup(x => x.GetApprentice(apprenticeId));
+            client.Setup(x => x.GetApprentice(apprenticeId));
 
             var actual = await controller.Index() as ViewResult;
             actual.Should().NotBeNull();

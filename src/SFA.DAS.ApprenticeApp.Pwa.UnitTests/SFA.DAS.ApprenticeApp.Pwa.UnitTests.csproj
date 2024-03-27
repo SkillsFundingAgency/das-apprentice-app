@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\NewFolder\**" />
+    <EmbeddedResource Remove="Controllers\NewFolder\**" />
+    <None Remove="Controllers\NewFolder\**" />
+    <SpecFlowFeatureFiles Remove="Controllers\NewFolder\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Controllers\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.18.1" />
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.18.1" />
     <PackageReference Include="AutoFixture.NUnit3" Version="4.18.1" />
@@ -27,10 +35,5 @@
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa\SFA.DAS.ApprenticeApp.Pwa.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa.MockServer\SFA.DAS.ApprenticeApp.Pwa.MockServer.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\NewFolder\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>
