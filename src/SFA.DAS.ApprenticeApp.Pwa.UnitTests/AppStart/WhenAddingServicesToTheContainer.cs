@@ -27,7 +27,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
             Assert.That(type, Is.Not.Null);
         }
            
-
         private static void SetupServiceCollection(IServiceCollection serviceCollection)
         {
             var appConfig = GenerateAppConfig();

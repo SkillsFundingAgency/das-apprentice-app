@@ -29,7 +29,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            //return View();
             return RedirectToAction("Index", "Home");
         }
 
