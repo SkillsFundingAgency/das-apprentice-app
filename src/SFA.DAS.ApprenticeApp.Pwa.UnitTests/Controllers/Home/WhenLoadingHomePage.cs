@@ -15,7 +15,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
     public class WhenLoadingHomePage
     {
         [Test, MoqAutoData]
-        public async Task Then_The_Homepage_Is_Loaded([Greedy] HomeController controller)
+        public void Then_The_Homepage_Is_Loaded([Greedy] HomeController controller)
         {
             var result = controller.Index() as ActionResult;
             result.Should().NotBeNull();

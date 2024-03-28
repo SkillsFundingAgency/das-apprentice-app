@@ -30,7 +30,7 @@ public class ProfileController : Controller
         {
             var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-            if (apprenticeDetails.Apprentice != null && apprenticeDetails.MyApprenticeship != null)
+            if (apprenticeDetails.Apprentice != null)
             {
                 if (apprenticeDetails.Apprentice?.TermsOfUseAccepted != false)
                 {

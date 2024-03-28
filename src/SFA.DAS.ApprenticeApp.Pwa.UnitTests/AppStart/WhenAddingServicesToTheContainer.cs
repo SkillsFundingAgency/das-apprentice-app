@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -8,11 +6,14 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
+using System;
+using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
 {
     public class WhenAddingServicesToTheContainer
     {
+        [Test]
         [TestCase(typeof(ICustomClaims))]
         [TestCase(typeof(IStubAuthenticationService))]
         public void Then_The_Dependencies_Are_Correctly_Resolved(Type toResolve)
@@ -25,6 +26,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
 
             Assert.That(type, Is.Not.Null);
         }
+           
 
         private static void SetupServiceCollection(IServiceCollection serviceCollection)
         {
@@ -38,8 +40,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
         {
             var configSource = new MemoryConfigurationSource
             {
-                InitialData = new List<KeyValuePair<string, string>>
-                { new("StubAuth", "true") }
+                InitialData = [new("StubAuth", "true")]
             };
 
             var provider = new MemoryConfigurationProvider(configSource);

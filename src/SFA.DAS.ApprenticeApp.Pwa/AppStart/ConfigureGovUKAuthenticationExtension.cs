@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
@@ -27,7 +28,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             bool.TryParse(_config.StubAuth, out var stubAuth);
             if(stubAuth)
             {
-                services.AddApprenticeStubAuthentication("/signed-out","/Account/AccountDetails", "", "");
+                services.AddApprenticeStubAuthentication("/signed-out","/Account/SignIn", "", "");
             }
             else
             {
@@ -186,6 +187,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             var content = JsonConvert.DeserializeObject<User>(valueString);
 
             context.Principal?.Identities.First().AddClaim(new Claim("email", content.Email));
+            context.Principal?.Identities.First().AddClaim(new Claim(Constants.ApprenticeIdClaimKey, $"fd0daf58-af19-440d-b52f-7e1d47267d3b"));
         }
 
         private static Task HandleSignedOutCallbackRedirect(RemoteSignOutContext context)

@@ -59,7 +59,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<IResponseCookies> responseCookies,
             [Frozen] Mock<IConfiguration> configuration)
         {
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("prd");
+            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("PRD");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
             service.AddStubApprenticeAuth(responseCookies.Object, model);
@@ -76,6 +76,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
         {
             httpContextAccessor.Setup(x => x.HttpContext).Returns(new DefaultHttpContext());
 
+            
             claims.Setup(x => x.GetClaims(It.IsAny<TokenValidatedContext>())).ReturnsAsync(new List<Claim>());
             var service = new StubAuthenticationService(configuration.Object, claims.Object, httpContextAccessor.Object);
 
@@ -108,6 +109,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             actual.Identities.FirstOrDefault()!.AuthenticationType.Should().Be(CookieAuthenticationDefaults.AuthenticationScheme);
             actual.Identities.FirstOrDefault()!.Claims.FirstOrDefault(c => c.Type.Equals(claimKey))!.Value.Should()
                 .Be(claimValue);
+        }
+
+        [Test, MoqAutoData]
+        public async Task GetStubSignInClaims_Returns_Nothing_When_Prod(
+            StubAuthUserDetails model,
+            [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
+            [Frozen] Mock<IConfiguration> configuration,
+            [Frozen] Mock<ICustomClaims> claims)
+        {
+            httpContextAccessor.Setup(x => x.HttpContext).Returns(new DefaultHttpContext());
+            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("PRD");
+            var service = new StubAuthenticationService(configuration.Object, claims.Object, httpContextAccessor.Object);
+            var actual = await service.GetStubSignInClaims(model);
+
+            actual.Should().BeNull();
         }
     }
 }

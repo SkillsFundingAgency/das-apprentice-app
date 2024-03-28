@@ -29,7 +29,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            //return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
@@ -65,13 +66,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
-        public IActionResult AccountDetails()
+        public IActionResult SignIn()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AccountDetails(StubAuthUserDetails model)
+        public async Task<IActionResult> SignIn(StubAuthUserDetails model)
         {
             if (model.Id != null)
             {

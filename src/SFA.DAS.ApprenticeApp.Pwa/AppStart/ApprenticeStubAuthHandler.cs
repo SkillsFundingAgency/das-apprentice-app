@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -21,6 +22,7 @@ namespace SFA.DAS.ApprenticeApp.AppStart
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [ExcludeFromCodeCoverage]
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             if (!_httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(Constants.StubAuthCookieName))
@@ -32,11 +34,11 @@ namespace SFA.DAS.ApprenticeApp.AppStart
             {
                 new Claim(ClaimTypes.Email, authCookieValue.Email),
                 new Claim(ClaimTypes.NameIdentifier, authCookieValue.Id),
-                new Claim("stub", authCookieValue.Id)
+                new Claim("sub", authCookieValue.Id)
             };
             var identity = new ClaimsIdentity(claims, "Apprentice-stub");
             var principal = new ClaimsPrincipal(identity);
-            
+
             if (_customClaims != null)
             {
                 var additionalClaims = await _customClaims.GetClaims(new TokenValidatedContext(_httpContextAccessor.HttpContext, Scheme, new OpenIdConnectOptions(), principal, new AuthenticationProperties()));

@@ -96,7 +96,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
                 .Setup(s => s.GetService(typeof(IUrlHelperFactory)))
                 .Returns(urlHelperFactory.Object);
 
-            var result = await controller.AccountDetails(model) as RedirectToActionResult;
+            var result = await controller.SignIn(model) as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Terms");
 
@@ -107,7 +107,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
            [Greedy] AccountController controller)
         {
             model.Id = null;
-            var result = await controller.AccountDetails(model) as ViewResult;
+            var result = await controller.SignIn(model) as ViewResult;
             result.Should().NotBeNull();
         }
 
@@ -121,8 +121,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         [Test, MoqAutoData]
         public void GetloginView([Greedy] AccountController controller)
         {
-            var result = controller.Login() as ViewResult;
-            result.Should().NotBeNull();
+            var result = controller.Login() as RedirectToActionResult;
+            result.ActionName.Should().Be("Index");
+            result.ControllerName.Should().Be("Home");
         }
     }
 }
