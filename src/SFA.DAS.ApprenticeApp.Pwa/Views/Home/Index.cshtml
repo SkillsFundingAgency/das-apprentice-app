@@ -1,0 +1,13 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1 class="govuk-heading-xl govuk-!-text-align-centre">Apprenticeship app</h1>
+
+<div class="govuk-button-group">
+    <button class="govuk-button" onclick="location.href='@Url.Action("Authenticated", "Account")'">Sign in</button>
+</div>
+
+<p class="govuk-!-text-align-centre">You'll need a GOV.UK One Login to use this service.</p>
+<p class="govuk-!-text-align-centre">Version 1.0.0</p>

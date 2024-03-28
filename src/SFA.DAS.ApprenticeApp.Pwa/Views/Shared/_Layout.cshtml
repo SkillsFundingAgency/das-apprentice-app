@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="govuk-template">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0c0c" />
+    <title>@ViewData["Title"] - Apprenticeships</title>
+    <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
+    <link rel="icon" sizes="any" href="/assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" />
+    <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+</head>
+
+<body class="govuk-template__body">
+    <div class="app-container">
+        <header class="app-header">
+            <img src="/assets/images/apprenticeships-logo-black.svg" alt="Apprentices logo" class="app-header__logo" />
+        </header>
+        <main class="app-main">
+            @RenderBody()
+        </main>
+        <footer class="app-footer">
+            <nav class="app-nav">
+                <a href="link1" class="app-nav__link">A</a>
+                <a href="link1" class="app-nav__link">B</a>
+                <a href="link1" class="app-nav__link">C</a>
+                <a href="link1" class="app-nav__link">D</a>
+                <a href="link1" class="app-nav__link">E</a>
+            </nav>
+        </footer>
+    </div>
+</body>
+
+</html>

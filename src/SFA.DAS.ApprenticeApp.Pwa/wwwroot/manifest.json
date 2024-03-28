@@ -1,0 +1,19 @@
+﻿{
+  "name": "SFA.DAS.ApprenticeApp.Pwa",
+  "short_name": "SFA.DAS.ApprenticeApp.Pwa",
+  "description": "SFA.DAS.ApprenticeApp.Pwa",
+  "icons": [
+    {
+      "src": "/assets/images/govuk-icon-192.png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/images/govuk-icon-512.png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "display": "standalone",
+  "start_url": "/"
+}
