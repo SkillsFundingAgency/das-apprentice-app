@@ -354,3 +354,5 @@ src/.DS_Store
 src/SFA.DAS.ApprenticeApp.Pwa.MockServer/appsettings.Development.json
 src/SFA.DAS.ApprenticeApp.Pwa.MockServer/appsettings.json
 src/SFA.DAS.ApprenticeApp.Pwa/appsettings.Development.json
+/src/SFA.DAS.ApprenticeApp.Pwa/Properties/serviceDependencies.local.json
+/src/SFA.DAS.ApprenticeApp.Pwa/Properties/ServiceDependencies/local
