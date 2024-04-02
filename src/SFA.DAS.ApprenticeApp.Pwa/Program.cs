@@ -27,10 +27,22 @@ builder.Services.AddSession(options =>
 });
 
 // Logging
+//builder.Logging.AddApplicationInsights(
+//        configureTelemetryConfiguration: (config) =>
+//            config.ConnectionString = builder.Configuration.GetConnectionString("APPLICATIONINSIGHTS_CONNECTION_STRING"),
+//            configureApplicationInsightsLoggerOptions: (options) => { }
+//    );
+
 builder.Services.AddLogging(builder =>
 {
     builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
-    builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
+    builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Warning);
+});
+
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddApplicationInsightsTelemetry(new Microsoft.ApplicationInsights.AspNetCore.Extensions.ApplicationInsightsServiceOptions
+{
+    ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]
 });
 
 var app = builder.Build();

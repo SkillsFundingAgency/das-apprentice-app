@@ -48,11 +48,4 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             return services;
         }
     }
-
-    public class OuterApiConfiguration : IApimClientConfiguration
-    {
-        public string ApiBaseUrl { get; set; } = null!;
-        public string SubscriptionKey { get; set; } = null!;
-        public string ApiVersion { get; set; } = null!;
-    }
 }

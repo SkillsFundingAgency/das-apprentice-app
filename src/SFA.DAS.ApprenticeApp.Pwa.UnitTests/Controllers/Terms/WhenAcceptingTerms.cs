@@ -1,7 +1,10 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
@@ -17,6 +20,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
 
         [Test, MoqAutoData]
         public async Task Then_The_Profile_Page_Is_Displayed_For_Valid_Apprentice(
+            [Frozen] Mock<ILogger<TermsController>> logger,
             [Greedy] TermsController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -33,12 +37,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             };
 
             var result = await controller.TermsAccept() as RedirectToActionResult;
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Profile");
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((object v, Type _) =>
+                            v.ToString().Contains($"Apprentice accepted the Terms")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Profile");
+            }
+
+
         }
 
         [Test, MoqAutoData]
         public async Task Then_The_Home_Page_Is_Displayed_For_Invalid_Apprentice(
+          [Frozen] Mock<ILogger<TermsController>> logger,
           [Greedy] TermsController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -54,8 +71,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             };
 
             var actual = await controller.TermsAccept() as RedirectToActionResult;
-            actual.ActionName.Should().Be("Index");
-            actual.ControllerName.Should().Be("Home");
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"ApprenticeId not found in user claims")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                actual.ActionName.Should().Be("Index");
+                actual.ControllerName.Should().Be("Home");
+            }
         }
     }
 }
