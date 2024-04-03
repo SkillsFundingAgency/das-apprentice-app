@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Apprenticeship
     {
         public long Id { get; set; }

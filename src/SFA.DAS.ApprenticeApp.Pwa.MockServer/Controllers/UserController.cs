@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Pwa.MockServer.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.MockServer.Controllers
 {
+    [ExcludeFromCodeCoverage]
     #region snippetDI
     [ApiController]
     [Route("api/[controller]")]

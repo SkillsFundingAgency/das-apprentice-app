@@ -1,8 +1,10 @@
 ﻿using SFA.DAS.ApprenticeApp.Pwa.MockServer.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.MockServer.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.MockServer.Services
 {
+    [ExcludeFromCodeCoverage]
     public class UserRepository : IUserRepository
     {
         private List<User>? _users;
