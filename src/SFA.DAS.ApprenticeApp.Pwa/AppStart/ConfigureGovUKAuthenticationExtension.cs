@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -17,6 +18,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Models;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
+    [ExcludeFromCodeCoverage]
     public static class ConfigureGovUKAuthenticationExtension
     {
         public static ApplicationConfiguration _config { get; set; }
@@ -41,6 +43,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
                 services.AddAuthorization(options => { });
         }
 
+        [ExcludeFromCodeCoverage]
         private static void ConfigureSharedAuthenticationOptions(AuthenticationOptions options)
         {
             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -49,6 +52,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
         }
 
+        [ExcludeFromCodeCoverage]
         private static void ConfigureOpenIdConnectOptions(OpenIdConnectOptions options)
         {
             options.ClientId = _config.ClientId;
@@ -84,6 +88,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             };
         }
 
+        [ExcludeFromCodeCoverage]
         private static void ConfigureCookieOptions(CookieAuthenticationOptions options)
         {
             options.AccessDeniedPath = "/error/403";
@@ -96,6 +101,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             options.LogoutPath = "/account/sign-out";
         }
 
+        [ExcludeFromCodeCoverage]
         private static Task HandleRemoteFailure(RemoteFailureContext context)
         {
             if (context.Failure.Message.Contains("Correlation failed"))
@@ -107,6 +113,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             return Task.CompletedTask;
         }
 
+        [ExcludeFromCodeCoverage]
         private static Task HandleAuthorizationCodeReceived(AuthorizationCodeReceivedContext context)
         {
             try
@@ -168,6 +175,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             return Task.CompletedTask;
         }
 
+        [ExcludeFromCodeCoverage]
         private static async Task PopulateAccountsClaim(TokenValidatedContext context)
         {
             var accessToken = context.TokenEndpointResponse.Parameters["access_token"];
@@ -190,6 +198,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             context.Principal?.Identities.First().AddClaim(new Claim(Constants.ApprenticeIdClaimKey, $"fd0daf58-af19-440d-b52f-7e1d47267d3b"));
         }
 
+        [ExcludeFromCodeCoverage]
         private static Task HandleSignedOutCallbackRedirect(RemoteSignOutContext context)
         {
             context.Response.Cookies.Delete(_config.CookieName);
@@ -198,6 +207,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             return Task.CompletedTask;
         }
 
+        [ExcludeFromCodeCoverage]
         private static Task<string> AuthenticationCallback(string authority, string resource, string scope)
         {
             var azureResource = "https://vault.azure.net/.default";
@@ -211,6 +221,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             return Task.FromResult(token.Token);
         }
 
+        [ExcludeFromCodeCoverage]
         private static RSA LoadPrivateKey(string filePath)
         {
             var privateKeyText = File.ReadAllText(filePath);

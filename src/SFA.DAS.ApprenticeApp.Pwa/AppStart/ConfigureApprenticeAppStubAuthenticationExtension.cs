@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -8,6 +9,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Services;
 
 namespace SFA.DAS.ApprenticeApp.AppStart
 {
+    [ExcludeFromCodeCoverage]
     internal static class ConfigureApprenticeAppStubAuthenticationExtension
     {
         public static void AddApprenticeStubAuthentication(this IServiceCollection services, string redirectUrl, string loginRedirect, string localRedirect, string cookieDomain)

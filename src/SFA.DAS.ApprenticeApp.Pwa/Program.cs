@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using WebEssentials.AspNetCore.Pwa;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,4 +61,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program { }
 

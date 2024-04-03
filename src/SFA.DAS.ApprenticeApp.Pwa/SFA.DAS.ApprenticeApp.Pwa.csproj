@@ -10,8 +10,12 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <Compile Remove="ViewModels\ApprenticeStubViewModel.cs" />
+  </ItemGroup>
  <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.3" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
