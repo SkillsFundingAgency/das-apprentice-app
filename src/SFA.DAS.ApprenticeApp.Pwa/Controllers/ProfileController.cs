@@ -38,13 +38,15 @@ public class ProfileController : Controller
                 }
                 else
                 {
-                    _logger.LogInformation($"Profile attempted load but user not accepted terms 'apprenticeDetails' {apprenticeId}");
-
+                    _logger.LogInformation($"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}");
                     return RedirectToAction("Index", "Terms");
                 }
             }
-
-            _logger.LogInformation($"Profile Index 'apprenticeDetails' is null for {apprenticeId}");
+            _logger.LogWarning($"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}");
+        }
+        else
+        {
+            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
         }
 
         return RedirectToAction("Index", "Home");

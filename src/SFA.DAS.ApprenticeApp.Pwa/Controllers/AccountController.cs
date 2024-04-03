@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
+using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -78,8 +78,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-                    new AuthenticationProperties());
+                new AuthenticationProperties());
 
+                _logger.LogInformation($"Apprentice successfully logged in to app. Apprentice Id:  {model.Id}");
                 return RedirectToAction("Index", "Terms");
             }
 

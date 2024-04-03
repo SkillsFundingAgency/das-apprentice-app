@@ -56,15 +56,19 @@ public class TermsController : Controller
 
             await _client.UpdateApprentice(new Guid(apprenticeId), patch);
 
+            _logger.LogInformation($"Apprentice accepted the Terms. ApprenticeId: {apprenticeId}");
             return RedirectToAction("Index", "Profile");
         }
 
+        _logger.LogWarning($"ApprenticeId not found in user claims for Terms TermsAccept.");
         return RedirectToAction("Index", "Home");
     }
 
     [Authorize]
     public IActionResult TermsDecline()
     {
+        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+        _logger.LogInformation($"Apprentice declined the Terms. ApprenticeId: {apprenticeId}");
         return RedirectToAction("SigningOut", "Account");
     }
 }
