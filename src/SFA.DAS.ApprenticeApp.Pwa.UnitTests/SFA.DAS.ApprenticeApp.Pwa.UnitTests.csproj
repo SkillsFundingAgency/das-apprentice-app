@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa\SFA.DAS.ApprenticeApp.Pwa.csproj" />
-    <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Pwa.MockServer\SFA.DAS.ApprenticeApp.Pwa.MockServer.csproj" />
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj" />
   </ItemGroup>
 
