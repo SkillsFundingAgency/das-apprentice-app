@@ -41,21 +41,20 @@
         "keyVaultCertificateName": {
             "type": "string"
         },
-        "<sharedFrontEndAppServicePlanName> or <sharedBackEndAppServicePlanName>": { //PLACEHOLDER
+        "sharedApimName": {
             "type": "string"
         },
-        "<sharedFrontEndSubnetResourceId> or <sharedBackEndSubnetResourceId>": { //PLACEHOLDER
+        "sharedApimResourceGroup": {
             "type": "string"
         },
-        "<frontEndAccessRestrictions> or <backEndAccessRestrictions>": { //PLACEHOLDER
+        "sharedFrontEndAppServicePlanName": {
+            "type": "string"
+        },
+        "sharedFrontEndSubnetResourceId": {
+            "type": "string"
+        },
+        "frontEndAccessRestrictions": {
             "type": "array"
-        },
-        "logAnalyticsSubscriptionId": {
-            "type": "string",
-            "defaultValue": "[subscription().subscriptionId]"
-        },
-        "logAnalyticsWorkspaceName": {
-            "type": "string"
         },
         "utcValue": {
             "type": "string",
@@ -67,7 +66,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "__SolutionBaseName__" //PLACEHOLDER
+        "configNames": "SFA.DAS.ApprenticeApp,SFA.DAS.Provider.DfeSignIn,SFA.DAS.Employer.GovSignIn"
     },
     "resources": [
         {
@@ -80,7 +79,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('appServiceName'), '-app-service-certificate-', parameters('utcValue'))]",
+            "name": "[concat(parameters('keyVaultCertificateName'), '-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
@@ -104,7 +103,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('appServiceName'), '-application-insights-', parameters('utcValue'))]",
+            "name": "[concat(variables('appServiceName'), '-app-insights-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -119,9 +118,6 @@
                     },
                     "attachedService": {
                         "value": "[variables('appServiceName')]"
-                    },
-                    "logAnalyticsWorkspaceId": {
-                        "value": "[resourceId(parameters('logAnalyticsSubscriptionId'),parameters('sharedManagementResourceGroup'),'Microsoft.OperationalInsights/workspaces',parameters('logAnalyticsWorkspaceName'))]"
                     }
                 }
             },
@@ -145,13 +141,13 @@
                         "value": "[variables('appServiceName')]"
                     },
                     "appServicePlanName": {
-                        "value": "[parameters('<sharedFrontEndAppServicePlanName> or <sharedBackEndAppServicePlanName>')]" //PLACEHOLDER
+                        "value": "[parameters('sharedFrontEndAppServicePlanName')]"
                     },
                     "appServicePlanResourceGroup": {
                         "value": "[parameters('sharedEnvResourceGroup')]"
                     },
                     "subnetResourceId": {
-                        "value": "[parameters('<sharedFrontEndSubnetResourceId> or <sharedBackEndSubnetResourceId>')]" //PLACEHOLDER
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
                     },
                     "appServiceAppSettings": {
                         "value": {
@@ -173,8 +169,8 @@
                                     "value": "1.0"
                                 },
                                 {
-                                    "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-                                    "value": "[reference(concat(variables('appServiceName'), '-application-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
+                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                    "value": "[reference(concat(variables('appServiceName'), '-app-insights-', parameters('utcValue'))).outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "LoggingRedisConnectionString",
@@ -191,10 +187,10 @@
                         "value": "[parameters('customHostname')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference(concat(variables('appServiceName'), '-app-service-certificate-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(parameters('keyVaultCertificateName'), '-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
-                        "value": "[parameters('<frontEndAccessRestrictions> or <backEndAccessRestrictions>')]" //PLACEHOLDER
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             },
