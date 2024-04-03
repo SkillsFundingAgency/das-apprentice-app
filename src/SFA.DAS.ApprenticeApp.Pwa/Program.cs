@@ -26,13 +26,6 @@ builder.Services.AddSession(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
-// Logging
-//builder.Logging.AddApplicationInsights(
-//        configureTelemetryConfiguration: (config) =>
-//            config.ConnectionString = builder.Configuration.GetConnectionString("APPLICATIONINSIGHTS_CONNECTION_STRING"),
-//            configureApplicationInsightsLoggerOptions: (options) => { }
-//    );
-
 builder.Services.AddLogging(builder =>
 {
     builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
