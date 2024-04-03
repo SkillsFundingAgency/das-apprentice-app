@@ -80,7 +80,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
                 new AuthenticationProperties());
 
-                _logger.LogInformation($"Apprentice successfully logged in to app. Apprentice Id:  {model.Id}");
+                _logger.LogInformation($"Apprentice successfully logged in to app.");
                 return RedirectToAction("Index", "Terms");
             }
 
