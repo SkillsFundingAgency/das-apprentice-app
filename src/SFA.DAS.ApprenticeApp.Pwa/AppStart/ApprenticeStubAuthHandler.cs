@@ -16,6 +16,7 @@ namespace SFA.DAS.ApprenticeApp.AppStart
         private readonly ICustomClaims _customClaims;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        [ExcludeFromCodeCoverage]
         public ApprenticeStubAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, ICustomClaims customClaims, IHttpContextAccessor httpContextAccessor) : base(options, logger, encoder, clock)
         {
             _customClaims = customClaims;

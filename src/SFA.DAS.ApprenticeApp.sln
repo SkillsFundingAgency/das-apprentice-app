@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{05713B68
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Pwa.UnitTests", "SFA.DAS.ApprenticeApp.Pwa.UnitTests\SFA.DAS.ApprenticeApp.Pwa.UnitTests.csproj", "{C3CEAD8F-86A6-4EC7-B8CE-F55A343E808E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Pwa.MockServer", "SFA.DAS.ApprenticeApp.Pwa.MockServer\SFA.DAS.ApprenticeApp.Pwa.MockServer.csproj", "{4B425A3F-8437-4259-AD86-75B1D5F706B6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Application", "SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj", "{27E2FADE-7FEF-43F3-8AA9-05A62CFEC892}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Domain", "SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj", "{9EC252B2-EB71-43BC-B860-A9CC0E980A93}"

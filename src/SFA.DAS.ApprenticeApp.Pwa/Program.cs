@@ -63,5 +63,5 @@ app.MapControllerRoute(
 app.Run();
 
 [ExcludeFromCodeCoverage]
-public partial class Program { }
+public static partial class Program { }
 

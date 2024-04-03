@@ -31,7 +31,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Error_View_Is_Displayed_When_Unauthorised([Greedy] HomeController controller)
+        public async Task Then_The_Error_View_Is_Displayed_When_Unauthorised(
+            [Greedy] HomeController controller)
         {
             var httpContext = new DefaultHttpContext();
             httpContext.TraceIdentifier = Guid.NewGuid().ToString();
@@ -39,6 +40,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
+            };
+
+            var errorViewModel = new ErrorViewModel()
+            {
+                RequestId = Guid.NewGuid().ToString()
             };
             var result = controller.Unauthorised() as ActionResult;
             result.Should().NotBeNull();
