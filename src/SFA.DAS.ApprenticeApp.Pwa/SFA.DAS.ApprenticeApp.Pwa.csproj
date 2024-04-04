@@ -37,6 +37,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="Configuration\" />
     <Folder Include="Views\Terms\" />
+    <Folder Include="Authentication\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj">
@@ -52,6 +53,7 @@
     <None Remove="Helpers\" />
     <None Remove="Configuration\" />
     <None Remove="Views\Terms\" />
+    <None Remove="Authentication\" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\assets\fonts\bold-affa96571d-v2.woff">

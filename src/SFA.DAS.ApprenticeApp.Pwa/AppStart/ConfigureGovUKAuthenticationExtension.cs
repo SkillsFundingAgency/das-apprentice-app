@@ -15,6 +15,7 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Authentication;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
@@ -40,7 +41,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
                     .AddOpenIdConnect(options => { ConfigureOpenIdConnectOptions(options); })
                     .AddCookie(options => {  ConfigureCookieOptions(options); });
             }
-                services.AddAuthorization(options => { });
+            services.AddAuthorization(o =>
+            {
+                o.AddPolicy(PolicyNames.Default, policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireRole(RoleNames.Default);
+                });
+            });
         }
 
         [ExcludeFromCodeCoverage]
