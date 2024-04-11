@@ -38,7 +38,7 @@
     "SFA.DAS.ApprenticeApp.Pwa": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:24068;http://localhost:53516",
+      "applicationUrl": "https://localhost:10966;http://localhost:15850",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
