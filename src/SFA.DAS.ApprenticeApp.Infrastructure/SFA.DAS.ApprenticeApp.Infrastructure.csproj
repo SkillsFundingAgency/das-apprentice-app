@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ProjectGuid>BCAB4ABA-AE1F-46D0-B33B-33355F8F2FB0</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Api\**" />
+    <Compile Remove="FileHelper\**" />
+    <Compile Remove="StreamHelper\**" />
+    <EmbeddedResource Remove="Api\**" />
+    <EmbeddedResource Remove="FileHelper\**" />
+    <EmbeddedResource Remove="StreamHelper\**" />
+    <None Remove="Api\**" />
+    <None Remove="FileHelper\**" />
+    <None Remove="StreamHelper\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+  </ItemGroup></Project>
