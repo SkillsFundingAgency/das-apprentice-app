@@ -59,7 +59,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<IResponseCookies> responseCookies,
             [Frozen] Mock<IConfiguration> configuration)
         {
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("PRD");
+            configuration.Setup(x => x["EnvironmentName"]).Returns("PRD");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
             service.AddStubApprenticeAuth(responseCookies.Object, model);
@@ -119,7 +119,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             [Frozen] Mock<ICustomClaims> claims)
         {
             httpContextAccessor.Setup(x => x.HttpContext).Returns(new DefaultHttpContext());
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("PRD");
+            configuration.Setup(x => x["EnvironmentName"]).Returns("PRD");
             var service = new StubAuthenticationService(configuration.Object, claims.Object, httpContextAccessor.Object);
             var actual = await service.GetStubSignInClaims(model);
 
