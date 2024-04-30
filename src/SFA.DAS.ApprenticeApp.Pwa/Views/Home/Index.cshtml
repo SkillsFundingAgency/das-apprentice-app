@@ -1,13 +1,16 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+    Layout = "_LayoutBasic";
 }
-
-<h1 class="govuk-heading-xl govuk-!-text-align-centre">Apprenticeship app</h1>
-
-<div class="govuk-button-group">
-    <button class="govuk-button" onclick="location.href='@Url.Action("Authenticated", "Account")'">Sign in</button>
+<div class="app-home">
+    <div class="app-block--top"><!-- Help --></div>
+    <div class="app-block--center">
+        <img src="/assets/images/apprentice-app-logo.svg" alt="Apprentice App Logo" class="app-home__logo" />
+    </div>
+    <div class="app-block--bottom">
+        <button class="govuk-button govuk-!-margin-bottom-8" onclick="location.href='@Url.Action("Authenticated", "Account")'">Sign in</button>
+        <p>You'll need a GOV.UK One Login to use this service.</p>
+        <p class="govuk-body-s">Version 1.0.0</p>
+    </div>
 </div>
-
-<p class="govuk-!-text-align-centre">You'll need a GOV.UK One Login to use this service.</p>
-<p class="govuk-!-text-align-centre">Version 1.0.0</p>

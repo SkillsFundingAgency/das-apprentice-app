@@ -1,12 +1,14 @@
 ﻿@{
-    Layout = "_Layout";
+    Layout = "_LayoutBasic";
 }
-<div>
-    <h1 class="govuk-heading-xl">Contact your training provider</h1>
+    <header class="app-article-header">
+        <a href="../" class="app-back-link">Back</a>
+        <h1 class="govuk-heading-l">Contact your training provider</h1>
+    </header>
 
     <p>You cannot currently sign into the app. This could be because the information you entered when you created your account does not:</p>
 
-    <ul class="govuk-body">
+    <ul class="govuk-list govuk-list--bullet">
         <li>appear in our records</li>
         <li>match the information in our records</li>
     </ul>
@@ -14,10 +16,8 @@
         Check your junk email for a link to sign in to GOV.UK One Login. If you have not received anything, speak to your training provider. They can check which email address you have registered in the apprenticeship service, and they may be able to update your details if they’re incorrect.
     </p>
     <p>
-        If you need more help, you can call 08000 150 600 or email helpdesk@manage-apprenticeships.service.gov.uk. Our opening times are 8am to 8pm, Monday to Friday. During our opening times, we will reply to emails within 4 hours.
-        You can also visit apprenticeships.gov.uk for guidance about your apprenticeship.
+        If you need more help, you can call 08000 150 600 or email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk" class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>. Our opening times are 8am to 8pm, Monday to Friday. During our opening times, we will reply to emails within 4 hours.
+        </p>
+        <p>
+        You can also visit <a href="https://www.apprenticeships.gov.uk" class="govuk-link govuk-link--no-visited-state">apprenticeships.gov.uk</a> for guidance about your apprenticeship.
     </p>
-    <div class="govuk-button-group">
-        <button class="govuk-button" onclick="window.location.href='apprenticeships.gov.uk'">Visit apprenticeships.gov.uk</button>
-    </div>
-</div>
