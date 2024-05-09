@@ -19,8 +19,21 @@
   max-height: 2.5rem;
 }
 
-.app-article-header {
-  padding: 0 40px;
+.app-page-header {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-column-gap: 5px;
+  justify-items: center;
+}
+
+.app-page-header__left {
+  justify-self: left;
+}
+
+.app-page-header__middle {
   text-align: center;
-  position: relative;
+}
+
+.app-page-header__right {
+  justify-self: right;
 }
