@@ -1,12 +1,8 @@
 .app-back-link {
+  @extend .govuk-back-link;
   justify-self: left;
   margin: 0;
-  height: 20px;
-  width: 20px;
-  overflow: hidden;
-  display: block;
-  text-indent: -999px;
-  background-image: url("/assets/images/icons/arrow-back.svg");
-  background-repeat: no-repeat;
-  background-position: center center;
+  &:before {
+    border-color: #00703c;
+  }
 }

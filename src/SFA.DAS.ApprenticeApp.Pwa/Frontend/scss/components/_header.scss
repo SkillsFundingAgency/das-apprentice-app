@@ -24,6 +24,8 @@
   grid-template-columns: 1fr 3fr 1fr;
   grid-column-gap: 5px;
   justify-items: center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .app-page-header__left {
@@ -32,6 +34,9 @@
 
 .app-page-header__middle {
   text-align: center;
+  * {
+    margin: 0;
+  }
 }
 
 .app-page-header__right {
