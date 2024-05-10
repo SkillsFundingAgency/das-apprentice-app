@@ -1,0 +1,19 @@
+.app-home {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  text-align: center;
+}
+
+.app-home__logo {
+  min-width: 200px;
+  max-width: 85%;
+  animation: fadeIn ease-in 1s;
+}
+
+.app-home .app-block--bottom {
+  animation: fadeIn ease-in 1s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
+}

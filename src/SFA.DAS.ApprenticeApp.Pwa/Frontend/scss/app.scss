@@ -1,7 +1,9 @@
 $govuk-global-styles: true;
 @import "govuk/all";
 @import "core/all";
+@import "helpers/all";
 @import "components/all";
+@import "pages/all";
 
 * {
   box-sizing: border-box;

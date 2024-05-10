@@ -1,0 +1,8 @@
+.app-back-link {
+  @extend .govuk-back-link;
+  justify-self: left;
+  margin: 0;
+  &:before {
+    border-color: #00703c;
+  }
+}
