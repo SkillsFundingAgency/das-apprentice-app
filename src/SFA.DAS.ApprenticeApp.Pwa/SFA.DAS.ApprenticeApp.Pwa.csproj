@@ -17,6 +17,7 @@
     <PackageReference Include="Azure.Identity" Version="1.11.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
     <PackageReference Include="SFA.DAS.Configuration" Version="3.0.84" />
