@@ -1,0 +1,37 @@
+.app-list-links {
+  list-style: none;
+  @include govuk-typography-common;
+  margin: 0;
+  padding: 0;
+}
+
+.app-list-links__list-item {
+  margin-bottom: 15px;
+}
+
+.app-list-links__link {
+  background: #fff;
+  color: $govuk-text-colour;
+  font-weight: $govuk-font-weight-bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  padding: 12px 15px;
+  border-radius: 5px;
+  &:visited {
+    color: $govuk-text-colour;
+  }
+  &:after {
+    content: "";
+    display: block;
+    height: 9px;
+    width: 9px;
+    transform: rotate(45deg);
+    border: 3px solid $app-brand-colour;
+    border-width: 3px 3px 0 0;
+  }
+  &:focus:after {
+    border-color: $govuk-text-colour;
+  }
+}

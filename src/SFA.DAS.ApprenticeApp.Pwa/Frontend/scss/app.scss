@@ -1,5 +1,6 @@
 $govuk-global-styles: true;
 @import "govuk/all";
+@import "settings/all";
 @import "core/all";
 @import "components/all";
 
