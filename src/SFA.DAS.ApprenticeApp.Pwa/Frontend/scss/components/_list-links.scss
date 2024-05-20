@@ -1,8 +1,8 @@
 .app-list-links {
   list-style: none;
-  @include govuk-typography-common;
   margin: 0;
   padding: 0;
+  @extend .govuk-heading-m;
 }
 
 .app-list-links__list-item {
