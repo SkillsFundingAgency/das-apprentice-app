@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
@@ -48,7 +49,52 @@ public class ProfileController : Controller
         {
             _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
         }
-
         return RedirectToAction("Index", "Home");
     }
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> AddSubscription()
+    {
+        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+        if (!string.IsNullOrEmpty(apprenticeId))
+        {
+            var addSubscriptionRequest = new ApprenticeAddSubscriptionRequest
+            {
+                Endpoint = "HTTP.Endpoint",
+                AuthenticationSecret = "ABC",
+                PublicKey = "ABC"
+            };
+            _logger.LogInformation($"Adding subscription for apprentice.");
+            await _client.ApprenticeAddSubscription(new Guid(apprenticeId), addSubscriptionRequest);
+        }
+        else
+        {
+            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
+        }
+        return RedirectToAction("Index", "Profile");
+    }
+    
+    [Authorize]
+    public async Task<IActionResult> RemoveSubscription()
+    {
+        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+        if (!string.IsNullOrEmpty(apprenticeId))
+        {
+            var removeSubscriptionRequest = new ApprenticeRemoveSubscriptionRequest
+            {
+                Endpoint = "HTTP.Endpoint"
+            };
+            _logger.LogInformation($"Removing subscription for apprentice.");
+            await _client.ApprenticeRemoveSubscription(new Guid(apprenticeId), removeSubscriptionRequest);
+        }
+        else
+        {
+            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
+        }
+        return RedirectToAction("Index", "Profile");
+    }
+
+
 }
