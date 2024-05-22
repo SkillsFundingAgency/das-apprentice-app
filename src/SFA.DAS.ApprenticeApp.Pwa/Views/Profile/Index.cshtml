@@ -55,3 +55,7 @@
         <dd class="app-content-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
     </dl>
 </div>
+
+<div class="app-pane">
+    <button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+</div>
