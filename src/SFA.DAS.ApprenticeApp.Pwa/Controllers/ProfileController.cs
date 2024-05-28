@@ -9,6 +9,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
 public class ProfileController : Controller
 {
+    private const string Message = $"Adding subscription for apprentice.";
     private readonly ILogger<ProfileController> _logger;
     private readonly IOuterApiClient _client;
 
@@ -39,15 +40,19 @@ public class ProfileController : Controller
                 }
                 else
                 {
-                    _logger.LogInformation($"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}");
+                    string message = $"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}";
+                    _logger.LogInformation(message: message);
                     return RedirectToAction("Index", "Terms");
                 }
             }
-            _logger.LogWarning($"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}");
+
+            string message1 = $"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}";
+            _logger.LogWarning(message: message1);
         }
         else
         {
-            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
+            const string Message1 = $"ApprenticeId not found in user claims for Profile Index.";
+            _logger.LogWarning(message: Message1);
         }
         return RedirectToAction("Index", "Home");
     }
@@ -65,16 +70,17 @@ public class ProfileController : Controller
                 AuthenticationSecret = "ABC",
                 PublicKey = "ABC"
             };
-            _logger.LogInformation($"Adding subscription for apprentice.");
+            _logger.LogInformation(message: Message);
             await _client.ApprenticeAddSubscription(new Guid(apprenticeId), addSubscriptionRequest);
         }
         else
         {
-            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
+            const string Message1 = $"ApprenticeId not found in user claims for Profile Index.";
+            _logger.LogWarning(message: Message1);
         }
         return RedirectToAction("Index", "Profile");
     }
-    
+
     [Authorize]
     public async Task<IActionResult> RemoveSubscription()
     {
@@ -86,15 +92,15 @@ public class ProfileController : Controller
             {
                 Endpoint = "HTTP.Endpoint"
             };
-            _logger.LogInformation($"Removing subscription for apprentice.");
+            const string Message1 = $"Removing subscription for apprentice.";
+            _logger.LogInformation(message: Message1);
             await _client.ApprenticeRemoveSubscription(new Guid(apprenticeId), removeSubscriptionRequest);
         }
         else
         {
-            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
+            const string Message1 = $"ApprenticeId not found in user claims for Profile Index.";
+            _logger.LogWarning(message: Message1);
         }
         return RedirectToAction("Index", "Profile");
+        }
     }
-
-
-}

@@ -56,18 +56,16 @@
     </dl>
 </div>
 
-<!-- HTML for the popup box -->
 <div id="popup-box" class="popup">
     <div class="popup-content">
         <h2 class="govuk-heading-m">Do you wish to subscribe to notifications?</h2>
         <div class="govuk-button-group">
-            <button type="button" class="govuk-button" onclick="allowNotifications()">Allow</button>
-            <button type="button" class="govuk-button govuk-button--secondary" onclick="rejectNotifications()">Do not allow</button>
+            <button type="button" class="govuk-button" asp-controller="Profile" asp-action="AddSubscription">Allow</button>
+            <button type="button" class="govuk-button govuk-button--secondary" asp-controller="Profile" asp-action="RemoveSubscription">Do not allow</button>
         </div>
     </div>
 </div>
 
-<!-- CSS for styling the popup -->
 <style>
     .popup {
         display: none;
@@ -106,7 +104,6 @@
         color: #ffffff; /* White text color */
     }
 
-    /* Style for the secondary button */
     .govuk-button--secondary {
         background-color: #006400;
         border-color: #006400;
@@ -115,49 +112,9 @@
 
 </style>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- JavaScript to control the popup -->
 <script>
-    // Function to show the popup when the page loads
     window.onload = function () {
         document.getElementById("popup-box").style.display = "block";
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(function (registration) {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                }).catch(function (error) {
-                    console.log('Service Worker registration failed:', error);
-                });
-        }
+
     };
-
-    // Function to allow notifications
-    function allowNotifications() {
-            $.ajax({
-                url: '@Url.Action("AddSubscription", "Profile")',
-                type: 'POST',
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-
-    // Function to reject notifications
-    function rejectNotifications() {
-        // Add your logic for rejecting notifications here
-        $.ajax({
-            url: '@Url.Action("RemoveSubscription", "Profile")',
-            type: 'DELETE',
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    }
-</script>
+   </script>

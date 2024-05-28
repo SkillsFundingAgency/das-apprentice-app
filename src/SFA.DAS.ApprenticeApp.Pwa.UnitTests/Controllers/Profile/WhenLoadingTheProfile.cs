@@ -155,5 +155,60 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
             }
 
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_AddSubscription_Is_Called_For_Valid_Apprentice(
+          [Frozen] Mock<IOuterApiClient> client,
+        [Greedy] ProfileController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+        apprenticeIdClaim
+         })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.AddSubscription();
+
+            client.Verify(x => x.ApprenticeAddSubscription(It.IsAny<Guid>(), It.IsAny<ApprenticeAddSubscriptionRequest>()), Times.Once);
+            var redirectResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectResult);
+            Assert.AreEqual("Index", redirectResult.ActionName);
+            Assert.AreEqual("Profile", redirectResult.ControllerName);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_RemoveSubscription_Is_Called_For_Valid_Apprentice(
+    [Frozen] Mock<IOuterApiClient> client,
+    [Greedy] ProfileController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+    {
+        apprenticeIdClaim
+    })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.RemoveSubscription();
+
+            client.Verify(x => x.ApprenticeRemoveSubscription(It.IsAny<Guid>(), It.IsAny<ApprenticeRemoveSubscriptionRequest>()), Times.Once);
+            var redirectResult = result as RedirectToActionResult;
+            Assert.IsNotNull(redirectResult);
+            Assert.AreEqual("Index", redirectResult.ActionName);
+            Assert.AreEqual("Profile", redirectResult.ControllerName);
+        }
+
     }
 }
