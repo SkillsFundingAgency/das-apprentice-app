@@ -56,6 +56,12 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
+// custom slug POC
+app.MapControllerRoute(
+    name: "supportContent",
+    pattern: "Support/content/{pageName}",
+    defaults: new { controller = "Support", action = "SecondLevel" });
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

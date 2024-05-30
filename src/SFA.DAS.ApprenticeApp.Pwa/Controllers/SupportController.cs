@@ -8,14 +8,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
-        public IActionResult SecondLevelPage()
+        // GET: Support/Content/{pageName}
+        public IActionResult SecondLevel()
         {
+            // Use the pageName parameter as needed
+            // For example, you could fetch content based on pageName
+            //ViewBag.PageName = pageName;
             return View();
         }
-        public IActionResult SavedArticlesPage()
+    
+    public IActionResult SavedArticlesPage()
         {
             return View();
         }
     }
+
 
 }
