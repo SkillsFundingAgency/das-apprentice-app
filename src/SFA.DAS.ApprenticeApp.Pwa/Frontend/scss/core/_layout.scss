@@ -1,2 +1,23 @@
+.app-template {
+  background: #fff;
+}
+
+.app-template__body {
+}
+
 .app-container {
+}
+
+.app-block--top {
+  flex: 1;
+}
+
+.app-block--center {
+  align-content: center;
+  flex: 1;
+}
+
+.app-block--bottom {
+  flex: 1;
+  align-content: end;
 }
