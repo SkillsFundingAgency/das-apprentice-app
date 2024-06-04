@@ -6,6 +6,19 @@
   background-color: #fff;
   border-radius: 5px;
   margin-bottom: 15px;
+  .app-icon--inline-wrap {
+    .app-icon {
+      width: 20px;
+    }
+  }
+}
+
+.govuk-accordion__section--expanded {
+  .app-icon--inline-wrap {
+    .app-icon {
+      display: none;
+    }
+  }
 }
 
 .govuk-frontend-supported .govuk-accordion {
@@ -58,11 +71,10 @@
 }
 
 .govuk-frontend-supported .govuk-accordion-nav__chevron::after {
-  border: 3px solid $app-brand-colour;
-  border-width: 3px 3px 0 0;
-  height: 12px;
-  width: 12px;
-  left: 4px;
+  border: 2px solid #00703c;
+  border-width: 2px 2px 0 0;
+  height: 10px;
+  width: 10px;
 }
 
 .govuk-frontend-supported

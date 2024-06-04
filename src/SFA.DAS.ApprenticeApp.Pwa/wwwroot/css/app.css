@@ -7514,6 +7514,13 @@ p + .govuk-heading-s,
   border-radius: 5px;
   margin-bottom: 15px;
 }
+.govuk-accordion__section .app-icon--inline-wrap .app-icon {
+  width: 20px;
+}
+
+.govuk-accordion__section--expanded .app-icon--inline-wrap .app-icon {
+  display: none;
+}
 
 .govuk-frontend-supported .govuk-accordion {
   border-bottom: none;
@@ -7562,11 +7569,10 @@ p + .govuk-heading-s,
 }
 
 .govuk-frontend-supported .govuk-accordion-nav__chevron::after {
-  border: 3px solid #00703c;
-  border-width: 3px 3px 0 0;
-  height: 12px;
-  width: 12px;
-  left: 4px;
+  border: 2px solid #00703c;
+  border-width: 2px 2px 0 0;
+  height: 10px;
+  width: 10px;
 }
 
 .govuk-frontend-supported .govuk-accordion__section-button:focus .govuk-accordion-nav__chevron::after {
@@ -7640,19 +7646,22 @@ p + .govuk-heading-s,
   height: 4.5rem;
 }
 
-.icon {
+.app-icon {
   max-width: 24px;
   max-height: 24px;
   align-self: center;
   color: #00703c;
 }
+:focus .app-icon {
+  color: inherit;
+}
 
-.icon--s {
+.app-icon--s {
   max-width: 20px;
   max-height: 20px;
 }
 
-.icon--inline-wrap {
+.app-icon--inline-wrap {
   flex-grow: 1;
   display: flex;
   gap: 10px;
