@@ -7640,9 +7640,27 @@ p + .govuk-heading-s,
   height: 4.5rem;
 }
 
+.icon {
+  max-width: 24px;
+  max-height: 24px;
+  align-self: center;
+  color: #00703c;
+}
+
+.icon--s {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.icon--inline-wrap {
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+}
+
 .app-list-links {
   list-style: none;
-  margin: 0;
+  margin: 0 0 20px;
   padding: 0;
 }
 
@@ -7655,7 +7673,6 @@ p + .govuk-heading-s,
   color: #0b0c0c;
   font-weight: 700;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   text-decoration: none;
   padding: 12px 15px;
@@ -7667,11 +7684,13 @@ p + .govuk-heading-s,
 .app-list-links__link:after {
   content: "";
   display: block;
-  height: 9px;
-  width: 9px;
+  height: 8px;
+  width: 8px;
   transform: rotate(45deg);
-  border: 3px solid #00703c;
-  border-width: 3px 3px 0 0;
+  border: 2px solid #00703c;
+  border-width: 2px 2px 0 0;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 .app-list-links__link:focus:after {
   border-color: #0b0c0c;

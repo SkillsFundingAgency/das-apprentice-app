@@ -1,6 +1,6 @@
 .app-list-links {
   list-style: none;
-  margin: 0;
+  margin: 0 0 20px;
   padding: 0;
   @extend .govuk-heading-m;
 }
@@ -14,7 +14,6 @@
   color: $govuk-text-colour;
   font-weight: $govuk-font-weight-bold;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   text-decoration: none;
   padding: 12px 15px;
@@ -25,11 +24,13 @@
   &:after {
     content: "";
     display: block;
-    height: 9px;
-    width: 9px;
+    height: 8px;
+    width: 8px;
     transform: rotate(45deg);
-    border: 3px solid $app-brand-colour;
-    border-width: 3px 3px 0 0;
+    border: 2px solid $app-brand-colour;
+    border-width: 2px 2px 0 0;
+    flex-shrink: 0;
+    margin-left: auto;
   }
   &:focus:after {
     border-color: $govuk-text-colour;
