@@ -7617,7 +7617,7 @@ p + .govuk-heading-s,
   font-size: 19px;
   height: 4.5rem;
   text-align: center;
-  border-bottom: 1px solid #b1b4b6;
+  border-bottom: 1px solid #eee;
   position: fixed;
   top: 0;
   left: 0;
@@ -7637,7 +7637,7 @@ p + .govuk-heading-s,
 }
 
 .app-footer {
-  border-top: 1px solid #b1b4b6;
+  border-top: 1px solid #eee;
   background: #fff;
   position: fixed;
   bottom: 0;
@@ -7687,7 +7687,7 @@ p + .govuk-heading-s,
   padding: 12px 15px;
   border-radius: 5px;
 }
-.app-list-links__link:visited {
+.app-list-links__link:link, .app-list-links__link:visited {
   color: #0b0c0c;
 }
 .app-list-links__link:after {
