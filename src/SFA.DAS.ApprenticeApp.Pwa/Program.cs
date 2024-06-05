@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging.ApplicationInsights;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -56,15 +57,17 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
+
+
 // custom slug POC
 app.MapControllerRoute(
-    name: "supportContent",
-    pattern: "Support/content/{pageName}",
-    defaults: new { controller = "Support", action = "SecondLevel" });
+    name: "supportcontent",
+    pattern: "support/content/{pagename?}",
+    defaults: new { controller = "support", action = "secondlevelpage" });
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=home}/{action=index}/{id?}");
 
 app.Run();
 
