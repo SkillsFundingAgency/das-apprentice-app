@@ -16,6 +16,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             
             return View();
         }
+
+        public IActionResult ReturnPageName(string pagename)
+        {
+
+            return Content("This is page" + pagename);
+            
+        }
     
     public IActionResult SavedArticlesPage()
         {
