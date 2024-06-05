@@ -63,7 +63,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "supportcontent",
     pattern: "support/content/{pagename?}",
-    defaults: new { controller = "support", action = "secondlevelpage" });
+    defaults: new { controller = "support", action = "ReturnPageName" });
 
 app.MapControllerRoute(
     name: "default",
