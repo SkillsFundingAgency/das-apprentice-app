@@ -39,16 +39,18 @@ public class ProfileController : Controller
                 }
                 else
                 {
-                    _logger.LogInformation($"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}");
+                    string termsMessage = $"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}";
+                    _logger.LogInformation(termsMessage);
                     return RedirectToAction("Index", "Terms");
                 }
             }
 
-            _logger.LogWarning($"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}");
+            string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}";
+            _logger.LogWarning(message);
         }
         else
         {
-            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
+            _logger.LogWarning("ApprenticeId not found in user claims for Profile Index.");
         }
         return RedirectToAction("Index", "Home");
     }
