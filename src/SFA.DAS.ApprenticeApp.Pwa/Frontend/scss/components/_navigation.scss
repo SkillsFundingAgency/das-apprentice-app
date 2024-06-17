@@ -8,4 +8,13 @@
   flex-grow: 1;
   height: 4rem;
   padding-top: 1.2rem;
+  transition: all 0.2s;
+  border-top: 2px solid transparent;
+  &:active {
+    background: #eee;
+  }
+}
+
+.app-nav__link--active {
+  border-top: 2px solid $app-brand-colour;
 }
