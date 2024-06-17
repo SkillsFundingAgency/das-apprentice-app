@@ -78,35 +78,39 @@
                 Notifications
             </h2>
         </legend>
-        <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">
-            <p class="govuk-body">
-                If you turn off notifications, you will not receive:
-            <ul>
-                <li>any reminders you have set for activities in your tracker</li>
-                <li>useful guidance about your apprenticeship</li>
-            </ul>
-            </p>
-        </div>
-        <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOff">
-            <p class="govuk-body">
-                Notifications for this app are currently disabled so <strong>you will not receive any reminders you have
-                    set for activities</strong> in your tracker. To enable them go to Settings on this device and switch
-                to notifications to enabled.
-            </p>
-        </div>
-        <div class="govuk-grid-column-one-quarter">
-            <label class="switch">
-                <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()">
-                <span class="slider round"></span>
-            </label>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">
+                <p class="govuk-body">
+                    If you turn off notifications, you will not receive:
+                <ul>
+                    <li>any reminders you have set for activities in your tracker</li>
+                    <li>useful guidance about your apprenticeship</li>
+                </ul>
+                </p>
+            </div>
+            <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOff">
+                <p class="govuk-body">
+                    Notifications for this app are currently disabled so <strong>you will not receive any reminders you
+                        have
+                        set for activities</strong> in your tracker. To enable them go to Settings on this device and
+                    switch
+                    to notifications to enabled.
+                </p>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+                <label class="switch">
+                    <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </fieldset>
 </div>
 
 <!-- HTML for the popup box -->
-<div class="app-modal change-notifications">
+<div class="app-modal change-notifications" aria-hidden="true">
     <div class="app-modal__content">
-        <h2 class="govuk-heading-m">To change the notifications option for this app open your device settings.</h2>
+        <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
         <div class="govuk-button-group">
             <button type="button" class="govuk-button" onclick="toggleNotifications()">OK</button>
         </div>
