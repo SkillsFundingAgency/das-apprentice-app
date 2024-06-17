@@ -3,6 +3,7 @@
 @inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Settings";
+    ViewData["Section"] = "Settings";
 }
 
 <h1 class="govuk-heading-xl">Settings</h1>
@@ -15,12 +16,12 @@
         height: 34px;
     }
 
-        /* Hide default HTML checkbox */
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
 
     /* The slider */
     .slider {
@@ -35,27 +36,27 @@
         transition: .4s;
     }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-    input:checked + .slider {
+    input:checked+.slider {
         background-color: #00703c;
     }
 
-    input:focus + .slider {
+    input:focus+.slider {
         box-shadow: 0 0 1px #00703c;
     }
 
-    input:checked + .slider:before {
+    input:checked+.slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px);
@@ -66,9 +67,9 @@
         border-radius: 34px;
     }
 
-        .slider.round:before {
-            border-radius: 50%;
-        }
+    .slider.round:before {
+        border-radius: 50%;
+    }
 </style>
 <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
@@ -77,33 +78,40 @@
                 Notifications
             </h2>
         </legend>
-        <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">
-            <p class="govuk-body" >
-                If you turn off notifications, you will not receive:
-                <ul>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">
+                <p class="govuk-body">
+                    If you turn off notifications, you will not receive:
+                </p>
+                <ul class="govuk-list govuk-list--bullet">
                     <li>any reminders you have set for activities in your tracker</li>
                     <li>useful guidance about your apprenticeship</li>
                 </ul>
-            </p>
-        </div>
-        <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOff">
-            <p class="govuk-body">
-                Notifications for this app are currently disabled so <strong>you will not receive any reminders you have set for activities</strong> in your tracker.  To enable them go to Settings on this device and switch to notifications to enabled.
-            </p>
-        </div>
-        <div class="govuk-grid-column-one-quarter">
-            <label class="switch">
-                <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()">
-                <span class="slider round"></span>
-            </label>
+
+            </div>
+            <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOff">
+                <p class="govuk-body">
+                    Notifications for this app are currently disabled so <strong>you will not receive any reminders you
+                        have
+                        set for activities</strong> in your tracker. To enable them go to Settings on this device and
+                    switch
+                    to notifications to enabled.
+                </p>
+            </div>
+            <div class="govuk-grid-column-one-quarter">
+                <label class="switch">
+                    <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()">
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </fieldset>
-    </div>
+</div>
 
 <!-- HTML for the popup box -->
-<div id="popup-box" class="popup change-notifications" style="display:none;">
-    <div class="popup-content">
-        <h2 class="govuk-heading-m">To change the notifications option for this app open your device settings.</h2>
+<div class="app-modal change-notifications" aria-hidden="true">
+    <div class="app-modal__content">
+        <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
         <div class="govuk-button-group">
             <button type="button" class="govuk-button" onclick="toggleNotifications()">OK</button>
         </div>
@@ -113,5 +121,5 @@
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
 </script>
-    <script src="~/js/settings.js"></script>
-    <script src="~/js/pushNotifications.js"></script>
+<script src="~/js/settings.js"></script>
+<script src="~/js/pushNotifications.js"></script>

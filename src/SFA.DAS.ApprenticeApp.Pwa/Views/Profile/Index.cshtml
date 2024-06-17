@@ -60,8 +60,8 @@
 </div>
 
 <!-- HTML for the popup box -->
-<div id="popup-box" class="popup enable-notifications" style="display:none;position:relative">
-    <div class="popup-content">
+<div class="app-modal enable-notifications">
+    <div class="app-modal__content">
         <h2 class="govuk-heading-m">Do you wish to subscribe to notifications?</h2>
         <div class="govuk-button-group">
             <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Yes/No</button>
@@ -71,12 +71,11 @@
 
 
 <div>
-   <br /><br /><br />
-<button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+    <br /><br /><br />
+    <button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
 </div>
 <script>
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
 </script>
 <script src="~/js/pushNotifications.js"></script>
-
