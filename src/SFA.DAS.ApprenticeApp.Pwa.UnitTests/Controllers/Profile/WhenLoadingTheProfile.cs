@@ -158,9 +158,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
 
         [Test, MoqAutoData]
         public async Task Then_AddSubscription_Is_Called_For_Valid_Apprentice(
-         [Frozen] Mock<IOuterApiClient> client,
-         [Frozen] ApprenticeAddSubscriptionRequest request,
-       [Greedy] ProfileController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] ApprenticeAddSubscriptionRequest request,
+            [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -190,8 +190,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
 
         [Test, MoqAutoData]
         public async Task Then_RemoveSubscription_Is_Called_For_Valid_Apprentice(
-    [Frozen] Mock<IOuterApiClient> client,
-    [Greedy] ProfileController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -222,10 +222,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
 
         [Test, MoqAutoData]
         public async Task Then_AddSubscriptionFails_When_Not_Logged_In(
-        [Frozen] Mock<IOuterApiClient> client,
-        [Frozen] Mock<ILogger<ProfileController>> logger,
-        [Frozen] ApprenticeAddSubscriptionRequest request,
-      [Greedy] ProfileController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Frozen] ApprenticeAddSubscriptionRequest request,
+            [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
@@ -256,10 +256,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
 
         [Test, MoqAutoData]
         public async Task Then_AddSubscriptionFails_When_No_Endpoint(
-[Frozen] Mock<IOuterApiClient> client,
-[Frozen] Mock<ILogger<ProfileController>> logger,
-[Frozen] ApprenticeAddSubscriptionRequest request,
-[Greedy] ProfileController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Frozen] ApprenticeAddSubscriptionRequest request,
+            [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -292,9 +292,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
 
         [Test, MoqAutoData]
         public async Task Then_RemoveSubscriptionFails_When_Not_Logged_In(
-       [Frozen] Mock<IOuterApiClient> client,
-       [Frozen] Mock<ILogger<ProfileController>> logger,
-     [Greedy] ProfileController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
@@ -325,17 +325,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
 
         [Test, MoqAutoData]
         public async Task Then_RemoveSubscriptionFails_When_No_Endpoint(
-[Frozen] Mock<IOuterApiClient> client,
-[Frozen] Mock<ILogger<ProfileController>> logger,
-[Greedy] ProfileController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-    {
+        {
         apprenticeIdClaim
-    })});
+            })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
