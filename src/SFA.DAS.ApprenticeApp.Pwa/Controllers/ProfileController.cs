@@ -9,7 +9,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
 public class ProfileController : Controller
 {
-    private const string Message = $"Adding subscription for apprentice.";
     private readonly ILogger<ProfileController> _logger;
     private readonly IOuterApiClient _client;
 
@@ -40,67 +39,75 @@ public class ProfileController : Controller
                 }
                 else
                 {
-                    string message = $"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}";
-                    _logger.LogInformation(message: message);
+                    _logger.LogInformation($"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}");
                     return RedirectToAction("Index", "Terms");
                 }
             }
 
-            string message1 = $"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}";
-            _logger.LogWarning(message: message1);
+            _logger.LogWarning($"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}");
         }
         else
         {
-            const string Message1 = $"ApprenticeId not found in user claims for Profile Index.";
-            _logger.LogWarning(message: Message1);
+            _logger.LogWarning($"ApprenticeId not found in user claims for Profile Index.");
         }
         return RedirectToAction("Index", "Home");
     }
+
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> AddSubscription()
+    public async Task<IActionResult> AddSubscription([FromBody] ApprenticeAddSubscriptionRequest request)
     {
         var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-        if (!string.IsNullOrEmpty(apprenticeId))
+        if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(request.Endpoint))
         {
-            var addSubscriptionRequest = new ApprenticeAddSubscriptionRequest
-            {
-                Endpoint = "HTTP.Endpoint",
-                AuthenticationSecret = "ABC",
-                PublicKey = "ABC"
-            };
-            _logger.LogInformation(message: Message);
-            await _client.ApprenticeAddSubscription(new Guid(apprenticeId), addSubscriptionRequest);
+            string message = $"Sending subscription details for {apprenticeId}";
+            _logger.LogInformation(message);
+            await _client.ApprenticeAddSubscription(new Guid(apprenticeId), request);
         }
         else
         {
-            const string Message1 = $"ApprenticeId not found in user claims for Profile Index.";
-            _logger.LogWarning(message: Message1);
+            if (string.IsNullOrEmpty(apprenticeId))
+            {
+                _logger.LogWarning("ApprenticeId not found in user claims for Profile Index.");
+            }
+            if (string.IsNullOrEmpty(request.Endpoint))
+            {
+                _logger.LogWarning("Endpoint not found in subscription request.");
+            }
         }
         return RedirectToAction("Index", "Profile");
     }
 
     [Authorize]
-    public async Task<IActionResult> RemoveSubscription()
+    [HttpDelete]
+    public async Task<IActionResult> RemoveSubscription([FromBody] string endPoint)
     {
         var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-        if (!string.IsNullOrEmpty(apprenticeId))
+        if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(endPoint))
         {
             var removeSubscriptionRequest = new ApprenticeRemoveSubscriptionRequest
             {
-                Endpoint = "HTTP.Endpoint"
+                Endpoint = endPoint
             };
-            const string Message1 = $"Removing subscription for apprentice.";
-            _logger.LogInformation(message: Message1);
+
+            string message = $"Removing subscription for apprentice. ApprenticeId: {apprenticeId}";
+            _logger.LogInformation(message);
             await _client.ApprenticeRemoveSubscription(new Guid(apprenticeId), removeSubscriptionRequest);
         }
         else
         {
-            const string Message1 = $"ApprenticeId not found in user claims for Profile Index.";
-            _logger.LogWarning(message: Message1);
+            if (string.IsNullOrEmpty(apprenticeId))
+            {
+                _logger.LogWarning("ApprenticeId not found in user claims for Profile Index.");
+            }
+            if (string.IsNullOrEmpty(endPoint))
+            {
+                string message = $"Endpoint not found in remove subscription request for apprentice. ApprenticeId: {apprenticeId}";
+                _logger.LogWarning(message);
+            }
         }
         return RedirectToAction("Index", "Profile");
-        }
     }
+}

@@ -153,13 +153,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 actual.ActionName.Should().Be("Index");
                 actual.ControllerName.Should().Be("Home");
             }
-
         }
 
         [Test, MoqAutoData]
         public async Task Then_AddSubscription_Is_Called_For_Valid_Apprentice(
-          [Frozen] Mock<IOuterApiClient> client,
-        [Greedy] ProfileController controller)
+         [Frozen] Mock<IOuterApiClient> client,
+         [Frozen] ApprenticeAddSubscriptionRequest request,
+       [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -174,7 +174,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 HttpContext = httpContext
             };
 
-            var result = await controller.AddSubscription();
+            var result = await controller.AddSubscription(request);
 
             client.Verify(x => x.ApprenticeAddSubscription(It.IsAny<Guid>(), It.IsAny<ApprenticeAddSubscriptionRequest>()), Times.Once);
             var redirectResult = result as RedirectToActionResult;
@@ -201,7 +201,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 HttpContext = httpContext
             };
 
-            var result = await controller.RemoveSubscription();
+            string request = "unsubscribeme";
+            var result = await controller.RemoveSubscription(request);
 
             client.Verify(x => x.ApprenticeRemoveSubscription(It.IsAny<Guid>(), It.IsAny<ApprenticeRemoveSubscriptionRequest>()), Times.Once);
             var redirectResult = result as RedirectToActionResult;
@@ -209,6 +210,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
             Assert.AreEqual("Index", redirectResult.ActionName);
             Assert.AreEqual("Profile", redirectResult.ControllerName);
         }
-
     }
 }

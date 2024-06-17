@@ -15,6 +15,7 @@
   </ItemGroup>
  <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.11.0" />
+    <PackageReference Include="jQuery" Version="3.7.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.3" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
@@ -32,6 +33,7 @@
   </ItemGroup>
     <ItemGroup>
     <Content Remove="wwwroot\img\" />
+    <Content Remove="wwwroot\js\settings.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
@@ -55,6 +57,12 @@
     <None Remove="Configuration\" />
     <None Remove="Views\Terms\" />
     <None Remove="Authentication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\settings.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\js\settings.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\assets\fonts\bold-affa96571d-v2.woff">
