@@ -78,6 +78,7 @@ Data:
   }
 }
 ```
+Users should have Azurite running in the background when launching this app locally
 
 ## 🔗 External Dependencies
 
