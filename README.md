@@ -17,7 +17,7 @@ The Apprentice App provides apprentices a platform to track their apprenticeship
 ## How It Works
 
 The Apprentice App is a Progressive Web App in ASP.NET Core wrapped in a native MAUI wrapper. To run this locally, users need to set up two databases - SFA.DAS.ApprenticeAccounts.Database and SFA.DAS.Courses.Database with dummy data.
-Users need to have these repos running locally:
+Users need to have these APIs running locally or in an azure tenant in parallel to this app:
 * SFA-DAS-ApprenticeAccounts-Api 
 * SFA-DAS-APIM
 * SFA-DAS-Courses-Api
@@ -98,6 +98,10 @@ You will need to follow set up instructions for all of these repos in order to r
 * ASP.NET CORE
 * PWA
 * .NET MAUI
+* Moq
+* NUnit
+* FluentAssertions
+
 ```
 
 ## 🐛 Known Issues
