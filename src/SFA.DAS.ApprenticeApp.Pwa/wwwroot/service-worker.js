@@ -1,4 +1,4 @@
-﻿
+﻿    
 self.addEventListener('fetch', event => { return null; });
 
 self.addEventListener('push', event => {

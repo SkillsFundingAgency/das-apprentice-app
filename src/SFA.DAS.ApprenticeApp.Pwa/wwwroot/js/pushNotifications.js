@@ -52,7 +52,7 @@ async function requestSubscription() {
 async function requestNotificationPermission() {
   await Notification.requestPermission();
 }
-
+testNotification();
 function registerPush(registration) {
   const applicationServerPublicKey = window.pushNotificationKey;
   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
@@ -82,20 +82,33 @@ function sendSubscriptionToServer(subscription, isSubscribed) {
   return fetch("/Profile/AddSubscription", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json",   
     },
     body: JSON.stringify(requestData),
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error from server while adding subscription.");
-      }
-      displayNotificationButtons();
+        }
+        testNotification();
+        displayNotificationButtons();
+        
     })
     .catch((error) => {
       console.error("Error sending subscription to server:", error);
     });
 }
+
+function testNotification() {
+    const body = "you've successfully subscribed to notifications!"
+    const icon = 'govuk-icon-512.png'
+    const options = {
+        body: body,
+        icon: icon,
+    };
+    new Notification("Test Notification", options);
+}
+
 
 async function unsubscribe() {
   const requestData = thisEndpoint;
