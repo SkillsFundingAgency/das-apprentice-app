@@ -17,8 +17,10 @@
 
   <ItemGroup>
     <None Remove="Models\" />
+    <None Remove="Api\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Api\" />
   </ItemGroup>
 </Project>
