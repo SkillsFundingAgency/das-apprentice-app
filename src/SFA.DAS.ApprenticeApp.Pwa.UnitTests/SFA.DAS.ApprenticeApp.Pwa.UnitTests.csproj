@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="JSFiles\helloworld.test.js" />
+    <None Remove="JSFiles\pushNotification.test.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.18.1" />
     <PackageReference Include="AutoFixture.NUnit3" Version="4.18.1" />
     <PackageReference Include="coverlet.msbuild" Version="6.0.1">

@@ -130,10 +130,10 @@ function urlB64ToUint8Array(base64String) {
 
 function arrayBufferToBase64(buffer) {
   // https://stackoverflow.com/a/9458996
-  var binary = "";
-  var bytes = new Uint8Array(buffer);
-  var len = bytes.byteLength;
-  for (var i = 0; i < len; i++) {
+  let binary = "";
+  let bytes = new Uint8Array(buffer);
+  let len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
     binary += String.fromCharCode(bytes[i]);
   }
   return window.btoa(binary);
