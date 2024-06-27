@@ -69,17 +69,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return View(new SupportArticlesPageModel() { Articles = savedArticles.Articles, ApprenticeArticles = savedArticles.ApprenticeArticles?.ApprenticeArticles });
         }
 
-        // like and save
         [HttpGet]
         public async Task<IActionResult> AddOrUpdateApprenticeArticle(string entryId, bool? likeStatus = null, bool? isSaved = null)
         {
-
             var apprenticeId = "fd0daf58-af19-440d-b52f-7e1d47267d3b";
 
             await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
             return Ok();
         }
-
 
         protected bool UserIsAuthenticated()
         {
@@ -90,6 +87,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             return false;
         }
-
     }
 }
