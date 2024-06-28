@@ -174,12 +174,11 @@
                     .then(() => console.log('Shared successfully'))
                     .catch((error) => console.error('Sharing failed:', error));
             }
-            else
-            {
-                // If Web Share API is not supported, hide the button
-                // const shareButton = document.getElementById('share-btn');
-                //shareButton.style.display = 'none';
-            }
         });
+
+        if (!navigator.share) {
+            $('.share-btn').hide();
+            $('.fa-arrow-up').hide();
+        }
     });
 </script>
