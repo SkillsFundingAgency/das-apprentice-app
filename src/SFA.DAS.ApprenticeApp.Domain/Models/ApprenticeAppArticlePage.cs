@@ -8,7 +8,6 @@
         public object? Content { get; set; }
         public string? Id { get; set; }
 
-        private string? _articleText;
         public string? ArticleText
         {
             get
@@ -18,11 +17,7 @@
                     return Markdig.Markdown.ToHtml(Content.ToString());
                 }
                     
-                return string.Empty;
-            }
-            set
-            {
-                _articleText = value;
+                return "";
             }
         }
     }

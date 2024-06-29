@@ -11,16 +11,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     [ExcludeFromCodeCoverage]
     public class SupportController : Controller
     {
-        private readonly ILogger<SupportController> _logger;
         private readonly IOuterApiClient _client;
 
         public SupportController
             (
-            ILogger<SupportController> logger,
             IOuterApiClient client
             )
         {
-            _logger = logger;
             _client = client;
         }
 
