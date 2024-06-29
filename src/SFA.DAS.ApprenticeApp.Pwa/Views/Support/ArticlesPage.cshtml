@@ -19,7 +19,7 @@
 
                 @if (item.Content != null)
                 {
-                    <p class="govuk-body">@Html.Raw(Markdig.Markdown.ToHtml(item.Content.ToString()))</p>
+                    <p class="govuk-body">@Html.Raw(item.ArticleText)</p>
                 }
                 else
                 {

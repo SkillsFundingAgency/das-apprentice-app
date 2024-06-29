@@ -7,5 +7,23 @@
         public string? Heading { get; set; }
         public object? Content { get; set; }
         public string? Id { get; set; }
+
+        private string? _articleText;
+        public string? ArticleText
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace((string?)Content))
+                {
+                    return Markdig.Markdown.ToHtml(Content.ToString());
+                }
+                    
+                return string.Empty;
+            }
+            set
+            {
+                _articleText = value;
+            }
+        }
     }
 }
