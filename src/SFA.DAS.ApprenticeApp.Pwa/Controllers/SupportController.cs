@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Api;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
@@ -7,6 +8,7 @@ using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
+    [ExcludeFromCodeCoverage]
     public class SupportController : Controller
     {
         private readonly ILogger<SupportController> _logger;
