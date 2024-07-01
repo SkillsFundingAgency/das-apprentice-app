@@ -11,11 +11,11 @@
             $(this).next('i').removeClass('fa-solid').addClass('fa-regular');
 
             $.ajax({
-            type: "GET",
-            url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-            data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "true" },
-            dataType: "json",
-            contentType: "application/json"
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "true" },
+                dataType: "json",
+                contentType: "application/json"
             });
             return false;
         });
@@ -25,11 +25,11 @@
             $(this).prev('i').removeClass('fa-solid').addClass('fa-regular');
 
             $.ajax({
-            type: "GET",
-            url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-            data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "false" },
-            dataType: "json",
-            contentType: "application/json"
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "false" },
+                dataType: "json",
+                contentType: "application/json"
             });
             return false;
         });
@@ -38,11 +38,11 @@
             $(this).removeClass('fa-regular').addClass('fa-solid');
 
             $.ajax({
-            type: "GET",
-            url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-            data: { entryId: $(this).siblings('.entryid').val(), isSaved: "true" },
-            dataType: "json",
-            contentType: "application/json"
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), isSaved: "true" },
+                dataType: "json",
+                contentType: "application/json"
             });
             return false;
         });
@@ -51,17 +51,17 @@
             var accordionId = $(this).siblings('.entryid').val();
 
             $.ajax({
-            type: "GET",
-            url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-            data: { entryId: $(this).siblings('.entryid').val(), isSaved: "false" },
-            beforeSend: function () {
-                return confirm("Are you sure you want to remove this from your saved articles?");
-            },
-            complete: function () {
-                $('#accordion-' + accordionId).hide();
-            },
-            dataType: "json",
-            contentType: "application/json"
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), isSaved: "false" },
+                beforeSend: function () {
+                    return confirm("Are you sure you want to remove this from your saved articles?");
+                },
+                complete: function () {
+                    $('#accordion-' + accordionId).hide();
+                },
+                dataType: "json",
+                contentType: "application/json"
             });
 
             return false;
@@ -79,7 +79,8 @@
             }
         });
 
-        if (!navigator.share) {
+        if (!navigator.share)
+        {
             $('.share-btn').hide();
             $('.fa-arrow-up').hide();
         }
