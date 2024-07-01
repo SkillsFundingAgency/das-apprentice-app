@@ -100,7 +100,7 @@
             </div>
             <div class="govuk-grid-column-one-quarter">
                 <label class="switch">
-                    <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()">
+                    <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()" onkeydown="toggleNotifications()" onkeypress="toggleNotifications()">
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -113,7 +113,7 @@
     <div class="app-modal__content">
         <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
         <div class="govuk-button-group">
-            <button type="button" class="govuk-button" onclick="toggleNotifications()">OK</button>
+            <button type="button" class="govuk-button" onclick="toggleNotifications()" onkeydown="toggleNotifications()" onkeypress="toggleNotifications()">OK</button>
         </div>
     </div>
 </div>
