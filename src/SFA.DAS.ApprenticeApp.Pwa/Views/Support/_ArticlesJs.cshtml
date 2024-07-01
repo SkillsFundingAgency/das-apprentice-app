@@ -71,8 +71,8 @@
 
                 navigator.share({
                     title: $(this).siblings('.article-title').val(),
-                    text: $(this).siblings('.govuk-body').text(),
-                    url: window.location.href,
+                    text: $(this).siblings('.govuk-body').text()
+                   // url: window.location.href,
                 })
                     .then(() => console.log('Shared successfully'))
                     .catch((error) => console.error('Sharing failed:', error));

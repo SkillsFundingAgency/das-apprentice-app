@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Api;
@@ -21,70 +22,64 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _client = client;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var pages = await _client.GetCategories(Constants.ContentfulTopLevelPageTypeName);
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-            return View(new SupportCategoryPageModel() { Categories = pages });
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var pages = await _client.GetCategories(Constants.ContentfulTopLevelPageTypeName);
+                return View(new SupportCategoryPageModel() { Categories = pages });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
+        [Authorize]
         [Route("~/Support/Category/{slug?}")]
         public async Task<IActionResult> ArticlesPage(string slug)
         {
-            var apprenticeId = "fd0daf58-af19-440d-b52f-7e1d47267d3b";
-            var contentPageCollection = new ApprenticeAppContentPageCollection();
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-            if (UserIsAuthenticated())
-            {
-                apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-                contentPageCollection = await _client.GetArticlesForCategory(slug, new Guid(apprenticeId));
-            }
-            else
-            {
-                // CHANGE APP ID TO NULL
-                contentPageCollection = await _client.GetArticlesForCategory(slug, new Guid(apprenticeId));
+            if (!string.IsNullOrEmpty(apprenticeId))
+            { 
+                var contentPageCollection = await _client.GetArticlesForCategory(slug, new Guid(apprenticeId));
+                return View(new SupportArticlesPageModel() { Articles = contentPageCollection.Articles, ApprenticeArticles = contentPageCollection.ApprenticeArticles?.ApprenticeArticles, CategoryPage = contentPageCollection.CategoryPage, Slug = slug });
             }
 
-            return View(new SupportArticlesPageModel() { Articles = contentPageCollection.Articles, ApprenticeArticles = contentPageCollection.ApprenticeArticles?.ApprenticeArticles, CategoryPage = contentPageCollection.CategoryPage, Slug = slug });
+            return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         public async Task<IActionResult> SavedArticles()
         {
-            var apprenticeId = "fd0daf58-af19-440d-b52f-7e1d47267d3b";
-            var savedArticles = new ApprenticeAppContentPageCollection();
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-            if (UserIsAuthenticated())
+            if (!string.IsNullOrEmpty(apprenticeId))
             {
-                apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-                savedArticles = await _client.GetSavedArticles(new Guid(apprenticeId));
+                var savedArticles = await _client.GetSavedArticles(new Guid(apprenticeId));
+                return View(new SupportArticlesPageModel() { Articles = savedArticles.Articles, ApprenticeArticles = savedArticles.ApprenticeArticles?.ApprenticeArticles });
             }
-            else
-            {
-                // CHANGE APP ID TO NULL
-                savedArticles = await _client.GetSavedArticles(new Guid(apprenticeId));
-            }
-            
-            return View(new SupportArticlesPageModel() { Articles = savedArticles.Articles, ApprenticeArticles = savedArticles.ApprenticeArticles?.ApprenticeArticles });
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> AddOrUpdateApprenticeArticle(string entryId, bool? likeStatus = null, bool? isSaved = null)
         {
-            var apprenticeId = "fd0daf58-af19-440d-b52f-7e1d47267d3b";
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-            await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
-            return Ok();
-        }
-
-        protected bool UserIsAuthenticated()
-        {
-            if (HttpContext.User.Identity.IsAuthenticated)
+            if (!string.IsNullOrEmpty(apprenticeId))
             {
-                return true;
+                await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
+                return Ok();
             }
 
-            return false;
+            return Unauthorized();
         }
+
     }
 }
