@@ -59,6 +59,11 @@ public class ProfileController : Controller
     [HttpPost]
     public async Task<IActionResult> AddSubscription([FromBody] ApprenticeAddSubscriptionRequest request)
     {
+        if(!ModelState.IsValid)
+        {
+            _logger.LogWarning("ProfileController: ModelState is not valid in AddSubscription.");
+            return RedirectToAction("Index", "Profile");
+        }
         var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
         if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(request.Endpoint))
@@ -83,20 +88,21 @@ public class ProfileController : Controller
 
     [Authorize]
     [HttpDelete]
-    public async Task<IActionResult> RemoveSubscription([FromBody] string endPoint)
+    public async Task<IActionResult> RemoveSubscription([FromBody] ApprenticeRemoveSubscriptionRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            _logger.LogWarning("ProfileController: ModelState is not valid in RemoveSubscription.");
+            return RedirectToAction("Index", "Profile");
+        }
+
         var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-        if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(endPoint))
+        if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(request.Endpoint))
         {
-            var removeSubscriptionRequest = new ApprenticeRemoveSubscriptionRequest
-            {
-                Endpoint = endPoint
-            };
-
             string message = $"Removing subscription for apprentice. ApprenticeId: {apprenticeId}";
             _logger.LogInformation(message);
-            await _client.ApprenticeRemoveSubscription(new Guid(apprenticeId), removeSubscriptionRequest);
+            await _client.ApprenticeRemoveSubscription(new Guid(apprenticeId), request);
         }
         else
         {
@@ -104,7 +110,7 @@ public class ProfileController : Controller
             {
                 _logger.LogWarning("ApprenticeId not found in user claims for Profile Index.");
             }
-            if (string.IsNullOrEmpty(endPoint))
+            if (string.IsNullOrEmpty(request.Endpoint))
             {
                 string message = $"Endpoint not found in remove subscription request for apprentice. ApprenticeId: {apprenticeId}";
                 _logger.LogWarning(message);

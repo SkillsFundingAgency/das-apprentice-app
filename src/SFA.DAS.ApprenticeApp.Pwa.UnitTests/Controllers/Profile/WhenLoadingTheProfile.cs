@@ -191,6 +191,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
         [Test, MoqAutoData]
         public async Task Then_RemoveSubscription_Is_Called_For_Valid_Apprentice(
             [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] ApprenticeRemoveSubscriptionRequest request,
             [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -206,7 +207,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 HttpContext = httpContext
             };
 
-            string request = "unsubscribeme";
             var result = await controller.RemoveSubscription(request);
 
             client.Verify(x => x.ApprenticeRemoveSubscription(It.IsAny<Guid>(), It.IsAny<ApprenticeRemoveSubscriptionRequest>()), Times.Once);
@@ -294,6 +294,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
         public async Task Then_RemoveSubscriptionFails_When_Not_Logged_In(
             [Frozen] Mock<IOuterApiClient> client,
             [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Frozen] ApprenticeRemoveSubscriptionRequest request,
             [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -308,7 +309,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 HttpContext = httpContext
             };
 
-            var result = await controller.RemoveSubscription("thisendpoint") as RedirectToActionResult; ;
+            var result = await controller.RemoveSubscription(request) as RedirectToActionResult; ;
 
             using (new AssertionScope())
             {
@@ -327,6 +328,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
         public async Task Then_RemoveSubscriptionFails_When_No_Endpoint(
             [Frozen] Mock<IOuterApiClient> client,
             [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Frozen] ApprenticeRemoveSubscriptionRequest request,
             [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -342,7 +344,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 HttpContext = httpContext
             };
 
-            var result = await controller.RemoveSubscription("") as RedirectToActionResult;
+            request.Endpoint = "";
+            var result = await controller.RemoveSubscription(request) as RedirectToActionResult;
 
             using (new AssertionScope())
             {
@@ -356,5 +359,79 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 result.ControllerName.Should().Be("Profile");
             }
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_AddSubscription_LogsWarning_When_ModelState_Invalid
+            ([Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<ILogger<ProfileController>> logger,
+            [Frozen] ApprenticeAddSubscriptionRequest request,
+            [Greedy] ProfileController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+    {
+        apprenticeIdClaim
+    })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            controller.ModelState.AddModelError("key", "error");
+            var result = await controller.AddSubscription(request) as RedirectToActionResult;
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains("ProfileController: ModelState is not valid in AddSubscription.")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Profile");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_RemoveSubscription_LogsWarning_When_ModelStatus_Invalid(
+                [Frozen] Mock<IOuterApiClient> client,
+                [Frozen] Mock<ILogger<ProfileController>> logger,
+                [Frozen] ApprenticeRemoveSubscriptionRequest request,
+                [Greedy] ProfileController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+        apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            controller.ModelState.AddModelError("key", "error");
+            var result = await controller.RemoveSubscription(request) as RedirectToActionResult;
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains("ProfileController: ModelState is not valid in RemoveSubscription.")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Profile");
+            }
+        }
+
+
     }
 }

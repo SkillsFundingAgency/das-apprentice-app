@@ -31,9 +31,13 @@
     <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
   </ItemGroup>
     <ItemGroup>
+    <Content Remove="Views\Profile\_pushNotificationsJs.cshtml" />
+    <Content Remove="Views\Shared\_SettingsJs.cshtml" />
     <Content Remove="wwwroot\img\" />
     <Content Remove="wwwroot\js\arrayBufferToBase64.js" />
     <Content Remove="wwwroot\js\helloworld.js" />
+    <Content Remove="wwwroot\js\pushNotifications.js" />
+    <Content Remove="wwwroot\js\settings.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
@@ -59,10 +63,13 @@
     <None Remove="Authentication\" />
   </ItemGroup>
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Profile\_pushNotificationsJs.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Shared\_SettingsJs.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\js\arrayBufferToBase64.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\js\arrayBufferToBase64.js" />
+    <None Include="Views\Shared\_PushNotificationsJs.cshtml" />
+    <None Include="Views\Settings\_SettingsJs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\assets\fonts\bold-affa96571d-v2.woff">
@@ -77,4 +84,10 @@
   <Target Name="NpmRunBuild" DependsOnTargets="NpmInstall" BeforeTargets="BeforeBuild">
     <Exec Command="npm run build" />
   </Target>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Profile\_pushNotificationsJs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_SettingsJs.cshtml" />
+  </ItemGroup>
 </Project>
