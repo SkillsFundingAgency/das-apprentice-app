@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
+using SFA.DAS.ApprenticeApp.Application;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
 {
@@ -15,6 +18,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         public async Task Load_IndexAsync([Greedy] SupportController controller)
         {
             var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
 
             controller.ControllerContext = new ControllerContext
             {
@@ -30,6 +40,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         {
             var httpContext = new DefaultHttpContext();
             var slug = "123";
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
 
             controller.ControllerContext = new ControllerContext
             {
@@ -44,6 +61,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         public async Task Load_Saved_Articles_PageAsync([Greedy] SupportController controller)
         {
             var httpContext = new DefaultHttpContext();
+
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
 
             controller.ControllerContext = new ControllerContext
             {
@@ -61,6 +86,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             string entryId = "123";
             bool likeStatus = true;
             bool isSaved = true;
+
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
 
             controller.ControllerContext = new ControllerContext
             {
