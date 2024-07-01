@@ -49,6 +49,7 @@
 
         $('.unsave').on('click', function () {
             var accordionId = $(this).siblings('.entryid').val();
+
             $.ajax({
             type: "GET",
             url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
@@ -67,15 +68,14 @@
         });
 
         $('.share-btn').on('click', function () {
-            if (navigator.share) {
-
+            if (navigator.share)
+            {
                 navigator.share({
                     title: $(this).siblings('.article-title').val(),
                     text: $(this).siblings('.govuk-body').text()
-                   // url: window.location.href,
                 })
-                    .then(() => console.log('Shared successfully'))
-                    .catch((error) => console.error('Sharing failed:', error));
+                .then(() => console.log('Shared successfully'))
+                .catch((error) => console.error('Sharing failed:', error));
             }
         });
 

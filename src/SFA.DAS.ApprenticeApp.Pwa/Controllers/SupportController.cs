@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Api;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
-using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
@@ -80,6 +79,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             return Unauthorized();
         }
-
     }
 }
