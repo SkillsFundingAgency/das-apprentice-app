@@ -1,0 +1,17 @@
+.icon {
+  max-width: 24px;
+  max-height: 24px;
+  align-self: center;
+  color: $app-brand-colour;
+}
+
+.icon--s {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.icon--inline-wrap {
+  flex-grow: 1;
+  display: flex;
+  gap: 10px;
+}

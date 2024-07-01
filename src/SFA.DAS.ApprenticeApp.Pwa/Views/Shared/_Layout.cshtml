@@ -14,6 +14,9 @@
 </head>
 
 <body class="govuk-template__body">
+    <script>
+        document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+    </script>
     <div class="app-container">
         <header class="app-header">
             <img src="/assets/images/apprentice-app-logo.svg" alt="Apprentice App Logo" class="app-header__logo" />
@@ -25,12 +28,19 @@
             <nav class="app-nav">
                 <a href="link1" class="app-nav__link">A</a>
                 <a href="link1" class="app-nav__link">B</a>
-                <a href="link1" class="app-nav__link">C</a>
+                <a asp-controller="Support" asp-action="Index" class="app-nav__link">S&G</a>
                 <a href="link1" class="app-nav__link">D</a>
                 <a href="link1" class="app-nav__link">E</a>
             </nav>
         </footer>
     </div>
+    <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
+    <script type="module">
+        import {
+            initAll
+        } from '/js/libs/govuk-frontend.min.js'
+        initAll()
+    </script>
 </body>
 
 </html>

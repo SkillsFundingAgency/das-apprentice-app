@@ -1,0 +1,79 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportArticlesPageModel
+
+<div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
+
+    <h1 class="govuk-heading-xl">Your saved articles</h1>
+    <h2><a asp-controller="Support" asp-action="Index" class="app-nav__link">Back</a></h2>
+
+    @foreach (var item in Model.Articles.Where(x => x.Heading != null))
+    {
+        <div class="govuk-accordion__section" id="accordion-@item.Sys.Id">
+            <div class="govuk-accordion__section-header">
+                <h2 class="govuk-accordion__section-heading">
+                    <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
+                        @item.Heading
+                    </span>
+                </h2>
+            </div>
+            <div id="accordion-default-content-@item.Sys.Id" class="govuk-accordion__section-content">
+                @if (item.Content != null)
+                {
+                    <div class="govuk-body">@Html.Raw(item.ArticleText)</div>
+                }
+                else
+                {
+                    <div class="govuk-body">No content was found for this article</div>
+                }
+
+                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == true))
+                {
+                    <i class="fa-solid fa-bookmark unsave"></i>
+                }
+
+                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == false))
+                {
+                    <i class="fa-regular fa-bookmark save"></i>
+                }
+
+                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == null))
+                {
+                    <i class="fa-regular fa-bookmark save"></i>
+                }
+
+                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == true))
+                {
+                    <i class="fa-solid fa-thumbs-up thumbs-up"></i>
+                    <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                }
+
+                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == false))
+                {
+                    <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                    <i class="fa-solid fa-thumbs-down thumbs-down"></i>
+                }
+
+                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == null))
+                {
+                    <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                    <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                }
+
+                @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Sys.Id).Count() == 0)
+                {
+                    <i class="fa-regular fa-bookmark save"></i>
+
+                    <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                    <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                }
+
+                <a class="share-btn"><img src="/assets/images/icons/share.svg" /></a>
+
+                <input class="article-title" type="hidden" value="@item.Heading" />
+                <input class="entryid" type="hidden" value="@item.Sys.Id" />
+
+            </div>
+        </div>
+    }
+</div>
+
+@await Html.PartialAsync("_ArticlesJs.cshtml", Model)
