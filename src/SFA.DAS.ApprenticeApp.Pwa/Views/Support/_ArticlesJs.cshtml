@@ -1,6 +1,5 @@
 ﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>i:hover { cursor: pointer; }</style>
 
 <script type="text/javascript">
 
@@ -49,6 +48,7 @@
 
         $('.unsave').on('click', function () {
             var accordionId = $(this).siblings('.entryid').val();
+            $(this).removeClass('fa-solid').addClass('fa-regular');
 
             $.ajax({
                 type: "GET",
@@ -81,18 +81,30 @@
 
         if (!navigator.share)
         {
-            $('.share-btn').hide();
-            $('.fa-arrow-up').hide();
+          //  $('.share-btn').hide();
+          //  $('.fa-arrow-up').hide();
         }
     });
 </script>
 
 
 <style>
+    i:hover {
+        cursor: pointer;
+    }
+
+    .govuk-accordion__section-content li {
+        color: #0b0c0c;
+        font-family: "GDS Transport", arial, sans-serif;
+        font-size: 1.1875rem;
+        line-height: 1.3157894737;
+    }
+
     .fa-thumbs-up {
         background-image: url('/assets/images/icons/like.svg');
         width: 19px;
         height: 18px;
+        margin-right: 15px;
     }
     .fa-thumbs-up:before {
         content: "\00a0";
@@ -123,6 +135,7 @@
         background-image: url('/assets/images/icons/pin.svg');
         width: 15px;
         height: 24px;
+        float: right
     }
     .fa-bookmark:before {
         content: "\00a0";
@@ -132,6 +145,11 @@
     }
     .fa-bookmark.fa-solid {
         background-image: url('/assets/images/icons/pinned.svg') !important;
+    }
+
+    .share-btn {
+        float: right;
+        margin: 0 20px 0 0;
     }
 
 </style>
