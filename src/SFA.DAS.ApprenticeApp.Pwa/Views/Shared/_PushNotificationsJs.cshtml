@@ -2,42 +2,11 @@
 
 
 <script type="text/javascript">
-    const checkUICompatibility = () => {
-        if (!("serviceWorker" in navigator)) {
-            console.log("Service worker not supported");
-            throw new Error("Service worker not supported");
-        }
-
-        if (!("Notification" in window)) {
-            console.log("Notification not supported");
-            throw new Error("Notification not supported");
-        }
-    };
-
-    const displayNotificationButtons = () => {
-        const enableNotificationsButtons = document.querySelectorAll(
-            ".enable-notifications"
-        );
-
-        for (const element of enableNotificationsButtons) {
-            if (Notification.permission === "default") {
-                element.classList.add("app-modal--visible");
-            } else {
-                element.classList.remove("app-modal--visible");
-            }
-        }
-    };
-
-    //step 1: check if the browser supports service workers and notifications
-    checkUICompatibility();
-
-    //step 2: manage ui elements based on existing permission status
-    displayNotificationButtons();
+   
 
     //step 3: register the service worker
     let registration = navigator.serviceWorker.register("service-worker.js");
     let thisEndpoint = "";
-    let initialPermission = "";
 
     //step 4: get subscription if exists
     requestSubscription();
@@ -102,7 +71,9 @@
     }
 
     async function unsubscribe() {
-        const requestData = thisEndpoint;
+        const requestData = new RemoveSubscriptionRequest(
+            thisEndpoint
+        );
         return fetch("/Profile/RemoveSubscription", {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -149,6 +120,12 @@
             this.publicKey = publicKey;
             this.authenticationsecret = authenticationsecret;
             this.issubscribed = issubscribed;
+        }
+    }
+
+    class RemoveSubscriptionRequest {
+        constructor(endpoint) {
+            this.endpoint = endpoint;
         }
     }
 
