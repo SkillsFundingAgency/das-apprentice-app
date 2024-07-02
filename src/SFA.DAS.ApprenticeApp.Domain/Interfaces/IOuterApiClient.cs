@@ -14,5 +14,13 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Patch("/apprentices/{apprenticeId}")]
         Task UpdateApprentice([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
+
+        [Post("/apprentices/{id}/subscriptions")]
+        Task ApprenticeAddSubscription([Path] Guid id, [Body] ApprenticeAddSubscriptionRequest request);
+
+        [Delete("/apprentices/{id}/subscriptions")]
+        Task ApprenticeRemoveSubscription([Path] Guid id, [Body] ApprenticeRemoveSubscriptionRequest request);
+
+
     }
 }

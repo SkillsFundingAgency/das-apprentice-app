@@ -5,7 +5,7 @@
   font-size: 19px;
   height: 4.5rem;
   text-align: center;
-  border-bottom: 1px solid $govuk-border-colour;
+  border-bottom: 1px solid #eee;
   position: fixed;
   top: 0;
   left: 0;
@@ -17,28 +17,4 @@
 
 .app-header__logo {
   max-height: 2.5rem;
-}
-
-.app-page-header {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  grid-column-gap: 5px;
-  justify-items: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.app-page-header__left {
-  justify-self: left;
-}
-
-.app-page-header__middle {
-  text-align: center;
-  * {
-    margin: 0;
-  }
-}
-
-.app-page-header__right {
-  justify-self: right;
 }
