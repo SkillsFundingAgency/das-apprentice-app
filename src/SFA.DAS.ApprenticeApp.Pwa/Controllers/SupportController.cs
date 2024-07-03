@@ -31,7 +31,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var pages = await _client.GetCategories(Constants.ContentfulTopLevelPageTypeName);
                 return View(new SupportCategoryPageModel() { Categories = pages });
             }
-
             return RedirectToAction("Index", "Home");
         }
 
@@ -47,7 +46,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var contentPageCollection = await _client.GetArticlesForCategory(slug, new Guid(apprenticeId));
                 return View(new SupportArticlesPageModel() { Articles = contentPageCollection.Articles, ApprenticeArticles = contentPageCollection.ApprenticeArticles?.ApprenticeArticles, CategoryPage = contentPageCollection.CategoryPage, Slug = slug });
             }
-
             return RedirectToAction("Index", "Home");
         }
 

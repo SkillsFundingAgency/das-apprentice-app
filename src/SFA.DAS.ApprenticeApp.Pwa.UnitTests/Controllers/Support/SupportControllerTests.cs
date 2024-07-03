@@ -103,6 +103,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var result = await controller.AddOrUpdateApprenticeArticle(entryId, likeStatus, isSaved);
             result.Should().BeOfType(typeof(OkResult));
         }
-
     }
 }
