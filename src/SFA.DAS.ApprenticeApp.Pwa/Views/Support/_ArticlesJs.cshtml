@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <script type="text/javascript">
-
     $(document).ready(function () {
 
         $('.thumbs-up').on('click', function () {
@@ -81,25 +80,19 @@
 
         if (!navigator.share)
         {
-          //  $('.share-btn').hide();
-          //  $('.fa-arrow-up').hide();
+            $('.share-btn').hide();
+            $('.fa-arrow-up').hide();
         }
     });
 </script>
 
-
 <style>
-    i:hover {
-        cursor: pointer;
-    }
-
     .govuk-accordion__section-content li {
         color: #0b0c0c;
         font-family: "GDS Transport", arial, sans-serif;
         font-size: 1.1875rem;
         line-height: 1.3157894737;
     }
-
     .fa-thumbs-up {
         background-image: url('/assets/images/icons/like.svg');
         width: 19px;
@@ -146,47 +139,40 @@
     .fa-bookmark.fa-solid {
         background-image: url('/assets/images/icons/pinned.svg') !important;
     }
-
     .share-btn {
         float: right;
         margin: 0 20px 0 0;
     }
-
     .govuk-accordion__section-toggle-text, .govuk-accordion__controls {
         display: none !important
     }
-
     .govuk-accordion__section-toggle {
         float: right;
         margin: -35px 10px 0 20px;
         color: #00703d !important;
     }
-
     .govuk-accordion__section {
         background-color: #ffffff;
         margin: 10px;
         padding: 15px 15px 10px 15px;
     }
-
     .govuk-accordion__section-button {
         border: 0 !important;
     }
-
     .govuk-frontend-supported .govuk-accordion__section-header:hover {
         border-top: none;
         box-shadow: none;
     }
-
     .govuk-accordion__section-content {
         padding-bottom: 10px !important;
     }
-
     .govuk-accordion__section-heading {
        
     }
-
     .govuk-accordion__section-button:hover {
         background: none !important;
     }
-
+    i:hover {
+        cursor: pointer;
+    }
 </style>
