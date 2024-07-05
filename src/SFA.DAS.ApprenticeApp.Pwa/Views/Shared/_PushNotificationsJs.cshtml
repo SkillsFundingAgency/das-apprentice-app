@@ -154,5 +154,13 @@
             });
     });
 
-
+    function testNotification() {
+        const body = "You have successfully subscribed to notifications!"
+        const icon = 'govuk-icon-512.png'
+        const options = {
+            body: body,
+            icon: icon,
+        };
+        new Notification("Test Notification", options);
+    }
 </script>
