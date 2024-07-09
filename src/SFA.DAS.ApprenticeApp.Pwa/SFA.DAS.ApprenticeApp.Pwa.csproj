@@ -4,8 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationInsightsResourceId>/subscriptions/ef8a30a9-cab8-42b7-8599-19677e8efc4e/resourceGroups/apprenticeapp/providers/microsoft.insights/components/apprenticeapp_logs</ApplicationInsightsResourceId>
-    <UserSecretsId>a5f10010-429f-4e32-bc47-e29260237685</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -29,9 +27,6 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="Azure.Core" Version="1.40.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
-  </ItemGroup>
-    <ItemGroup>
-    <Content Remove="wwwroot\img\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\img\" />

@@ -1,4 +1,7 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Profile";
 }
@@ -56,5 +59,26 @@
     </dl>
 </div>
 
+<!-- HTML for the popup box -->
+<div class="app-modal enable-notifications">
+    <div class="app-modal__content">
+        <h2 class="govuk-heading-m">Do you want to subscribe to push notifications?</h2>
+        <div class="govuk-button-group">
+            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Yes/No</button>
+        </div>
+    </div>
+</div>
 
-<button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+
+<div>
+    <br /><br /><br />
+
+    <button class="govuk-button" onclick="testNotification()">Notify</button>
+    <button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+</div>
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
+@await Html.PartialAsync("_ProfileJs.cshtml")
+@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")

@@ -15,13 +15,9 @@
     <PackageReference Include="Markdig" Version="0.37.0" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <None Remove="Models\" />
-    <None Remove="Api\" />
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Api\" />
   </ItemGroup>
+
 </Project>

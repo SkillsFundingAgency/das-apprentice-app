@@ -27,5 +27,11 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Post("/apprentices/{id}/articles/{articleIdentifier}")]
         Task AddUpdateApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Body] ApprenticeArticleRequest request);
+
+        [Post("/apprentices/{id}/subscriptions")]
+        Task ApprenticeAddSubscription([Path] Guid id, [Body] ApprenticeAddSubscriptionRequest request);
+
+        [Delete("/apprentices/{id}/subscriptions")]
+        Task ApprenticeRemoveSubscription([Path] Guid id, [Body] ApprenticeRemoveSubscriptionRequest request);
     }
 }
