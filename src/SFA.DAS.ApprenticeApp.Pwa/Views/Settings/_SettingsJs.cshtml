@@ -18,7 +18,7 @@ const notificationDisplaySettings = () => {
     notificationsSwitch.checked = true;
   }
 
-  if (Notification.permission === "denied") {
+  if (Notification.permission === "denied" || Notification.permission === "default") {
     const notifyOn = document.getElementById("notificationsOn");
     if (notifyOn) {
       notifyOn.style.display = "none";
