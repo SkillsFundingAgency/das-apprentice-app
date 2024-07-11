@@ -3,6 +3,10 @@
     ViewData["Title"] = "Profile";
 }
 
+<head>
+    <link href="~/css/progressbar.css" rel="stylesheet" />
+</head>
+
 <h1 class="govuk-heading-xl">Your profile</h1>
 <h2 class="govuk-heading-l">Your details</h2>
 <div class="app-pane">
@@ -21,6 +25,56 @@
         <dd class="app-content-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
     </dl>
 </div>
+
+
+<h2 class="govuk-heading-l">Your progress</h2>
+<h3 class="govuk-heading-m">Time remaining on your apprenticeship</h3>
+<div class="app-pane">
+    
+     <p id="remaining-months"></p>
+    
+    <div class="progress-bar progress-border">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <a>What is an end-point assessment EPA?</a>
+    <script>
+        // Assuming your apprenticeship length in days is calculated on the server and passed to the view
+        const apprenticeshipLengthInDays = @Model.MyApprenticeship?.ApprenticeshipLength?.Days ?? 0;
+
+        // Assuming a function to convert days to months (approximately)
+        const daysToMonths = (days) => days / 30.417; // This is a rough estimate
+      
+
+        // Total duration for EPA in months
+        const totalMonths = daysToMonths(apprenticeshipLengthInDays);
+        var todayDate = new Date();
+        var endDateString = '@Model.MyApprenticeship?.EndDate'; // Ensure this is a valid date string
+        var endDate = endDateString ? new Date(endDateString) : null;
+        
+        // calculate time difference
+        var timeDifference = endDate.getTime() - todayDate.getTime();
+
+        // calculate days differences
+        var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+        // calculate months difference
+        const remainingMonths = daysToMonths(daysDifference);
+        
+
+        // Set the progress bar width
+        const progressPercentage = ((totalMonths - remainingMonths) / totalMonths) * 100;
+        document.addEventListener("DOMContentLoaded", function () {
+            const progressElement = document.getElementById('progress');
+            progressElement.style.width = `${progressPercentage}%`;
+
+            // Display remaining months text
+            const remainingMonthsText = document.getElementById('remaining-months');
+            remainingMonthsText.textContent = `${Math.round(remainingMonths)} months until your end-point assessment (EPA)`;
+        });
+    </script>
+</div>
+
+
 <h2 class="govuk-heading-l">Your apprenticeship</h2>
 <div class="app-pane">
     <dl class="app-content-list">
