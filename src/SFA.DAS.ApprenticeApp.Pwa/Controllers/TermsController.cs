@@ -33,7 +33,7 @@ public class TermsController : Controller
 
             if (apprentice?.TermsOfUseAccepted == true)
             {
-                return RedirectToAction("Index", "Profile");
+                return RedirectToAction("Index", "Welcome");
             }
             else
             {
@@ -61,7 +61,7 @@ public class TermsController : Controller
         }
 
         _logger.LogWarning($"ApprenticeId not found in user claims for Terms TermsAccept.");
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Welcome");
     }
 
     [Authorize]
