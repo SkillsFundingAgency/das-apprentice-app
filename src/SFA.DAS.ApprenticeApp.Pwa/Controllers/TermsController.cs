@@ -57,11 +57,11 @@ public class TermsController : Controller
             await _client.UpdateApprentice(new Guid(apprenticeId), patch);
 
             _logger.LogInformation($"Apprentice accepted the Terms. ApprenticeId: {apprenticeId}");
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("Index", "Welcome");
         }
 
         _logger.LogWarning($"ApprenticeId not found in user claims for Terms TermsAccept.");
-        return RedirectToAction("Index", "Welcome");
+        return RedirectToAction("Index", "Login");
     }
 
     [Authorize]
