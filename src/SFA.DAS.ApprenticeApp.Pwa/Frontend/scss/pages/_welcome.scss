@@ -1,10 +1,12 @@
 .app-welcome-header {
   background-image: url("/assets/images/homepage-background.jpg");
   background-size: cover;
+  background-position: top right;
   margin: -20px;
   margin-bottom: 20px;
   padding: 20px;
   text-align: center;
+  min-height: 25vh;
 }
 
 .app-welcome-header__heading {

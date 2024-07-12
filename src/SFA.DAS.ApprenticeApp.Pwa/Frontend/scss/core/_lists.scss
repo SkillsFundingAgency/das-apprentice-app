@@ -21,7 +21,10 @@
     align-items: center;
     margin-bottom: 20px;
     img {
-      width: 35px;
+      width: 30px;
+    }
+    span {
+      flex: 1 1 0px;
     }
   }
 }

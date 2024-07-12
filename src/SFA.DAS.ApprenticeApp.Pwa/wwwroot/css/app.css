@@ -7524,7 +7524,10 @@
   margin-bottom: 20px;
 }
 .app-icon-list > li img {
-  width: 35px;
+  width: 30px;
+}
+.app-icon-list > li span {
+  flex: 1 1 0px;
 }
 
 .app-fade-in {
@@ -7740,10 +7743,12 @@
 .app-welcome-header {
   background-image: url("/assets/images/homepage-background.jpg");
   background-size: cover;
+  background-position: top right;
   margin: -20px;
   margin-bottom: 20px;
   padding: 20px;
   text-align: center;
+  min-height: 25vh;
 }
 
 .app-welcome-header__heading {
