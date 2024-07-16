@@ -4,7 +4,8 @@
 }
 
 <head>
-    <link href="~/css/progressbar.css" rel="stylesheet" />
+    <a href="~/css/app.css.map"></a>
+    <link href="~/css/app.css" rel="stylesheet" />
 </head>
 
 <h1 class="govuk-heading-xl">Your profile</h1>
@@ -29,15 +30,20 @@
 
 <h2 class="govuk-heading-l">Your progress</h2>
 <h3 class="govuk-heading-m">Time remaining on your apprenticeship</h3>
-<div class="app-pane">
-    
-     <p id="remaining-months"></p>
-    
-    <div class="progress-bar progress-border">
-        <div class="progress" id="progress"></div>
-    </div>
 
-    <a>What is an end-point assessment EPA?</a>
+<div class="app-pane">
+    <p id="remaining-months"></p>
+    
+<div class="grid-container" >
+        <div class="progress-bar progress-border">
+            <div class="progress" id="progress"></div>
+        </div>
+        <img src="~/assets/images/icons/progress-bar-icon.png" height="40px" width="40px"/>
+
+</div>
+
+    
+    <a href = "">What is an end-point assessment EPA?</a>
     <script>
         // Assuming your apprenticeship length in days is calculated on the server and passed to the view
         const apprenticeshipLengthInDays = @Model.MyApprenticeship?.ApprenticeshipLength?.Days ?? 0;
@@ -109,6 +115,5 @@
         <dd class="app-content-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
     </dl>
 </div>
-
 
 <button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>

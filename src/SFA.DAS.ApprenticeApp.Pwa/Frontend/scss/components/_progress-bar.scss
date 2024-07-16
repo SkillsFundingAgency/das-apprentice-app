@@ -8,12 +8,15 @@
     background-color: #f5f5f5;
 }
 
-.container {
-    text-align: left;
+.grid-container {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    grid-gap: 20px;
 }
 
 .progress-bar {
     width: 100%;
+    display: inline-block;
     height: 24px; /* Ensure the height is set here as well */
     border-color: #f27121;
     background-color: white;
@@ -42,6 +45,6 @@
     color: #007bff;
 }
 
-    .info-link:hover {
-        text-decoration: underline;
-    }
+.info-link:hover {
+    text-decoration: underline;
+}
