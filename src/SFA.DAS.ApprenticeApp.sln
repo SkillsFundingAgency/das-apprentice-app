@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Appli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Domain.UnitTests", "SFA.DAS.ApprenticeApp.Domain.UnitTests\SFA.DAS.ApprenticeApp.Domain.UnitTests.csproj", "{DEBE6BAB-AEBD-4F08-BF28-58DCBC2484E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeApp.Infrastructure.UnitTests", "SFA.DAS.ApprenticeApp.Infrastructure.UnitTests\SFA.DAS.ApprenticeApp.Infrastructure.UnitTests.csproj", "{29EF260E-F154-4EEE-8312-4AEDFC35BF7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Infrastructure.UnitTests", "SFA.DAS.ApprenticeApp.Infrastructure.UnitTests\SFA.DAS.ApprenticeApp.Infrastructure.UnitTests.csproj", "{29EF260E-F154-4EEE-8312-4AEDFC35BF7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.ApprenticeApp.Infrastructure", "SFA.DAS.ApprenticeApp.Infrastructure\SFA.DAS.ApprenticeApp.Infrastructure.csproj", "{BCAB4ABA-AE1F-46D0-B33B-33355F8F2FB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.ApprenticeApp.Infrastructure", "SFA.DAS.ApprenticeApp.Infrastructure\SFA.DAS.ApprenticeApp.Infrastructure.csproj", "{BCAB4ABA-AE1F-46D0-B33B-33355F8F2FB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,6 @@ Global
 		{C3CEAD8F-86A6-4EC7-B8CE-F55A343E808E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3CEAD8F-86A6-4EC7-B8CE-F55A343E808E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3CEAD8F-86A6-4EC7-B8CE-F55A343E808E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B425A3F-8437-4259-AD86-75B1D5F706B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B425A3F-8437-4259-AD86-75B1D5F706B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B425A3F-8437-4259-AD86-75B1D5F706B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B425A3F-8437-4259-AD86-75B1D5F706B6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27E2FADE-7FEF-43F3-8AA9-05A62CFEC892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27E2FADE-7FEF-43F3-8AA9-05A62CFEC892}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27E2FADE-7FEF-43F3-8AA9-05A62CFEC892}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,7 +65,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C3CEAD8F-86A6-4EC7-B8CE-F55A343E808E} = {05713B68-083B-46C1-A95A-24194878050D}
-		{4B425A3F-8437-4259-AD86-75B1D5F706B6} = {05713B68-083B-46C1-A95A-24194878050D}
 		{6BE8CE98-762F-4545-BA36-A78E33A60E33} = {05713B68-083B-46C1-A95A-24194878050D}
 		{DEBE6BAB-AEBD-4F08-BF28-58DCBC2484E9} = {05713B68-083B-46C1-A95A-24194878050D}
 		{29EF260E-F154-4EEE-8312-4AEDFC35BF7A} = {05713B68-083B-46C1-A95A-24194878050D}
