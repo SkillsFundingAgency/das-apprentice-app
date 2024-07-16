@@ -116,4 +116,27 @@
     </dl>
 </div>
 
-<button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+<!-- HTML for the popup box -->
+<div class="app-modal enable-notifications">
+    <div class="app-modal__content">
+        <h2 class="govuk-heading-m">Please turn on push notifications</h2>
+        <p class="govuk-body">These could include reminders you set in the app and useful guidance about your apprenticeship.</p>
+        <div class="govuk-button-group">
+            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <br /><br /><br />
+
+    <button class="govuk-button" onclick="testNotification()">Notify</button>
+    <button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+</div>
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
+@await Html.PartialAsync("_ProfileJs.cshtml")
+@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")
