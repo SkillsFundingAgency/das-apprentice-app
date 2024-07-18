@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
   
   <ItemGroup>
