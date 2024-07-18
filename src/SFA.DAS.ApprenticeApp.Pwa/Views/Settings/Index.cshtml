@@ -7,81 +7,15 @@
 }
 
 <h1 class="govuk-heading-xl">Settings</h1>
-<style>
-    /* The switch - the box around the slider */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-    }
-
-    /* Hide default HTML checkbox */
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    /* The slider */
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-
-    input:checked+.slider {
-        background-color: #00703c;
-    }
-
-    input:focus+.slider {
-        box-shadow: 0 0 1px #00703c;
-    }
-
-    input:checked+.slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-        border-radius: 34px;
-    }
-
-    .slider.round:before {
-        border-radius: 50%;
-    }
-</style>
 <div class="govuk-form-group">
     <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-            <h2 class="govuk-fieldset__heading">
-                Push Notifications
-            </h2>
-        </legend>
-        <div class="govuk-grid-row">
+        <div class="govuk-grid-row settings-grid-container">
             <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">
+                <h2 class="govuk-heading-l">
+                    Push Notifications
+                </h2>
                 <p class="govuk-body">
-                   You have turned on push notifications. This means you will receive notifications directly to your device, including:
+                    You have turned on push notifications. This means you will receive notifications directly to your device, including:
                 </p>
                 <ul class="govuk-list govuk-list--bullet">
                     <li>any reminders you have set for activities in your tracker</li>
@@ -92,10 +26,13 @@
                 </p>
             </div>
             <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOff">
+                <h2 class="govuk-heading-l">
+                    Push Notifications
+                </h2>
                 <p class="govuk-body">
                     You have turned off push notifications. This means you will only see notifications when you are using the app, and you will not receive them directly to your device. This includes:
                 </p>
-                  <ul class="govuk-list govuk-list--bullet">
+                <ul class="govuk-list govuk-list--bullet">
                     <li>any reminders you have set for activities in your tracker</li>
                     <li>useful guidance about your apprenticeship</li>
                 </ul>

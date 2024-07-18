@@ -23,7 +23,8 @@
     }
 
     async function requestNotificationPermission() {
-        await Notification.requestPermission();
+       await Notification.requestPermission();
+        displayNotificationButtons();
     }
 
     function registerPush(registration) {
