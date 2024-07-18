@@ -1,0 +1,25 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportCategoryPageModel
+
+<h1 class="govuk-heading-xl">Support and guidance</h1>
+<ul class="app-list-links">
+
+    <li class="app-list-links__list-item">
+        <a asp-controller="Support" asp-action="SavedArticles" class="app-list-links__link">
+            <span class="icon--inline-wrap">            
+                <img src="/assets/images/icons/pinned.svg" style="width: 20px; height: 20px"/> Your saved articles
+            </span>
+        </a>
+    </li>
+
+    @foreach (var item in Model.Categories.OrderBy(x => x.Heading))
+    {
+        @if (item.Slug != null)
+        {
+            <li class="app-list-links__list-item">
+                <a asp-controller="Support" asp-action="ArticlesPage" asp-route-slug="@item.Slug" class="app-list-links__link">
+                    @item.Heading
+                </a>
+            </li>
+        }
+    }
+</ul>
