@@ -12,10 +12,12 @@
     <PackageReference Include="SFA.DAS.ApprenticePortal.Authentication" Version="1.1.78" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+    <PackageReference Include="Markdig" Version="0.37.0" />
   </ItemGroup>
-
 
   <ItemGroup>
-    <None Remove="Models\" />
+    <Folder Include="Models\" />
+    <Folder Include="Api\" />
   </ItemGroup>
+
 </Project>

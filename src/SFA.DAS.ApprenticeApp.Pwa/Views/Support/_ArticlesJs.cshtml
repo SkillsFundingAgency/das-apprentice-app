@@ -1,0 +1,88 @@
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.thumbs-up').on('click', function () {
+            $(this).removeClass('fa-regular').addClass('fa-solid');
+            $(this).next('i').removeClass('fa-solid').addClass('fa-regular');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "true" },
+                dataType: "json",
+                contentType: "application/json"
+            });
+            return false;
+        });
+
+        $('.thumbs-down').on('click', function () {
+            $(this).removeClass('fa-regular').addClass('fa-solid');
+            $(this).prev('i').removeClass('fa-solid').addClass('fa-regular');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "false" },
+                dataType: "json",
+                contentType: "application/json"
+            });
+            return false;
+        });
+
+        $('.save').on('click', function () {
+            $(this).removeClass('fa-regular').addClass('fa-solid');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), isSaved: "true" },
+                dataType: "json",
+                contentType: "application/json"
+            });
+            return false;
+        });
+
+        $('.unsave').on('click', function () {
+            var accordionId = $(this).siblings('.entryid').val();
+            $(this).removeClass('fa-solid').addClass('fa-regular');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                data: { entryId: $(this).siblings('.entryid').val(), isSaved: "false" },
+                beforeSend: function () {
+                    return confirm("Are you sure you want to remove this from your saved articles?");
+                },
+                complete: function () {
+                    $('#accordion-' + accordionId).hide();
+                },
+                dataType: "json",
+                contentType: "application/json"
+            });
+
+            return false;
+        });
+
+        $('.share-btn').on('click', function () {
+            if (navigator.share)
+            {
+                navigator.share({
+                    title: $(this).siblings('.article-title').val(),
+                    text: $(this).siblings('.govuk-body').text()
+                })
+                .then(() => console.log('Shared successfully'))
+                .catch((error) => console.error('Sharing failed:', error));
+            }
+        });
+
+        if (!navigator.share)
+        {
+            $('.share-btn').hide();
+            $('.fa-arrow-up').hide();
+        }
+    });
+</script>
+
