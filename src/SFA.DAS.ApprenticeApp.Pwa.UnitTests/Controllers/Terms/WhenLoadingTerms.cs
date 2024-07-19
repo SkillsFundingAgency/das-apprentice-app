@@ -36,7 +36,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
 
             var result = await controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Profile");
+            result.ControllerName.Should().Be("Welcome");
         }
 
         [Test, MoqAutoData]

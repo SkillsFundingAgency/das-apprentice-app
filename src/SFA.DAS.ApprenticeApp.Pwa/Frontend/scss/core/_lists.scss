@@ -13,3 +13,18 @@
 .app-content-list__content {
   margin: 0 0 1rem;
 }
+
+.app-icon-list {
+  & > li {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    img {
+      width: 30px;
+    }
+    span {
+      flex: 1 1 0px;
+    }
+  }
+}
