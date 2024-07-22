@@ -1,0 +1,23 @@
+﻿
+<h1 class="govuk-heading-l" >Your Account</h1>
+<div>
+    <ul class="app-list-links">
+        <li class="app-list-links__list-item">
+            <a asp-controller="Profile" asp-action="Index"
+               class="app-list-links__link">
+                Your Profile
+            </a>
+        </li>
+        <li class="app-list-links__list-item">
+            <a asp-controller="Settings" asp-action="Index"
+               class="app-list-links__link">
+                Settings
+            </a>
+        </li>
+    </ul>
+</div>
+ 
+
+<div style="position:absolute;bottom: 10px">
+    <button class="govuk-button" style="width: 100%" onclick="location.href='@Url.Action("SigningOut", "Account")'">Sign Out</button>
+</div>
