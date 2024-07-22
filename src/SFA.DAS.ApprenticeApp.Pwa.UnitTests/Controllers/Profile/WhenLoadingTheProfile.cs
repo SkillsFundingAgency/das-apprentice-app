@@ -30,9 +30,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            apprenticeIdClaim
-        })});
+            {
+                apprenticeIdClaim
+            })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
@@ -55,9 +55,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            apprenticeIdClaim
-        })});
+            {
+                apprenticeIdClaim
+            })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
