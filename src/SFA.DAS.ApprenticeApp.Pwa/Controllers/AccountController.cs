@@ -7,6 +7,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using System.Security.Claims;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -36,7 +37,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult Authenticated()
         {
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("AccountLandingPage", "Account");
         }
 
         [Authorize]

@@ -1,0 +1,50 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    grid-gap: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    display: inline-block;
+    height: 24px; /* Ensure the height is set here as well */
+    border-color: #f27121;
+    background-color: white;
+    overflow: hidden;
+    margin: 10px auto;
+    position: relative;
+}
+
+.progress-border {
+    background: linear-gradient(white, white) padding-box, linear-gradient(to right, #8a2387, #e94057, #f27121) border-box;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+
+.progress {
+    height: 100%; /* Ensure it fills the progress bar */
+    background: linear-gradient(to right, #8a2387, #e94057, #f27121);
+    width: 0; /* Start with 0 width and update it with JavaScript */
+    border-radius: 12px 0 0 12px;
+}
+
+.info-link {
+    display: block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.info-link:hover {
+    text-decoration: underline;
+}
