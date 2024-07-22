@@ -19,7 +19,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
     {
 
         [Test, MoqAutoData]
-        public async Task Then_The_Profile_Page_Is_Displayed_For_Valid_Apprentice(
+        public async Task Then_The_Welcome_Page_Is_Displayed_For_Valid_Apprentice(
             [Frozen] Mock<ILogger<TermsController>> logger,
             [Greedy] TermsController controller)
         {
@@ -47,7 +47,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
                     It.IsAny<Exception>(),
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
                 result.ActionName.Should().Be("Index");
-                result.ControllerName.Should().Be("Profile");
+                result.ControllerName.Should().Be("Welcome");
             }
 
 
@@ -81,7 +81,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
                    It.IsAny<Exception>(),
                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
                 actual.ActionName.Should().Be("Index");
-                actual.ControllerName.Should().Be("Home");
+                actual.ControllerName.Should().Be("Login");
             }
         }
     }
