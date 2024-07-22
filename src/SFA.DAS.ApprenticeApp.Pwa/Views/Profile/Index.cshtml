@@ -74,7 +74,7 @@
     <br /><br /><br />
 
     <button class="govuk-button" onclick="testNotification()">Notify</button>
-    <button class="govuk-button" onclick="location.href='@Url.Action("SigningOut", "Account")'">Logout</button>
+
 </div>
 <script>
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
