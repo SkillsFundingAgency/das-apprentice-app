@@ -31,6 +31,7 @@
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Tasks - Copy\" />
     <Folder Include="wwwroot\img\" />
     <Folder Include="Helpers\" />
     <Folder Include="Configuration\" />

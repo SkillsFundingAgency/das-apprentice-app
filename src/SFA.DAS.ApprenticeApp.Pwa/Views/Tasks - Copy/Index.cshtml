@@ -1,0 +1,141 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1 class="govuk-heading-xl">Your profile</h1>
+<h2 class="govuk-heading-l">Your details</h2>
+<div class="app-pane">
+    <dl class="app-content-list">
+        <dt class="app-content-list__title">
+            Name:
+        </dt>
+        <dd class="app-content-list__content">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
+        <dt class="app-content-list__title">
+            Email address:
+        </dt>
+        <dd class="app-content-list__content">@Model?.Apprentice?.Email</dd>
+        <dt class="app-content-list__title">
+            Date of birth:
+        </dt>
+        <dd class="app-content-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
+    </dl>
+</div>
+
+
+<h2 class="govuk-heading-l">Your progress</h2>
+<h3 class="govuk-heading-m">Time remaining on your apprenticeship</h3>
+
+<div class="app-pane">
+    <p id="remaining-months"></p>
+    
+<div class="grid-container" >
+        <div class="progress-bar progress-border">
+            <div class="progress" id="progress"></div>
+        </div>
+        <img src="~/assets/images/icons/progress-bar-icon.png" height="40px" width="40px"/>
+
+
+</div>
+
+    <p class="">Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
+    <a href = "">What is an end-point assessment EPA?</a>
+    <script>
+        // Assuming your apprenticeship length in days is calculated on the server and passed to the view
+        const apprenticeshipLengthInDays = @Model.MyApprenticeship?.ApprenticeshipLength?.Days ?? 0;
+
+        // Assuming a function to convert days to months (approximately)
+        const daysToMonths = (days) => days / 30.417; // This is a rough estimate
+      
+
+        // Total duration for EPA in months
+        const totalMonths = daysToMonths(apprenticeshipLengthInDays);
+        var todayDate = new Date();
+        var endDateString = '@Model.MyApprenticeship?.EndDate'; // Ensure this is a valid date string
+        var endDate = endDateString ? new Date(endDateString) : null;
+        
+        // calculate time difference
+        var timeDifference = endDate.getTime() - todayDate.getTime();
+
+        // calculate days differences
+        var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+        // calculate months difference
+        const remainingMonths = daysToMonths(daysDifference);
+        
+
+        // Set the progress bar width
+        const progressPercentage = ((totalMonths - remainingMonths) / totalMonths) * 100;
+        document.addEventListener("DOMContentLoaded", function () {
+            const progressElement = document.getElementById('progress');
+            progressElement.style.width = `${progressPercentage}%`;
+
+            // Display remaining months text
+            const remainingMonthsText = document.getElementById('remaining-months');
+            remainingMonthsText.textContent = `${Math.round(remainingMonths)} months until Gateway.`;
+        });
+    </script>
+</div>
+
+
+<h2 class="govuk-heading-l">Your apprenticeship</h2>
+<div class="app-pane">
+    <dl class="app-content-list">
+        <dt class="app-content-list__title">
+            Current employer:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.EmployerName</dd>
+        <dt class="app-content-list__title">
+            Training provider:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.TrainingProviderName</dd>
+        <dt class="app-content-list__title">
+            Apprenticeship:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.Title</dd>
+        <dt class="app-content-list__title">
+            Level:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.Level</dd>
+        <dt class="app-content-list__title">
+            Planned training start date:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</dd>
+        <dt class="app-content-list__title">
+            Planned training end date:
+        </dt>
+        <dd class="app-content-list__content">@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="app-content-list__title">
+            Estimated duration:
+        </dt>
+        <dd class="app-content-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
+    </dl>
+</div>
+
+<!-- HTML for the popup box -->
+<div class="app-modal enable-notifications">
+    <div class="app-modal__content">
+        <h2 class="govuk-heading-m">Please turn on push notifications</h2>
+        <p class="govuk-body">These could include reminders you set in the app and useful guidance about your apprenticeship.</p>
+        <div class="govuk-button-group">
+            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <br /><br /><br />
+
+    <button class="govuk-button" onclick="testNotification()">Notify</button>
+
+</div>
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
+@await Html.PartialAsync("_ProfileJs.cshtml")
+@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")
