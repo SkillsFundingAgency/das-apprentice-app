@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using AutoFixture.NUnit3;
 using FluentAssertions;
@@ -33,6 +34,34 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             result.Should().NotBeNull();
         }
 
+        [Test, MoqAutoData]
+        public void Redirect_If_logged_in([Greedy] HomeController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+            apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
 
+            var identity = new ClaimsIdentity(new List<Claim>
+            {
+                new Claim("UserId", "123", ClaimValueTypes.Integer32)
+            }, "Custom");
+
+            httpContext.User = new ClaimsPrincipal(identity);
+
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                var result = controller.Index() as ActionResult;
+                result.Should().NotBeNull();
+            }
+        }
     }
 }
