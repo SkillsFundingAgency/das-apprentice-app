@@ -1,19 +1,45 @@
 .app-home {
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  text-align: center;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    text-align: center;
+}
+
+.app-home__header {
+    background-color: #000;
+    display: flex;
+    padding: 80px 0px 16px 0px;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+}
+
+.app-home__gov-logo-box {
+    display: flex;
+    width: 91px;
+    height: 102px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 4px 0px 6px 0px;
+}
+
+.app-home__crown-logo {
+    display: flex;
+    align-items: flex-end;
+    align-self: stretch;
 }
 
 .app-home__logo {
-  min-width: 200px;
-  max-width: 85%;
-  animation: fadeIn ease-in 1s;
+    min-width: 200px;
+    max-width: 85%;
+    animation: fadeIn ease-in 1s;
 }
 
 .app-home .app-block--bottom {
-  animation: fadeIn ease-in 1s;
-  animation-delay: 1s;
-  animation-fill-mode: backwards;
+    animation: fadeIn ease-in 1s;
+    animation-delay: 1s;
+    animation-fill-mode: backwards;
 }
