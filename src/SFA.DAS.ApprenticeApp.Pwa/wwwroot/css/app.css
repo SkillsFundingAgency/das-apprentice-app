@@ -1,4 +1,4 @@
-﻿﻿:root {
+﻿:root {
     --govuk-frontend-version: "5.4.0";
     --govuk-frontend-breakpoint-mobile: 20rem;
     --govuk-frontend-breakpoint-tablet: 40.0625rem;
@@ -7707,6 +7707,21 @@
     margin: 0 0 1rem
 }
 
+.app-icon-list > li {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px
+}
+
+    .app-icon-list > li img {
+        width: 30px
+    }
+
+    .app-icon-list > li span {
+        flex: 1 1 0px
+    }
+
 .app-fade-in {
     animation: fadeIn ease 1s
 }
@@ -7905,57 +7920,6 @@
     margin-bottom: 2rem
 }
 
-body {
-    font-family: Arial,sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f5f5f5
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: 90% 10%;
-    grid-gap: 10px
-}
-
-.progress-bar {
-    width: 100%;
-    display: inline-block;
-    height: 24px;
-    border-color: #f27121;
-    background-color: #fff;
-    overflow: hidden;
-    margin: 10px auto;
-    position: relative
-}
-
-.progress-border {
-    background: linear-gradient(white, white) padding-box,linear-gradient(to right, #8a2387, #e94057, #f27121) border-box;
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0)
-}
-
-.progress {
-    height: 100%;
-    background: linear-gradient(to right, #8a2387, #e94057, #f27121);
-    width: 0;
-    border-radius: 12px 0 0 12px
-}
-
-.info-link {
-    display: block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: #007bff
-}
-
-    .info-link:hover {
-        text-decoration: underline
-    }
-
 .app-home {
     background-color: #fff;
     display: flex;
@@ -7974,6 +7938,202 @@ body {
     animation: fadeIn ease-in 1s;
     animation-delay: 1s;
     animation-fill-mode: backwards
+}
+
+.govuk-accordion__section-content li {
+    color: #0b0c0c !important;
+    font-family: "GDS Transport",arial,sans-serif !important;
+    font-size: 1.1875rem !important;
+    line-height: 1.3157894737 !important
+}
+
+.fa-thumbs-up {
+    background-image: url("/assets/images/icons/like.svg") !important;
+    width: 19px !important;
+    height: 18px !important;
+    margin-right: 15px !important
+}
+
+    .fa-thumbs-up:before {
+        content: " " !important
+    }
+
+    .fa-thumbs-up.fa-regular {
+        background-image: url("/assets/images/icons/like.svg") !important
+    }
+
+    .fa-thumbs-up.fa-solid {
+        background-image: url("/assets/images/icons/liked.svg") !important
+    }
+
+.fa-thumbs-down {
+    background-image: url("/assets/images/icons/dislike.svg") !important;
+    width: 19px !important;
+    height: 18px !important
+}
+
+    .fa-thumbs-down:before {
+        content: " " !important
+    }
+
+    .fa-thumbs-down.fa-regular {
+        background-image: url("/assets/images/icons/dislike.svg") !important
+    }
+
+    .fa-thumbs-down.fa-solid {
+        background-image: url("/assets/images/icons/disliked.svg") !important
+    }
+
+.fa-bookmark {
+    background-image: url("/assets/images/icons/pin.svg") !important;
+    width: 15px !important;
+    height: 24px !important;
+    float: right !important
+}
+
+    .fa-bookmark:before {
+        content: " " !important
+    }
+
+    .fa-bookmark.fa-regular {
+        background-image: url("/assets/images/icons/pin.svg") !important
+    }
+
+    .fa-bookmark.fa-solid {
+        background-image: url("/assets/images/icons/pinned.svg") !important
+    }
+
+.share-btn {
+    float: right !important;
+    margin: 0 20px 0 0 !important
+}
+
+.govuk-accordion__section-toggle-text, .govuk-accordion__controls {
+    display: none !important
+}
+
+.govuk-accordion__section-toggle {
+    float: right !important;
+    margin: -35px 10px 0 20px !important;
+    color: #00703d !important
+}
+
+.govuk-accordion__section {
+    background-color: #fff !important;
+    margin: 10px !important;
+    padding: 15px 15px 10px 15px !important
+}
+
+.govuk-accordion__section-button {
+    border: 0 !important
+}
+
+.govuk-frontend-supported .govuk-accordion__section-header:hover {
+    border-top: none !important;
+    box-shadow: none !important
+}
+
+.govuk-accordion__section-content {
+    padding-bottom: 10px !important
+}
+
+.govuk-accordion__section-heading {
+    margin-bottom: -10px !important
+}
+
+.govuk-accordion__section-button:hover {
+    background: none !important
+}
+
+i:hover {
+    cursor: pointer !important
+}
+
+.nswitch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 30px
+}
+
+    .nswitch input {
+        opacity: 0;
+        width: 0;
+        height: 0
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 24px;
+        width: 23px;
+        left: 3px;
+        bottom: 3px;
+        background-color: #fff;
+        -webkit-transition: .4s;
+        transition: .4s
+    }
+
+input:checked + .slider {
+    background-color: #00703c
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #00703c
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px)
+}
+
+.slider.round {
+    border-radius: 34px
+}
+
+    .slider.round:before {
+        border-radius: 50%
+    }
+
+.settings-grid-container {
+    display: grid;
+    grid-template-columns: 80% 20%
+}
+
+.app-welcome-header {
+    background-image: url("/assets/images/homepage-background.jpg");
+    background-size: cover;
+    background-position: top right;
+    margin: -20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    text-align: center;
+    min-height: 25vh
+}
+
+.app-welcome-header__heading {
+    color: #fff;
+    margin: 80px 0 30px;
+    text-shadow: 0px 2px 1px rgba(0,0,0,.8)
+}
+
+.app-welcome-footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px
 }
 
 * {
