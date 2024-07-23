@@ -3,7 +3,7 @@
   "short_name": "MyApprenticeship",
   "description": "My Apprenticeship App",
   "start_url": "/",
-  "id": "/index.html",
+  "id": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
