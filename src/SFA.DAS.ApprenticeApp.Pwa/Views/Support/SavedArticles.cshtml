@@ -5,7 +5,7 @@
     <h1 class="govuk-heading-xl">Your saved articles</h1>
     <h2><a asp-controller="Support" asp-action="Index" class="app-nav__link">Back</a></h2>
 
-    @foreach (var item in Model.Articles.Where(x => x.Heading != null))
+    @foreach (var item in Model.Articles.Where(x => x.Heading != null).OrderBy(x => x.Order))
     {
         <div class="govuk-accordion__section" id="accordion-@item.Sys.Id">
             <div class="govuk-accordion__section-header">
