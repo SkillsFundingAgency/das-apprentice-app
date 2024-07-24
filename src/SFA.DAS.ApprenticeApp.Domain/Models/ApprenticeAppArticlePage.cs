@@ -7,6 +7,7 @@
         public string? Heading { get; set; }
         public object? Content { get; set; }
         public string? Id { get; set; }
+        public int Order { get; set; }
 
         public string? ArticleText
         {
