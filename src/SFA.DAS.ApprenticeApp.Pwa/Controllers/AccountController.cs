@@ -105,7 +105,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
-
+        [Authorize]       
         [HttpGet]
         public IActionResult AccountLandingPage()
         {
