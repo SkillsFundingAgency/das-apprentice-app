@@ -1,16 +1,21 @@
-﻿<div class="app-page-header">
+﻿@{
+    ViewData["Title"] = "Profile";
+    ViewData["Section"] = "Tasks";
+}
+
+<div class="app-page-header">
     <h1 class="govuk-heading-xl app-page-header__heading">Your tasks</h1>
 </div>
 <div class="app-tabs-wrap">
     <div class="app-tabs">
         <ul class="app-tabs__list">
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab app-tabs__tab--selected" href="#tasksTodo">
+                <a class="app-tabs__tab app-tabs__tab--selected" href="#tasksTodo" role="tab" aria-selected="true">
                     To do
                 </a>
             </li>
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab" href="#tasksDone">
+                <a class="app-tabs__tab" href="#tasksDone" role="tab">
                     Done
                 </a>
             </li>
@@ -22,44 +27,38 @@
 </div>
 
 <div class="app-tabs">
-    <div class="app-tabs__panel" id="tasksTodo">
-        todo
+    <div class="app-tabs__panel" id="tasksTodo" role="tabpanel">
+        @await Html.PartialAsync("ToDoPartial")
     </div>
-    <div class="app-tabs__panel app-tabs__panel--hidden" id="tasksDone">
-        done
+    <div class="app-tabs__panel" id="tasksDone" role="tabpanel" hidden>
+        @await Html.PartialAsync("DonePartial")
     </div>
 </div>
 
 
-<head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-    <h1>Test with jquery</h1>
-<div>
-        <div>
-            <button id="showTodo">To Do</button>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
 
-            <button id="showDone">Done</button>
+        const tabButtons = document.querySelectorAll('[role="tab"]');
+        const tabPanels = document.querySelectorAll('[role="tabpanel"]');
 
-        </div>
+        tabButtons.forEach(button => button.addEventListener('click', handleTabClick));
 
-        <script>
-            $(document).ready(function () {
-                $("#showTodo").click(function () {
-                    $('#ShowToDoPartial').show()
-                    $('#ShowToDoPartial').load('@Url.Action("ToDoPartial", "Tasks")');
-                });
-
-                $("#showDone").click(function () {
-
-                    $('#ShowDonePartial').load('@Url.Action("DonePartial", "Tasks")');
-                });
+        function handleTabClick(e) {
+            e.preventDefault();
+            tabPanels.forEach(function (panel) {
+                panel.hidden = true;
+            })
+            tabButtons.forEach(tab => {
+                tab.ariaSelected = false;
+                tab.classList.remove('app-tabs__tab--selected')
             });
-        </script>
+            this.setAttribute('aria-selected', true);
+            this.classList.add('app-tabs__tab--selected')
+            const { hash } = e.currentTarget;
+            const panel = document.getElementById(hash.substring(1));
+            panel.hidden = false;
+        }
+    });
 
-        <div class="app-pane" id="ShowToDoPartial"></div>
-        <div id="ShowDonePartial"></div>
-
-</div>
-    
-    
+</script>
