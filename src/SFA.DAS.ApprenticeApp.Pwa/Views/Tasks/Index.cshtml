@@ -1,7 +1,49 @@
 ﻿ 
 <h1>Your Tasks</h1>
+<body>
+    <h1>Test with partialasync</h1>
+
+    <button id="showView1">To Do</button>
+    
+    <button id="showView2">Done</button>
+    
+
+    <div id="view1" class="view" style="display:block">
+        @await Html.PartialAsync("_ToDoPage")
+    </div>
+
+    <div id="view2" class="view" style="display:none">
+
+        @await Html.PartialAsync("_DonePage")   
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const view1 = document.getElementById('view1');
+            const view2 = document.getElementById('view2');
+            const showView1Btn = document.getElementById('showView1');
+            
+            const showView2Btn = document.getElementById('showView2');
+            
+
+            showView1Btn.addEventListener('click', () => {
+                view1.style.display = 'block';
+                view2.style.display = 'none'
+            });
 
 
-<button>To Do</button>
-<button>Done</button>
 
+            showView2Btn.addEventListener('click', () => {
+                view2.style.display = 'block';
+                view1.style.display = 'none'
+            });
+
+            
+        });
+
+    </script>
+
+
+
+    <h1>Test with Ajax</h1>
+</body>
