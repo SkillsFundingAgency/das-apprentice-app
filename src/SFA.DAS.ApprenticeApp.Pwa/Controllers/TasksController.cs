@@ -14,6 +14,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return View();
         }
 
+        public IActionResult _DonePage()
+        {
+            return View();
+        }
+
+        public IActionResult _EditPage()
+        {
+            return View();
+        }
+
+        public IActionResult _KSBPage()
+        {
+            return View();
+        }
+
     }
    
 }
