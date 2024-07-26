@@ -1,7 +1,15 @@
 ﻿ 
 <h1>Your Tasks</h1>
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+
+
 <body>
-    <h1>Test with partialasync</h1>
+@*     <h1>Test with partialasync</h1>
 
     <button id="showView1">To Do</button>
     
@@ -9,12 +17,12 @@
     
 
     <div id="view1" class="view" style="display:block">
-        @await Html.PartialAsync("_ToDoPage")
+        @await Html.PartialAsync("ToDoPartial")
     </div>
 
     <div id="view2" class="view" style="display:none">
 
-        @await Html.PartialAsync("_DonePage")   
+        @await Html.PartialAsync("DonePartial")   
     </div>
 
     <script>
@@ -41,9 +49,37 @@
             
         });
 
-    </script>
+    </script> *@
 
 
 
-    <h1>Test with Ajax</h1>
+    <h1>Test with jquery</h1>
+<div>
+        <div>
+            <button id="showTodo">To Do</button>
+
+            <button id="showDone">Done</button>
+
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#showTodo").click(function () {
+                    $('#ShowToDoPartial').show()
+                    $('#ShowToDoPartial').load('@Url.Action("ToDoPartial", "Tasks")');
+                });
+
+                $("#showDone").click(function () {
+
+                    $('#ShowDonePartial').load('@Url.Action("DonePartial", "Tasks")');
+                });
+            });
+        </script>
+
+        <div id="ShowToDoPartial"></div>
+        <div id="ShowDonePartial"></div>
+
+</div>
+    
+    
 </body>
