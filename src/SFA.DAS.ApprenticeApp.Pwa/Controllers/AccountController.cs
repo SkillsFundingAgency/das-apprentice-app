@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -6,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
-using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -105,6 +104,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
+
         [Authorize]
         [HttpGet]
         public IActionResult AccountLandingPage()
