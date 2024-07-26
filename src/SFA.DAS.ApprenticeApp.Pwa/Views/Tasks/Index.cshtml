@@ -1,20 +1,23 @@
-﻿ 
-<h1>Your Tasks</h1>
+﻿<div class="app-page-header">
+    <h1 class="govuk-heading-xl">Your tasks</h1>
+</div>
+
+
 <body>
     <h1>Test with partialasync</h1>
 
     <button id="showView1">To Do</button>
-    
+
     <button id="showView2">Done</button>
-    
+
 
     <div id="view1" class="view" style="display:block">
-        @await Html.PartialAsync("_ToDoPage")
+        @await Html.PartialAsync("ToDoPartial")
     </div>
 
     <div id="view2" class="view" style="display:none">
 
-        @await Html.PartialAsync("_DonePage")   
+        @await Html.PartialAsync("DonePartial")
     </div>
 
     <script>
@@ -22,9 +25,9 @@
             const view1 = document.getElementById('view1');
             const view2 = document.getElementById('view2');
             const showView1Btn = document.getElementById('showView1');
-            
+
             const showView2Btn = document.getElementById('showView2');
-            
+
 
             showView1Btn.addEventListener('click', () => {
                 view1.style.display = 'block';
@@ -38,7 +41,7 @@
                 view1.style.display = 'none'
             });
 
-            
+
         });
 
     </script>
