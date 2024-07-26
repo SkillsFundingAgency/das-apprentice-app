@@ -11,27 +11,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return View();
         }
 
-        public IActionResult _ToDoPage()
+        public IActionResult ToDoPartial()
         {
             return View();
         }
 
-        public IActionResult _DonePage()
+        public IActionResult DonePartial()
         {
             return View();
         }
 
-        public IActionResult _EditPage()
+        public IActionResult AddTaskPartial()
         {
             return View();
         }
 
-        public IActionResult _KSBPage()
+        public IActionResult EditPartial()
         {
             return View();
         }
 
-        public IActionResult _FiltersPage()
+        public IActionResult KSBPartial()
+        {
+            return View();
+        }
+
+        public IActionResult FiltersPartial()
         {
             return View();
         }
