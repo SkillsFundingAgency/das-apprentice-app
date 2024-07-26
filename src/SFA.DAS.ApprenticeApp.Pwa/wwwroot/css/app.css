@@ -7712,15 +7712,20 @@
   border-top: 2px solid #00703c;
 }
 
+.app-page-header {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.app-page-header__heading {
+  margin: 0;
+}
+
 .app-pane {
   padding: 1rem;
   background: #fff;
   border-radius: 5px;
   margin-bottom: 2rem;
-}
-
-.app-page-heading {
-  display: flex;
 }
 
 .grid-container {
@@ -7762,6 +7767,65 @@
 
 .info-link:hover {
   text-decoration: underline;
+}
+
+.app-sort {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #00703c;
+  margin-left: auto;
+}
+@media print {
+  .app-sort {
+    font-family: sans-serif;
+  }
+}
+
+.app-tabs-wrap {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.app-tabs {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@media print {
+  .app-tabs {
+    font-family: sans-serif;
+  }
+}
+
+.app-tabs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.app-tabs__tab {
+  border: 1px solid #00703c;
+  background: #fff;
+  color: #00703c;
+  text-decoration: none;
+  padding: 0.5em 0.7em;
+  border-radius: 2em;
+  display: block;
+}
+.app-tabs__tab:focus {
+  outline: 3px solid #ffdd00;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.app-tabs__tab--selected {
+  font-weight: 700;
+  color: #fff;
+  background: #00703c;
 }
 
 .app-home {

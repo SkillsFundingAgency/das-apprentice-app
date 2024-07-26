@@ -1,0 +1,38 @@
+.app-tabs-wrap {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.app-tabs {
+  @include govuk-typography-common;
+}
+
+.app-tabs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.app-tabs__tab {
+  border: 1px solid $app-brand-colour;
+  background: #fff;
+  color: $app-brand-colour;
+  text-decoration: none;
+  padding: 0.5em 0.7em;
+  border-radius: 2em;
+  display: block;
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.app-tabs__tab--selected {
+  font-weight: $govuk-font-weight-bold;
+  color: #fff;
+  background: $app-brand-colour;
+}

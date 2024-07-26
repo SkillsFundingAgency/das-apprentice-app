@@ -1,52 +1,73 @@
 ﻿<div class="app-page-header">
-    <h1 class="govuk-heading-xl">Your tasks</h1>
+    <h1 class="govuk-heading-xl app-page-header__heading">Your tasks</h1>
+</div>
+<div class="app-tabs-wrap">
+    <div class="app-tabs">
+        <ul class="app-tabs__list">
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab app-tabs__tab--selected" href="#tasksTodo">
+                    To do
+                </a>
+            </li>
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab" href="#tasksDone">
+                    Done
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="app-sort">
+        Sort by:
+    </div>
+</div>
+
+<div class="app-tabs">
+    <div class="app-tabs__panel" id="tasksTodo">
+        todo
+    </div>
+    <div class="app-tabs__panel app-tabs__panel--hidden" id="tasksDone">
+        done
+    </div>
 </div>
 
 
-<body>
-    <h1>Test with partialasync</h1>
-
-    <button id="showView1">To Do</button>
-
-    <button id="showView2">Done</button>
 
 
-    <div id="view1" class="view" style="display:block">
-        @await Html.PartialAsync("ToDoPartial")
-    </div>
+<button id="showView1">To Do</button>
 
-    <div id="view2" class="view" style="display:none">
-
-        @await Html.PartialAsync("DonePartial")
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const view1 = document.getElementById('view1');
-            const view2 = document.getElementById('view2');
-            const showView1Btn = document.getElementById('showView1');
-
-            const showView2Btn = document.getElementById('showView2');
+<button id="showView2">Done</button>
 
 
-            showView1Btn.addEventListener('click', () => {
-                view1.style.display = 'block';
-                view2.style.display = 'none'
-            });
+<div id="view1" class="view" style="display:block">
+    @await Html.PartialAsync("ToDoPartial")
+</div>
+
+<div id="view2" class="view" style="display:none">
+
+    @await Html.PartialAsync("DonePartial")
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const view1 = document.getElementById('view1');
+        const view2 = document.getElementById('view2');
+        const showView1Btn = document.getElementById('showView1');
+        const showView2Btn = document.getElementById('showView2');
 
 
-
-            showView2Btn.addEventListener('click', () => {
-                view2.style.display = 'block';
-                view1.style.display = 'none'
-            });
-
-
+        showView1Btn.addEventListener('click', () => {
+            view1.style.display = 'block';
+            view2.style.display = 'none'
         });
 
-    </script>
 
 
+        showView2Btn.addEventListener('click', () => {
+            view2.style.display = 'block';
+            view1.style.display = 'none'
+        });
 
-    <h1>Test with Ajax</h1>
-</body>
+
+    });
+
+</script>
