@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
+    [AllowAnonymous]
     public class TasksController : Controller
     {
         public IActionResult Index()
