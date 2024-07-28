@@ -15,13 +15,18 @@
 }
 
 .app-icon-list {
+  @extend .govuk-list;
+  margin-top: 30px;
   & > li {
+    @extend .govuk-body-l;
     display: flex;
     gap: 15px;
     align-items: center;
-    margin-bottom: 20px;
-    img {
+    margin-bottom: 30px;
+    img,
+    svg {
       width: 30px;
+      min-height: 30px;
     }
     span {
       flex: 1 1 0px;
