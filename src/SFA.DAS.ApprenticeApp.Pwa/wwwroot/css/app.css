@@ -7589,11 +7589,17 @@
   bottom: 20px;
   right: 15px;
   border-radius: 2em;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  min-width: 0;
+  padding: 10px 15px;
+  box-shadow: 0px -2px 0px 0px #002d18 inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 .app-tasks-button:active {
   top: auto;
   bottom: 18px;
+}
+.app-tasks-button:focus {
+  box-shadow: 0 0 0 3px #ffdd00;
 }
 
 .app-header {
