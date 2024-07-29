@@ -1,0 +1,30 @@
+.app-tasks__list {
+  @extend .govuk-list;
+  & > li {
+    color: $govuk-secondary-text-colour;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    img,
+    svg {
+      width: 16px;
+      min-height: 16px;
+    }
+    span {
+      flex: 1 1 0px;
+    }
+  }
+}
+
+.app-tasks__link {
+  @extend .govuk-link;
+  color: $app-brand-colour;
+  &:link,
+  &:visited {
+    color: $app-brand-colour;
+  }
+  &:active,
+  &:focus {
+    color: inherit;
+  }
+}
