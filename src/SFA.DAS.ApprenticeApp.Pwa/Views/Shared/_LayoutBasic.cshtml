@@ -15,7 +15,7 @@
 </head>
 
 <body class="govuk-template__body app-template__body">
-    <main class="app-main--basic">
+    <main class="app-main--basic @(ViewData["NoPadding"] != null ? "app-main--basic--no-padding" : "" )">
         @RenderBody()
     </main>
 </body>

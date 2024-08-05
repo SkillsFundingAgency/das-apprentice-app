@@ -7585,8 +7585,8 @@
 }
 
 .app-tasks-button {
-  position: absolute;
-  bottom: 20px;
+  position: fixed;
+  bottom: 6rem;
   right: 15px;
   border-radius: 2em;
   border: none;
@@ -7637,7 +7637,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4.5rem;
+  height: 5rem;
 }
 
 .app-list-links {
@@ -7685,7 +7685,7 @@
   top: 0;
   left: 0;
   right: 0;
-  bottom: 4.5rem;
+  bottom: 5rem;
   overflow: auto;
 }
 
@@ -7694,6 +7694,11 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  padding: 20px;
+}
+
+.app-main--basic--no-padding {
+  padding: 0;
 }
 
 .app-modal {
@@ -7733,16 +7738,19 @@
 
 .app-nav {
   display: flex;
-  height: 4rem;
+  height: 5rem;
 }
 
 .app-nav__link {
   text-align: center;
   flex-grow: 1;
-  height: 4rem;
+  height: 5rem;
   padding-top: 1.2rem;
   transition: all 0.2s;
   border-top: 2px solid transparent;
+  text-decoration: none;
+  color: #505a5f;
+  width: 20%;
 }
 .app-nav__link:active {
   background: #eee;
@@ -7750,6 +7758,22 @@
 
 .app-nav__link--active {
   border-top: 2px solid #00703c;
+  color: #0b0c0c;
+}
+
+.app-nav__link-text {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 12px;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+@media print {
+  .app-nav__link-text {
+    font-family: sans-serif;
+  }
 }
 
 .app-page-header {

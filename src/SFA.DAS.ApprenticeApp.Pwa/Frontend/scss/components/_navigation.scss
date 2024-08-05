@@ -1,15 +1,18 @@
 .app-nav {
   display: flex;
-  height: 4rem;
+  height: 5rem;
 }
 
 .app-nav__link {
   text-align: center;
   flex-grow: 1;
-  height: 4rem;
+  height: 5rem;
   padding-top: 1.2rem;
   transition: all 0.2s;
   border-top: 2px solid transparent;
+  text-decoration: none;
+  color: $govuk-secondary-text-colour;
+  width: 20%;
   &:active {
     background: #eee;
   }
@@ -17,4 +20,13 @@
 
 .app-nav__link--active {
   border-top: 2px solid $app-brand-colour;
+  color: $govuk-text-colour;
+}
+
+.app-nav__link-text {
+  @include govuk-typography-common;
+  font-size: 12px;
+  text-decoration: none;
+  display: block;
+  color: inherit;
 }
