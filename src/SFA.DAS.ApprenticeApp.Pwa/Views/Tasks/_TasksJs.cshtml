@@ -1,0 +1,30 @@
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tasksTodo').on('click', '.task-item', function () {
+            alert('Task clicked in To do section: ' + $(this).text());
+        });
+
+        $('#tasksDone').on('click', '.task-item', function () {
+            alert('Task clicked in Done section: ' + $(this).text());
+        });
+
+        $('.govuk-button.app-tasks-button').on('click', function () {
+            alert('Add a task button clicked');
+        });
+
+        const tabButtons = $('[role="tab"]');
+        const tabPanels = $('[role="tabpanel"]');
+
+        tabButtons.on('click', function (e) {
+            e.preventDefault();
+            tabPanels.attr('hidden', true);
+            tabButtons.attr('aria-selected', false).removeClass('app-tabs__tab--selected');
+
+            $(this).attr('aria-selected', true).addClass('app-tabs__tab--selected');
+            const panelId = $(this).attr('href').substring(1);
+            $('#' + panelId).removeAttr('hidden');
+        });
+    });
+</script>
