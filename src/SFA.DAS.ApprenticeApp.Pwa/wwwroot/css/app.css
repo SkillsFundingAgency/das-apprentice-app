@@ -7516,6 +7516,7 @@ html {
 
 .app-card {
   background: #fff;
+  border-radius: 5px;
   padding: 1rem;
   margin-bottom: 1rem;
 }
@@ -7566,6 +7567,57 @@ html {
 }
 .app-navigation__link--active .app-navigation__link-text {
   color: #0b0c0c;
+}
+
+.app-tabs {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.1111111111;
+}
+@media print {
+  .app-tabs {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-tabs {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+}
+@media print {
+  .app-tabs {
+    font-size: 18pt;
+    line-height: 1.15;
+  }
+}
+
+.app-tabs__list {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.app-tabs__tab {
+  text-decoration: none;
+  font-weight: 700;
+  color: #505a5f;
+  border-bottom: 3px solid transparent;
+  line-height: 1;
+  padding: 0.5rem 0;
+  display: block;
+}
+.app-tabs__tab:visited {
+  color: #505a5f;
+}
+.app-tabs__list-item--selected .app-tabs__tab {
+  color: #00703c;
+  border-bottom-color: #00703c;
 }
 
 .app-pages-home {

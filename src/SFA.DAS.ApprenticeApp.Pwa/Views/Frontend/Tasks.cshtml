@@ -4,14 +4,36 @@
     Layout = "_Layout";
 }
 
-<div class="app-card">
-    <h2 class="app-card__heading">Write up tutor notes</h2>
-</div>
+<h1 class="govuk-heading-xl">Your tasks</h1>
+<div class="app-tabs" data-module="app-tabs">
+    <ul class="app-tabs__list">
+        <li class="app-tabs__list-item app-tabs__list-item--selected">
+            <a class="app-tabs__tab" href="#todo">
+                To do
+            </a>
+        </li>
+        <li class="app-tabs__list-item">
+            <a class="app-tabs__tab" href="#done">
+                Done
+            </a>
+        </li>
+    </ul>
+    <div class="app-tabs__panel" id="todo">
+        <div class="app-card">
+            <h2 class="app-card__heading">Write up tutor notes</h2>
+        </div>
 
-<div class="app-card">
-    <h2 class="app-card__heading">Submit assessment for first module</h2>
-</div>
+        <div class="app-card">
+            <h2 class="app-card__heading">Submit assessment for first module</h2>
+        </div>
 
-<div class="app-card">
-    <h2 class="app-card__heading">Prep for EPA meeting</h2>
+        <div class="app-card">
+            <h2 class="app-card__heading">Prep for EPA meeting</h2>
+        </div>
+
+    </div>
+    <div class="app-tabs__panel" id="done" hidden>
+        <h2 class="govuk-heading-l">Done</h2>
+
+    </div>
 </div>

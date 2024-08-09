@@ -1,0 +1,28 @@
+.app-tabs {
+  @include govuk-font($size: 24);
+}
+
+.app-tabs__list {
+  margin: 0 0 $app-gap;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: $app-gap;
+}
+
+.app-tabs__tab {
+  text-decoration: none;
+  font-weight: $govuk-font-weight-bold;
+  color: $govuk-secondary-text-colour;
+  border-bottom: 3px solid transparent;
+  line-height: 1;
+  padding: 0.5rem 0;
+  display: block;
+  &:visited {
+    color: $govuk-secondary-text-colour;
+  }
+  .app-tabs__list-item--selected & {
+    color: $app-brand-colour;
+    border-bottom-color: $app-brand-colour;
+  }
+}
