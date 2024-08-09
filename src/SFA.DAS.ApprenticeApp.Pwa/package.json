@@ -6,12 +6,12 @@
   "author": "ESFA",
   "license": "ISC",
   "scripts": {
-    "develop": "sass --update --style=expanded --load-path=node_modules/govuk-frontend/dist Frontend/scss:wwwroot/css",
-    "watch": "watch 'npm run develop' ./Frontend/scss",
-    "build": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist Frontend/scss/:wwwroot/css"
+    "develop": "sass --update --quiet-deps --style=expanded --load-path=node_modules/govuk-frontend/dist Frontend/:wwwroot/css",
+    "watch": "watch 'npm run develop' Frontend/",
+    "build": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist Frontend/:wwwroot/css"
   },
   "dependencies": {
-    "govuk-frontend": "^5.4.0",
+    "govuk-frontend": "^5.4.1",
     "sass": "^1.77.2",
     "watch": "1.0.2"
   }

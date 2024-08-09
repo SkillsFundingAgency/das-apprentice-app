@@ -1,0 +1,15 @@
+.app-button {
+  @extend .govuk-button;
+  border-radius: $app-border-radius;
+  font-weight: $govuk-font-weight-bold;
+}
+
+.app-button--secondary {
+  @extend .govuk-button--secondary;
+  color: $govuk-text-colour;
+  font-weight: $govuk-font-weight-regular;
+  &:link,
+  &:visited {
+    color: $govuk-text-colour;
+  }
+}

@@ -1,0 +1,40 @@
+.app-navigation {
+  display: flex;
+  height: 5rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid #d9d9d9;
+}
+
+.app-navigation__link {
+  text-align: center;
+  flex-grow: 1;
+  height: 5rem;
+  padding-top: 1.2rem;
+  transition: all 0.2s;
+  border-top: 3px solid transparent;
+  text-decoration: none;
+  color: $govuk-secondary-text-colour;
+  width: 20%;
+  &:active {
+    background: #eee;
+  }
+}
+
+.app-navigation__link--active {
+  border-top: 3px solid $app-brand-colour;
+  color: $govuk-text-colour;
+}
+
+.app-navigation__link-text {
+  @include govuk-typography-common;
+  font-size: 0.75rem;
+  text-decoration: none;
+  display: block;
+  color: $govuk-secondary-text-colour;
+  .app-navigation__link--active & {
+    color: $govuk-text-colour;
+  }
+}
