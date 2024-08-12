@@ -387,7 +387,7 @@ a:focus, .govuk-link:focus {
   }
 }
 
-.govuk-heading-s, .app-card__heading {
+.govuk-heading-s, .app-overlay-header__heading, .app-card__heading {
   color: #0b0c0c;
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -400,29 +400,29 @@ a:focus, .govuk-link:focus {
   margin-bottom: 15px;
 }
 @media print {
-  .govuk-heading-s, .app-card__heading {
+  .govuk-heading-s, .app-overlay-header__heading, .app-card__heading {
     color: #000000;
   }
 }
 @media print {
-  .govuk-heading-s, .app-card__heading {
+  .govuk-heading-s, .app-overlay-header__heading, .app-card__heading {
     font-family: sans-serif;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-heading-s, .app-card__heading {
+  .govuk-heading-s, .app-overlay-header__heading, .app-card__heading {
     font-size: 1.1875rem;
     line-height: 1.3157894737;
   }
 }
 @media print {
-  .govuk-heading-s, .app-card__heading {
+  .govuk-heading-s, .app-overlay-header__heading, .app-card__heading {
     font-size: 14pt;
     line-height: 1.15;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-heading-s, .app-card__heading {
+  .govuk-heading-s, .app-overlay-header__heading, .app-card__heading {
     margin-bottom: 20px;
   }
 }
@@ -703,15 +703,21 @@ p + .govuk-heading-m, .govuk-body-m + .govuk-heading-m, .govuk-body + .govuk-hea
 .govuk-list + .govuk-heading-m,
 .app-icon-list + .govuk-heading-m,
 p + .govuk-heading-s,
+p + .app-overlay-header__heading,
 p + .app-card__heading,
 .govuk-body-m + .govuk-heading-s,
+.govuk-body-m + .app-overlay-header__heading,
 .govuk-body-m + .app-card__heading,
 .govuk-body + .govuk-heading-s,
+.govuk-body + .app-overlay-header__heading,
 .govuk-body + .app-card__heading,
 .govuk-body-s + .govuk-heading-s,
+.govuk-body-s + .app-overlay-header__heading,
 .govuk-body-s + .app-card__heading,
 .govuk-list + .govuk-heading-s,
+.govuk-list + .app-overlay-header__heading,
 .app-icon-list + .govuk-heading-s,
+.app-icon-list + .app-overlay-header__heading,
 .govuk-list + .app-card__heading,
 .app-icon-list + .app-card__heading {
   padding-top: 5px;
@@ -722,15 +728,21 @@ p + .app-card__heading,
   .govuk-list + .govuk-heading-m,
   .app-icon-list + .govuk-heading-m,
   p + .govuk-heading-s,
+  p + .app-overlay-header__heading,
   p + .app-card__heading,
   .govuk-body-m + .govuk-heading-s,
+  .govuk-body-m + .app-overlay-header__heading,
   .govuk-body-m + .app-card__heading,
   .govuk-body + .govuk-heading-s,
+  .govuk-body + .app-overlay-header__heading,
   .govuk-body + .app-card__heading,
   .govuk-body-s + .govuk-heading-s,
+  .govuk-body-s + .app-overlay-header__heading,
   .govuk-body-s + .app-card__heading,
   .govuk-list + .govuk-heading-s,
+  .govuk-list + .app-overlay-header__heading,
   .app-icon-list + .govuk-heading-s,
+  .app-icon-list + .app-overlay-header__heading,
   .govuk-list + .app-card__heading,
   .app-icon-list + .app-card__heading {
     padding-top: 10px;
@@ -7644,6 +7656,57 @@ html {
   color: #0b0c0c;
 }
 
+.app-overlay {
+  position: fixed;
+  top: 1rem;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  background: #fafafa;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-overlay__content {
+  padding: 1rem;
+  overflow: auto;
+}
+
+.app-overlay-header {
+  position: sticky;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  border-bottom: 1px solid #d9d9d9;
+  align-items: center;
+}
+
+.app-overlay-header__heading {
+  width: 60%;
+  text-align: center;
+  margin: 0;
+}
+
+.app-overlay-header__cancel {
+  width: 20%;
+}
+
+.app-overlay-header__save {
+  width: 20%;
+  text-align: right;
+}
+
+.app-overlay-header__link {
+  text-decoration: none;
+  color: #00703c;
+}
+.app-overlay-header__link:visited, .app-overlay-header__link:link {
+  color: #00703c;
+}
+
 .app-separator {
   margin: 1rem 0;
   border-bottom-color: #d9d9d9;
@@ -7720,6 +7783,17 @@ html {
   margin: 0;
   background-color: #d9ebea;
   color: #1f3f3c;
+  max-width: none;
+}
+
+.app-tag--pink {
+  background-color: #f5e2eb;
+  color: #62223f;
+}
+
+.app-tag--red {
+  background-color: #f6d7c6;
+  color: #673920;
 }
 
 .app-pages-home {

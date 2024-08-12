@@ -1,0 +1,33 @@
+.app-overlay-header {
+  position: sticky;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+  border-bottom: 1px solid $app-border-colour;
+  align-items: center;
+}
+
+.app-overlay-header__heading {
+  @extend .govuk-heading-s;
+  width: 60%;
+  text-align: center;
+  margin: 0;
+}
+
+.app-overlay-header__cancel {
+  width: 20%;
+}
+
+.app-overlay-header__save {
+  width: 20%;
+  text-align: right;
+}
+
+.app-overlay-header__link {
+  text-decoration: none;
+  color: $app-brand-colour;
+  &:visited,
+  &:link {
+    color: $app-brand-colour;
+  }
+}

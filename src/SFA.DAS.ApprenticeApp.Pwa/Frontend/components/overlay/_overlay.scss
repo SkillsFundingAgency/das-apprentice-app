@@ -1,0 +1,18 @@
+.app-overlay {
+  position: fixed;
+  top: 1rem;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  background: $app-bg-colour;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-overlay__content {
+  padding: $app-gap;
+  overflow: auto;
+}
