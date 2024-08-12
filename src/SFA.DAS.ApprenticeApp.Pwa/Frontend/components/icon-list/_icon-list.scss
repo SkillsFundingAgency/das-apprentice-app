@@ -5,12 +5,32 @@
   padding: 0;
 }
 
+.app-icon-list__icon {
+  min-width: 1rem;
+  height: 1rem;
+}
+
 .app-icon-list > li {
-  margin-bottom: calc($app-gap / 2);
+  margin-bottom: $app-gap-half;
+  display: flex;
+  gap: $app-gap-half;
+  flex-direction: row;
+  align-items: center;
 }
 
 .app-icon-list--l {
   @include govuk-font-size(24);
+  margin: $app-gap 0;
+}
+
+.app-icon-list--l > li {
+  margin-bottom: $app-gap;
+  gap: $app-gap;
+}
+
+.app-icon-list--l .app-icon-list__icon {
+  min-width: 2rem;
+  height: 2rem;
 }
 
 .app-icon-list--muted {
