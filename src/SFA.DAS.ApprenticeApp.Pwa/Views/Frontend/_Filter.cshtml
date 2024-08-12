@@ -8,10 +8,41 @@
             Task filters
         </h2>
         <div class="app-overlay-header__save">
-            <a href="#" class="app-overlay-header__link">Add</a>
+            <a href="#" class="app-overlay-header__link">Apply</a>
         </div>
     </div>
     <div class="app-overlay__content">
-        <p>Filters</p>
+        <fieldset class="app-fieldset">
+            <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
+            <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="filter-none" name="filter" type="checkbox" value="none">
+                    <label class="app-label app-checkboxes__label" for="filter-none">
+                        None
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="filter-assignment" name="filter" type="checkbox"
+                        value="assignment">
+                    <label class="app-label app-checkboxes__label" for="filter-assignment">
+                        <span class="app-tag">Assignment</span>
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="filter-epo" name="filter" type="checkbox" value="epo">
+                    <label class="app-label app-checkboxes__label" for="filter-epo">
+                        <span class="app-tag app-tag--pink">End-point assessment</span>
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="filter-deadline" name="filter" type="checkbox"
+                        value="deadline">
+                    <label class="app-label app-checkboxes__label" for="filter-deadline">
+                        <span class="app-tag app-tag--red">Deadline</span>
+                    </label>
+                </div>
+            </div>
+
+        </fieldset>
     </div>
 </div>

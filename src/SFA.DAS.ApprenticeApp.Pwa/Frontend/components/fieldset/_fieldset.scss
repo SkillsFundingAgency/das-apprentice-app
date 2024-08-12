@@ -1,5 +1,8 @@
 .app-fieldset {
   @extend .govuk-fieldset;
+}
+
+.app-fieldset--radios {
   padding: $app-gap;
   background: #fff;
   border-radius: $app-border-radius-inputs;
@@ -9,4 +12,9 @@
 .app-fieldset__legend {
   @extend .govuk-fieldset__legend;
   margin-bottom: 0;
+}
+
+.app-fieldset__legend--s {
+  font-weight: $govuk-font-weight-bold;
+  margin-bottom: $app-gap;
 }

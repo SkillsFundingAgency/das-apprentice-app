@@ -2635,19 +2635,20 @@ p + .app-card__heading,
 
 
 
-.govuk-checkboxes__item {
+.govuk-checkboxes__item, .app-checkboxes__item {
   display: flex;
   flex-wrap: wrap;
   position: relative;
   margin-bottom: 10px;
 }
 
-.govuk-checkboxes__item:last-child,
-.govuk-checkboxes__item:last-of-type {
+.govuk-checkboxes__item:last-child, .app-checkboxes__item:last-child,
+.govuk-checkboxes__item:last-of-type,
+.app-checkboxes__item:last-of-type {
   margin-bottom: 0;
 }
 
-.govuk-checkboxes__input {
+.govuk-checkboxes__input, .app-checkboxes__input {
   z-index: 1;
   width: 44px;
   height: 44px;
@@ -2656,7 +2657,7 @@ p + .app-card__heading,
   cursor: pointer;
 }
 
-.govuk-checkboxes__label {
+.govuk-checkboxes__label, .app-checkboxes__label {
   align-self: center;
   max-width: calc(100% - 74px);
   margin-bottom: 0;
@@ -2665,7 +2666,7 @@ p + .app-card__heading,
   touch-action: manipulation;
 }
 
-.govuk-checkboxes__label::before {
+.govuk-checkboxes__label::before, .app-checkboxes__label::before {
   content: "";
   box-sizing: border-box;
   position: absolute;
@@ -2677,7 +2678,7 @@ p + .app-card__heading,
   background: transparent;
 }
 
-.govuk-checkboxes__label::after {
+.govuk-checkboxes__label::after, .app-checkboxes__label::after {
   content: "";
   box-sizing: border-box;
   position: absolute;
@@ -2705,29 +2706,33 @@ p + .app-card__heading,
   margin-bottom: 0;
 }
 
-.govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+.govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .app-checkboxes__input:focus + .app-checkboxes__label::before {
   border-width: 4px;
   outline: 3px solid transparent;
   outline-offset: 1px;
   box-shadow: 0 0 0 3px #ffdd00;
 }
 @media screen and (forced-colors: active), (-ms-high-contrast: active) {
-  .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+  .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .app-checkboxes__input:focus + .app-checkboxes__label::before {
     outline-color: Highlight;
   }
 }
 
-.govuk-checkboxes__input:checked + .govuk-checkboxes__label::after {
+.govuk-checkboxes__input:checked + .govuk-checkboxes__label::after, .app-checkboxes__input:checked + .govuk-checkboxes__label::after, .govuk-checkboxes__input:checked + .app-checkboxes__label::after, .app-checkboxes__input:checked + .app-checkboxes__label::after {
   opacity: 1;
 }
 
-.govuk-checkboxes__input:disabled,
-.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
+.govuk-checkboxes__input:disabled, .app-checkboxes__input:disabled,
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
+.app-checkboxes__input:disabled + .govuk-checkboxes__label,
+.govuk-checkboxes__input:disabled + .app-checkboxes__label,
+.app-checkboxes__input:disabled + .app-checkboxes__label {
   cursor: not-allowed;
 }
 
-.govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
-.govuk-checkboxes__input:disabled ~ .govuk-hint {
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label, .app-checkboxes__input:disabled + .govuk-checkboxes__label, .govuk-checkboxes__input:disabled + .app-checkboxes__label, .app-checkboxes__input:disabled + .app-checkboxes__label,
+.govuk-checkboxes__input:disabled ~ .govuk-hint,
+.app-checkboxes__input:disabled ~ .govuk-hint {
   opacity: 0.5;
 }
 
@@ -2784,22 +2789,22 @@ p + .app-card__heading,
   margin-bottom: 0;
 }
 
-.govuk-checkboxes--small .govuk-checkboxes__item {
+.govuk-checkboxes--small .govuk-checkboxes__item, .govuk-checkboxes--small .app-checkboxes__item {
   margin-bottom: 0;
 }
-.govuk-checkboxes--small .govuk-checkboxes__input {
+.govuk-checkboxes--small .govuk-checkboxes__input, .govuk-checkboxes--small .app-checkboxes__input {
   margin-left: -10px;
 }
-.govuk-checkboxes--small .govuk-checkboxes__label {
+.govuk-checkboxes--small .govuk-checkboxes__label, .govuk-checkboxes--small .app-checkboxes__label {
   padding-left: 1px;
 }
-.govuk-checkboxes--small .govuk-checkboxes__label::before {
+.govuk-checkboxes--small .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__label::before {
   top: 10px;
   left: 0;
   width: 24px;
   height: 24px;
 }
-.govuk-checkboxes--small .govuk-checkboxes__label::after {
+.govuk-checkboxes--small .govuk-checkboxes__label::after, .govuk-checkboxes--small .app-checkboxes__label::after {
   top: 17px;
   left: 6px;
   width: 12px;
@@ -2817,24 +2822,24 @@ p + .app-card__heading,
   width: 24px;
   margin-bottom: 5px;
 }
-.govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
+.govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .app-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .app-checkboxes__label::before {
   outline: 3px dashed transparent;
   outline-offset: 1px;
   box-shadow: 0 0 0 10px #b1b4b6;
 }
-.govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+.govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:focus + .app-checkboxes__label::before {
   box-shadow: 0 0 0 3px #ffdd00, 0 0 0 10px #b1b4b6;
 }
 @media screen and (forced-colors: active), (-ms-high-contrast: active) {
-  .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+  .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:focus + .app-checkboxes__label::before {
     outline-color: Highlight;
   }
 }
 @media (hover: none), (pointer: coarse) {
-  .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
+  .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .app-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:not(:disabled) + .app-checkboxes__label::before {
     box-shadow: initial;
   }
-  .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+  .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .govuk-checkboxes__item:hover .app-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:focus + .govuk-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .govuk-checkboxes__input:focus + .app-checkboxes__label::before, .govuk-checkboxes--small .app-checkboxes__item:hover .app-checkboxes__input:focus + .app-checkboxes__label::before {
     box-shadow: 0 0 0 3px #ffdd00;
   }
 }
@@ -7600,6 +7605,40 @@ html {
   margin-bottom: 1rem;
 }
 
+.app-checkboxes__item {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  flex-direction: row-reverse;
+  margin-bottom: 1rem;
+  justify-content: space-between;
+}
+
+.app-checkboxes__label {
+  max-width: none;
+  padding: 0;
+  width: calc(100% - 44px);
+}
+.app-checkboxes__label:before {
+  top: 1rem;
+  left: auto;
+  right: 1rem;
+  width: 24px;
+  height: 24px;
+}
+.app-checkboxes__label:after {
+  top: calc(1rem + 7px);
+  left: auto;
+  right: calc(1rem + 6px);
+  width: 12px;
+  height: 6.5px;
+  border-width: 0 0 3px 3px;
+}
+
+.app-checkboxes__input {
+  margin: -1rem;
+}
+
 .app-dropdown {
   color: #00703c;
   position: relative;
@@ -7680,7 +7719,7 @@ html {
   border-color: transparent;
 }
 
-.app-fieldset {
+.app-fieldset--radios {
   padding: 1rem;
   background: #fff;
   border-radius: 10px;
@@ -7689,6 +7728,11 @@ html {
 
 .app-fieldset__legend {
   margin-bottom: 0;
+}
+
+.app-fieldset__legend--s {
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
 
 .app-icon-list {
@@ -7897,6 +7941,7 @@ html {
 .app-overlay-header__link {
   text-decoration: none;
   color: #00703c;
+  font-size: 1rem;
 }
 .app-overlay-header__link:visited, .app-overlay-header__link:link {
   color: #00703c;
