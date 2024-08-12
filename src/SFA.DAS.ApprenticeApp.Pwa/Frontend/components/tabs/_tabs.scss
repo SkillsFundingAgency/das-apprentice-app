@@ -3,26 +3,38 @@
 }
 
 .app-tabs__list {
-  margin: 0 0 $app-gap;
+  margin: 0 0 $app-gap calc($app-gap-half * -1);
   padding: 0;
   list-style: none;
   display: flex;
-  gap: $app-gap;
 }
 
 .app-tabs__tab {
   text-decoration: none;
   font-weight: $govuk-font-weight-bold;
   color: $govuk-secondary-text-colour;
-  border-bottom: 3px solid transparent;
   line-height: 1;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   display: block;
+  position: relative;
   &:visited {
     color: $govuk-secondary-text-colour;
   }
+  &:focus {
+    background-color: $app-brand-secondary;
+    color: #000;
+    box-shadow: none;
+  }
   .app-tabs__list-item--selected & {
     color: $app-brand-colour;
-    border-bottom-color: $app-brand-colour;
+    &:after {
+      content: "";
+      background-color: $app-brand-colour;
+      height: 3px;
+      position: absolute;
+      left: $app-gap-half;
+      right: $app-gap-half;
+      bottom: 0;
+    }
   }
 }

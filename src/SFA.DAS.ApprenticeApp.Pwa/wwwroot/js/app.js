@@ -18,6 +18,7 @@ Tabs.prototype.init = function () {
 };
 
 Tabs.prototype.handleTabClick = function (event) {
+  event.preventDefault();
   const tab = event.target;
   this.tabPanels.forEach(function (panel) {
     panel.hidden = true;

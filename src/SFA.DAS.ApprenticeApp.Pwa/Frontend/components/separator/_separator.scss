@@ -1,0 +1,5 @@
+.app-separator {
+  @extend .govuk-section-break;
+  @extend .govuk-section-break--visible;
+  margin: $app-gap 0;
+}

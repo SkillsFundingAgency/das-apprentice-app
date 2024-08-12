@@ -1,0 +1,7 @@
+.app-tag {
+  @extend .govuk-tag;
+  border-radius: $app-border-radius;
+  margin: 0;
+  background-color: $app-brand-secondary;
+  color: $app-brand-dark;
+}
