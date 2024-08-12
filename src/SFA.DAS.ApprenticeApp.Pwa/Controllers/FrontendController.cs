@@ -5,7 +5,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 public class FrontendController : Controller
 {
 
-    public IActionResult Home()
+    public IActionResult Index()
     {
         return View();
     }

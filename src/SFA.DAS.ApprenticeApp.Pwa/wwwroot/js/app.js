@@ -41,3 +41,17 @@ if (appTabs) {
     new Tabs(tabs).init();
   });
 }
+
+function Overlay(container) {
+  this.container = container;
+}
+
+Overlay.prototype.init = function () {};
+
+const appOverlays = document.querySelectorAll(`[data-module="app-overlay"]`);
+
+if (appOverlays) {
+  appOverlays.forEach(function (overlay) {
+    new Overlay(overlay).init();
+  });
+}

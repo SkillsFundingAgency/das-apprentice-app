@@ -17,6 +17,9 @@
   padding: 0.5rem;
   display: block;
   position: relative;
+  &:link {
+    color: $govuk-secondary-text-colour;
+  }
   &:visited {
     color: $govuk-secondary-text-colour;
   }

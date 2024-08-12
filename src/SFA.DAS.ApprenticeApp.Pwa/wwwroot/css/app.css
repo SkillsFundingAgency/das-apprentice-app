@@ -881,7 +881,7 @@ p + .app-card__heading,
     line-height: 19px;
   }
 }
-.govuk-button-group .govuk-button, .govuk-button-group .app-button {
+.govuk-button-group .govuk-button, .govuk-button-group .app-fab, .govuk-button-group .app-button {
   margin-bottom: 17px;
 }
 @media (min-width: 40.0625em) {
@@ -891,7 +891,7 @@ p + .app-card__heading,
     flex-wrap: wrap;
     align-items: baseline;
   }
-  .govuk-button-group .govuk-button, .govuk-button-group .app-button,
+  .govuk-button-group .govuk-button, .govuk-button-group .app-fab, .govuk-button-group .app-button,
   .govuk-button-group .govuk-link {
     margin-right: 15px;
   }
@@ -2040,7 +2040,7 @@ p + .app-card__heading,
 }
 
 
-.govuk-button, .app-button {
+.govuk-button, .app-fab, .app-button {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2067,58 +2067,58 @@ p + .app-card__heading,
   -webkit-appearance: none;
 }
 @media print {
-  .govuk-button, .app-button {
+  .govuk-button, .app-fab, .app-button {
     font-family: sans-serif;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-button, .app-button {
+  .govuk-button, .app-fab, .app-button {
     font-size: 1.1875rem;
     line-height: 1;
   }
 }
 @media print {
-  .govuk-button, .app-button {
+  .govuk-button, .app-fab, .app-button {
     font-size: 14pt;
     line-height: 19px;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-button, .app-button {
+  .govuk-button, .app-fab, .app-button {
     margin-bottom: 32px;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-button, .app-button {
+  .govuk-button, .app-fab, .app-button {
     width: auto;
   }
 }
-.govuk-button:link, .app-button:link, .govuk-button:visited, .app-button:visited, .govuk-button:active, .app-button:active, .govuk-button:hover, .app-button:hover {
+.govuk-button:link, .app-fab:link, .app-button:link, .govuk-button:visited, .app-fab:visited, .app-button:visited, .govuk-button:active, .app-fab:active, .app-button:active, .govuk-button:hover, .app-fab:hover, .app-button:hover {
   color: #ffffff;
   text-decoration: none;
 }
-.govuk-button::-moz-focus-inner, .app-button::-moz-focus-inner {
+.govuk-button::-moz-focus-inner, .app-fab::-moz-focus-inner, .app-button::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
-.govuk-button:hover, .app-button:hover {
+.govuk-button:hover, .app-fab:hover, .app-button:hover {
   background-color: #005a30;
 }
-.govuk-button:active, .app-button:active {
+.govuk-button:active, .app-fab:active, .app-button:active {
   top: 2px;
 }
-.govuk-button:focus, .app-button:focus {
+.govuk-button:focus, .app-fab:focus, .app-button:focus {
   border-color: #ffdd00;
   outline: 3px solid transparent;
   box-shadow: inset 0 0 0 1px #ffdd00;
 }
-.govuk-button:focus:not(:active):not(:hover), .app-button:focus:not(:active):not(:hover) {
+.govuk-button:focus:not(:active):not(:hover), .app-fab:focus:not(:active):not(:hover), .app-button:focus:not(:active):not(:hover) {
   border-color: #ffdd00;
   color: #0b0c0c;
   background-color: #ffdd00;
   box-shadow: 0 2px 0 #0b0c0c;
 }
-.govuk-button::before, .app-button::before {
+.govuk-button::before, .app-fab::before, .app-button::before {
   content: "";
   display: block;
   position: absolute;
@@ -2128,18 +2128,18 @@ p + .app-card__heading,
   left: -2px;
   background: transparent;
 }
-.govuk-button:active::before, .app-button:active::before {
+.govuk-button:active::before, .app-fab:active::before, .app-button:active::before {
   top: -4px;
 }
 
-.govuk-button[disabled], [disabled].app-button {
+.govuk-button[disabled], [disabled].app-fab, [disabled].app-button {
   opacity: 0.5;
 }
-.govuk-button[disabled]:hover, [disabled].app-button:hover {
+.govuk-button[disabled]:hover, [disabled].app-fab:hover, [disabled].app-button:hover {
   background-color: #00703c;
   cursor: not-allowed;
 }
-.govuk-button[disabled]:active, [disabled].app-button:active {
+.govuk-button[disabled]:active, [disabled].app-fab:active, [disabled].app-button:active {
   top: 0;
   box-shadow: 0 2px 0 #002d18;
 }
@@ -7520,6 +7520,26 @@ html {
   margin-bottom: 1rem;
 }
 
+.app-fab {
+  font-weight: 700;
+  position: fixed;
+  right: 2rem;
+  bottom: 5rem;
+  width: auto;
+  line-height: 1;
+  border-radius: 100px;
+  padding: 0.7rem 1rem;
+  box-shadow: 0px -2px 0px 0px #002d18 inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.app-fab:active {
+  top: auto;
+  bottom: calc(5rem - 2px);
+}
+.app-fab:focus {
+  box-shadow: 0 0 0 3px #ffdd00;
+  border-color: transparent;
+}
+
 .app-icon-list {
   list-style: none;
   margin: 0 0 1rem;
@@ -7528,6 +7548,23 @@ html {
 
 .app-icon-list > li {
   margin-bottom: 0.5rem;
+}
+
+.app-icon-list--l {
+  font-size: 1.125rem;
+  line-height: 1.1111111111;
+}
+@media (min-width: 40.0625em) {
+  .app-icon-list--l {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+}
+@media print {
+  .app-icon-list--l {
+    font-size: 18pt;
+    line-height: 1.15;
+  }
 }
 
 .app-icon-list--muted {
@@ -7584,6 +7621,7 @@ html {
 
 .app-separator {
   margin: 1rem 0;
+  border-bottom-color: #d9d9d9;
 }
 
 .app-tabs {
@@ -7628,6 +7666,9 @@ html {
   display: block;
   position: relative;
 }
+.app-tabs__tab:link {
+  color: #505a5f;
+}
 .app-tabs__tab:visited {
   color: #505a5f;
 }
@@ -7666,17 +7707,26 @@ html {
 
 .app-pages-home__header {
   background-color: #000;
-  display: flex;
-  padding: 80px 0px 16px 0px;
-  justify-content: center;
-  align-items: center;
-  align-self: stretch;
+  align-content: end;
+  height: 20vh;
+  margin-bottom: 10vh;
 }
 
 .app-pages-home__govuk-logo {
   color: #fff;
-  margin: 0;
+  margin: 0 0 1rem;
   padding: 0;
+}
+
+.app-pages-home__middle {
+  height: 40vh;
+  align-content: center;
+}
+
+.app-pages-home__bottom {
+  height: 30vh;
+  padding: 1rem;
+  align-content: end;
 }
 
 .app-pages-terms {

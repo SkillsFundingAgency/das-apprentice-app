@@ -9,6 +9,10 @@
   margin-bottom: calc($app-gap / 2);
 }
 
+.app-icon-list--l {
+  @include govuk-font-size(24);
+}
+
 .app-icon-list--muted {
   color: $govuk-secondary-text-colour;
 }
