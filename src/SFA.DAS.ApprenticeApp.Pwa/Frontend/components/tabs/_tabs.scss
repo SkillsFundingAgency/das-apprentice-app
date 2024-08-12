@@ -17,6 +17,16 @@
   padding: 0.5rem;
   display: block;
   position: relative;
+  &:after {
+    content: "";
+    background-color: transparent;
+    height: 3px;
+    position: absolute;
+    left: $app-gap-half;
+    right: $app-gap-half;
+    bottom: 0;
+    transition: all 200ms;
+  }
   &:link {
     color: $govuk-secondary-text-colour;
   }
@@ -31,13 +41,7 @@
   .app-tabs__list-item--selected & {
     color: $app-brand-colour;
     &:after {
-      content: "";
       background-color: $app-brand-colour;
-      height: 3px;
-      position: absolute;
-      left: $app-gap-half;
-      right: $app-gap-half;
-      bottom: 0;
     }
   }
 }

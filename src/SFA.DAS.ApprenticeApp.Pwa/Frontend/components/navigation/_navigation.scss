@@ -12,20 +12,40 @@
   text-align: center;
   flex-grow: 1;
   height: 5rem;
-  padding-top: 1.2rem;
   transition: all 0.2s;
-  border-top: 3px solid transparent;
   text-decoration: none;
   color: $govuk-secondary-text-colour;
   width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
   &:active {
     background: #eee;
   }
 }
 
 .app-navigation__link--active {
-  border-top: 3px solid $app-brand-colour;
   color: $govuk-text-colour;
+  &:after {
+    content: "";
+    background-color: $app-brand-colour;
+    height: 3px;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+  }
+}
+
+.app-navigation__icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  display: block;
+  margin: $app-gap-half 0;
+  .app-navigation__link--active & {
+    background-color: $app-brand-colour;
+  }
 }
 
 .app-navigation__link-text {

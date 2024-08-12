@@ -6,21 +6,54 @@
 
 <h1 class="govuk-heading-xl">Your tasks</h1>
 <div class="app-tabs" data-module="app-tabs">
-    <ul class="app-tabs__list">
-        <li class="app-tabs__list-item app-tabs__list-item--selected">
-            <a class="app-tabs__tab" href="#todo">
-                To do
-            </a>
-        </li>
-        <li class="app-tabs__list-item">
-            <a class="app-tabs__tab" href="#done">
-                Done
-            </a>
-        </li>
-    </ul>
+    <div class="app-page-header">
+        <ul class="app-tabs__list">
+            <li class="app-tabs__list-item app-tabs__list-item--selected">
+                <a class="app-tabs__tab" href="#todo">
+                    To do
+                </a>
+            </li>
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab" href="#done">
+                    Done
+                </a>
+            </li>
+        </ul>
+        <a href="#filter" data-module="app-overlay">Filter</a>
+    </div>
     <div class="app-tabs__panel" id="todo">
         <div class="app-card">
             <h2 class="app-card__heading">Write up tutor notes</h2>
+            <ul class="app-icon-list app-icon-list--muted">
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Due 1 February, 2:30pm</span></li>
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Linked to 2 KSBs</span></li>
+            </ul>
+            <hr class="app-separator" />
+            <div class="app-dropdown" data-module="app-dropdown">
+                <a class="app-dropdown__toggle" role="button" aria-expanded="false">
+                    View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+                </a>
+                <div class="app-dropdown__menu">
+                    <ul class="app-dropdown__menu-list">
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Move to done</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Edit</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Share</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Delete</span>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div class="app-card">
@@ -34,13 +67,67 @@
             </ul>
             <div class="app-tag">Assignment</div>
             <hr class="app-separator" />
-            <a href="#">View actions</a>
+            <div class="app-dropdown" data-module="app-dropdown">
+                <a class="app-dropdown__toggle" role="button" aria-expanded="false">
+                    View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+                </a>
+                <div class="app-dropdown__menu">
+                    <ul class="app-dropdown__menu-list">
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Move to done</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Edit</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Share</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Delete</span>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div class="app-card">
             <h2 class="app-card__heading">Prep for EPA meeting</h2>
+            <ul class="app-icon-list app-icon-list--muted">
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Due 3 February</span></li>
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>1 note attached</span></li>
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Linked to 3 KSBs</span></li>
+            </ul>
+            <hr class="app-separator" />
+            <div class="app-dropdown" data-module="app-dropdown">
+                <a class="app-dropdown__toggle" role="button" aria-expanded="false">
+                    View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+                </a>
+                <div class="app-dropdown__menu">
+                    <ul class="app-dropdown__menu-list">
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Move to done</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Edit</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Share</span>
+                            </a></li>
+                        <li><a href="#" class="app-dropdown__menu-link">
+                                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                                <span>Delete</span>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
     </div>
     <div class="app-tabs__panel" id="done" hidden>
         <h2 class="govuk-heading-l">Done</h2>
@@ -48,3 +135,19 @@
     </div>
 </div>
 <partial name="_AddTasks.cshtml" />
+<div class="app-overlay" id="filter">
+    <div class="app-overlay-header">
+        <div class="app-overlay-header__cancel">
+            <a href="#" class="app-overlay-header__link">Cancel</a>
+        </div>
+        <h2 class="app-overlay-header__heading">
+            Task filters
+        </h2>
+        <div class="app-overlay-header__save">
+            <a href="#" class="app-overlay-header__link">Add</a>
+        </div>
+    </div>
+    <div class="app-overlay__content">
+        Filter
+    </div>
+</div>

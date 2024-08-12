@@ -25,22 +25,29 @@
         <nav class="app-navigation">
             <a asp-controller="Frontend" asp-action="Tasks"
                 class="app-navigation__link @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon svg-placeholder"></span>
                 <span class="app-navigation__link-text">Tasks</span>
             </a>
             <a asp-controller="Frontend" asp-action="KSB"
                 class="app-navigation__link @(ViewBag.Section == "KSB" ? "app-navigation__link--active" :"")">
-                <span class="app-navigation__link-text">KSBs</span>
+                <span>
+                    <span class="app-navigation__icon svg-placeholder"></span>
+                    <span class="app-navigation__link-text">KSBs</span>
+                </span>
             </a>
             <a asp-controller="Frontend" asp-action="Support"
                 class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon svg-placeholder"></span>
                 <span class="app-navigation__link-text">Support</span>
             </a>
             <a asp-controller="Frontend" asp-action="Notifications"
                 class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon svg-placeholder"></span>
                 <span class="app-navigation__link-text">Notifications</span>
             </a>
             <a asp-controller="Frontend" asp-action="Account"
                 class="app-navigation__link @(ViewBag.Section == "Account" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon svg-placeholder"></span>
                 <span class="app-navigation__link-text">Account</span>
             </a>
         </nav>
