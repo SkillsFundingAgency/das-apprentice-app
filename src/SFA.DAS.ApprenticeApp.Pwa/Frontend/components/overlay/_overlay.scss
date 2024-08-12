@@ -21,14 +21,10 @@
 .app-template__body--overlay-open {
   overflow: hidden;
   padding-right: 0px;
-  .app-overlay {
+  .app-overlay.app-overlay--visible {
     display: flex;
     top: 1rem;
   }
-}
-
-.app-fade-in {
-  animation: slideUp ease 1s;
 }
 
 @keyframes slideUp {

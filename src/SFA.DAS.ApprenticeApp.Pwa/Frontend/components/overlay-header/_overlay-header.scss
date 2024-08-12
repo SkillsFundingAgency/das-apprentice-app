@@ -30,4 +30,7 @@
   &:link {
     color: $app-brand-colour;
   }
+  &:focus {
+    @include govuk-focused-text;
+  }
 }

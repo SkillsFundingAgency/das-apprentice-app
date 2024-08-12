@@ -1,4 +1,6 @@
-﻿function Tabs(container) {
+﻿// Tabs
+
+function Tabs(container) {
   this.container = container;
   this.tabs = container.querySelectorAll(".app-tabs__tab");
   this.tabPanels = container.querySelectorAll(".app-tabs__panel");
@@ -42,9 +44,12 @@ if (appTabs) {
   });
 }
 
+// Overlays
+
 function Overlay(link) {
   this.link = link;
   this.bodyClassName = "app-template__body--overlay-open";
+  this.showOverlayClassName = "app-overlay--visible";
   this.overlay;
 }
 
@@ -66,15 +71,17 @@ Overlay.prototype.setupEvents = function () {
 Overlay.prototype.showOverlay = function (event) {
   event.preventDefault();
   document.body.classList.add(this.bodyClassName);
+  this.overlay.classList.add(this.showOverlayClassName);
   const firstInput = this.overlay.querySelector("input");
-  console.log(firstInput);
   if (firstInput) {
     firstInput.focus();
   }
 };
 
-Overlay.prototype.hideOverlay = function () {
+Overlay.prototype.hideOverlay = function (event) {
+  event.preventDefault();
   document.body.classList.remove(this.bodyClassName);
+  this.overlay.classList.remove(this.showOverlayClassName);
 };
 
 const appOverlays = document.querySelectorAll(`[data-module="app-overlay"]`);

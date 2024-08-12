@@ -7527,6 +7527,49 @@ html {
   background-color: #d9d9d9;
 }
 
+.app-link {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+  text-underline-offset: 0.1578em;
+  color: #00703c;
+}
+@media print {
+  .app-link {
+    font-family: sans-serif;
+  }
+}
+.app-link:hover {
+  text-decoration-thickness: max(3px, .1875rem, .12em);
+  -webkit-text-decoration-skip-ink: none;
+  text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip: none;
+  text-decoration-skip: none;
+}
+.app-link:focus {
+  outline: 3px solid transparent;
+  color: #0b0c0c;
+  background-color: #ffdd00;
+  box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.app-link:visited {
+  color: #00703c;
+}
+.app-link:focus {
+  outline: 3px solid transparent;
+  color: #0b0c0c;
+  background-color: #ffdd00;
+  box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 .app-main {
   padding: 1rem;
   position: absolute;
@@ -7814,13 +7857,9 @@ html {
   overflow: hidden;
   padding-right: 0px;
 }
-.app-template__body--overlay-open .app-overlay {
+.app-template__body--overlay-open .app-overlay.app-overlay--visible {
   display: flex;
   top: 1rem;
-}
-
-.app-fade-in {
-  animation: slideUp ease 1s;
 }
 
 @keyframes slideUp {
@@ -7862,10 +7901,21 @@ html {
 .app-overlay-header__link:visited, .app-overlay-header__link:link {
   color: #00703c;
 }
+.app-overlay-header__link:focus {
+  outline: 3px solid transparent;
+  color: #0b0c0c;
+  background-color: #ffdd00;
+  box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
 
 .app-page-header {
   display: flex;
+  align-items: center;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .app-radios__item {
