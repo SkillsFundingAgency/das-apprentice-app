@@ -1,0 +1,12 @@
+.app-fieldset {
+  @extend .govuk-fieldset;
+  padding: $app-gap;
+  background: #fff;
+  border-radius: $app-border-radius-inputs;
+  border: 1px solid #f7f7f7;
+}
+
+.app-fieldset__legend {
+  @extend .govuk-fieldset__legend;
+  margin-bottom: 0;
+}
