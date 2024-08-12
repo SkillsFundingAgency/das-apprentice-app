@@ -7527,6 +7527,12 @@ html {
   background-color: #fafafa;
 }
 
+.app-sticky {
+  position: sticky;
+  top: -1rem;
+  background-color: #fafafa;
+}
+
 .svg-placeholder {
   border-radius: 50%;
   background-color: #d9d9d9;
