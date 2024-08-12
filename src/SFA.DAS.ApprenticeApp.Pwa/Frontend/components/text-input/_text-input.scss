@@ -1,0 +1,12 @@
+.app-input {
+  @extend .govuk-input;
+  background-color: #fff;
+  border: 0;
+  line-height: 1;
+  padding: $app-gap;
+  border-radius: $app-border-radius-inputs;
+  border: 1px solid #f7f7f7;
+  &:focus {
+    @include app-focused;
+  }
+}

@@ -1,0 +1,6 @@
+@mixin app-focused {
+  outline: none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: $app-border-colour;
+}
