@@ -3,10 +3,16 @@
 @inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Settings";
-    ViewData["Section"] = "Settings";
+    ViewData["Section"] = "Account";
 }
 
-<h1 class="govuk-heading-xl">Settings</h1>
+<div class="app-page-header">
+    <div class="app-page-header__back"><a asp-action="AccountLandingPage" asp-controller="Account"
+            class="app-back-link">Back</a>
+    </div>
+    <h1 class="app-page-header__heading">Settings</h1>
+    <div class="app-page-header__forward"></div>
+</div>
 <div class="app-card">
     <div class="govuk-grid-row settings-grid-container">
         <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">

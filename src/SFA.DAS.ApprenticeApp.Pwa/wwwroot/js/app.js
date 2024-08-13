@@ -1,7 +1,6 @@
 ﻿// Tabs
 
 function Tabs(container) {
-  this.container = container;
   this.tabs = container.querySelectorAll(".app-tabs__tab");
   this.tabPanels = container.querySelectorAll(".app-tabs__panel");
 }
@@ -50,7 +49,6 @@ function Overlay(link) {
   this.link = link;
   this.bodyClassName = "app-template__body--overlay-open";
   this.showOverlayClassName = "app-overlay--visible";
-  this.overlay;
 }
 
 Overlay.prototype.init = function () {

@@ -1,0 +1,15 @@
+.app-dl-list {
+  @extend .govuk-list;
+  margin: 0;
+  & > dt {
+    margin-bottom: $app-gap-half;
+    color: $govuk-secondary-text-colour;
+    @include govuk-font-size(16);
+  }
+  & > dd {
+    margin: 0 0 $app-gap;
+    &:last-child {
+      margin: 0;
+    }
+  }
+}

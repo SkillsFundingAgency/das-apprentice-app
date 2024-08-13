@@ -1,0 +1,6 @@
+.app-back-link {
+  @extend .govuk-back-link;
+  &:before {
+    border-color: $app-brand-colour;
+  }
+}
