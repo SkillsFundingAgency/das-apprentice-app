@@ -5,6 +5,7 @@
 
 .app-dropdown__toggle {
   text-decoration: none;
+  cursor: pointer;
   @include govuk-font-size(19);
 }
 
@@ -16,6 +17,10 @@
   border: 1px solid #f7f7f7;
   position: absolute;
   display: none;
+}
+
+.app-dropdown__menu--visible {
+  display: flex;
 }
 
 .app-dropdown__menu-list {

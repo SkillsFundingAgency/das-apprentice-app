@@ -45,6 +45,14 @@ public class FrontendController : Controller
     {
         return View();
     }
+    public IActionResult Profile()
+    {
+        return View();
+    }
+    public IActionResult Settings()
+    {
+        return View();
+    }
 }
 
 

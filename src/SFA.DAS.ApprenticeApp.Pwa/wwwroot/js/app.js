@@ -91,3 +91,30 @@ if (appOverlays) {
     new Overlay(overlay).init();
   });
 }
+
+// Dropdown Menus
+
+function Dropdown(container) {
+  this.toggle = container.querySelector(".app-dropdown__toggle");
+  this.menu = container.querySelector(".app-dropdown__menu");
+  this.showMenuClassName = "app-dropdown__menu--visible";
+}
+Dropdown.prototype.init = function () {
+  this.toggle.addEventListener("click", this.toggleMenu.bind(this));
+};
+
+Dropdown.prototype.toggleMenu = function () {
+  if (this.menu.classList.contains(this.showMenuClassName)) {
+    this.menu.classList.remove(this.showMenuClassName);
+  } else {
+    this.menu.classList.add(this.showMenuClassName);
+  }
+};
+
+const appDropdowns = document.querySelectorAll(`[data-module="app-dropdown"]`);
+
+if (appDropdowns) {
+  appDropdowns.forEach(function (dropdown) {
+    new Dropdown(dropdown).init();
+  });
+}
