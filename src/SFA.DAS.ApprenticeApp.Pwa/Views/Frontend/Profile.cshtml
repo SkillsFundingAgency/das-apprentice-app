@@ -3,5 +3,112 @@
     ViewData["Section"] = "Account";
     Layout = "_Layout";
 }
+<div class="app-page-header">
+    <div class="app-page-header__back"><a asp-action="Account" asp-controller="Frontend" class="app-back-link">Back</a>
+    </div>
+    <h1 class="app-page-header__heading">Your profile</h1>
+    <div class="app-page-header__forward"></div>
+</div>
 
-<h1 class="govuk-heading-xl">Your profile</h1>
+<h2 class="govuk-heading-l govuk-!-margin-top-4">Your details</h2>
+<div class="app-card">
+    <dl class="app-dl-list">
+        <dt>Name:</dt>
+        <dd>Jane Smith</dd>
+
+        <dt>Name:</dt>
+        <dd>Jane Smith</dd>
+
+        <dt>Name:</dt>
+        <dd>Jane Smith</dd>
+    </dl>
+</div>
+<h2 class="govuk-heading-l govuk-!-margin-top-6">Your progress</h2>
+<div class="app-card">
+    <div class="app-progress__wrap">
+        <div class="app-progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
+            aria-valuemax="100">
+            <div class="app-progress__bar" id="progressBar"></div>
+        </div>
+        <div class="app-progress__label" id="progressLabel">
+
+        </div>
+    </div>
+    <p>Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
+    <a href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" target="_blank"
+        class="govuk-link">What is
+        an end-point assessment (EPA)?</a>
+</div>
+
+<h2 class="govuk-heading-l govuk-!-margin-top-6">Your apprenticeship</h2>
+<div class="app-card">
+    <dl class="app-dl-list">
+        <dt class="app-dl-list__title">
+            Current employer:
+        </dt>
+        <dd class="app-dl-list__content">EmployerName</dd>
+        <dt class="app-dl-list__title">
+            Training provider:
+        </dt>
+        <dd class="app-dl-list__content">TrainingProviderName</dd>
+        <dt class="app-dl-list__title">
+            Apprenticeship:
+        </dt>
+        <dd class="app-dl-list__content">Title</dd>
+        <dt class="app-dl-list__title">
+            Level:
+        </dt>
+        <dd class="app-dl-list__content">Level</dd>
+        <dt class="app-dl-list__title">
+            Planned training start date:
+        </dt>
+        <dd class="app-dl-list__content">StartDate</dd>
+        <dt class="app-dl-list__title">
+            Planned training end date:
+        </dt>
+        <dd class="app-dl-list__content">EndDate</dd>
+
+        <dt class="app-dl-list__title">
+            Estimated duration:
+        </dt>
+        <dd class="app-dl-list__content"> days</dd>
+    </dl>
+</div>
+<script>
+    // Assuming your apprenticeship length in days is calculated on the server and passed to the view
+    const apprenticeshipLengthInDays = 300;
+
+    // Assuming a function to convert days to months (approximately)
+    const daysToMonths = (days) => days / 30.417; // This is a rough estimate
+
+
+    // Total duration for EPA in months
+    const totalMonths = daysToMonths(apprenticeshipLengthInDays);
+    var todayDate = new Date();
+    var endDateString = '12/01/2025'; // Ensure this is a valid date string
+    var endDate = endDateString ? new Date(endDateString) : null;
+
+    // calculate time difference
+    var timeDifference = endDate.getTime() - todayDate.getTime();
+
+
+    // calculate days differences
+    var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+    console.log(daysDifference)
+    // calculate months difference
+    const remainingMonths = daysToMonths(daysDifference);
+
+
+    // Set the progress bar width
+    const progressPercentage = Math.round(((24 - 11) / 24) * 100);
+    document.addEventListener("DOMContentLoaded", function () {
+        const progressElement = document.getElementById('progressBar');
+        const progressLabel = document.getElementById('progressLabel');
+        progressElement.style.width = `${progressPercentage}%`;
+        progressLabel.innerHTML = `${progressPercentage}%`;
+
+        // Display remaining months text
+        const remainingMonthsText = document.getElementById('remaining-months');
+        remainingMonthsText.textContent = `${Math.round(remainingMonths)} months until Gateway.`;
+    });
+</script>

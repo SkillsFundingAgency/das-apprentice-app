@@ -1,36 +1,42 @@
 ﻿@{
+    ViewData["Title"] = "Contact your training provider";
     Layout = "_LayoutBasic";
 }
-<header class="app-page-header">
-    <div class="app-page-header__left">
-        <a href="../" class="app-back-link">Back</a>
+<div class="app-main">
+    <div class="app-page-header govuk-!-margin-bottom-8">
+        <div class="app-page-header__back"><a asp-action="Index" asp-controller="Home" class="app-back-link">Back</a>
+        </div>
+        <h1 class="app-page-header__heading">Contact your training provider</h1>
+        <div class="app-page-header__forward"></div>
     </div>
-    <div class="app-page-header__middle">
-        <h1 class="govuk-heading-l">Contact your training provider</h1>
-    </div>
-</header>
 
-<p class="govuk-body">You cannot currently sign into the app. This could be because the information you entered when you
-    created your
-    account does not:</p>
+    <p class="govuk-body">You cannot currently sign into the app. This could be because the information you entered
+        when you
+        created your
+        account does not:</p>
 
-<ul class="govuk-list govuk-list--bullet">
-    <li>appear in our records</li>
-    <li>match the information in our records</li>
-</ul>
-<p class="govuk-body">
-    Check your junk email for a link to sign in to GOV.UK One Login. If you have not received anything, speak to your
-    training provider. They can check which email address you have registered in the apprenticeship service, and they
-    may be able to update your details if they’re incorrect.
-</p>
-<p class="govuk-body">
-    If you need more help, you can call 08000 150 600 or email <a
-        href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
-        class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>. Our opening times are 8am to 8pm, Monday
-    to Friday. During our opening times, we will reply to emails within 4 hours.
-</p>
-<p class="govuk-body">
-    You can also visit <a href="https://www.apprenticeships.gov.uk"
-        class="govuk-link govuk-link--no-visited-state">apprenticeships.gov.uk</a> for guidance about your
-    apprenticeship.
-</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>appear in our records</li>
+        <li>match the information in our records</li>
+    </ul>
+    <p class="govuk-body">
+        Check your junk email for a link to sign in to GOV.UK One Login. If you have not received anything, speak to
+        your
+        training provider. They can check which email address you have registered in the apprenticeship service, and
+        they
+        may be able to update your details if they’re incorrect.
+    </p>
+    <p class="govuk-body">
+        If you need more help, you can call 08000 150 600 or email <a
+            href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
+            class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>. Our opening times are 8am to 8pm,
+        Monday
+        to Friday. During our opening times, we will reply to emails within 4 hours.
+    </p>
+    <p class="govuk-body">
+        You can also visit <a href="https://www.apprenticeships.gov.uk"
+            class="govuk-link govuk-link--no-visited-state">apprenticeships.gov.uk</a> for guidance about your
+        apprenticeship.
+    </p>
+
+</div>
