@@ -42,14 +42,15 @@
         </div>
     </div>
     <div class="app-progress__wrap">
-        <div class="app-progress" role="progressbar" aria-label="Your apprenticeship progress" aria-valuenow="25"
+        <div class="app-progress" role="progressbar" aria-label="Your apprenticeship progress" aria-valuenow=""
             aria-valuemin="0" aria-valuemax="100">
             <div class="app-progress__bar" id="progressBar"></div>
         </div>
         <div class="app-progress__label" id="progressLabel"></div>
     </div>
     <p>Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
-    <a href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" target="_blank">What is
+    <a href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
+        target="_blank">What is
         an end-point assessment (EPA)?</a>
 
     <script>
@@ -80,6 +81,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const progressElement = document.getElementById('progressBar');
             const progressLabel = document.getElementById('progressLabel');
+            progressElement.setAttribute("aria-valuenow", progressPercentage)
             progressElement.style.width = `${progressPercentage}%`;
             progressLabel.innerHTML = `${progressPercentage}%`;
 

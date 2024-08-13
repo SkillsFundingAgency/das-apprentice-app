@@ -50,7 +50,6 @@ function Overlay(link) {
   this.link = link;
   this.bodyClassName = "app-template__body--overlay-open";
   this.showOverlayClassName = "app-overlay--visible";
-  this.overlay;
 }
 
 Overlay.prototype.init = function () {
