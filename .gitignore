@@ -357,3 +357,4 @@ src/SFA.DAS.ApprenticeApp.Pwa/appsettings.Development.json
 /src/SFA.DAS.ApprenticeApp.Pwa/Properties/serviceDependencies.local.json
 /src/SFA.DAS.ApprenticeApp.Pwa/Properties/ServiceDependencies/local/appInsights1.arm.json
 /src/SFA.DAS.ApprenticeApp.Pwa.UnitTests/package-lock.json
+/src/SFA.DAS.ApprenticeApp.Pwa/.idea
