@@ -1,7 +1,6 @@
 ﻿// Tabs
 
 function Tabs(container) {
-  this.container = container;
   this.tabs = container.querySelectorAll(".app-tabs__tab");
   this.tabPanels = container.querySelectorAll(".app-tabs__panel");
 }
