@@ -37,7 +37,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult Authenticated()
         {
-            return RedirectToAction("AccountLandingPage", "Account");
+            return RedirectToAction("Index", "Tasks");
         }
 
         [Authorize]

@@ -4,7 +4,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
     public class TasksController : Controller
     {
-        public IActionResult Tasks()
+        public IActionResult Index()
         {
             return View();
         }

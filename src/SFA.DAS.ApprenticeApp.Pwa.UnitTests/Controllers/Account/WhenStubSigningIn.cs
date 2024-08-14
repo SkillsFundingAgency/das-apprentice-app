@@ -52,8 +52,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         public void And_Terms_Accepted_Then_Profile_Displayed([Greedy] AccountController controller)
         {
             var result = controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("AccountLandingPage");
-            result.ControllerName.Should().Be("Account");
+            result.ActionName.Should().Be("Index");
+            result.ControllerName.Should().Be("Tasks");
 
         }
 

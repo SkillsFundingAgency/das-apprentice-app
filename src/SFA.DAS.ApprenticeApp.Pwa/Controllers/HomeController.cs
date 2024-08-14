@@ -22,7 +22,7 @@ public class HomeController : Controller
     {
         if (HttpContext.User.Identity.IsAuthenticated)
         {
-            return RedirectToAction("AccountLandingPage", "Account");
+            return RedirectToAction("Index", "Tasks");
         }
 
         var vm = new HomeViewModel();
