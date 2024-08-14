@@ -1,3 +1,67 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksViewModel
+
+
+
+@foreach (var task in Model.TasksData.OrderBy(x => x.DueDate).Descending)
+{
+    <div class="app-card">
+        <h2 class="app-card__heading">@task.Title</h2>
+        <ul class="app-icon-list app-icon-list--muted">
+            <li><span class="app-icon-list__icon svg-placeholder"></span><span>Due @task.DueDate</span></li>
+            @if (task.TaskReminders.Any())
+            {
+                <li>
+                    <span class="app-icon-list__icon svg-placeholder"></span><span>Reminder set: @task.TaskReminders.FirstOrDefault()</span>
+                </li>
+            }
+            @if (task.TaskFiles.Any())
+            {
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>@task.TaskFiles.Count.ToString() file(s) attached</span></li>
+            }
+            @if (task.TaskLinkedKsbs.Any())
+            {
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Linked to @task.TaskLinkedKsbs.Count.ToString() KSBs</span></li>
+            }
+            
+        </ul>
+        <div class="app-tag">Assignment</div>
+        <hr class="app-separator" />
+        <div class="app-dropdown" data-module="app-dropdown">
+            <a class="app-dropdown__toggle" role="button" aria-expanded="false">
+                View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+            </a>
+            <div class="app-dropdown__menu">
+                <ul class="app-dropdown__menu-list">
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Move to done</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Edit</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Share</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Delete</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
 <div class="app-card">
     <h2 class="app-card__heading">Write up tutor notes</h2>
     <ul class="app-icon-list app-icon-list--muted">
@@ -11,22 +75,30 @@
         </a>
         <div class="app-dropdown__menu">
             <ul class="app-dropdown__menu-list">
-                <li><a href="#" class="app-dropdown__menu-link">
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
                         <span class="app-dropdown__menu-icon svg-placeholder"></span>
                         <span>Move to done</span>
-                    </a></li>
-                <li><a href="#" class="app-dropdown__menu-link">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
                         <span class="app-dropdown__menu-icon svg-placeholder"></span>
                         <span>Edit</span>
-                    </a></li>
-                <li><a href="#" class="app-dropdown__menu-link">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
                         <span class="app-dropdown__menu-icon svg-placeholder"></span>
                         <span>Share</span>
-                    </a></li>
-                <li><a href="#" class="app-dropdown__menu-link">
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
                         <span class="app-dropdown__menu-icon svg-placeholder"></span>
                         <span>Delete</span>
-                    </a></li>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

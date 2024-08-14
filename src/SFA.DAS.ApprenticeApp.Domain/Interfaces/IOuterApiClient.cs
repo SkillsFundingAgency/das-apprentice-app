@@ -33,5 +33,11 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Delete("/apprentices/{id}/subscriptions")]
         Task ApprenticeRemoveSubscription([Path] Guid id, [Body] ApprenticeRemoveSubscriptionRequest request);
+
+        [Get("/apprentices/{id}/progress/tasks")]
+        Task<ApprenticeTasksCollection> GetApprenticeTasks([Path] Guid id, int status, DateTime fromDate, DateTime toDate);
+                
+        [Delete("/apprentices/{id}/progress/tasks/{taskId}")]
+        Task DeleteApprenticeTask([Path] Guid id, [Path] int taskId);
     }
 }
