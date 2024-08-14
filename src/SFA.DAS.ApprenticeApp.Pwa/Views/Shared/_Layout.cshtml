@@ -24,33 +24,29 @@
         </main>
         <nav class="app-navigation">
 
-            <a asp-controller="Account" asp-action="AccountLandingPage" class="app-navigation__link">
-                <span class="app-navigation__icon svg-placeholder"></span>
-                <span class="app-navigation__link-text">Profile</span>
-            </a>
             <a asp-controller="Tasks" asp-action="Tasks" class="app-navigation__link">
                 <span class="app-navigation__icon svg-placeholder"></span>
                 <span class="app-navigation__link-text">Tasks</span>
             </a>
-            <a href="link1" class="app-navigation__link">
+            <a asp-controller="Ksbs" asp-action="Index" class="app-navigation__link">
                 <span class="app-navigation__icon svg-placeholder"></span>
-                <span class="app-navigation__link-text">Saved items
-                </span>
+                <span class="app-navigation__link-text">Ksbs</span>
             </a>
             <a asp-controller="Support" asp-action="Index"
-                class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
+               class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon svg-placeholder"></span>
-                <span class="app-navigation__link-text">Support and guidance</span>
+                <span class="app-navigation__link-text">Support</span>
             </a>
             <a href="link1" class="app-navigation__link">
                 <span class="app-navigation__icon svg-placeholder"></span>
                 <span class="app-navigation__link-text">Notifications</span>
             </a>
-            <a asp-controller="Settings" asp-action="Index"
-                class="app-navigation__link @(ViewBag.Section == "Settings" ? "app-navigation__link--active" :"")"><span
-                    class="app-navigation__icon svg-placeholder"></span>
+            <a asp-controller="Account" asp-action="AccountLandingPage"
+               class="app-navigation__link @(ViewBag.Section == "Settings" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon svg-placeholder"></span>
 
-                <span class="app-navigation__link-text">Settings</span></a>
+                <span class="app-navigation__link-text">Account</span>
+            </a>
         </nav>
     </div>
     <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
