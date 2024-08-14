@@ -16,7 +16,7 @@
     {
         @if (item.Slug != null)
         {
-            <li class="app-stack__link">
+            <li class="app-stack__link" style="margin-bottom: 1rem;">
                 <a asp-controller="Support" asp-action="ArticlesPage" asp-route-slug="@item.Slug" class="app-list-links__link">
                     @item.Heading
                 </a>
