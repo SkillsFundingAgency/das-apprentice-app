@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
+    [Authorize]
     public class WelcomeController : Controller
     {
         public IActionResult Index()
