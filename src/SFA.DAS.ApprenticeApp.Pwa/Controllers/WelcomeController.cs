@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeApp.Application;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -6,9 +7,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         public IActionResult Index()
         {
-            var cookieName = "ApprenticeAppWelcomeSplashViewed";
-
-            var cookie = Request.Cookies[cookieName];
+            var cookie = Request.Cookies[Constants.WelcomeSplashScreenCookieName];
 
             if (cookie == null)
             {
@@ -17,7 +16,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     Expires = DateTime.Now.AddYears(99),
                     Path = "/"
                 };
-                Response.Cookies.Append(cookieName, "seen", cookieOptions);
+                Response.Cookies.Append(Constants.WelcomeSplashScreenCookieName, "1", cookieOptions);
 
                 return View();
             }

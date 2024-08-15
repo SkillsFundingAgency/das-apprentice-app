@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
+using SFA.DAS.ApprenticeApp.Application;
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 {
     [TestFixture]
@@ -14,7 +15,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
          [Greedy] WelcomeController controller)
         {
             var httpContext = new DefaultHttpContext();
-            httpContext.Response.Cookies.Append("ApprenticeAppWelcomeSplashViewed", "seen");
+            httpContext.Response.Cookies.Append(Constants.WelcomeSplashScreenCookieName, "1");
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
