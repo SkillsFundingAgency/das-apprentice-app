@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
-using SFA.DAS.ApprenticeApp.Application;
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 {
     [TestFixture]
