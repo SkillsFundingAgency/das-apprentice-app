@@ -42,8 +42,10 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Controllers\Support\" />
+    <Folder Include="Controllers\Ksb\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controllers\Support\" />
+    <None Remove="Controllers\Ksb\" />
   </ItemGroup>
 </Project>
