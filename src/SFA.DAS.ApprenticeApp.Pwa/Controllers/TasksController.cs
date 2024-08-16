@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeApp.Application;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private readonly ILogger<TasksController> _logger;
@@ -21,19 +22,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            //check apprenticeshipId
-            var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-            //Default to current year for testing
+            return View("TasksNotStarted");
+            
+        }
 
-            DateTime fromDate = new DateTime(2024, 1, 1);
-            DateTime toDate = new DateTime(2024, 12,31);
-            var tasksResult = await _client.GetApprenticeTasks(new Guid(apprenticeshipId), 0, fromDate, toDate);
-            var tasksData = new TasksPageModel
-            {
-                TasksData = tasksResult.Tasks
-            };
+        public IActionResult TasksNotStarted()
+        {
 
-            return View(tasksData);
+            return View();
         }
     }
 }

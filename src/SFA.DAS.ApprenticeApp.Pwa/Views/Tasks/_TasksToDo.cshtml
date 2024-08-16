@@ -1,8 +1,6 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksViewModel
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
 
-
-
-@foreach (var task in Model.TasksData.OrderBy(x => x.DueDate).Descending)
+@foreach (var task in Model.Tasks.OrderBy(x => x.DueDate))
 {
     <div class="app-card">
         <h2 class="app-card__heading">@task.Title</h2>

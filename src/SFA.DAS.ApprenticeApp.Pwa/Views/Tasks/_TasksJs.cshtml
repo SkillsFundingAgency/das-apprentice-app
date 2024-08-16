@@ -7,7 +7,18 @@
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                data: { PARAM1: $(this).siblings('.taskId').val(), PARAM2: "false" },
+                data: { PARAM1: $('#taskId').val(), PARAM2: "false" },
+                dataType: "json",
+                contentType: "application/json"
+            });
+            return false;
+        });
+
+        $('.yearselector')on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTasks", "Tasks")',
+                data: { PARAM1: $(this)'#yearId'.val() },
                 dataType: "json",
                 contentType: "application/json"
             });

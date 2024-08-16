@@ -3,7 +3,7 @@
     public class ApprenticeTask
     {
         public int TaskId { get; set; }
-        public Guid ApprenticeshipId { get; set; }
+        public long ApprenticeshipId { get; set; }
         public DateTime? DueDate { get; set; } = null!;
         public string Title { get; set; } = null!;
         public int? ApprenticeshipCategoryId { get; set; } = null!;
