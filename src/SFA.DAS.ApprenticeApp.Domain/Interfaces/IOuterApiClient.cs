@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         Task DeleteApprenticeTask([Path] Guid id, [Path] int taskId);
 
         [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksbs")]
-        Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] Guid id, [Path] string standardUid, [Path] string option);
+        Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
 
     }
 }
