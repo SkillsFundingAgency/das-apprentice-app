@@ -1,0 +1,12 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+
+
+@foreach (var ksb in Model.Ksbs)
+{
+    <div>
+        <h2 class="app-card__heading">@ksb.Key</h2>
+        <div class="govuk-body">@ksb.Detail</div>
+        <div class="app-tag">@ksb.Status</div>
+        <hr class="app-separator" />
+    </div>   
+}

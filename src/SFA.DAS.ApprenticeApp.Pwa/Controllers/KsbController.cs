@@ -30,7 +30,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (apprenticeDetails.MyApprenticeship != null)
                 {
-                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeDetails.MyApprenticeship.ApprenticeshipId, apprenticeDetails.MyApprenticeship.StandardUId, apprenticeDetails.MyApprenticeship.Title);
+                    //using default value of core until we have the correct value from Approvals api
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeDetails.MyApprenticeship.ApprenticeshipId, apprenticeDetails.MyApprenticeship.StandardUId, "core");
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
                     {
@@ -41,6 +42,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     };
 
                     return View(apprenticeKsbsPageModel);
+                }
+
+                string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs Index. ApprenticeId: {apprenticeId}";
+                _logger.LogWarning(message);
+            }
+            else
+            {
+                _logger.LogWarning("ApprenticeId not found in user claims for Ksbs Index.");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> LinkedKsbs()
+        {
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                if (apprenticeDetails.MyApprenticeship != null)
+                {
+                    //using default value of core until we have the correct value from Approvals api
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeDetails.MyApprenticeship.ApprenticeshipId, apprenticeDetails.MyApprenticeship.StandardUId, "core");
+                    ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
+
+                    {
+                        Ksbs = apprenticeKsbResult,
+                        KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Knowledge),
+                        SkillCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Skill),
+                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Behaviour)
+                    };
+
+                    return View("LinkKsb", apprenticeKsbsPageModel);
                 }
 
                 string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs Index. ApprenticeId: {apprenticeId}";

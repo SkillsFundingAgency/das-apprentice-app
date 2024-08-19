@@ -7,9 +7,6 @@
 }
 
 <h1 class="govuk-heading-xl">Your tasks</h1>
-<a class="app-dropdown__toggle yearselector" role="button" aria-expanded="false" id="yearId">
-    @Model.Year<span class="govuk-visually-hidden"> for Year Selector</span>
-</a>
 <div class="app-tabs" data-module="app-tabs">
     <div class="app-page-header app-sticky">
         <ul class="app-tabs__list">
@@ -34,3 +31,6 @@
     </div>
 </div>
 <partial name="_AddTasks.cshtml" />
+
+
+@await Html.PartialAsync("_TasksJs.cshtml", Model)

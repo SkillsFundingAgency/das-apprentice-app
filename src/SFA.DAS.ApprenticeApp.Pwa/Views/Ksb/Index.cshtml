@@ -6,34 +6,27 @@
 
 <h1 class="govuk-heading-xl">Your knowledge, skills and behaviours (KSBs)</h1>
 
-
-<div>
-    <button class="govuk-button" data-module="govuk-button">Knowledge(@Model.KnowledgeCount.ToString())</button>
-    <button class="govuk-button" data-module="govuk-button">Skills(@Model.SkillCount.ToString())</button>
-    <button class="govuk-button" data-module="govuk-button">Behaviours(@Model.BehaviourCount.ToString())</button>
-</div>
-
-@if (Model.Ksbs != null && Model.Ksbs.Count > 1)
-{
-    @foreach (var ksb in Model.Ksbs)
-    {
-        <div class="govuk-accordion__section">
-            <div class="govuk-accordion__section-header">
-                <h2 class="govuk-accordion__section-heading">
-                    <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
-                        @ksb.Id
-                    </span>
-                </h2>
-            </div>
-            <div id="accordion-default-content-@ksb.Key" class="govuk-accordion__section-content">
-                <div class="govuk-body">@ksb.Key</div>
-                <div class="govuk-body">@ksb.Detail</div>
-            </div>
+<div class="app-tabs" data-module="app-tabs">
+    <div class="app-page-header app-sticky">
+        <ul class="app-tabs__list">
+            <li class="app-tabs__list-item app-tabs__list-item--selected">
+                <a class="app-tabs__tab" href="#knowledge">
+                    Knowledge (@Model.KnowledgeCount.ToString())
+                </a>
+            </li>
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab" href="#skills">
+                    Skills (@Model.SkillCount.ToString())
+                </a>
+            </li>
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab" href="#behaviours">
+                    Behaviours (@Model.BehaviourCount.ToString())
+                </a>
+            </li>
+        </ul>
         </div>
-
-        <h2>@ksb.Type</h2>
-        <p>@ksb.Key</p>
-        <p>@ksb.Detail</p>
-    }
-
-}
+        <div class="app-tabs__panel">
+        <partial name="_KsbsAll.cshtml" />
+    </div>
+</div>

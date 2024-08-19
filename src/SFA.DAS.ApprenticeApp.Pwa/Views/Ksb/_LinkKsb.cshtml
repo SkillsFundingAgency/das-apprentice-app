@@ -1,0 +1,29 @@
+﻿<div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+        <a href="#" class="app-overlay-header__link">Cancel</a>
+    </div>
+    <h2 class="app-overlay-header__heading">
+        Link to knowledge, skills and behaviours (KSBs)
+    </h2>
+    <div class="app-overlay-header__save">
+        <a href="#" class="app-overlay-header__link">Confirm</a>
+    </div>
+</div>
+
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+
+
+
+@foreach (var ksb in Model.Ksbs)
+{
+    <div>
+        <h2 class="app-card__heading">@ksb.Key</h2>
+        <div class="govuk-body">@ksb.Detail</div>
+        <input class="app-checkboxes__input" #linkKsb />Link this KSB to the task
+        <span>
+            Edit status
+        </span>
+        <div class="app-tag">@ksb.Status</div>
+        <hr class="app-separator" />
+    </div>
+}

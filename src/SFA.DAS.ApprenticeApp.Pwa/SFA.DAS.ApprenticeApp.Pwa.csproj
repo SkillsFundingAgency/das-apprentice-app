@@ -36,7 +36,6 @@
     <Folder Include="Configuration\" />
     <Folder Include="Views\Terms\" />
     <Folder Include="Authentication\" />
-    <Folder Include="Views\Ksb\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj">

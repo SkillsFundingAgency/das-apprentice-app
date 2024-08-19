@@ -1,29 +1,22 @@
 ﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('.deleteTask').on('click', function () {
             $.ajax({
-                type: "POST",
+                type: "DELETE",
                 url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                data: { PARAM1: $('#taskId').val(), PARAM2: "false" },
+                data: {taskId: $(this).siblings('.taskId').val() },
                 dataType: "json",
-                contentType: "application/json"
+                contentType: "application/json"               
             });
             return false;
         });
-
-        $('.yearselector')on('click', function () {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetTasks", "Tasks")',
-                data: { PARAM1: $(this)'#yearId'.val() },
-                dataType: "json",
-                contentType: "application/json"
-            });
-            return false;
-        });
+        $('.linkksb').on('click', function () { 
+            var url = '/ksb/LinkedKsbs';
+            window.location.href = url;
+        
+        })
     });
 </script>
 

@@ -44,11 +44,10 @@
         public int TaskId { get; set; }
         public int? ReminderId { get; set; }
         public int? ReminderValue { get; set; }
-        public ReminderUnit? ReminderUnit { get; set; }
+        public int? ReminderUnit { get; set; }
         public ReminderStatus? Status { get; set; }
     }
 
-    [Flags]
     public enum ReminderUnit
     {
         Minutes = 0,
@@ -56,7 +55,6 @@
         Days = 2
     }
 
-    [Flags]
     public enum ReminderStatus
     {
         NotSent = 0,
