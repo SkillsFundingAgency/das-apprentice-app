@@ -16,7 +16,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     Expires = DateTime.Now.AddYears(99),
-                    Path = "/"
+                    Path = "/",
+                    Secure = true,
+                    HttpOnly = true
                 };
                 Response.Cookies.Append(Constants.WelcomeSplashScreenCookieName, "1", cookieOptions);
 
