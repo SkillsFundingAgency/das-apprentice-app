@@ -35,7 +35,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
                 var taskTodoResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 0, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
-                var taskDoneResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 1, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+                var taskDoneResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 1, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
 
                 if (taskTodoResult == null || taskTodoResult.Tasks.Count == 0)
                 {
