@@ -1,0 +1,86 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+
+@foreach (var task in Model.TasksDone.OrderBy(x => x.CompletionDateTime))
+{
+    <div class="app-card">
+        <h2 class="app-card__heading">@task.Title</h2>
+        <ul class="app-icon-list app-icon-list--muted">
+            <li><span class="app-icon-list__icon svg-placeholder"></span><span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span></li>
+            @if (task.TaskReminders.Any())
+            {
+                <li>
+                    <span class="app-icon-list__icon svg-placeholder"></span><span>
+                        Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
+
+                        @switch (task.TaskReminders.First().ReminderValue)
+                        {
+                            case 0:
+                                <text>minute</text>
+                                break;
+                            case 1:
+                                <text>hour</text>
+                                break;
+                            case 2:
+                                <text>day</text>
+                                break;
+                            default:
+                                <text></text>
+                                break;
+                        }
+
+                        @if (task.TaskReminders.First().ReminderValue > 1)
+                        {
+                            <text>s</text>
+                        } before
+                    </span>
+
+                </li>
+            }
+            @if (task.TaskFiles.Any())
+            {
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>@task.TaskFiles.Count.ToString() file(s) attached</span></li>
+            }
+            @if (task.TaskLinkedKsbs.Any())
+            {
+                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Linked to @task.TaskLinkedKsbs.Count.ToString() KSBs</span></li>
+            }
+
+        </ul>
+        <div class="app-tag">@task.ApprenticeshipCategory.First().Title</div>
+        <hr class="app-separator" />
+        <div class="app-dropdown" data-module="app-dropdown">
+            <a class="app-dropdown__toggle" role="button" aria-expanded="false">
+                View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+            </a>
+            <div class="app-dropdown__menu">
+                <ul class="app-dropdown__menu-list">
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Move to done</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.TaskId" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Edit</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Share</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-dropdown__menu-link deleteTask">
+                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span>Delete</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <input class="taskId" type="hidden" value="@task.TaskId" />
+}

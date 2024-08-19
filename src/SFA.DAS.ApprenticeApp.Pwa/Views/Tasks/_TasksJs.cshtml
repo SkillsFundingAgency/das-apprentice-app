@@ -3,29 +3,23 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('.deleteTask').on('click', function () {
-            $('#deleteTaskModal').addClass("app-modal--visible");
-            return false;
-        });
-
-        $('.cancel-taskdelete').on('click', function () {
-            $('#deleteTaskModal').removeClass('app-modal--visible');
-            $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
-            return false;
-        });
-
-        $('.confirm_taskdelete').on('click', function () {
-            $('#deleteTaskModal').removeClass('app-modal--visible');
-            $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
-            var taskInt = $('.taskId').val();
             $.ajax({
                 type: "DELETE",
                 url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                data: { taskId: taskInt },
-                dataType: "json"
+                data: {taskId: $(this).siblings('.taskId').val() },
+                dataType: "json",
+                contentType: "application/json"               
             });
             return false;
         });
-       
+        $('.linkksb').on('click', function () { 
+            var url = '/ksb/LinkedKsbs';
+            window.location.href = url;
+        
+        })
+
+        $(".post-form").click(function (e) {
+            $(".form").submit();
+        });
     });
 </script>
-
