@@ -13,9 +13,10 @@
         public TaskStatus? Status { get; set; } = null!;
 
         public List<TaskFile>? TaskFiles { get; set; } = null!;
-        public List<TaskReminder>? TaskReminders { get; set; } = null!;
         public List<TaskKSBs>? TaskLinkedKsbs { get; set; } = null!;
         public List<ApprenticeshipCategory>? ApprenticeshipCategory { get; set; } = null!;
+        public List<TaskReminder>? TaskReminders { get; set; } = null!;
+
     }
 
     public class ApprenticeshipCategory
