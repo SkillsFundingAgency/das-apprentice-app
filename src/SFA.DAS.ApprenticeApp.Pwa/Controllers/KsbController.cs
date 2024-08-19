@@ -55,7 +55,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> LinkedKsbs()
+        public async Task<IActionResult> LinkKsbs()
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
@@ -76,7 +76,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         BehaviourCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Behaviour)
                     };
 
-                    return View("LinkKsb", apprenticeKsbsPageModel);
+                    return View("_LinkKsb", apprenticeKsbsPageModel);
                 }
 
                 string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs Index. ApprenticeId: {apprenticeId}";

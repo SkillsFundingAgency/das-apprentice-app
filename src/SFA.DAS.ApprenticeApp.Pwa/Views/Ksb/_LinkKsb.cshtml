@@ -1,4 +1,6 @@
-﻿<div class="app-overlay-header">
+﻿<a class="app-fab" href="#linkKsb" data-module="app-overlay">Link Ksb</a>
+<div class="app-overlay" id="linkKsb">
+<div class="app-overlay-header">
     <div class="app-overlay-header__cancel">
         <a href="#" class="app-overlay-header__link">Cancel</a>
     </div>
@@ -11,8 +13,6 @@
 </div>
 
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
-
-
 
 @foreach (var ksb in Model.Ksbs)
 {
@@ -27,3 +27,4 @@
         <hr class="app-separator" />
     </div>
 }
+</div>

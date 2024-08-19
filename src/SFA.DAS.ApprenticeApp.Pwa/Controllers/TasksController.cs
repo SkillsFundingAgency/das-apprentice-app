@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Markdig.Parsers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
@@ -82,9 +83,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
 
-        [Authorize]
         [HttpDelete]
-        public async Task<IActionResult> DeleteApprenticeTask (int taskId)
+        public async Task<IActionResult> DeleteApprenticeTask(int taskId)
         {
             if(taskId == 0)
             {
@@ -92,11 +92,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            string  message = $"Deleting task with id {taskId}";
-            _logger.LogInformation(message);
+            string preMessage = $"Deleting task with id {taskId}";
+            _logger.LogInformation(preMessage);
 
             await _client.DeleteApprenticeTask(ApprenticeshipId, taskId);
-            return RedirectToAction("Index", "Tasks");
+            string postMessage = $"Deleting task with id {taskId}";
+            _logger.LogInformation(postMessage);
+
+            return RedirectToAction("Index");
         }
     }
 }
