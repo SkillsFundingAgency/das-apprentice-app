@@ -34,7 +34,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskTodoResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 0, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+                var taskTodoResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 0, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
                 var taskDoneResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 1, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
 
                 if (taskTodoResult == null || taskTodoResult.Tasks.Count == 0)
@@ -103,16 +103,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddOrUpdateApprenticeTask(ApprenticeTask task)
+        public async Task<IActionResult> AddTask(ApprenticeTask task)
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    if (task.TaskId == 0)
-                {
+                   
                     string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
                     _logger.LogInformation(preMessage);
                     await _client.AddApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task);
@@ -120,15 +120,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     _logger.LogInformation(postMessage);
                     return Ok();
                 }
-                else {                     
-                    string preMessage = $"Updating task with id {task.TaskId} for apprentice with id {apprenticeId}";
-                    _logger.LogInformation(preMessage);
-                    await _client.UpdateApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task.TaskId, task);
-                    string postMessage = $"Task updated successfully with id {task.TaskId} for apprentice with id {apprenticeId}";
-                    _logger.LogInformation(postMessage);
-                    return Ok();
-                }
-            }
             return Unauthorized();
         }
 
