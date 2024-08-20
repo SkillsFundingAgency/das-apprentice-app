@@ -1,0 +1,116 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.AddTaskPageModel
+
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    Layout = "_Layout";
+}
+<div class="app-page-header">
+    <div class="app-overlay-header__cancel">
+        <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
+    </div>
+    <h2 class="app-overlay-header__heading">
+        Add a new task
+    </h2>
+    <div class="app-overlay-header__save">
+        <a class="app-overlay-header__link add-task">Add</a>
+    </div>
+</div>
+<form method="post" enctype="multipart/form-data" class="form">
+    <div class="app-form-group">
+        <label class="app-label" for="title">
+            Title
+        </label>
+        <input class="app-input" id="title" name="title" type="text" placeholder="Title" asp-for="@Model.Task.Title">
+    </div>
+    <div class="app-form-group">
+        <label class="app-label" for="date">
+            Due date
+        </label>
+        <input class="app-input" id="date" name="duedate" type="date" placeholder="Due date" asp-for="@Model.Task.DueDate">
+    </div>
+
+    <div class="app-form-group">
+        <label class="app-label" for="time">
+            Due time
+        </label>
+        <input class="app-input" id="time" name="time" type="time" placeholder="Due time">
+    </div>
+    <div class="app-form-group">
+        <fieldset class="app-fieldset app-fieldset--radios">
+            <legend class="app-fieldset__legend">
+                Set reminder
+            </legend>
+            <div class="app-radios">
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-reminder" id="reminder-none" name="reminder" type="radio"
+                           value="none">
+                    <label class="app-label app-radios__label" for="reminder-none">
+                        None
+                    </label>
+                </div>
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-reminder" id="reminder-time" name="reminder" type="radio"
+                           value="time">
+                    <label class="app-label app-radios__label" for="reminder-time">
+                        At the time of activity
+                    </label>
+                </div>
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-reminder" id="reminder-5mins" name="reminder" type="radio"
+                           value="5mins">
+                    <label class="app-label app-radios__label" for="reminder-5mins">
+                        5 minutes before
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="app-form-group">
+        <fieldset class="app-fieldset">
+            <legend class="app-fieldset__legend">
+                Category
+            </legend>
+            <div class="app-radios">
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-category" id="category-none" name="category" type="radio"
+                           value="none">
+                    <label class="app-label app-radios__label" for="category-none">
+                        None
+                    </label>
+                </div>
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-category" id="category-assignment" name="category" type="radio"
+                           value="assignment">
+                    <label class="app-label app-radios__label" for="category-assignment">
+                        <span class="app-tag">Assignment</span>
+                    </label>
+                </div>
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-category" id="category-deadline" name="category" type="radio"
+                           value="deadline">
+                    <label class="app-label app-radios__label" for="category-deadline">
+                        <span class="app-tag app-tag--red">Deadline</span>
+                    </label>
+                </div>
+                <div class="app-radios__item">
+                    <input class="app-radios__input task-category" id="category-epa" name="category" type="radio" value="epa">
+                    <label class="app-label app-radios__label" for="category-epa">
+                        <span class="app-tag app-tag--pink">End-point assessment</span>
+                    </label>
+                </div>
+            </div>
+           
+        </fieldset>
+    </div>
+    <div class="app-form-group">
+        <label class="app-label" for="note">
+            Add a Note
+        </label>
+        <input class="app-input" id="note" name="note" type="text" placeholder="Note" asp-for="@Model.Task.Note">
+    </div>
+    <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden" asp-for="@Model.Task.ApprenticeshipCategoryId" />
+    <input class="apprenticeshipid" name="apprenticeshipid" type="hidden" asp-for="@Model.Task.ApprenticeshipId" />
+    </form>
+
+@await Html.PartialAsync("_AddTaskJs.cshtml")

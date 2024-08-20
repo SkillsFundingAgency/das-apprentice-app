@@ -25,6 +25,23 @@
             });
             return false;
         });
+        $('.task-category').click(function () {
+            var taskCategory = $('input[name="category"]:checked').val();
+            switch (taskCategory) {
+                case "assignment":
+                    $('.taskCategory').val(1);
+                    break;
+                case "deadline":
+                    $('.taskCategory').val(2);
+                    break;
+                case "epa":
+                    $('.taskCategory').val(3);
+                    break;
+                default:
+                    $('.taskCategory').val(0);
+            }
+        });
+
 
         $(".post-form").click(function (e) {
             $(".form").submit();

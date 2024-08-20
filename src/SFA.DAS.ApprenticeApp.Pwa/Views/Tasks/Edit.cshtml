@@ -19,10 +19,15 @@
     <div class="app-page-header__forward"></div>
 </div>
 
-
 <div>
     <form method="post" enctype="multipart/form-data" class="form">
         <input type="submit">
+        <div class="app-form-group">
+            <label class="app-label" for="apprenticeshipid">
+                ApprenticeshipId
+            </label>
+            <input class="app-input" id="apprenticeshipid" name="apprenticeshipid" type="text" placeholder="apprenticeshipid" value="@Model.Task.ApprenticeshipId">
+        </div>
         <div class="app-form-group">
             <label class="app-label" for="title">
                 Title
@@ -49,47 +54,26 @@
                 <div class="app-radios">
                     <div class="app-radios__item">
                         <input class="app-radios__input" id="reminder-none" name="reminder" type="radio"
-                                value="none">
+                               value="none">
                         <label class="app-label app-radios__label" for="reminder-none">
                             None
                         </label>
                     </div>
                     <div class="app-radios__item">
                         <input class="app-radios__input" id="reminder-time" name="reminder" type="radio"
-                                value="time">
+                               value="time">
                         <label class="app-label app-radios__label" for="reminder-time">
                             At the time of activity
                         </label>
                     </div>
                     <div class="app-radios__item">
                         <input class="app-radios__input" id="reminder-5mins" name="reminder" type="radio"
-                                value="5mins">
+                               value="5mins">
                         <label class="app-label app-radios__label" for="reminder-5mins">
                             5 minutes before
                         </label>
                     </div>
 
-                </div>
-            </fieldset>
-        </div>
-        <div class="app-form-group">
-            <fieldset class="app-fieldset">
-                <legend class="app-fieldset__legend">
-                    Category
-                </legend>
-                <div class="app-radios">
-
-                    @foreach (var cat in Model.Categories)
-                    {
-                        <div class="app-radios__item">
-                            <input class="app-radios__input" id="ApprenticeshipCategoryId" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId"
-                                   @if (Model.Task.ApprenticeshipCategoryId.Value == cat.CategoryId) { @Html.Raw("checked") }
-                             />
-                            <label class="app-label app-radios__label" for="category-none">
-                                <span class="app-tag">@cat.Title</span>
-                            </label>
-                        </div>
-                    }
                 </div>
             </fieldset>
         </div>

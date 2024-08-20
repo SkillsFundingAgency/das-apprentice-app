@@ -1,0 +1,27 @@
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.task-category').click(function () {
+            var taskCategory = $('.task-category:checked').val();
+            switch  (taskCategory) {
+                case "assignment":
+                    $('.taskCategory').val(1);
+                    break;
+                case "deadline":
+                    $('.taskCategory').val(2);
+                    break;
+                case "epa":
+                    $('.taskCategory').val(3);
+                    break;
+                 default:
+                    $('.taskCategory').val(0);
+            }
+        });
+
+        $(".add-task").click(function (e) {
+            $(".form").submit();
+        });
+
+    });
+</script>

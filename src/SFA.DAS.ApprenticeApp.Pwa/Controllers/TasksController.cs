@@ -34,8 +34,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskTodoResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 0, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
-                var taskDoneResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 1, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var taskTodoResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 0, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+                var taskDoneResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 1, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                 if (taskTodoResult == null || taskTodoResult.Tasks.Count == 0)
                 {
@@ -104,21 +104,42 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> Add()
+        {
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                var vm = new AddTaskPageModel
+                {
+                    Task = new ApprenticeTask() { ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId}
+                };
+
+                return View(vm);
+            }
+            return View();
+        }
+
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddTask(ApprenticeTask task)
+        public async Task<IActionResult> Add(ApprenticeTask task)
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                   
+                    task.Status = 0;
+                    task.CompletionDateTime = new DateTime(2024, 12, 01);
+
                     string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
                     _logger.LogInformation(preMessage);
                     await _client.AddApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task);
                     string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
                     _logger.LogInformation(postMessage);
-                    return Ok();
+                    return RedirectToAction("Index");
                 }
             return Unauthorized();
         }

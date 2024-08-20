@@ -4,5 +4,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
 {
     public class AddTaskPageModel
     {
+        public ApprenticeTask? Task { get; set; }
     }
 }

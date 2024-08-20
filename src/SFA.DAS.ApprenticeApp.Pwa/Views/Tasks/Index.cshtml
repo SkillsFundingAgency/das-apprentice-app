@@ -32,6 +32,9 @@
 </div>
 
 
-<partial name="_AddTasks.cshtml" />
+@* <partial name="_AddTasks.cshtml" /> *@
+<a asp-controller="Tasks" asp-action="Add" class="govuk-button">
+    <span>Add a task</span>
+</a>
 
 @await Html.PartialAsync("_TasksJs.cshtml", Model)
