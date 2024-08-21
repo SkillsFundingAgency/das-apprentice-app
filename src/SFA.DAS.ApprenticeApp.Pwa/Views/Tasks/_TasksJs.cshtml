@@ -2,17 +2,28 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.app-category').each(function () { 
+            var taskCategory = $(this).text();
+            switch (taskCategory) {
+                case "Deadline":
+                    $(this).addClass('app-tag--red')
+                    break;
+                case "End-point assessment":
+                    $(this).addClass('app-tag--pink')
+                    break;
+                default:
+                    break;
+            }
+        });
         $('.deleteTask').on('click', function () {
             $('#deleteTaskModal').addClass("app-modal--visible");
             return false;
         });
-
         $('.cancel-taskdelete').on('click', function () {
             $('#deleteTaskModal').removeClass('app-modal--visible');
             $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
             return false;
         });
-
         $('.confirm_taskdelete').on('click', function () {
             $('#deleteTaskModal').removeClass('app-modal--visible');
             $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
@@ -25,24 +36,6 @@
             });
             return false;
         });
-        $('.task-category').click(function () {
-            var taskCategory = $('input[name="category"]:checked').val();
-            switch (taskCategory) {
-                case "assignment":
-                    $('.taskCategory').val(1);
-                    break;
-                case "deadline":
-                    $('.taskCategory').val(2);
-                    break;
-                case "epa":
-                    $('.taskCategory').val(3);
-                    break;
-                default:
-                    $('.taskCategory').val(0);
-            }
-        });
-
-
         $(".post-form").click(function (e) {
             $(".form").submit();
         });

@@ -132,7 +132,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     task.Status = 0;
-                    task.CompletionDateTime = new DateTime(2024, 12, 01);
+                    task.CompletionDateTime = DateTime.UtcNow;
 
                     string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
                     _logger.LogInformation(preMessage);
