@@ -5,7 +5,7 @@
     <div class="app-card">
         <h2 class="app-card__heading">@task.Title</h2>
         <ul class="app-icon-list app-icon-list--muted">
-            <li><span class="app-icon-list__icon svg-placeholder"></span><span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span></li>
+            <li><span class="app-icon-list__icon svg-placeholder"></span><span>Completed @string.Format("{0:d MMMM, h:mm}", task.CompletionDateTime)@string.Format("{0:tt}", task.CompletionDateTime).ToLower()</span></li>
             @if (task.TaskReminders.Any())
             {
                 <li>
@@ -55,9 +55,9 @@
             <div class="app-dropdown__menu">
                 <ul class="app-dropdown__menu-list">
                     <li>
-                        <a href="#" class="app-dropdown__menu-link">
+                        <a href="#" class="app-dropdown__menu-link move-todo">
                             <span class="app-dropdown__menu-icon svg-placeholder"></span>
-                            <span>Move to done</span>
+                            <span>Move to To do</span>
                         </a>
                     </li>
                     <li>
@@ -73,7 +73,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="app-dropdown__menu-link deleteTask">
+                        <a class="app-dropdown__menu-link delete-task">
                             <span class="app-dropdown__menu-icon svg-placeholder"></span>
                             <span>Delete</span>
                         </a>

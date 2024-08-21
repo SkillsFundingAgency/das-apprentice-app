@@ -11,11 +11,23 @@
                 case "End-point assessment":
                     $(this).addClass('app-tag--pink')
                     break;
+                case "None":
+                    $(this).hide();
                 default:
                     break;
             }
         });
-        $('.deleteTask').on('click', function () {
+        $('.todo').on('click', function () {
+            $('#todo').show();
+            $('#done').hide();
+        });
+        $('.done').on('click', function () {
+            $('#todo').hide();
+            $('#done').show();
+          
+        });
+
+        $('.delete-task').on('click', function () {
             $('#deleteTaskModal').addClass("app-modal--visible");
             return false;
         });

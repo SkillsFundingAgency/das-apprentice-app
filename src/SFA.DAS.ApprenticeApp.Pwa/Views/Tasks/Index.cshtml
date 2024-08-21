@@ -11,12 +11,12 @@
     <div class="app-page-header app-sticky">
         <ul class="app-tabs__list">
             <li class="app-tabs__list-item app-tabs__list-item--selected">
-                <a class="app-tabs__tab" href="#todo">
+                <a class="app-tabs__tab todo" href="#todo">
                     To do
                 </a>
             </li>
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab" href="#done">
+                <a class="app-tabs__tab done" href="#done">
                     Done
                 </a>
             </li>
@@ -33,7 +33,7 @@
 
 
 @* <partial name="_AddTasks.cshtml" /> *@
-<a asp-controller="Tasks" asp-action="Add" class="govuk-button">
+<a asp-controller="Tasks" asp-action="Add" class="app-fab">
     <span>Add a task</span>
 </a>
 

@@ -55,6 +55,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return View();
         }
 
+       
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int id)
@@ -126,17 +127,28 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ApprenticeTask task)
         {
+
+
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-                if (!string.IsNullOrEmpty(apprenticeId))
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                if (apprenticeDetails.MyApprenticeship.ApprenticeshipId != task.ApprenticeshipId)
                 {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    _logger.LogWarning("Invalid apprenticeship id. Cannot add task.");
+                    return RedirectToAction("Index", "Tasks");
+                }
+
                     task.Status = 0;
                     task.CompletionDateTime = DateTime.UtcNow;
 
                     string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
                     _logger.LogInformation(preMessage);
+
                     await _client.AddApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task);
+
                     string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
                     _logger.LogInformation(postMessage);
                     return RedirectToAction("Index");
