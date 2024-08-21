@@ -1,6 +1,6 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
 
-@foreach (var task in Model.TasksDone.OrderBy(x => x.CompletionDateTime))
+@foreach (var task in Model.Tasks.OrderBy(x => x.CompletionDateTime))
 {
     <div class="app-card">
         <h2 class="app-card__heading">@task.Title</h2>
@@ -46,7 +46,7 @@
             }
 
         </ul>
-        <div class="app-tag">@task.ApprenticeshipCategory.First().Title</div>
+        <div class="app-tag app-category">@task.ApprenticeshipCategory.First().Title</div>
         <hr class="app-separator" />
         <div class="app-dropdown" data-module="app-dropdown">
             <a class="app-dropdown__toggle" role="button" aria-expanded="false">

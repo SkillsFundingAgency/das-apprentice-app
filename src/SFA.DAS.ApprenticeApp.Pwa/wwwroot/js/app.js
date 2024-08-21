@@ -22,7 +22,7 @@ Tabs.prototype.handleTabClick = function (event) {
   event.preventDefault();
   const tab = event.target;
   this.tabPanels.forEach(function (panel) {
-    panel.hidden = true;
+    //panel.hidden = true;
   });
   this.tabs.forEach((tab) => {
     tab.ariaSelected = false;
@@ -32,7 +32,7 @@ Tabs.prototype.handleTabClick = function (event) {
   tab.parentElement.classList.add("app-tabs__list-item--selected");
   const { hash } = tab;
   const panel = document.getElementById(hash.substring(1));
-  panel.hidden = false;
+  //panel.hidden = false;
 };
 
 const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);

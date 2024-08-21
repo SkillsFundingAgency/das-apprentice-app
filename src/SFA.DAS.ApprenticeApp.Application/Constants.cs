@@ -8,5 +8,8 @@
 
         public const string ContentfulTopLevelPageTypeName = "apprenticeAppCategory";
         public const string ContentfulContentPageTypeName = "apprenticeAppArticle";
+
+        public const int ToDoStatus = 0;
+        public const int DoneStatus = 1;
     }
 }

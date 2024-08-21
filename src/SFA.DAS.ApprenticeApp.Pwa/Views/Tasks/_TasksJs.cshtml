@@ -2,29 +2,12 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.app-category').each(function () { 
-            var taskCategory = $(this).text();
-            switch (taskCategory) {
-                case "Deadline":
-                    $(this).addClass('app-tag--red')
-                    break;
-                case "End-point assessment":
-                    $(this).addClass('app-tag--pink')
-                    break;
-                case "None":
-                    $(this).hide();
-                default:
-                    break;
-            }
-        });
+        $('#tasks-display').load('/Tasks/ToDoTasks');
         $('.todo').on('click', function () {
-            $('#todo').show();
-            $('#done').hide();
+            $('#tasks-display').load('/Tasks/ToDoTasks');
         });
         $('.done').on('click', function () {
-            $('#todo').hide();
-            $('#done').show();
-          
+            $('#tasks-display').load('/Tasks/DoneTasks');
         });
 
         $('.delete-task').on('click', function () {
@@ -52,4 +35,5 @@
             $(".form").submit();
         });
     });
+
 </script>

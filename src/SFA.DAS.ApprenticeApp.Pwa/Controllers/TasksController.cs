@@ -1,5 +1,4 @@
-﻿using Markdig.Parsers;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
@@ -26,7 +25,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<PartialViewResult> ToDoTasks()
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
@@ -34,28 +40,50 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskTodoResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 0, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
-                var taskDoneResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, 1, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
-                if (taskTodoResult == null || taskTodoResult.Tasks.Count == 0)
+                if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
-                    return RedirectToAction("TasksNotStarted", "Tasks");
+                    return PartialView("_TasksNotStarted");
                 }
 
                 var vm = new TasksPageModel
                 {
                     Year = DateTime.Now.Year,
-                    TasksTodo = taskTodoResult.Tasks,
-                    TasksDone = taskDoneResult.Tasks
+                    Tasks = taskResult.Tasks,
                 };
-              
-                return View(vm);
+                return PartialView("_TasksToDo", vm);
             }
-
-            return View();
+            return PartialView("_TasksNotStarted");
         }
 
-       
+        [HttpGet]
+        [Authorize]
+        public async Task<PartialViewResult> DoneTasks()
+        {
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+
+                if (taskResult == null || taskResult.Tasks.Count == 0)
+                {
+                    return PartialView("TasksNotStarted");
+                }
+
+                var vm = new TasksPageModel
+                {
+                    Year = DateTime.Now.Year,
+                    Tasks = taskResult.Tasks,
+                };
+                return PartialView("_TasksDone", vm);
+            }
+            return PartialView("TasksNotStarted");
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int id)
