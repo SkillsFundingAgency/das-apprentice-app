@@ -40,7 +40,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -67,11 +67,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
+                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
-                    return PartialView("TasksNotStarted");
+                    return PartialView("_TasksNotStarted");
                 }
 
                 var vm = new TasksPageModel
@@ -81,7 +81,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 };
                 return PartialView("_TasksDone", vm);
             }
-            return PartialView("TasksNotStarted");
+            return PartialView("_TasksNotStarted");
         }
 
         [HttpGet]
