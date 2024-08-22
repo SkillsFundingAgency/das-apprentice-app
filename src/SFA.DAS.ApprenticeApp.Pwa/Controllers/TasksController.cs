@@ -180,8 +180,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
                     _logger.LogInformation(postMessage);
-                    return RedirectToAction("Index");
-                }
+                    return RedirectToAction("Index", new { status = (int)task.Status });
+
+            }
             return Unauthorized();
         }
 
