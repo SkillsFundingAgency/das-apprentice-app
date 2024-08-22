@@ -72,17 +72,17 @@
                 Category
             </legend>
             <div class="app-radios">
-
-                @foreach (var cat in Model.Categories)
-                {
-                    <div class="app-radios__item">
-                        <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId" />
-                        <label class="app-label app-radios__label" for="ApprenticeshipCategoryId">
-                            @cat.Title
-                        </label>
-                    </div>
-                }
-
+                <fieldset id="ApprenticeshipCategoryId">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId" />
+                            <label class="app-label app-radios__label" for="ApprenticeshipCategoryId">
+                                @cat.Title
+                            </label>
+                        </div>
+                    }
+                    </fieldset>
             </div>
            
         </fieldset>
