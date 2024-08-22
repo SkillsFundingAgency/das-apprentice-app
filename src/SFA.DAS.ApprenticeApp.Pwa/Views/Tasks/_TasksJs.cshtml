@@ -41,6 +41,10 @@
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
-    });
 
+        $('body').on('click', '.app-dropdown__toggle', function (e) {
+            $(this).siblings('.app-dropdown__menu').toggle();
+        });
+
+    });
 </script>
