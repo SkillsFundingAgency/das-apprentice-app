@@ -113,4 +113,10 @@
     <input class="apprenticeshipid" name="apprenticeshipid" type="hidden" asp-for="@Model.Task.ApprenticeshipId" />
     </form>
 
+    <div>
+    <p class="govuk-body"> Link task to the knowledge, skills and behaviours (KSBs) it will help you gain.</p>
+    <a button class="link-ksb" asp-controller="ksb" asp-action="linkksbs">KSBs</a>
+</div>
+    
+
 @await Html.PartialAsync("_AddTaskJs.cshtml")
