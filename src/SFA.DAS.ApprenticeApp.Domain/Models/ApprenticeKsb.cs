@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
@@ -23,9 +24,16 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
     [Flags]
     public enum KSBStatus
     {
+        [Description("Not started")]
         NotStarted = 0,
+
+        [Description("In progress")]
         InProgress = 1,
+
+        [Description("Ready for review")]
         ReadyForReview = 2,
+
+        [Description("Completed")]
         Completed = 3
     }
     public class ApprenticeKsbCollection

@@ -1,7 +1,7 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 
 <div class="app-page-header">
-    <div class="app-overlay-header__cancel">
+    <div class="app-overlay-header__cancel app-back-link">
         <a class="app-overlay-header__link">Cancel</a>
     </div>
     <h2 class="app-overlay-header__heading">
@@ -12,15 +12,51 @@
     </div>
 </div>
 
+<div class="app-page-header app-sticky">
+    <ul class="app-tabs__list">
+        <li class="app-tabs__list-item app-tabs__list-item--selected">
+            <a class="app-tabs__tab" href="#knowledge">
+                Knowledge (@Model.KnowledgeCount.ToString())
+            </a>
+        </li>
+        <li class="app-tabs__list-item">
+            <a class="app-tabs__tab" href="#skills">
+                Skills (@Model.SkillCount.ToString())
+            </a>
+        </li>
+        <li class="app-tabs__list-item">
+            <a class="app-tabs__tab" href="#behaviours">
+                Behaviours (@Model.BehaviourCount.ToString())
+            </a>
+        </li>
+    </ul>
+</div>
+
+<a>Help with linking KSBs</a>
+
 @foreach (var ksb in Model.Ksbs)
 {
     <div>
         <h2 class="app-card__heading">@ksb.Key</h2>
         <div class="govuk-body">@ksb.Detail</div>
-        <input class="app-checkboxes__input" #linkKsb />Link this KSB to the task
-        <span>
-            Edit status
-        </span>
+        <label class="app-checkboxes__label">Link this KSB to the task</label>
+        <input class="app-checkboxes__input" id="linkKsb" type="checkbox"/>
+        <div class="govuk-accordion">
+       <div class="govuk-body">Edit Status</div>
+        <div class="app-radios">
+            <fieldset id="KsbStatus">
+                @foreach (var ksbStatus in Model.KsbStatuses)
+                {
+                    <div class="app-radios__item">
+                        <input class="app-radios__input ksb-status" name="KsbStatus" type="radio" value="@ksbStatus" />
+                        <label class="app-label app-radios__label" for="KsbStatus">
+                            @ksbStatus
+                        </label>
+                    </div>
+                }
+            </fieldset>
+            </div>
+        </div>
         <div class="app-tag">@ksb.Status</div>
         <hr class="app-separator" />
     </div>

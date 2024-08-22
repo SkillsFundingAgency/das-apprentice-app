@@ -73,7 +73,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         Ksbs = apprenticeKsbResult,
                         KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Knowledge),
                         SkillCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Behaviour)
+                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Behaviour),
+                        KsbStatuses = Enum.GetValues(typeof(Domain.Models.KSBStatus)).Cast<Domain.Models.KSBStatus>().ToList()
                     };
 
                     return View("_LinkKsb", apprenticeKsbsPageModel);
@@ -88,5 +89,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> 
     }
 }
