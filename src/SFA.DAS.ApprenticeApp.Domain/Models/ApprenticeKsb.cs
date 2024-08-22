@@ -8,9 +8,10 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
     {
         public KsbType Type { get; set; }
         public Guid Id { get; set; }
-        public required string Key { get; set; }
-        public required string Detail { get; set; }
-        public int? TaskId { get; set; }
+        public string Key { get; set; }
+        public string Detail { get; set; }
+        public string Note { get; set; }
+
         public KSBStatus? Status { get; set; }
     }
 

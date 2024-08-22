@@ -6,7 +6,37 @@
     <div>
         <h2 class="app-card__heading">@ksb.Key</h2>
         <div class="govuk-body">@ksb.Detail</div>
-        <div class="app-tag">@ksb.Status</div>
+        <div class="govuk-body">
+            @{
+                var progress = Model.KsbProgresses.Where(p => p.KSBId == ksb.Id).FirstOrDefault();
+                @if (progress != null && progress.Tasks.Count > 0)
+                {
+                    <span>
+                        Linked to @progress.Tasks.Count.ToString() 
+                        @if (@progress.Tasks.Count > 1)
+                        {
+                            <text>tasks</text>
+                        }
+                        else
+                        {
+                            <text>task</text>
+                        }
+                    </span>
+
+                }
+            }
+        </div>
+        <div>
+            @if(ksb.Status == null)
+            {
+                <span class="app-tag--red">Not started</span>
+            }
+            else
+            {
+                <span class="app-tag--green">@ksb.Status</span>
+            }
+            @ksb.Status</div>
+       
         <hr class="app-separator" />
     </div>   
 }

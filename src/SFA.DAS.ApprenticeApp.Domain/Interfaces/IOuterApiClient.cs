@@ -50,13 +50,12 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         Task DeleteApprenticeTask([Path] long id, [Path] int taskId);
 
         [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksbs")]
-        Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
+        Task<ApprenticeKsbs> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
 
         [Get("/apprentices/{id}/progress/taskCategories")]
         Task<ApprenticeTaskCategoryCollection> GetTaskCategories([Path] long id);
 
         [Post("/apprentices/{id}/progress/tasks/{taskId}/status/{statusId}")]
         Task UpdateTaskStatus([Path] long id, [Path] int taskId, [Path] int statusId);
-   
     }
 }

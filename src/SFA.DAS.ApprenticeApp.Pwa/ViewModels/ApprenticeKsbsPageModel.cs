@@ -5,6 +5,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
     public class ApprenticeKsbsPageModel
     {
         public List<ApprenticeKsb>? Ksbs { get; set; }
+        public List<ApprenticeKsbProgressData> KsbProgresses { get; set; }
 
         public int? KnowledgeCount { get; set; }
         public int? SkillCount { get; set; }

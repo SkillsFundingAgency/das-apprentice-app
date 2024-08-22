@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
@@ -35,10 +36,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
                     {
-                        Ksbs = apprenticeKsbResult,
-                        KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Knowledge),
-                        SkillCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Behaviour)
+                        Ksbs = apprenticeKsbResult.AllKsbs,
+                        KnowledgeCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Knowledge),
+                        SkillCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Skill),
+                        BehaviourCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Behaviour),
+                        KsbProgresses = apprenticeKsbResult.KsbProgresses
                     };
 
                     return View(apprenticeKsbsPageModel);
@@ -70,11 +72,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
                     {
-                        Ksbs = apprenticeKsbResult,
-                        KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Knowledge),
-                        SkillCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == Domain.Models.KsbType.Behaviour),
-                        KsbStatuses = Enum.GetValues(typeof(Domain.Models.KSBStatus)).Cast<Domain.Models.KSBStatus>().ToList()
+                        Ksbs = apprenticeKsbResult.AllKsbs,
+                        KnowledgeCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Knowledge),
+                        SkillCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Skill),
+                        BehaviourCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Behaviour),
+                        KsbStatuses = Enum.GetValues(typeof(Domain.Models.KSBStatus)).Cast<Domain.Models.KSBStatus>().ToList(),
+                        
                     };
 
                     return View("_LinkKsb", apprenticeKsbsPageModel);
@@ -90,8 +93,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> 
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<IActionResult> AddUpdateKsbProgress(ApprenticeKsbProgressData ksbProgressData)
+        //{
+        //    var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+        //    if (!string.IsNullOrEmpty(apprenticeId))
+        //    {
+        //        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+        //        await _client.AddUpdateKsbProgress(apprenticeDetails.MyApprenticeship.ApprenticeshipId, );
+        //        return Ok();
+        //    }
+
+        //    return View();
+        //}
     }
 }
