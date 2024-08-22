@@ -3,10 +3,14 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#tasks-display').load('/Tasks/ToDoTasks');
+
         $('.todo').on('click', function () {
+            $("#tasks-display").html('<div class="loader"></div>');
             $('#tasks-display').load('/Tasks/ToDoTasks');
         });
+
         $('.done').on('click', function () {
+            $("#tasks-display").html('<div class="loader"></div>');
             $('#tasks-display').load('/Tasks/DoneTasks');
         });
 
@@ -14,11 +18,13 @@
             $('#deleteTaskModal').addClass("app-modal--visible");
             return false;
         });
+
         $('.cancel-taskdelete').on('click', function () {
             $('#deleteTaskModal').removeClass('app-modal--visible');
             $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
             return false;
         });
+
         $('.confirm_taskdelete').on('click', function () {
             $('#deleteTaskModal').removeClass('app-modal--visible');
             $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
@@ -31,6 +37,7 @@
             });
             return false;
         });
+
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
