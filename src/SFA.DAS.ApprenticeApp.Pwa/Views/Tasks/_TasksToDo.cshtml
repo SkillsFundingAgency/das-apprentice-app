@@ -60,6 +60,7 @@
                             <span class="app-dropdown__menu-icon svg-placeholder"></span>
                             <span>Move to done</span>
                         </a>
+                        <input type="hidden" class="taskId" value="@task.TaskId" />
                     </li>
                     <li>
                         <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.TaskId" class="app-dropdown__menu-link">
@@ -67,17 +68,21 @@
                             <span>Edit</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="app-dropdown__menu-link">
+                    <li class="share-link-container">
+                        <a href="#" class="app-dropdown__menu-link share-link">
                             <span class="app-dropdown__menu-icon svg-placeholder"></span>
                             <span>Share</span>
+
                         </a>
+                        <input type="hidden" class="share-title" value="@task.Title" />
+                        <input type="hidden" class="share-note" value="@task.Note" />
                     </li>
                     <li>
-                        <a class="app-dropdown__menu-link delete-task">
+                        <a class="app-dropdown__menu-link delete-task" href="#">
                             <span class="app-dropdown__menu-icon svg-placeholder"></span>
                             <span>Delete</span>
                         </a>
+                        <input type="hidden" class="taskId" value="@task.TaskId" />
                     </li>
                 </ul>
             </div>

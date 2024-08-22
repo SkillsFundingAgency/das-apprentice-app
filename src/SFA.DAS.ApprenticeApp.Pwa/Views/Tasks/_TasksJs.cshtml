@@ -2,19 +2,19 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#tasks-display').load('/Tasks/ToDoTasks');
+        $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
 
         $('.todo').on('click', function () {
             $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('/Tasks/ToDoTasks');
+            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
         });
 
         $('.done').on('click', function () {
             $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('/Tasks/DoneTasks');
+            $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
-        $('.delete-task').on('click', function () {
+        /* $('.delete-task').on('click', function () {
             $('#deleteTaskModal').addClass("app-modal--visible");
             return false;
         });
@@ -23,24 +23,78 @@
             $('#deleteTaskModal').removeClass('app-modal--visible');
             $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
             return false;
+        });*/
+
+        $(".post-form").click(function (e) {
+            $(".form").submit();
         });
 
-        $('.confirm_taskdelete').on('click', function () {
-            $('#deleteTaskModal').removeClass('app-modal--visible');
-            $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
-            var taskInt = $('.taskId').val();
+        $('body').on('click', '.delete-task', function (e) {
+            var taskId = $(this).siblings('.taskId').val();
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+
+            var taskId = $('.taskId').val();
             $.ajax({
                 type: "DELETE",
                 url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                data: { taskId: taskInt },
+                data: { taskId: taskId },
+                dataType: "json"
+            });
+
+            return false;
+        });
+
+        $('body').on('click', '.app-dropdown__toggle', function (e) {
+            $(this).siblings('.app-dropdown__menu').toggle();
+        });
+
+        $('body').on('click', '.share-link', function (e) {
+            if (navigator.share) {
+                navigator.share({
+                    title: $(this).siblings('.share-title').val(),
+                    text: $(this).siblings('.share-note').val()
+                })
+                    .then(() => console.log('Shared successfully'))
+                    .catch((error) => console.error('Sharing failed:', error));
+            }
+        });
+
+        $('body').on('click', '.move-done', function (e) {
+            var taskId = $(this).siblings('.taskId').val();
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ChangeTaskStatus", "Tasks")',
+                data: { taskId: taskId, statusId: 1 },
+                dataType: "json"
+            });
+
+            return false;
+        });
+
+        $('body').on('click', '.move-todo', function (e) {
+            var taskId = $(this).siblings('.taskId').val();
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ChangeTaskStatus", "Tasks")',
+                data: { taskId: taskId, statusId: 0 },
                 dataType: "json"
             });
             return false;
         });
 
-        $(".post-form").click(function (e) {
-            $(".form").submit();
-        });
+        function checkTaskCount() {
+            if ($('.app-card').length == 0) {
+
+                $('#tasks-display').hide().load('@Url.Action("TasksNotStarted", "Tasks")').fadeIn('500');
+
+                //$('#tasks-display').load('@Url.Action("TasksNotStarted", "Tasks")');
+            }
+        }
+
     });
 
 </script>

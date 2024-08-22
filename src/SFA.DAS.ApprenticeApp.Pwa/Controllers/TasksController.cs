@@ -212,5 +212,30 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             return Unauthorized();
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeTaskStatus(int taskId, int statusId)
+        {
+            if (taskId == 0)
+            {
+                _logger.LogWarning("Task Id cannot be null or zero. Cannot delete task.");
+                return RedirectToAction("Index", "Tasks");
+            }
+
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                await _client.UpdateTaskStatus(apprenticeDetails.MyApprenticeship.ApprenticeshipId, taskId, statusId);
+
+
+                return RedirectToAction("Index");
+            }
+            return Unauthorized();
+        }
     }
 }
