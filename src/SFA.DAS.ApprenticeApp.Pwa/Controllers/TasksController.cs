@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Net.NetworkInformation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
@@ -133,7 +134,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(int status = 0)
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
@@ -145,7 +146,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var vm = new AddTaskPageModel
                 {
                     Task = new ApprenticeTask() { ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId},
-                    Categories = categories.TaskCategories
+                    Categories = categories.TaskCategories,
+                    StatusId = status
                 };
 
                 return View(vm);
@@ -157,8 +159,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ApprenticeTask task)
         {
-
-
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
             if (!string.IsNullOrEmpty(apprenticeId))
@@ -171,7 +171,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return RedirectToAction("Index", "Tasks");
                 }
 
-                    task.Status = 0;
                     task.CompletionDateTime = DateTime.UtcNow;
 
                     string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
