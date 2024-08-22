@@ -72,33 +72,17 @@
                 Category
             </legend>
             <div class="app-radios">
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-category" id="category-none" name="category" type="radio"
-                           value="none">
-                    <label class="app-label app-radios__label" for="category-none">
-                        None
-                    </label>
-                </div>
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-category" id="category-assignment" name="category" type="radio"
-                           value="assignment">
-                    <label class="app-label app-radios__label" for="category-assignment">
-                        <span class="app-tag">Assignment</span>
-                    </label>
-                </div>
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-category" id="category-deadline" name="category" type="radio"
-                           value="deadline">
-                    <label class="app-label app-radios__label" for="category-deadline">
-                        <span class="app-tag app-tag--red">Deadline</span>
-                    </label>
-                </div>
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-category" id="category-epa" name="category" type="radio" value="epa">
-                    <label class="app-label app-radios__label" for="category-epa">
-                        <span class="app-tag app-tag--pink">End-point assessment</span>
-                    </label>
-                </div>
+                <fieldset id="ApprenticeshipCategoryId">
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId" />
+                            <label class="app-label app-radios__label" for="ApprenticeshipCategoryId">
+                                @cat.Title
+                            </label>
+                        </div>
+                    }
+                    </fieldset>
             </div>
            
         </fieldset>

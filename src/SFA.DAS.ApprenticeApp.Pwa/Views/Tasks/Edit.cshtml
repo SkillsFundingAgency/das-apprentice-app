@@ -6,34 +6,40 @@
     Layout = "_Layout";
 }
 
-
 <div class="app-page-header">
-    <div class="app-page-header__back">
-        <a asp-action="Index" asp-controller="Tasks"
-           class="app-back-link">Cancel</a>
+    <div class="app-overlay-header__cancel">
+        <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
     </div>
-
-    <a href="#" class="app-overlay-header__link post-form">Confirm</a>
-
-    <h1 class="app-page-header__heading">View or edit a task</h1>
-    <div class="app-page-header__forward"></div>
+    <h2 class="app-overlay-header__heading">
+        View or edit a task
+    </h2>
+    <div class="app-overlay-header__save">
+        <a href="#" class="app-overlay-header__link add-task post-form">Save</a>
+    </div>
 </div>
 
 <div>
     <form method="post" enctype="multipart/form-data" class="form">
-        <input type="submit">
-        <div class="app-form-group">
-            <label class="app-label" for="apprenticeshipid">
-                ApprenticeshipId
-            </label>
-            <input class="app-input" id="apprenticeshipid" name="apprenticeshipid" type="text" placeholder="apprenticeshipid" value="@Model.Task.ApprenticeshipId">
-        </div>
+        <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
+        <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
+        <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
+        <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
+        <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
+        <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
+
         <div class="app-form-group">
             <label class="app-label" for="title">
                 Title
             </label>
             <input class="app-input" id="title" name="title" type="text" placeholder="Title" value="@Model.Task.Title">
         </div>
+        <div class="app-form-group">
+            <label class="app-label" for="title">
+                Note
+            </label>
+            <input class="app-input" id="note" name="note" type="text" placeholder="Note" value="@Model.Task.Note">
+        </div>
+
         <div class="app-form-group">
             <label class="app-label" for="date">
                 Due date
@@ -46,6 +52,32 @@
             </label>
             <input class="app-input" id="duetime" name="duetime" type="time" placeholder="HH:mm" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
         </div>
+
+        <div class="app-form-group">
+            <fieldset class="app-fieldset">
+                <legend class="app-fieldset__legend">
+                    Category
+                </legend>
+                <div class="app-radios">
+                    <fieldset id="ApprenticeshipCategoryId">
+
+
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <div class="app-radios__item">
+                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId" checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                                <label class="app-label app-radios__label" for="ApprenticeshipCategoryId">
+                                    @cat.Title
+                                </label>
+                            </div>
+                        }
+
+                    </fieldset>
+                </div>
+
+            </fieldset>
+        </div>
+
         <div class="app-form-group">
             <fieldset class="app-fieldset app-fieldset--radios">
                 <legend class="app-fieldset__legend">
@@ -87,3 +119,6 @@
         </div>
     </div>
 </div>
+
+
+@await Html.PartialAsync("_TasksJs.cshtml", Model)

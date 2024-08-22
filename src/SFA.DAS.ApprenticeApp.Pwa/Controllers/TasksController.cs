@@ -121,7 +121,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 await _client.UpdateApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task.TaskId, task);
 
-                return View();
+                return RedirectToAction("Edit", "Tasks", task.TaskId);
             }
 
             return View();
@@ -140,10 +140,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                var categories = await _client.GetTaskCategories(apprenticeDetails.MyApprenticeship.ApprenticeshipId);
 
                 var vm = new AddTaskPageModel
                 {
-                    Task = new ApprenticeTask() { ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId}
+                    Task = new ApprenticeTask() { ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId},
+                    Categories = categories.TaskCategories
                 };
 
                 return View(vm);
