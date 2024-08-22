@@ -6,5 +6,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
     {
         public ApprenticeTask? Task { get; set; }
         public List<ApprenticeshipCategory>? Categories { get; set; }
+        public int? StatusId { get; set; }
     }
 }

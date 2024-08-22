@@ -2,16 +2,45 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
+
+        let params = new URLSearchParams(window.location.search)
+        if (params.has('status')) {
+            var state = params.get('status');
+            if (state == 0) {
+
+                $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
+                $('.todo-element').addClass('app-tabs__list-item--selected');
+                $('.done-element').removeClass('app-tabs__list-item--selected');
+            }
+            if (state == 1) {
+                $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
+                $('.done-element').addClass('app-tabs__list-item--selected');
+                $('.todo-element').removeClass('app-tabs__list-item--selected');
+            }
+        }
+        else {
+            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
+            $('.todo-element').addClass('app-tabs__list-item--selected');
+            $('.done-element').removeClass('app-tabs__list-item--selected');
+        }
+
 
         $('.todo').on('click', function () {
             $("#tasks-display").html('<div class="loader"></div>');
             $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
+
+            // change add url
+            $(".app-fab").attr("href", "Tasks/Add?Status=0")
+
         });
 
         $('.done').on('click', function () {
             $("#tasks-display").html('<div class="loader"></div>');
             $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
+
+            // change add url
+            $(".app-fab").attr("href", "Tasks/Add?Status=1")
+
         });
 
         /* $('.delete-task').on('click', function () {
@@ -88,13 +117,9 @@
 
         function checkTaskCount() {
             if ($('.app-card').length == 0) {
-
                 $('#tasks-display').hide().load('@Url.Action("TasksNotStarted", "Tasks")').fadeIn('500');
-
-                //$('#tasks-display').load('@Url.Action("TasksNotStarted", "Tasks")');
             }
         }
-
     });
 
 </script>

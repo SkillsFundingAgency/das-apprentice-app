@@ -82,9 +82,9 @@
                             </label>
                         </div>
                     }
-                    </fieldset>
+                </fieldset>
             </div>
-           
+
         </fieldset>
     </div>
     <div class="app-form-group">
@@ -95,7 +95,10 @@
     </div>
     <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden" asp-for="@Model.Task.ApprenticeshipCategoryId" />
     <input class="apprenticeshipid" name="apprenticeshipid" type="hidden" asp-for="@Model.Task.ApprenticeshipId" />
-    </form>
+
+    <input name="Status" type="hidden" asp-for="@Model.StatusId" />
+
+</form>
 
     <div>
     <p class="govuk-body"> Link task to the knowledge, skills and behaviours (KSBs) it will help you gain.</p>
