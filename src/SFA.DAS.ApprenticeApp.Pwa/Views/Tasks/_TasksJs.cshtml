@@ -2,19 +2,20 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $('#tasks-display').load('/Tasks/ToDoTasks');
 
         $('.todo').on('click', function () {
             $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('/Tasks/ToDoTasks');
+            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
         });
 
         $('.done').on('click', function () {
             $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('/Tasks/DoneTasks');
+            $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
-        $('.delete-task').on('click', function () {
+      /*  $('.delete-task').on('click', function () {
             $('#deleteTaskModal').addClass("app-modal--visible");
             return false;
         });
@@ -23,24 +24,33 @@
             $('#deleteTaskModal').removeClass('app-modal--visible');
             $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
             return false;
-        });
-
-        $('.confirm_taskdelete').on('click', function () {
-            $('#deleteTaskModal').removeClass('app-modal--visible');
-            $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
-            var taskInt = $('.taskId').val();
-            $.ajax({
-                type: "DELETE",
-                url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                data: { taskId: taskInt },
-                dataType: "json"
-            });
-            return false;
-        });
+        });*/
 
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
+
+
+
+        
+        $('body').on('click', '.delete-task', function (e) {
+            var taskId = $(this).siblings('.taskId').val();
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+
+            var taskId = $('.taskId').val();
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
+                data: { taskId: taskId },
+                dataType: "json"
+            });
+
+            return false;
+        });
+
+          
+
+      
 
         $('body').on('click', '.app-dropdown__toggle', function (e) {
             $(this).siblings('.app-dropdown__menu').toggle();
@@ -59,21 +69,21 @@
 
         $('body').on('click', '.move-done', function (e) {
             var taskId = $(this).siblings('.taskId').val();
-            $(this).closest('.app-card').slideUp("slow", function () { });
-            
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("ChangeTaskStatus", "Tasks")',
                 data: { taskId: taskId, statusId: 1 },
                 dataType: "json"
-            }); 
-            
+            });
+
             return false;
         });
 
         $('body').on('click', '.move-todo', function (e) {
             var taskId = $(this).siblings('.taskId').val();
-            $(this).closest('.app-card').slideUp("slow", function () { });
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
             $.ajax({
                 type: "GET",
@@ -81,9 +91,17 @@
                 data: { taskId: taskId, statusId: 0 },
                 dataType: "json"
             });
-
             return false;
+
         });
 
+        function checkTaskCount() {
+            if ($('.app-card').length == 0) {
+                $('#tasks-display').load('@Url.Action("TasksNotStarted", "Tasks")');
+            }
+        }
+
     });
+
+
 </script>
