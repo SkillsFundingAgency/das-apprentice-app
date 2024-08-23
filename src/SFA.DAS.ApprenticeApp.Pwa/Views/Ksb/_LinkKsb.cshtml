@@ -1,4 +1,6 @@
-﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+﻿@using SFA.DAS.ApprenticeApp.Domain.Models
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 
 <div class="app-page-header">
     <div class="app-overlay-header__cancel app-back-link">
@@ -35,20 +37,32 @@
 </div>
 
 <a>Help with linking KSBs</a>
+<br /><br />
 
 @foreach (var ksb in Model.Ksbs)
 {
+    var progress = Model.KsbProgresses.Where(p => p.KSBId == ksb.Id).FirstOrDefault();
     <div>
         <h2 class="app-card__heading">@ksb.Key</h2>
         <div class="govuk-body">@ksb.Detail</div>
         <label class="govuk-body">Link this KSB to the task</label>
-        
+                
         <input class="app-checkboxes__input" id="linkKsb" type="checkbox"/>
-        <div class="govuk-accordion">
+      
        <div class="govuk-body">Edit Status</div>
       
+        <div class="app-tag">
+            @if (progress == null)
+            {
+                <text>Not started</text>
+            }
+            else
+            {
+                var status = progress.CurrentStatus;
+                string statusDisplay = status.GetEnumDescription();
+                <text>@statusDisplay</text>
+            }
         </div>
-        <div class="app-tag">@ksb.Status</div>
         <hr class="app-separator" />
-    </div>
-}
+        </div>
+  }

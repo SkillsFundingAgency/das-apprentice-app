@@ -37,8 +37,4 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         [Description("Completed")]
         Completed = 3
     }
-    public class ApprenticeKsbCollection
-    {
-        public ApprenticeKsb[] ApprenticeKsbs { get; set; }
-    }
 }

@@ -77,7 +77,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         SkillCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Skill),
                         BehaviourCount = apprenticeKsbResult.AllKsbs.Count(k => k.Type == Domain.Models.KsbType.Behaviour),
                         KsbStatuses = Enum.GetValues(typeof(Domain.Models.KSBStatus)).Cast<Domain.Models.KSBStatus>().ToList(),
-                        
+                        KsbProgresses = apprenticeKsbResult.KsbProgresses
                     };
 
                     return View("_LinkKsb", apprenticeKsbsPageModel);

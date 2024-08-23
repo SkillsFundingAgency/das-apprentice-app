@@ -1,14 +1,14 @@
-﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 
 
 @foreach (var ksb in Model.Ksbs)
 {
+    var progress = Model.KsbProgresses.Where(p => p.KSBId == ksb.Id).FirstOrDefault();
     <div>
         <h2 class="app-card__heading">@ksb.Key</h2>
         <div class="govuk-body">@ksb.Detail</div>
         <div class="govuk-body">
-            @{
-                var progress = Model.KsbProgresses.Where(p => p.KSBId == ksb.Id).FirstOrDefault();
                 @if (progress != null && progress.Tasks.Count > 0)
                 {
                     <span>
@@ -22,20 +22,20 @@
                             <text>task</text>
                         }
                     </span>
-
                 }
-            }
         </div>
-        <div>
-            @if(ksb.Status == null)
+        <div class="app-tag">
+            @if (progress == null)
             {
-                <span class="app-tag--red">Not started</span>
+                <text>Not started</text>
             }
             else
             {
-                <span class="app-tag--green">@ksb.Status</span>
+                var status = progress.CurrentStatus;
+                string statusDisplay = status.GetEnumDescription();
+                <text>@statusDisplay</text>
             }
-            @ksb.Status</div>
+        </div>
        
         <hr class="app-separator" />
     </div>   
