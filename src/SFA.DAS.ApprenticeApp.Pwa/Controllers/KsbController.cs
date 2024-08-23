@@ -93,20 +93,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //[Authorize]
-        //[HttpPost]
-        //public async Task<IActionResult> AddUpdateKsbProgress(ApprenticeKsbProgressData ksbProgressData)
-        //{
-        //    var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-
-        //    if (!string.IsNullOrEmpty(apprenticeId))
-        //    {
-        //        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-        //        await _client.AddUpdateKsbProgress(apprenticeDetails.MyApprenticeship.ApprenticeshipId, );
-        //        return Ok();
-        //    }
-
-        //    return View();
-        //}
     }
 }

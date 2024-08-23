@@ -12,6 +12,7 @@
     </div>
 </div>
 
+<div class="app-tabs" data-module="app-tabs">
 <div class="app-page-header app-sticky">
     <ul class="app-tabs__list">
         <li class="app-tabs__list-item app-tabs__list-item--selected">
@@ -31,6 +32,7 @@
         </li>
     </ul>
 </div>
+</div>
 
 <a>Help with linking KSBs</a>
 
@@ -44,19 +46,7 @@
         <input class="app-checkboxes__input" id="linkKsb" type="checkbox"/>
         <div class="govuk-accordion">
        <div class="govuk-body">Edit Status</div>
-        <div class="app-radios">
-            <fieldset id="KsbStatus">
-                @foreach (var ksbStatus in Model.KsbStatuses)
-                {
-                    <div class="app-radios__item">
-                        <input class="app-radios__input ksb-status" name="KsbStatus" type="radio" value="@ksbStatus" />
-                        <label class="app-label app-radios__label" for="KsbStatus">
-                            @ksbStatus
-                        </label>
-                    </div>
-                }
-            </fieldset>
-            </div>
+      
         </div>
         <div class="app-tag">@ksb.Status</div>
         <hr class="app-separator" />
