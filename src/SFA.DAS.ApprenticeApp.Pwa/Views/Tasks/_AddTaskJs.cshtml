@@ -22,6 +22,22 @@
             }
         });
 
+        // edit ksb link
+        $('body').on('click', '.edit-ksb', function (e)
+        {
+            // if diagloe has not been loaded, load it, else just show it
+            if ($("#ksb-popup").html().length > 0)
+            {
+                $('#ksb-popup').show();
+            }
+            else
+            {
+                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
+                    $('#ksb-popup').show();
+                });
+            }
+        });
+
         $('body').on('click', '.ksb-popup-cancel', function (e) {
             $('#ksb-popup').hide();
 
@@ -68,7 +84,7 @@
 
             // update subform - nice visual output
             var text = $(".link-ksb-checkbox:checked").map(function (i, e) {
-                return $(e).attr("data-title") + " - " + $(e).attr("data-desc") + "<br/>" + "<br/>";
+                return "<strong>" + $(e).attr("data-title") + "</strong> <a class='edit-ksb'>Edit</a><br/>" + $(e).attr("data-desc") + "<br/><br/>";
             }).get();
 
             $("#linked-ksb-details").html(text);
@@ -76,6 +92,10 @@
             // close dialgoue
             $('#ksb-popup').hide();
         });
+
+
+
+
 
     });
 </script>
