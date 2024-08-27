@@ -8,6 +8,7 @@ using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
@@ -175,7 +176,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
         }
 
         [Test, MoqAutoData]
-        public async Task CloseTask_AfterSave([Frozen] ApprenticeTask task,
+        public async Task CloseTask_AfterSave(
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<TasksController>> logger,
+            [Frozen] ApprenticeTask task,
             [Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -191,10 +196,72 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             {
                 HttpContext = httpContext
             };
+
+            task.ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
             var result = await controller.Add(task) as RedirectToActionResult;
-            result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Index");
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Information,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Adding new task for apprentice with id")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                logger.Verify(x => x.Log(LogLevel.Information,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Task added successfully for apprentice with id")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.RouteValues["status"].Should().Be(0);
+            }
         }
+
+        [Test, MoqAutoData]
+        public async Task AddTask_MustHaveValidId(
+           [Frozen] Mock<IOuterApiClient> client,
+           [Frozen] ApprenticeDetails apprenticeDetails,
+           [Frozen] Mock<ILogger<TasksController>> logger,
+           [Frozen] ApprenticeTask task,
+           [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            if (task.ApprenticeshipId == apprenticeDetails.MyApprenticeship.ApprenticeshipId)
+            {
+                task.ApprenticeshipId = task.ApprenticeshipId + 1;
+            }
+
+            var result = await controller.Add(task) as RedirectToActionResult;
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Invalid apprenticeship id. Cannot add task")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Tasks");
+            }
+        }
+
 
         [Test, MoqAutoData]
         public async Task ListTasks_After_TaskDelete([Greedy] TasksController controller)
@@ -273,7 +340,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
         [Test, MoqAutoData]
         public async Task ChangeTaskStatus_Must_Have_ValidId(
-             [Frozen] Mock<ILogger<TasksController>> logger, [Greedy] TasksController controller)
+            [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<TasksController>> logger, [Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -288,6 +357,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             {
                 HttpContext = httpContext
             };
+
+            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
+
             var result = await controller.ChangeTaskStatus(0,0) as RedirectToActionResult;
 
             using (new AssertionScope())
@@ -303,7 +375,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 result.ControllerName.Should().Be("Tasks");
             }
         }
-
-
     }
 }
