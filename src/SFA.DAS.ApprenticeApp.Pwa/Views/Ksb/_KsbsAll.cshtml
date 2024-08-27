@@ -4,16 +4,20 @@
 
 @foreach (var ksb in Model.Ksbs)
 {
-    var progress = Model.KsbProgresses.Where(p => p.KSBId == ksb.Id).FirstOrDefault();
-    <div>
-        <h2 class="app-card__heading">@ksb.Key</h2>
+    <div class="ksb-item">
+        <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
+
+        <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" asp-route-key="@ksb.Key" asp-route-detail="@ksb.Detail" class="app-dropdown__menu-link">
+                <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                <span>Edit</span>
+            </a>
         <div class="govuk-body">@ksb.Detail</div>
         <div class="govuk-body">
-                @if (progress != null && progress.Tasks.Count > 0)
+            @if (ksb.Progress != null && ksb.Progress.Tasks.Count > 0)
                 {
                     <span>
-                        Linked to @progress.Tasks.Count.ToString() 
-                        @if (@progress.Tasks.Count > 1)
+                    Linked to @ksb.Progress.Tasks.Count.ToString()
+                    @if (@ksb.Progress.Tasks.Count > 1)
                         {
                             <text>tasks</text>
                         }
@@ -25,13 +29,13 @@
                 }
         </div>
         <div class="app-tag">
-            @if (progress == null)
+            @if (ksb.Progress == null)
             {
                 <text>Not started</text>
             }
             else
             {
-                var status = progress.CurrentStatus;
+                var status = ksb.Progress.CurrentStatus;
                 string statusDisplay = status.GetEnumDescription();
                 <text>@statusDisplay</text>
             }

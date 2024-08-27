@@ -10,9 +10,8 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public Guid Id { get; set; }
         public string Key { get; set; }
         public string Detail { get; set; }
-        public string Note { get; set; }
-
-        public KSBStatus? Status { get; set; }
+        
+        public ApprenticeKsbProgressData? Progress { get; set; }
     }
 
     public enum KsbType
@@ -20,21 +19,5 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         Knowledge = 1,
         Skill = 2,
         Behaviour = 3,
-    }
-
-    [Flags]
-    public enum KSBStatus
-    {
-        [Description("Not started")]
-        NotStarted = 0,
-
-        [Description("In progress")]
-        InProgress = 1,
-
-        [Description("Ready for review")]
-        ReadyForReview = 2,
-
-        [Description("Completed")]
-        Completed = 3
-    }
+    } 
 }

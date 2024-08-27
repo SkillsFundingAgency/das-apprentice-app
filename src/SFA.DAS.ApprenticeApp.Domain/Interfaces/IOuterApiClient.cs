@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using RestEase;
 using SFA.DAS.ApprenticeApp.Domain.Api;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -50,7 +51,13 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         Task DeleteApprenticeTask([Path] long id, [Path] int taskId);
 
         [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksbs")]
-        Task<ApprenticeKsbs> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
+        Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
+
+        [Get("/apprentices/{id}/ksbs")]
+        Task<List<ApprenticeKsbProgressData>> GetApprenticeshipKsbProgresses([Path] long id, [Query] Guid[] guids);
+
+        [Post("/apprentices/{id}/ksbs")]
+        Task AddUpdateKsbProgress([Path] long id, [Body] ApprenticeKsbProgressData data);
 
         [Get("/apprentices/{id}/progress/taskCategories")]
         Task<ApprenticeTaskCategoryCollection> GetTaskCategories([Path] long id);
