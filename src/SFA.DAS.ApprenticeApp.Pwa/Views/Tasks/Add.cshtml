@@ -5,6 +5,10 @@
     ViewData["Section"] = "Tasks";
     Layout = "_Layout";
 }
+
+<div class="loader" style="display:none"></div>
+<div id="ksb-popup" style=""></div>
+
 <div class="app-page-header">
     <div class="app-overlay-header__cancel">
         <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
@@ -100,10 +104,17 @@
 
 </form>
 
-    <div>
+<div>
     <p class="govuk-body"> Link task to the knowledge, skills and behaviours (KSBs) it will help you gain.</p>
-    <a button class="link-ksb" asp-controller="ksb" asp-action="linkksbs">KSBs</a>
+
+    <input type="hidden" id="linked-ksb-ids" name="linked-ksb-ids" value="" />
+
+    <div id="linked-ksb-details"></div>
+
+    <input type="button" id="ksb-popup-btn" value="+" />
+
 </div>
     
 
 @await Html.PartialAsync("_AddTaskJs.cshtml")
+

@@ -171,9 +171,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return RedirectToAction("Index", "Tasks");
                 }
 
+                if (task.Status == Domain.Models.TaskStatus.Done)
+                {
                     task.CompletionDateTime = DateTime.UtcNow;
+                }
 
-                    string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
+                string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
                     _logger.LogInformation(preMessage);
 
                     await _client.AddApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task);

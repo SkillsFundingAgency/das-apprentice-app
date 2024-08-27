@@ -1,79 +1,83 @@
-﻿@using SFA.DAS.ApprenticeApp.Domain.Models
-@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 
-<div class="app-page-header">
-    <div class="app-overlay-header__cancel">
-        <a class="app-overlay-header__link">Cancel</a>
-    </div>
-    <h2 class="app-overlay-header__heading">
-       Link to knowledge, skills and behaviours (KSBs)
-    </h2>
-    <div class="app-overlay-header__save">
-        <a class="app-overlay-header__link link-ksb">Confirm</a>
-    </div>
-</div>
+@{
+    Layout = null;
+}
 
-<div class="app-tabs" data-module="app-tabs">
-<div class="app-page-header app-sticky">
-    <ul class="app-tabs__list">
-        <li class="app-tabs__list-item app-tabs__list-item--selected">
-            <a class="app-tabs__tab" href="#knowledge">
-                Knowledge (@Model.KnowledgeCount.ToString())
-            </a>
-        </li>
-        <li class="app-tabs__list-item">
-            <a class="app-tabs__tab" href="#skills">
-                Skills (@Model.SkillCount.ToString())
-            </a>
-        </li>
-        <li class="app-tabs__list-item">
-            <a class="app-tabs__tab" href="#behaviours">
-                Behaviours (@Model.BehaviourCount.ToString())
-            </a>
-        </li>
-    </ul>
-</div>
-</div>
-
-<a>Help with linking KSBs</a>
-<br /><br />
-
-@foreach (var ksb in Model.Ksbs)
-{
-    <div>
-        <h2 class="app-card__heading">@ksb.Key</h2>
-        <div class="govuk-body">@ksb.Detail</div>
-        <label class="govuk-body">Link this KSB to the task</label>
-                
-        <input class="app-checkboxes__input" id="linkKsb" type="checkbox"/>
-
-        <div class="app-form-group">
-            <fieldset class="app-fieldset">
-                <legend class="app-fieldset__legend">
-                    Status
-                </legend>
-                <div class="app-radios">
-                    <fieldset id="CurrentStatus">
-                        @foreach (var ksbStatus in Model.KsbStatuses)
-                        {
-                            <div class="app-radios__item">
-                                <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()"  />
-                                <label class="app-label app-radios__label" for="CurrentStatus">
-                                    @{
-                                        var statusItem = ksbStatus;
-                                        string statusItemDisplay = statusItem.GetEnumDescription();
-                                        <text>@statusItemDisplay</text>
-                                    }
-                                </label>
-                            </div>
-                        }
-                    </fieldset>
-                </div>
-
-            </fieldset>
+    <div class="app-page-header">
+        <div class="app-overlay-header__cancel">
+            <a class="app-overlay-header__link ksb-popup-cancel">Cancel</a>
         </div>
-      
-        <hr class="app-separator" />
+        <h2 class="app-overlay-header__heading">
+            Link to knowledge, skills and behaviours (KSBs)
+        </h2>
+        <div class="app-overlay-header__save">
+            <a class="app-overlay-header__link link-ksb link-ksb-confirm">Confirm</a>
         </div>
-  }
+    </div>
+
+    <div class="app-tabs" data-module="app-tabs">
+        <div class="app-page-header app-sticky">
+            <ul class="app-tabs__list">
+                <li class="app-tabs__list-item app-tabs__list-item--selected">
+                    <a class="app-tabs__tab" href="#knowledge">
+                        Knowledge (@Model.KnowledgeCount.ToString())
+                    </a>
+                </li>
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab" href="#skills">
+                        Skills (@Model.SkillCount.ToString())
+                    </a>
+                </li>
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab" href="#behaviours">
+                        Behaviours (@Model.BehaviourCount.ToString())
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <a>Help with linking KSBs</a>
+    <br /><br />
+
+    @foreach (var ksb in Model.Ksbs)
+    {
+        <div>
+            <h2 class="app-card__heading">@ksb.Key</h2>
+            <div class="govuk-body">@ksb.Detail</div>
+            <label class="govuk-body">Link this KSB to the task</label>
+
+            <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail"/>
+
+            <div class="app-form-group">
+                <fieldset class="app-fieldset">
+                    <legend class="app-fieldset__legend">
+                        Status
+                    </legend>
+                    <div class="app-radios">
+                        <fieldset id="CurrentStatus">
+                            @foreach (var ksbStatus in Model.KsbStatuses)
+                            {
+                                <div class="app-radios__item">
+                                    <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" />
+                                    <label class="app-label app-radios__label" for="CurrentStatus">
+                                        @{
+                                            var statusItem = ksbStatus;
+                                            string statusItemDisplay = statusItem.GetEnumDescription();
+                                            <text>@statusItemDisplay</text>
+                                        }
+                                    </label>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+
+                </fieldset>
+            </div>
+
+            <hr class="app-separator" />
+        </div>
+    }
+

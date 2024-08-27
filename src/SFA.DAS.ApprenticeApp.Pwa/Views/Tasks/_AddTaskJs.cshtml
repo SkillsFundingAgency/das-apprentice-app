@@ -2,28 +2,79 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.task-category').click(function () {
-            var taskCategory = $('.task-category:checked').val();
-            switch  (taskCategory) {
-                case "assignment":
-                    $('.taskCategory').val(1);
-                    break;
-                case "deadline":
-                    $('.taskCategory').val(2);
-                    break;
-                case "epa":
-                    $('.taskCategory').val(3);
-                    break;
-                 default:
-                    $('.taskCategory').val(0);
-            }
-        });
-        $('.link-ksb').click(function () { 
-            
-        
-        });
+
         $(".add-task").click(function (e) {
             $(".form").submit();
+        });
+
+        $("#ksb-popup-btn").click(function (e)
+        {
+            // if diagloe has not been loaded, load it, else just show it
+            if ($("#ksb-popup").html().length > 0)
+            {
+                $('#ksb-popup').show();
+            }
+            else
+            {
+                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
+                    $('#ksb-popup').show();
+                });
+            }
+        });
+
+        $('body').on('click', '.ksb-popup-cancel', function (e) {
+            $('#ksb-popup').hide();
+
+        });
+
+        // create or upadate local ksbprogress on checkbox click
+        $('body').on('click', '.link-ksb-checkbox', function (e)
+        {
+            var ksbId = $(this).attr("value");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action()',
+                data: { values: 1 },
+                dataType: "json",
+                contentType: "application/json"
+            });
+        });
+
+        // create or upadate local ksbprogress with status on radio click
+        $('body').on('click', '.ksb-status', function (e)
+        {
+            var value = $(this).attr("value");
+            var ksbId = $(this).attr("data-id");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action()',
+                data: { values: 1 },
+                dataType: "json",
+                contentType: "application/json"
+            });
+        });
+
+        $('body').on('click', '.link-ksb-confirm', function (e)
+        {
+            // iterate over  all checboxes
+            var result = $(".link-ksb-checkbox:checked").map(function (i, e) {
+                return $(e).attr("value");
+            }).get();
+
+            // update subform - hidden field
+            $("#linked-ksb-ids").val(result);
+
+            // update subform - nice visual output
+            var text = $(".link-ksb-checkbox:checked").map(function (i, e) {
+                return $(e).attr("data-title") + " - " + $(e).attr("data-desc") + "<br/>" + "<br/>";
+            }).get();
+
+            $("#linked-ksb-details").html(text);
+
+            // close dialgoue
+            $('#ksb-popup').hide();
         });
 
     });
