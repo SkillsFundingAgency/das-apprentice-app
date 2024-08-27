@@ -85,12 +85,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return View("_LinkKsb", apprenticeKsbsPageModel);
                 }
 
-                string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs Index. ApprenticeId: {apprenticeId}";
+                string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs LinkKsbs. ApprenticeId: {apprenticeId}";
                 _logger.LogWarning(message);
             }
             else
             {
-                _logger.LogWarning("ApprenticeId not found in user claims for Ksbs Index.");
+                _logger.LogWarning("ApprenticeId not found in user claims for Ksbs LinkKsbs.");
             }
             return RedirectToAction("Index", "Home");
         }
@@ -132,6 +132,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
                 return View(vm);
             }
+
+            string message = $"Invalid apprentice id for AddUpdateKsbProgress in KsbController";
+            _logger.LogWarning(message);
             return View("Index");
         }
 
@@ -154,6 +157,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return RedirectToAction("Index", "Ksb");
                 }
             }
+            _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
             return View("Index");
         }
     }

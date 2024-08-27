@@ -1,9 +1,13 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
@@ -37,6 +41,78 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         }
 
         [Test, MoqAutoData]
+        public async Task LoadIndex_NoApprenticeship(
+             [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<KsbController>> logger,
+            [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
+            apprenticeDetails.MyApprenticeship = null;
+
+            var result = await controller.Index() as RedirectToActionResult;
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs Index.")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Home");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task LoadIndex_NoApprenticeId(
+           ApprenticeDetails apprenticeDetails,
+           [Frozen] Mock<ILogger<KsbController>> logger,
+           [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.Index() as RedirectToActionResult;
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"ApprenticeId not found in user claims for Ksbs Index")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Home");
+            }
+        }
+
+        [Test, MoqAutoData]
         public async Task LoadLinkKsbs([Greedy] KsbController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -57,6 +133,77 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             result.Should().BeOfType(typeof(ViewResult));
         }
 
+        [Test, MoqAutoData]
+        public async Task LoadLinkKsbs_NoApprenticeship(
+             [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<KsbController>> logger,
+            [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
+            apprenticeDetails.MyApprenticeship = null;
+
+            var result = await controller.LinkKsbs() as RedirectToActionResult;
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs LinkKsbs")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Home");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task LoadLinkKsbs_NoApprenticeId(
+           ApprenticeDetails apprenticeDetails,
+           [Frozen] Mock<ILogger<KsbController>> logger,
+           [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.LinkKsbs() as RedirectToActionResult;
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"ApprenticeId not found in user claims for Ksbs LinkKsbs")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Home");
+            }
+        }
         [Test, MoqAutoData]
         public async Task Add_Update_KsbProgress_Async([Greedy] KsbController controller)
         { 
@@ -84,27 +231,80 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         }
 
         [Test, MoqAutoData]
-        public async Task Add_Update_KsbProgress_HttpPost_Async_NoApprenticeshipId([Frozen] ApprenticeKsbProgressData ksbProgressData,
+        public async Task Add_Update_KsbProgress_HttpPost_Async_NoApprenticeshipId(
+           [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<KsbController>> logger,
+           [Frozen] ApprenticeKsbProgressData ksbProgressData,
            [Greedy] KsbController controller)
         {
-
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-                apprenticeIdClaim
-            })});
-
+        {
+            apprenticeIdClaim
+        })});
             httpContext.User = claimsPrincipal;
-
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
 
-            var result = await controller.AddUpdateKsbProgress(ksbProgressData);
-            result.Should().BeOfType(typeof(ViewResult));
+            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
+            apprenticeDetails.MyApprenticeship = null;
+
+            var result = await controller.AddUpdateKsbProgress(ksbProgressData) as ViewResult;
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ViewName.Should().Be("Index");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task Add_Update_KsbProgress_HttpPost_Async(
+           [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<KsbController>> logger,
+           [Frozen] ApprenticeKsbProgressData ksbProgressData,
+           [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+            apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            
+            ksbProgressData.ApprenticeshipId = 0;
+            var result = await controller.AddUpdateKsbProgress(ksbProgressData) as RedirectToActionResult;
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Information,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"AddUpdateKsbProgress for KSB")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Ksb");
+            }
         }
     }
 }

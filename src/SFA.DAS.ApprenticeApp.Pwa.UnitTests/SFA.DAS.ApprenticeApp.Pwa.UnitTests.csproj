@@ -40,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Controllers\Support\" />
     <Folder Include="Controllers\Ksb\" />
   </ItemGroup>
