@@ -6,6 +6,9 @@
     Layout = "_Layout";
 }
 
+<div class="loader" style="display:none"></div>
+<div id="ksb-popup" style=""></div>
+
 <div class="app-page-header">
     <div class="app-overlay-header__cancel">
         <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
@@ -116,9 +119,9 @@
                 </legend>
                 <input type="hidden" id="linked-ksb-ids" name="linked-ksb-ids" value="" />
                 <div id="linked-ksb-details" class="govuk-label">
-                    @foreach(var ksb in Model.Task.TaskLinkedKsbs)
+                    @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                     {
-                            
+
                     }
                 </div>
                 <input type="button" id="ksb-popup-btn" value="Link KSBs" />
