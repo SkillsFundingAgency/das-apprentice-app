@@ -25,7 +25,7 @@
         // edit ksb link
         $('body').on('click', '.edit-ksb', function (e)
         {
-            // if diagloe has not been loaded, load it, else just show it
+            // if dialogue has not been loaded, load it, else just show it
             if ($("#ksb-popup").html().length > 0)
             {
                 $('#ksb-popup').show();
@@ -43,7 +43,7 @@
 
         });
 
-        // create or upadate local ksbprogress on checkbox click
+        // create or update local ksbprogress on checkbox click
         $('body').on('click', '.link-ksb-checkbox', function (e)
         {
             var ksbId = $(this).attr("value");
@@ -57,7 +57,7 @@
             });
         });
 
-        // create or upadate local ksbprogress with status on radio click
+        // create or update local ksbprogress with status on radio click
         $('body').on('click', '.ksb-status', function (e)
         {
             var value = $(this).attr("value");
@@ -65,8 +65,8 @@
 
             $.ajax({
                 type: "POST",
-                url: '@Url.Action()',
-                data: { values: 1 },
+                url: '@Url.Action("editksbprogress", "ksbcontroller")',
+                data: { ksbId: ksbId, ksbKey: value },
                 dataType: "json",
                 contentType: "application/json"
             });

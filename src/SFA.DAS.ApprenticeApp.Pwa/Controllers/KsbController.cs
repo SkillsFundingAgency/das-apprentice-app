@@ -160,5 +160,30 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
             return View("Index");
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditKsbProgress(Guid ksbId, string ksbKey, KsbType ksbProgressType, KSBStatus currentStatus)
+        {
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                ApprenticeKsbProgressData ksbProgressData = new ApprenticeKsbProgressData()
+                {
+                    ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
+                    KsbId = ksbId,
+                    KsbKey = ksbKey,
+                    KsbProgressType = ksbProgressType,
+                    CurrentStatus = currentStatus
+                }; 
+                
+                await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+            }
+
+            return Unauthorized();
+        }
     }
 }

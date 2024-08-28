@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -68,7 +68,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(apprenticeDetails.MyApprenticeship.ApprenticeshipId, Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
