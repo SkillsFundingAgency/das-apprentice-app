@@ -66,7 +66,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         Task UpdateTaskStatus([Path] long id, [Path] int taskId, [Path] int statusId);
 
         [Get("/apprentices/{id}/ksbs/taskid/{taskId}")]
-        Task<List<ApprenticeKsbProgressData>> GetKsbProgressForTask([Path] long id, [Query] int taskId);
+        Task<List<ApprenticeKsbProgressData>> GetKsbProgressForTask([Path] long id, [Path] int taskId);
 
     }
 }
