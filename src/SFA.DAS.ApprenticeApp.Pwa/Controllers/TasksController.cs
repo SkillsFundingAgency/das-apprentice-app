@@ -97,6 +97,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 var task = await _client.GetApprenticeTaskById(apprenticeDetails.MyApprenticeship.ApprenticeshipId, id);
                 var categories = await _client.GetTaskCategories(id);
+                var ksbprogress = await _client.GetKsbProgressForTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, id);
 
                 var vm = new EditTaskPageModel
                 {

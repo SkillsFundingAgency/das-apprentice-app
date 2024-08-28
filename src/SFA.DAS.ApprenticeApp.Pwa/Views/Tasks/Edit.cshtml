@@ -108,12 +108,29 @@
                 </div>
             </fieldset>
         </div>
+
+        <div class="app-form-group">
+            <fieldset class="app-fieldset app-fieldset--radios">
+                <legend class="app-fieldset__legend">
+                    Knowledge, skills and behaviours (KSBs) added to this task
+                </legend>
+                <input type="hidden" id="linked-ksb-ids" name="linked-ksb-ids" value="" />
+                <div id="linked-ksb-details" class="govuk-label">
+                    @foreach(var ksb in Model.Task.TaskLinkedKsbs)
+                    {
+                            
+                    }
+                </div>
+                <input type="button" id="ksb-popup-btn" value="Link KSBs" />
+            </fieldset>
+        </div>
+
+
     </form>
-    <div>
-        <p class="govuk-body"> Link task to the knowledge, skills and behaviours (KSBs) it will help you gain.</p>
-        <a button class="link-ksb" asp-controller="ksb" asp-action="linkksbs">KSBs</a>
-    </div>
+
 </div>
 
 
-@await Html.PartialAsync("_TasksJs.cshtml", Model)
+
+
+@await Html.PartialAsync("_AddTaskJs.cshtml")
