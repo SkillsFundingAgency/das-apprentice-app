@@ -121,6 +121,11 @@
                 <div id="linked-ksb-details" class="govuk-label">
                     @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                     {
+                        var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).First();
+                        <strong>@ksbProgressData.KsbKey</strong>
+                        <p>@ksbProgressData.CurrentStatus</p>
+                        <p>Linked to @ksbProgressData.Tasks.Count.ToString()</p>
+
 
                     }
                 </div>

@@ -102,7 +102,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var vm = new EditTaskPageModel
                 {
                     Task = task.Tasks.FirstOrDefault(),
-                    Categories = categories.TaskCategories
+                    Categories = categories.TaskCategories,
+                    KsbProgressData = ksbprogress
                 };
 
                 return View(vm);
@@ -193,7 +194,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return Unauthorized();
         }
 
-
         [HttpDelete]
         public async Task<IActionResult> DeleteApprenticeTask(int taskId)
         {
@@ -219,8 +219,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             return Unauthorized();
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> ChangeTaskStatus(int taskId, int statusId)
