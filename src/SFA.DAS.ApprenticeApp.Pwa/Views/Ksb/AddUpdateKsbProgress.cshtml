@@ -35,7 +35,7 @@
                          @foreach (var ksbStatus in Model.KsbStatuses)
                         {
                             <div class="app-radios__item">
-                                <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)" />
+                                <input class="app-radios__input ksb-status" name="currentstatus" type="radio" value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)" asp-for="@Model.KsbProgress.CurrentStatus"/>
                                 <label class="app-label app-radios__label" for="CurrentStatus">
                                     @{
                                         var statusItem = ksbStatus;
@@ -53,7 +53,6 @@
         <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
         <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
         <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />
-        <input type="hidden" id="CurrentStatus" name="CurrentStatus" value="@Model.KsbProgress.CurrentStatus" />
         <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
         <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.KsbProgress.Tasks" />
    
