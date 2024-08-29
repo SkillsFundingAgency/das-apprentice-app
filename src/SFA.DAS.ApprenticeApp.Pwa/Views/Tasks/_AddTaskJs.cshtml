@@ -9,7 +9,7 @@
 
         $("#ksb-popup-btn").click(function (e)
         {
-            // if diagloe has not been loaded, load it, else just show it
+            // if dialogue has not been loaded, load it, else just show it
             if ($("#ksb-popup").html().length > 0)
             {
                 $('#ksb-popup').show();
@@ -46,29 +46,36 @@
         // create or update local ksbprogress on checkbox click
         $('body').on('click', '.link-ksb-checkbox', function (e)
         {
-            var ksbId = $(this).attr("value");
-
+            var value = $(this).attr("value");
+            var ksbKey = $(this).attr("data-title");
+            var ksbType = $(this).attr("data-type");
+            var status = $(this).siblings('.ksb-status').attr("value");
+            var dataProgress = $(this).attr("data-progress");
+           
+            if (!dataProgress) {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action()',
-                data: { values: 1 },
-                dataType: "json",
-                contentType: "application/json"
+                url: '@Url.Action("EditKsbProgress", "Ksb")',
+                data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
+                dataType: "json"
             });
+            }
+            
         });
 
         // create or update local ksbprogress with status on radio click
-        $('body').on('click', '.ksb-status', function (e)
-        {
+        $('body').on('click', '.ksb-status', function (e) {
             var value = $(this).attr("value");
             var ksbId = $(this).attr("data-id");
+            var ksbKey = $(this).attr("data-key");
+            var ksbType = $(this).attr("data-type");
+            var note = $(this).attr("data-note");
 
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("editksbprogress", "ksbcontroller")',
-                data: { ksbId: ksbId, ksbKey: value },
-                dataType: "json",
-                contentType: "application/json"
+                url: '@Url.Action("EditKsbProgress", "Ksb")',
+                data: { ksbId: ksbId, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: value, note: note },
+                dataType: "json"
             });
         });
 

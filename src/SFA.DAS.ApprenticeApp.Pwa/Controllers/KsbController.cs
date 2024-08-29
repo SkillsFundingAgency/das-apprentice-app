@@ -163,24 +163,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> EditKsbProgress(Guid ksbId, string ksbKey, KsbType ksbProgressType, KSBStatus currentStatus)
+        public async Task<IActionResult> EditKsbProgress(Guid ksbId, string ksbKey, KsbType ksbType, KSBStatus ksbStatus, string note)
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-
+            
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                //set default status if null
 
                 ApprenticeKsbProgressData ksbProgressData = new ApprenticeKsbProgressData()
                 {
                     ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
                     KsbId = ksbId,
                     KsbKey = ksbKey,
-                    KsbProgressType = ksbProgressType,
-                    CurrentStatus = currentStatus
+                    KsbProgressType = ksbType,
+                    CurrentStatus = ksbStatus,
+                    Note = note
                 }; 
                 
                 await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+                return Ok();
             }
 
             return Unauthorized();

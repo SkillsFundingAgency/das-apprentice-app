@@ -49,7 +49,18 @@
             <div class="govuk-body">@ksb.Detail</div>
             <label class="govuk-body">Link this KSB to the task</label>
 
-            <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail"/>
+        <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail"
+        @{
+            if (ksb.Progress != null)
+            {
+                <text>data-progress="true"</text>
+            }
+            else
+            {
+                <text>data-type="@ksb.Type" </text>
+            }
+        }
+        />
 
             <div class="app-form-group">
                 <fieldset class="app-fieldset">
@@ -58,10 +69,18 @@
                     </legend>
                     <div class="app-radios">
                         <fieldset id="CurrentStatus">
+                            
                             @foreach (var ksbStatus in Model.KsbStatuses)
                             {
-                                <div class="app-radios__item">
-                                    <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" />
+                            <div class="app-radios__item">
+                                <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key"
+                                @{
+                                    if(ksb.Progress != null)
+                                    {
+                                        <text>data-note="@ksb.Progress.Note"</text>
+                                    }
+                                    }
+                                />
                                     <label class="app-label app-radios__label" for="CurrentStatus">
                                         @{
                                             var statusItem = ksbStatus;
@@ -80,4 +99,3 @@
             <hr class="app-separator" />
         </div>
     }
-

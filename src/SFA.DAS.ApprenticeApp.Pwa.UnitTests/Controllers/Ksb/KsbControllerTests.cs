@@ -306,5 +306,66 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
                 result.ControllerName.Should().Be("Ksb");
             }
         }
+
+        [Test, MoqAutoData]
+        public async Task EditKsbProgress_HttpPost_Async(
+          [Frozen] Mock<IOuterApiClient> client,
+           ApprenticeDetails apprenticeDetails,
+           [Frozen] Mock<ILogger<KsbController>> logger,
+          [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+            apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var ksbId = Guid.NewGuid();
+            var ksbKey = "K1";
+            var ksbType = KsbType.Knowledge;
+            var ksbStatus = KSBStatus.Completed;
+            var note = "This is the note";
+
+            var result = await controller.EditKsbProgress(ksbId, ksbKey, ksbType, ksbStatus, note);
+
+           result.Should().BeOfType(typeof(OkResult));
+           
+        }
+
+        [Test, MoqAutoData]
+        public async Task EditKsbProgress_Async_NoApprenticeshipId(
+           [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<KsbController>> logger,
+           [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+            apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var ksbId = Guid.NewGuid();
+            var ksbKey = "K1";
+            var ksbType = KsbType.Knowledge;
+            var ksbStatus = KSBStatus.Completed;
+            var note = "This is the note";
+            var result = await controller.EditKsbProgress(ksbId, ksbKey, ksbType, ksbStatus, note);
+
+            result.Should().BeOfType(typeof(UnauthorizedResult));
+        }
     }
 }
