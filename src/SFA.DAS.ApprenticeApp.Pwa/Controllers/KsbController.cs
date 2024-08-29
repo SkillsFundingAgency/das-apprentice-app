@@ -103,11 +103,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
                 Guid[] guids = new Guid[1];
                 guids[0] = id;
 
-                var ksbProgressResult = await _client.GetApprenticeshipKsbProgresses(apprenticeDetails.MyApprenticeship.ApprenticeshipId, guids);
+                var ksbProgressResult = await _client.GetApprenticeshipKsbProgresses(long.Parse(apprenticeshipId), guids);
                 var vm = new EditKsbPageModel();
                 vm.KsbDetail = detail;
                 vm.KsbStatuses = KsbHelpers.KSBStatuses();
@@ -121,7 +121,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     vm.KsbProgress = new ApprenticeKsbProgressData()
                     {
-                        ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
+                        ApprenticeshipId = long.Parse(apprenticeshipId),
                         KsbId = id,
                         KsbKey = key,
                         Note = string.Empty,
@@ -148,8 +148,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    ksbProgressData.ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
+                    var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                    ksbProgressData.ApprenticeshipId = long.Parse(apprenticeshipId);
                     string message = $"AddUpdateKsbProgress for KSB {ksbProgressData.KsbId} and Apprenticeship: {ksbProgressData.ApprenticeshipId}";
                     _logger.LogInformation(message);
                     await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
@@ -169,12 +169,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                //set default status if null
+                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
 
                 ApprenticeKsbProgressData ksbProgressData = new ApprenticeKsbProgressData()
                 {
-                    ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
+                    ApprenticeshipId = long.Parse(apprenticeshipId),
                     KsbId = ksbId,
                     KsbKey = ksbKey,
                     KsbProgressType = ksbType,

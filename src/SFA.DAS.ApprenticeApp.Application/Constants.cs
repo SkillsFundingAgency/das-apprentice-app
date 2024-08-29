@@ -5,6 +5,8 @@
         public const string StubAuthCookieName = "SFA.ApprenticeApp.StubAuthCookie";
         public const string WelcomeSplashScreenCookieName = "SFA.ApprenticeApp.WelcomeSplashScreen";
         public const string ApprenticeIdClaimKey = "ApprenticeId";
+        public const string ApprenticeshipIdClaimKey = "ApprenticeshipId";
+
 
         public const string ContentfulTopLevelPageTypeName = "apprenticeAppCategory";
         public const string ContentfulContentPageTypeName = "apprenticeAppArticle";

@@ -59,18 +59,21 @@
         });
 
         $('body').on('click', '.delete-task', function (e) {
-            var taskId = $(this).siblings('.taskId').val();
-            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
-            var taskId = $('.taskId').val();
-            $.ajax({
-                type: "DELETE",
-                url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                data: { taskId: taskId },
-                dataType: "json"
-            });
+            if (confirm('Are you sure you want to delete this task?')) {
+                var taskId = $(this).siblings('.taskId').val();
+                $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
-            return false;
+                var taskId = $('.taskId').val();
+                $.ajax({
+                    type: "DELETE",
+                    url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
+                    data: { taskId: taskId },
+                    dataType: "json"
+                });
+
+                return false;
+            }
         });
 
         $('body').on('click', '.app-dropdown__toggle', function (e) {
