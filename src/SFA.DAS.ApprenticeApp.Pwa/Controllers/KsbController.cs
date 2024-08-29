@@ -29,12 +29,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
 
-                if (apprenticeDetails.MyApprenticeship != null)
+                if (apprenticeshipId != null)
                 {
                     //using default value of core until we have the correct value from Approvals api
-                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeDetails.MyApprenticeship.ApprenticeshipId, apprenticeDetails.MyApprenticeship.StandardUId, "core");
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(long.Parse(apprenticeshipId), standardUId, "core");
 
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
@@ -66,12 +67,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
 
-                if (apprenticeDetails.MyApprenticeship != null)
+                if (apprenticeshipId != null)
                 {
                     //using default value of core until we have the correct value from Approvals api
-                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeDetails.MyApprenticeship.ApprenticeshipId, apprenticeDetails.MyApprenticeship.StandardUId, "core");
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(long.Parse(apprenticeshipId), standardUId, "core");
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
                     {
