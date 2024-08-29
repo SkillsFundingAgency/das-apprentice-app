@@ -146,7 +146,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 var vm = new AddTaskPageModel
                 {
-                    Task = new ApprenticeTask() { ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId},
+                    Task = new ApprenticeTask() { ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId },
                     Categories = categories.TaskCategories,
                     StatusId = status
                 };
@@ -178,13 +178,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
 
                 string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
-                    _logger.LogInformation(preMessage);
+                _logger.LogInformation(preMessage);
+                if (task.CompletionDateTime == null)
+                {
+                    task.CompletionDateTime = DateTime.UtcNow;
+                }
+                await _client.AddApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task);
 
-                    await _client.AddApprenticeTask(apprenticeDetails.MyApprenticeship.ApprenticeshipId, task);
-
-                    string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
-                    _logger.LogInformation(postMessage);
-                    return RedirectToAction("Index", new { status = (int)task.Status });
+                string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
+                _logger.LogInformation(postMessage);
+                return RedirectToAction("Index", new { status = (int)task.Status });
 
             }
             return Unauthorized();

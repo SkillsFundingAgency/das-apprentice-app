@@ -102,15 +102,12 @@
 
     <input name="Status" type="hidden" asp-for="@Model.StatusId" />
 
-
-
-
     <div class="app-form-group">
         <fieldset class="app-fieldset app-fieldset--radios">
             <legend class="app-fieldset__legend">
                 Knowledge, skills and behaviours (KSBs) added to this task
             </legend>
-            <input type="hidden" id="linked-ksb-ids" name="linked-ksb-ids" value="" />
+            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
             <div id="linked-ksb-details" class="govuk-label"></div>
             <input type="button" id="ksb-popup-btn" value="Link KSBs" />
         </fieldset>

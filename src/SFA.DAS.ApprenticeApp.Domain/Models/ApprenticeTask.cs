@@ -16,7 +16,8 @@
         public List<TaskKSBs>? TaskLinkedKsbs { get; set; } = null!;
         public List<ApprenticeshipCategory>? ApprenticeshipCategory { get; set; } = null!;
         public List<TaskReminder>? TaskReminders { get; set; } = null!;
-
+       
+        public string[] KsbsLinked { get; set; }
     }
 
     public class ApprenticeshipCategory
