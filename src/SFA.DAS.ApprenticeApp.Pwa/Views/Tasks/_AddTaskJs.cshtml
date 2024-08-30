@@ -13,13 +13,28 @@
             if ($("#ksb-popup").html().length > 0)
             {
                 $('#ksb-popup').show();
+                var ksbIdList = $('#linked-ksb-ids').val();
+                ksbIdList = ksbIdList.split(',');
+                $('.link-ksb-checkbox').each(function () {
+                    var ksbId = $(this).val();
+                    if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
+
+                });
             }
             else
             {
                 $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
                     $('#ksb-popup').show();
+                    var ksbIdList = $('#linked-ksb-ids').val();
+                    ksbIdList = ksbIdList.split(',');
+                    $('.link-ksb-checkbox').each(function () {
+                        var ksbId = $(this).val();
+                        if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
+
+                    });
                 });
             }
+            
         });
 
         // edit ksb link

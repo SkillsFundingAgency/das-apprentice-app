@@ -117,23 +117,19 @@
                 <legend class="app-fieldset__legend">
                     Knowledge, skills and behaviours (KSBs) added to this task
                 </legend>
-                <input type="hidden" id="linked-ksb-ids" name="linked-ksb-ids" value="" />
+                <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
                 <div id="linked-ksb-details" class="govuk-label">
                     @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                     {
-                        var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).First();
+                        var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
                         <strong>@ksbProgressData.KsbKey</strong>
                         <p>@ksbProgressData.CurrentStatus</p>
-                        <p>Linked to @ksbProgressData.Tasks.Count.ToString()</p>
-
-
                     }
                 </div>
-                <input type="button" id="ksb-popup-btn" value="Link KSBs" />
+                <input type="button" id="ksb-popup-btn" value="Link KSBs" data-id="@Model.Task.TaskId" />
+               
             </fieldset>
         </div>
-
-
     </form>
 
 </div>

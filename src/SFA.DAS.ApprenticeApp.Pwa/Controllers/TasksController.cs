@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
@@ -94,15 +93,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
 
-                var task = await _client.GetApprenticeTaskById(long.Parse(apprenticeshipId), id);
-                var categories = await _client.GetTaskCategories(id);
-                var ksbprogress = await _client.GetKsbProgressForTask(long.Parse(apprenticeshipId), id);
-
+                var taskdata = await _client.GetTaskViewData(long.Parse(apprenticeshipId), id);
+                var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
                 var vm = new EditTaskPageModel
                 {
-                    Task = task.Tasks.FirstOrDefault(),
-                    Categories = categories.TaskCategories,
-                    KsbProgressData = ksbprogress
+                    Task = taskdata.Task,
+                    Categories = taskdata.TaskCategories.TaskCategories,
+                    KsbProgressData = taskdata.KsbProgress,
+                    LinkedKsbGuids = String.Join(",", guids)
                 };
 
                 return View(vm);
@@ -121,7 +119,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
 
-                await _client.UpdateApprenticeTask(long.Parse(apprenticeshipId), task.TaskId, task);
+                if (task.KsbsLinked != null)
+                {
+                    string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    task.KsbsLinked = ksbArray;
+                }
+
+                try
+                {
+                    await _client.UpdateApprenticeTask(long.Parse(apprenticeshipId), task.TaskId, task);
+                }
+                catch
+                {
+                    //temporarily handle 500 errors;
+                }
+                
 
                 return RedirectToAction("Edit", "Tasks", task.TaskId);
             }
@@ -180,12 +192,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     task.CompletionDateTime = DateTime.UtcNow;
                 }
+                
+                    if (task.KsbsLinked != null)
+                    {
+                        string[] ksbArray = task.KsbsLinked[0].Split(new [] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                        task.KsbsLinked = ksbArray;
+                    }
+                
                     string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
                     _logger.LogInformation(preMessage);
 
+                try
+                {
                     await _client.AddApprenticeTask(long.Parse(apprenticeshipId), task);
+                }
+                catch
+                {
+                    //temporarily handle 500 errors
+                }
 
-                    string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
+
+                string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
                     _logger.LogInformation(postMessage);
                     return RedirectToAction("Index", new { status = (int)task.Status });
 

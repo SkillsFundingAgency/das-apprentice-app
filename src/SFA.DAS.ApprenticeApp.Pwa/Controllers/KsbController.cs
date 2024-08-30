@@ -154,7 +154,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     ksbProgressData.ApprenticeshipId = long.Parse(apprenticeshipId);
                     string message = $"AddUpdateKsbProgress for KSB {ksbProgressData.KsbId} and Apprenticeship: {ksbProgressData.ApprenticeshipId}";
                     _logger.LogInformation(message);
-                    await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+
+                    try
+                    {
+                        await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+                    }
+                    catch 
+                    {
+                        //temporarily handle any 500 errors
+                    }
 
                     return RedirectToAction("Index", "Ksb");
                 }
@@ -181,9 +189,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     KsbProgressType = ksbType,
                     CurrentStatus = ksbStatus,
                     Note = note
-                }; 
-                
-                await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+                };
+
+                try
+                {
+                    await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+                }
+                catch
+                {
+                    //temporarily handle any 500 errors
+                }
+
                 return Ok();
             }
 
