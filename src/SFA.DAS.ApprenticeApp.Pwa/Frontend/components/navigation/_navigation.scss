@@ -43,8 +43,15 @@
   height: 1.6rem;
   display: block;
   margin: $app-gap-half 0;
+  color: $govuk-secondary-text-colour;
   .app-navigation__link--active & {
-    background-color: $app-brand-colour;
+    color: $app-brand-colour;
+  }
+  .app-navigation__link:hover & {
+    color: $app-brand-colour;
+  }
+  svg {
+    @include app-svg-common;
   }
 }
 
