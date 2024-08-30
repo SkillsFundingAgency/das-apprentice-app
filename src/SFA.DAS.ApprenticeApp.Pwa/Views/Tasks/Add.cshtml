@@ -9,114 +9,118 @@
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
 
-<div class="app-page-header">
-    <div class="app-overlay-header__cancel">
-        <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
+<div class="popup-wrapper">
+    <div class="app-page-header">
+        <div class="app-overlay-header__cancel">
+            <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
+        </div>
+        <h2 class="app-overlay-header__heading">
+            Add a new task
+        </h2>
+        <div class="app-overlay-header__save">
+            <a class="app-overlay-header__link add-task">Add</a>
+        </div>
     </div>
-    <h2 class="app-overlay-header__heading">
-        Add a new task
-    </h2>
-    <div class="app-overlay-header__save">
-        <a class="app-overlay-header__link add-task">Add</a>
-    </div>
-</div>
-<form method="post" enctype="multipart/form-data" class="form">
-    <div class="app-form-group">
-        <label class="app-label" for="title">
-            Title
-        </label>
-        <input class="app-input" id="title" name="title" type="text" placeholder="Title" asp-for="@Model.Task.Title">
-    </div>
-    <div class="app-form-group">
-        <label class="app-label" for="date">
-            Due date
-        </label>
-        <input class="app-input" id="date" name="duedate" type="date" placeholder="Due date" asp-for="@Model.Task.DueDate">
-    </div>
+    <form method="post" enctype="multipart/form-data" class="form">
+        <div class="app-form-group">
+            <label class="app-label" for="title">
+                Title
+            </label>
+            <input class="app-input" id="title" name="title" type="text" placeholder="Title" asp-for="@Model.Task.Title">
+        </div>
+        <div class="app-form-group">
+            <label class="app-label" for="date">
+                Due date
+            </label>
+            <input class="app-input" id="date" name="duedate" type="date" placeholder="Due date" asp-for="@Model.Task.DueDate">
+        </div>
 
-    <div class="app-form-group">
-        <label class="app-label" for="time">
-            Due time
-        </label>
-        <input class="app-input" id="time" name="time" type="time" placeholder="Due time">
-    </div>
-    <div class="app-form-group">
-        <fieldset class="app-fieldset app-fieldset--radios">
-            <legend class="app-fieldset__legend">
-                Set reminder
-            </legend>
-            <div class="app-radios">
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-reminder" id="reminder-none" name="reminder" type="radio"
-                           value="none">
-                    <label class="app-label app-radios__label" for="reminder-none">
-                        None
-                    </label>
+        <div class="app-form-group">
+            <label class="app-label" for="time">
+                Due time
+            </label>
+            <input class="app-input" id="time" name="time" type="time" placeholder="Due time">
+        </div>
+        <div class="app-form-group">
+            <fieldset class="app-fieldset app-fieldset--radios">
+                <legend class="app-fieldset__legend">
+                    Set reminder
+                </legend>
+                <div class="app-radios">
+                    <div class="app-radios__item">
+                        <input class="app-radios__input task-reminder" id="reminder-none" name="reminder" type="radio"
+                               value="none">
+                        <label class="app-label app-radios__label" for="reminder-none">
+                            None
+                        </label>
+                    </div>
+                    <div class="app-radios__item">
+                        <input class="app-radios__input task-reminder" id="reminder-time" name="reminder" type="radio"
+                               value="time">
+                        <label class="app-label app-radios__label" for="reminder-time">
+                            At the time of activity
+                        </label>
+                    </div>
+                    <div class="app-radios__item">
+                        <input class="app-radios__input task-reminder" id="reminder-5mins" name="reminder" type="radio"
+                               value="5mins">
+                        <label class="app-label app-radios__label" for="reminder-5mins">
+                            5 minutes before
+                        </label>
+                    </div>
                 </div>
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-reminder" id="reminder-time" name="reminder" type="radio"
-                           value="time">
-                    <label class="app-label app-radios__label" for="reminder-time">
-                        At the time of activity
-                    </label>
+            </fieldset>
+        </div>
+        <div class="app-form-group">
+            <fieldset class="app-fieldset">
+                <legend class="app-fieldset__legend">
+                    Category
+                </legend>
+                <div class="app-radios">
+                    <fieldset id="ApprenticeshipCategoryId">
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <div class="app-radios__item">
+                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId" />
+                                <label class="app-label app-radios__label" for="ApprenticeshipCategoryId">
+                                    @cat.Title
+                                </label>
+                            </div>
+                        }
+                    </fieldset>
                 </div>
-                <div class="app-radios__item">
-                    <input class="app-radios__input task-reminder" id="reminder-5mins" name="reminder" type="radio"
-                           value="5mins">
-                    <label class="app-label app-radios__label" for="reminder-5mins">
-                        5 minutes before
-                    </label>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="app-form-group">
-        <fieldset class="app-fieldset">
-            <legend class="app-fieldset__legend">
-                Category
-            </legend>
-            <div class="app-radios">
-                <fieldset id="ApprenticeshipCategoryId">
-                    @foreach (var cat in Model.Categories)
-                    {
-                        <div class="app-radios__item">
-                            <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" type="radio" value="@cat.CategoryId" />
-                            <label class="app-label app-radios__label" for="ApprenticeshipCategoryId">
-                                @cat.Title
-                            </label>
-                        </div>
-                    }
-                </fieldset>
-            </div>
 
-        </fieldset>
-    </div>
-    <div class="app-form-group">
-        <label class="app-label" for="note">
-            Add a Note
-        </label>
-        <input class="app-input" id="note" name="note" type="text" placeholder="Note" asp-for="@Model.Task.Note">
-    </div>
-    <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden" asp-for="@Model.Task.ApprenticeshipCategoryId" />
-    <input class="apprenticeshipid" name="apprenticeshipid" type="hidden" asp-for="@Model.Task.ApprenticeshipId" />
+            </fieldset>
+        </div>
+        <div class="app-form-group">
+            <label class="app-label" for="note">
+                Add a Note
+            </label>
+            <input class="app-input" id="note" name="note" type="text" placeholder="Note" asp-for="@Model.Task.Note">
+        </div>
+        <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden" asp-for="@Model.Task.ApprenticeshipCategoryId" />
+        <input class="apprenticeshipid" name="apprenticeshipid" type="hidden" asp-for="@Model.Task.ApprenticeshipId" />
 
-    <input name="Status" type="hidden" asp-for="@Model.StatusId" />
+        <input name="Status" type="hidden" asp-for="@Model.StatusId" />
+
+
+
 
     <div class="app-form-group">
         <fieldset class="app-fieldset app-fieldset--radios">
             <legend class="app-fieldset__legend">
                 Knowledge, skills and behaviours (KSBs) added to this task
             </legend>
-            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
+            <input type="hidden" id="linked-ksb-ids" name="linked-ksb-ids" value="" />
             <div id="linked-ksb-details" class="govuk-label"></div>
             <input type="button" id="ksb-popup-btn" value="Link KSBs" />
         </fieldset>
     </div>
 
 
-</form>
+    </form>
 
-    
+</div>
 
 @await Html.PartialAsync("_AddTaskJs.cshtml")
 
