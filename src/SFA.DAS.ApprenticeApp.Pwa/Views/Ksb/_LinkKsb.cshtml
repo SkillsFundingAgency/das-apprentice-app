@@ -3,7 +3,6 @@
 
 @{
     Layout = null;
-    var thisTask = 55;
 }
 
     <div class="app-page-header">
@@ -73,14 +72,18 @@
                             
                             @foreach (var ksbStatus in Model.KsbStatuses)
                             {
+                            var isChecked = false;
+                            if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
+                            {
+                                isChecked = true;
+                            }
+                            if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
+                            {
+                                isChecked = true;
+                            }
                             <div class="app-radios__item">
-                                <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key"
-                                @{
-                                    if(ksb.Progress != null)
-                                    {
-                                        <text>data-note="@ksb.Progress.Note"</text>
-                                    }
-                                    }
+                                <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "")
+                                
                                 />
                                     <label class="app-label app-radios__label" for="CurrentStatus">
                                         @{

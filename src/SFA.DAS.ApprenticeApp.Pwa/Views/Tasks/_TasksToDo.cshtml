@@ -41,7 +41,15 @@
             {
                 <li>
                     <span class="app-icon-list__icon svg-placeholder"></span><span>
-                        Linked to @task.TaskLinkedKsbs.Count.ToString() KSB @if (task.TaskLinkedKsbs.Count > 1) { <text>s</text> }
+                        Linked to @task.TaskLinkedKsbs.Count.ToString()  
+                        @if (task.TaskLinkedKsbs.Count > 1)
+                        {
+                            <text>KSBs</text>
+                        }
+                        else
+                        {
+                            <text>KSB</text>
+                        }
                     </span>
                 </li>
             }

@@ -124,7 +124,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     task.KsbsLinked = ksbArray;
                 }
-
                 try
                 {
                     await _client.UpdateApprenticeTask(long.Parse(apprenticeshipId), task.TaskId, task);
@@ -133,7 +132,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     //temporarily handle 500 errors;
                 }
-                
 
                 return RedirectToAction("Edit", "Tasks", task.TaskId);
             }
