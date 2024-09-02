@@ -44,6 +44,7 @@
 
     @foreach (var ksb in Model.Ksbs)
     {
+        <form>
         <div>
             <h2 class="app-card__heading">@ksb.Key</h2>
             <div class="govuk-body">@ksb.Detail</div>
@@ -102,4 +103,5 @@
 
             <hr class="app-separator" />
         </div>
+        </form>
     }
