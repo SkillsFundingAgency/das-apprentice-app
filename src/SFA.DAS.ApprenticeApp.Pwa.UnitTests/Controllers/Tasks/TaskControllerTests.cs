@@ -172,10 +172,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
                 apprenticeIdClaim,
-                apprenticeshipIdClaim
+                apprenticeshipIdClaim,
+                standardUIdClaim
             })});
             httpContext.User = claimsPrincipal;
 

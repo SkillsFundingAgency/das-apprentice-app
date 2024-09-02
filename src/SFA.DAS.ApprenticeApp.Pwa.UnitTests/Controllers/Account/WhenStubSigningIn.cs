@@ -16,7 +16,10 @@ using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using SFA.DAS.ApprenticeApp.Application;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.ApplicationInsights.WindowsServer;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 {
@@ -63,28 +66,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             string nameClaimValue,
             StubAuthUserDetails model,
             Mock<IStubAuthenticationService> stubAuthenticationService,
+            [Frozen] ClaimsPrincipal claims,            
             [Greedy] AccountController controller)
         {
             var authenticationServiceMock = new Mock<IAuthenticationService>();
             authenticationServiceMock
                 .Setup(a => a.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
                 .Returns(Task.CompletedTask);
-
+            
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
                 .Setup(s => s.GetService(typeof(IAuthenticationService)))
                 .Returns(authenticationServiceMock.Object);
+            // mediator.Setup(x => x.Send(It.IsAny<GetTaskCategoriesQuery>(), default)).ReturnsAsync(categoriesResult);
+            
+
+
             var httpContext = new DefaultHttpContext() { RequestServices = serviceProviderMock.Object};
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var emailClaim = new Claim(ClaimTypes.Email, emailClaimValue);
             var nameClaim = new Claim(ClaimTypes.NameIdentifier, nameClaimValue);
-            var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            emailClaim,
-            nameClaim
-        })});
-            httpContext.User = claimsPrinciple;
+            var apprenticeshipIdClaim = new Claim("apprenticeshipId", "1");
+            var standardUIdClaim = new Claim("standardUId", "1");
+                        
+            stubAuthenticationService.Setup(s => s.GetStubSignInClaims(model)).ReturnsAsync(claims);
+            claims.AddIdentity(new ClaimsIdentity(new[]
+            {
+                emailClaim,
+                nameClaim,
+                apprenticeshipIdClaim,
+                standardUIdClaim,
+                apprenticeIdClaim
+            }));
 
-           
+            httpContext.User = claims;
 
             controller.ControllerContext = new ControllerContext
             {
