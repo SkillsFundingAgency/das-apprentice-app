@@ -30,5 +30,8 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         Completed = 3
     }
 
-    
+    public class ApprenticeKsbData : ApprenticeKsbProgressData
+    {
+        public string Detail { get; set; }
+    }
 }

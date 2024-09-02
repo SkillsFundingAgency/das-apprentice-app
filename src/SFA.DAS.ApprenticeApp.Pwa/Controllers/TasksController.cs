@@ -92,18 +92,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
 
-                var taskdata = await _client.GetTaskViewData(long.Parse(apprenticeshipId), id);
-                var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
-                var vm = new EditTaskPageModel
+                if(!string.IsNullOrEmpty(apprenticeshipId) && !string.IsNullOrEmpty(standardUId))
                 {
-                    Task = taskdata.Task,
-                    Categories = taskdata.TaskCategories.TaskCategories,
-                    KsbProgressData = taskdata.KsbProgress,
-                    LinkedKsbGuids = String.Join(",", guids)
-                };
+                    //using default value of core until we have the correct value from Approvals api
+                    var taskdata = await _client.GetTaskViewData(long.Parse(apprenticeshipId), id, standardUId, "core");
+                    
+                    var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
+                    var vm = new EditTaskPageModel
+                    {
+                        Task = taskdata.Task,
+                        Categories = taskdata.TaskCategories.TaskCategories,
+                        KsbProgressData = taskdata.KsbProgress,
+                        LinkedKsbGuids = String.Join(",", guids)
+                    };
+                    return View(vm);
+                }
 
-                return View(vm);
+                return RedirectToAction("Index", "Tasks");
             }
 
             return View();

@@ -124,6 +124,7 @@
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
                             <strong>@ksbProgressData.KsbKey</strong>
+                            <p>@ksbProgressData.Detail</p>
                             <p>@ksbProgressData.CurrentStatus</p>
                         }
                     </div>

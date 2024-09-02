@@ -4,6 +4,8 @@
     {
         public ApprenticeTask Task { get; set; }
         public ApprenticeTaskCategoryCollection TaskCategories { get; set; }
-        public List<ApprenticeKsbProgressData>? KsbProgress { get; set; }
+        //public List<ApprenticeKsbProgressData>? KsbProgress { get; set; }
+
+        public List<ApprenticeKsbData>? KsbProgress { get; set; }
     }
 }
