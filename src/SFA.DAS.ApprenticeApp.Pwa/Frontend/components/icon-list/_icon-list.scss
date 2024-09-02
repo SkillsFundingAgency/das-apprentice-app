@@ -6,8 +6,13 @@
 }
 
 .app-icon-list__icon {
-  min-width: 1rem;
+  max-width: 1rem;
   height: 1rem;
+  svg {
+    @include app-svg-common;
+    stroke: currentColor;
+    display: block;
+  }
 }
 
 .app-icon-list > li {

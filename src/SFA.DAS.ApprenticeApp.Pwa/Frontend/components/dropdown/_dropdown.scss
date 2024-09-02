@@ -41,12 +41,24 @@
   display: flex;
   gap: $app-gap-half;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   text-decoration: none;
-  color: #000;
+  color: $govuk-text-colour;
+  &:link {
+    color: $govuk-text-colour;
+  }
 }
 
 .app-dropdown__menu-icon {
-  min-width: 1rem;
+  max-width: 1rem;
   height: 1rem;
+  color: $app-brand-colour;
+  svg {
+    @include app-svg-common;
+    stroke: currentColor;
+  }
+  .app-dropdown__menu-link:focus &,
+  .app-dropdown__menu-link:active & {
+    color: inherit;
+  }
 }

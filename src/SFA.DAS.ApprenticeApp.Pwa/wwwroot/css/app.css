@@ -8036,14 +8036,27 @@ html {
   display: flex;
   gap: 0.5rem;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   text-decoration: none;
-  color: #000;
+  color: #0b0c0c;
+}
+.app-dropdown__menu-link:link {
+  color: #0b0c0c;
 }
 
 .app-dropdown__menu-icon {
-  min-width: 1rem;
+  max-width: 1rem;
   height: 1rem;
+  color: #00703c;
+}
+.app-dropdown__menu-icon svg {
+  max-height: 100%;
+  max-width: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+}
+.app-dropdown__menu-link:focus .app-dropdown__menu-icon, .app-dropdown__menu-link:active .app-dropdown__menu-icon {
+  color: inherit;
 }
 
 .app-fab {
@@ -8089,8 +8102,15 @@ html {
 }
 
 .app-icon-list__icon {
-  min-width: 1rem;
+  max-width: 1rem;
   height: 1rem;
+}
+.app-icon-list__icon svg {
+  max-height: 100%;
+  max-width: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+  display: block;
 }
 
 .app-icon-list > li {
