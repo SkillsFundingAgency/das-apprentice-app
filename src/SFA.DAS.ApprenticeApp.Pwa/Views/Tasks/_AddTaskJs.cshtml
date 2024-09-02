@@ -62,18 +62,14 @@
             var value = $(this).attr("value");
             var ksbKey = $(this).attr("data-title");
             var ksbType = $(this).attr("data-type");
-            var status = $(this).siblings('.ksb-status').attr("value");
-            var dataProgress = $(this).attr("data-progress");
+            var status = $(this).siblings('.ksb-status').attr("value")
            
-            if (!dataProgress) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("EditKsbProgress", "Ksb")',
                 data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
                 dataType: "json"
-            });
-            }
-            
+            });           
         });
 
         // create or update local ksbprogress with status on radio click

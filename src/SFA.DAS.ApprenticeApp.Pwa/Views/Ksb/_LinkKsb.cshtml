@@ -50,18 +50,7 @@
             <div class="govuk-body">@ksb.Detail</div>
             <label class="govuk-body">Link this KSB to the task</label>
 
-        <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail"
-        @{
-            if (ksb.Progress != null)
-            {
-                <text>data-progress="true"</text>
-            }
-            else
-            {
-                <text>data-type="@ksb.Type" </text>
-            }
-        }
-        />
+            <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
 
             <div class="app-form-group">
                 <fieldset class="app-fieldset">
