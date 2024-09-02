@@ -29,8 +29,12 @@
 }
 
 .app-icon-list--l .app-icon-list__icon {
-  min-width: 2rem;
+  max-width: 2rem;
   height: 2rem;
+  svg {
+    @include app-svg-common;
+    color: $app-brand-colour;
+  }
 }
 
 .app-icon-list--muted {
