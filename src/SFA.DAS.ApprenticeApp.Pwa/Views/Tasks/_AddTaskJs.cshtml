@@ -109,5 +109,41 @@
             $('#ksb-popup').hide();
         });
 
+
+        $('body').on('click', '.tab-knowledge', function (e) {
+
+            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
+            $(this).closest('li').addClass('app-tabs__list-item--selected');
+
+            $('.Knowledge').show();
+            $('.Skill').hide();
+            $('.Behaviour').hide();
+
+        });
+
+        $('body').on('click', '.tab-skills', function (e) {
+
+            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
+            $(this).closest('li').addClass('app-tabs__list-item--selected');
+
+            $('.Knowledge').hide();
+            $('.Skill').show();
+            $('.Behaviour').hide();
+
+        });
+
+        $('body').on('click', '.tab-behaviours', function (e) {
+
+            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
+            $(this).closest('li').addClass('app-tabs__list-item--selected');
+
+            $('.Knowledge').hide();
+            $('.Skill').hide();
+            $('.Behaviour').show();
+        });
+        
+        
+
+
     });
 </script>
