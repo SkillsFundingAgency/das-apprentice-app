@@ -25,9 +25,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                apprenticeshipIdClaim,
+                standardUIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -143,9 +147,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "");
+            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                apprenticeshipIdClaim,
+                standardUIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -214,9 +222,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
             })});
 
             httpContext.User = claimsPrincipal;
@@ -241,18 +251,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim
+            apprenticeIdClaim,
+            apprenticeshipIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
-
-            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
-            apprenticeDetails.MyApprenticeship = null;
 
             var result = await controller.AddUpdateKsbProgress(ksbProgressData) as ViewResult;
 
@@ -272,17 +281,19 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         [Test, MoqAutoData]
         public async Task Add_Update_KsbProgress_HttpPost_Async(
            [Frozen] Mock<IOuterApiClient> client,
-            ApprenticeDetails apprenticeDetails,
-            [Frozen] Mock<ILogger<KsbController>> logger,
+           ApprenticeDetails apprenticeDetails,
+           [Frozen] Mock<ILogger<KsbController>> logger,
            [Frozen] ApprenticeKsbProgressData ksbProgressData,
            [Greedy] KsbController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim
+            apprenticeIdClaim,
+            apprenticeshipIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -317,9 +328,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim
+            apprenticeIdClaim,
+            apprenticeshipIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
