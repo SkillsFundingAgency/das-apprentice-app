@@ -5,11 +5,15 @@
     <div class="app-card">
         <h2 class="app-card__heading">@task.Title</h2>
         <ul class="app-icon-list app-icon-list--muted">
-            <li><span class="app-icon-list__icon svg-placeholder"></span><span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span></li>
+            <li><span class="app-icon-list__icon"><svg>
+                        <use xlink:href="/assets/images/icons.svg#calendar"></use>
+                     </svg></span><span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span></li>
             @if (task.TaskReminders.Any())
             {
                 <li>
-                    <span class="app-icon-list__icon svg-placeholder"></span><span>Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
+                    <span class="app-icon-list__icon"><svg>
+                            <use xlink:href="/assets/images/icons.svg#notifications"></use>
+                         </svg></span><span>Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
 
                         @switch (task.TaskReminders.First().ReminderValue){
                             case 0:
@@ -35,12 +39,16 @@
             }
             @if (task.TaskFiles.Any())
             {
-                <li><span class="app-icon-list__icon svg-placeholder"></span><span>@task.TaskFiles.Count.ToString() file(s) attached</span></li>
+                <li><span class="app-icon-list__icon"><svg>
+                            <use xlink:href="/assets/images/icons.svg#attachment"></use>
+                         </svg></span>><span>@task.TaskFiles.Count.ToString() file(s) attached</span></li>
             }
             @if (task.TaskLinkedKsbs.Any())
             {
                 <li>
-                    <span class="app-icon-list__icon svg-placeholder"></span><span>
+                    <span class="app-icon-list__icon"><svg>
+                            <use xlink:href="/assets/images/icons.svg#ksbs"></use>
+                         </svg></span><span>
                         Linked to @task.TaskLinkedKsbs.Count.ToString()  
                         @if (task.TaskLinkedKsbs.Count > 1)
                         {
@@ -65,20 +73,32 @@
                 <ul class="app-dropdown__menu-list">
                     <li>
                         <a href="#" class="app-dropdown__menu-link move-done">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                              <svg>
+                                 <use xlink:href="/assets/images/icons.svg#arrowRight"></use>
+                              </svg>
+                           </span>
                             <span>Move to done</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />
                     </li>
                     <li>
                         <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.TaskId" class="app-dropdown__menu-link">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                              <svg>
+                                 <use xlink:href="/assets/images/icons.svg#edit"></use>
+                              </svg>
+                           </span>
                             <span>Edit</span>
                         </a>
                     </li>
                     <li class="share-link-container">
                         <a href="#" class="app-dropdown__menu-link share-link">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                              <svg>
+                                 <use xlink:href="/assets/images/icons.svg#share"></use>
+                              </svg>
+                           </span>
                             <span>Share</span>
 
                         </a>
@@ -87,7 +107,11 @@
                     </li>
                     <li>
                         <a class="app-dropdown__menu-link delete-task" href="#">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                              <svg>
+                                 <use xlink:href="/assets/images/icons.svg#trash"></use>
+                              </svg>
+                           </span>
                             <span>Delete</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />
