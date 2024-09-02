@@ -34,6 +34,15 @@
   svg {
     @include app-svg-common;
     color: $app-brand-colour;
+    stroke: $app-brand-colour;
+  }
+}
+
+.app-icon-list--l .app-icon-list__icon-grad {
+  svg {
+    fill: url(#grad) #832C91;
+    color: transparent;
+    stroke: url(#grad) #832C91;
   }
 }
 

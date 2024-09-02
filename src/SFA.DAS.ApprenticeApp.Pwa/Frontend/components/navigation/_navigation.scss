@@ -52,6 +52,7 @@
   }
   svg {
     @include app-svg-common;
+    stroke: currentColor;
   }
 }
 
