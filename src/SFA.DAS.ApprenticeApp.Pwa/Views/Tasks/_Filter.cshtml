@@ -1,3 +1,8 @@
+@using SFA.DAS.ApprenticeApp.Application
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+
 <a href="#filter" data-module="app-overlay" class="app-link">Filter</a>
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
@@ -8,7 +13,7 @@
             Task filters
         </h2>
         <div class="app-overlay-header__save">
-            <a href="#" class="app-overlay-header__link">Apply</a>
+            <a href="#" class="app-overlay-header__link apply">Apply</a>
         </div>
     </div>
     <div class="app-overlay__content">
@@ -16,33 +21,156 @@
             <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
             <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
                 <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="filter-none" name="filter" type="checkbox" value="none">
-                    <label class="app-label app-checkboxes__label" for="filter-none">
-                        None
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="filter-assignment" name="filter" type="checkbox"
-                        value="assignment">
+                    <input class="app-checkboxes__input" id="Assignment" name="filter" type="checkbox" value="Assignment">
                     <label class="app-label app-checkboxes__label" for="filter-assignment">
                         <span class="app-tag">Assignment</span>
                     </label>
                 </div>
                 <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="filter-epo" name="filter" type="checkbox" value="epo">
-                    <label class="app-label app-checkboxes__label" for="filter-epo">
+                    <input class="app-checkboxes__input" id="EPA" name="filter" type="checkbox" value="EPA">
+                    <label class="app-label app-checkboxes__label" for="filter-epa">
                         <span class="app-tag app-tag--pink">End-point assessment</span>
                     </label>
                 </div>
                 <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="filter-deadline" name="filter" type="checkbox"
-                        value="deadline">
+                    <input class="app-checkboxes__input" id="Deadline" name="filter" type="checkbox" value="Deadline">
                     <label class="app-label app-checkboxes__label" for="filter-deadline">
                         <span class="app-tag app-tag--red">Deadline</span>
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="Milestone" name="filter" type="checkbox" value="Milestone">
+                    <label class="app-label app-checkboxes__label" for="filter-milestone">
+                        <span class="app-tag app-tag--red">Milestone</span>
                     </label>
                 </div>
             </div>
 
         </fieldset>
+
+        <fieldset class="app-fieldset">
+            <legend class="app-fieldset__legend app-fieldset__legend--s">Other filter options:</legend>
+            <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="KSB" name="other-filter" type="checkbox" value="KSB">
+                    <label class="app-label app-checkboxes__label" for="filter-ksb">
+                        <span class="app-tag">KSB</span>
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="Reminder-set" name="other-filter" type="checkbox" value="Reminder-set">
+                    <label class="app-label app-checkboxes__label" for="filter-reminder">
+                        <span class="app-tag app-tag--pink">Reminder set</span>
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="Note-attached" name="other-filter" type="checkbox" value="Note-attached">
+                    <label class="app-label app-checkboxes__label" for="filter-note">
+                        <span class="app-tag app-tag--red">Note attached</span>
+                    </label>
+                </div>
+            </div>
+
+        </fieldset>
+
     </div>
 </div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function ()
+    {
+        // get cookie
+        var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
+
+        // if cookie is set
+        if (cookieFilter != null && cookieFilter != "") {
+            var filters = getCookie("@Constants.TaskFiltersCookieName");
+
+            data = filters.split('&');
+            for (var k in data) {
+
+                // check all the filter page checkboxes
+                var newData = data[k].split('=');
+                $("#" + newData[1]).prop('checked', true);
+
+
+                // show the main page lozenges inside the div
+                $("#filters-set").append("<div class='app-tag' style='margin: 5px;'>" + newData[1] + " <a class='remove-filter' data-id='" + newData[1] + "'>[x]</a> " + "</div>");
+
+            }
+
+        }
+        else
+        {
+            $("#filters-set").hide();
+        }
+
+
+        $(".remove-filter").click(function (e) {
+            // get the one in question
+            var filterName = $(this).attr('data-id');
+            console.log(filterName);
+
+            // uncheck the hidden screen
+            $("#" + filterName).prop('checked', false);
+
+            applyAndSaveFilters()
+        });
+
+
+        $(".apply").click(function (e)
+        {
+            applyAndSaveFilters()
+        });
+
+    });
+
+
+    function applyAndSaveFilters()
+    {
+        var sList = "";
+
+        $('input[type=checkbox]').each(function () {
+            sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
+        });
+
+        setCookie('SFA.ApprenticeApp.TaskFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+
+        location.reload();
+    }
+
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+
+    function setCookie(name, value, attributes = {}) {
+        attributes = {
+            path: '/',
+            // add other defaults here if necessary ...attributes
+        };
+
+        if (attributes.expires instanceof Date) {
+            attributes.expires = attributes.expires.toUTCString();
+        }
+
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let attributeKey in attributes) {
+            updatedCookie += "; " + attributeKey;
+            let attributeValue = attributes[attributeKey];
+            if (attributeValue !== true) {
+                updatedCookie += "=" + attributeValue;
+            }
+        }
+
+        document.cookie = updatedCookie;
+    }
+
+</script>

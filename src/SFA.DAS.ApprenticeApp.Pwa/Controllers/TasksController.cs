@@ -46,10 +46,62 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
+                // apply filters if they exist
+                var taskFilters = Request.Cookies[Constants.TaskFiltersCookieName];
+                var filteredTasks = new List<ApprenticeTask>();
+                if (taskFilters != null)
+                {                    
+                    foreach (string filter in taskFilters.Split("&"))
+                    {
+                        string[] filterparts = filter.Split("=");
+                        var filterType = filterparts[0];
+                        var filterValue = filterparts[1];
+
+                        if (filterType == "filter")
+                        {
+                            switch (filterValue.ToUpper())
+                            {
+                                case "ASSIGNMENT":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 1).ToList());
+                                    break;
+                                case "EPA":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 2).ToList());
+                                    break;
+                                case "DEADLINE":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 3).ToList());
+                                    break;
+                                case "MILESTONE":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 4).ToList());
+                                    break;
+                            }
+                        }
+                        if (filterType == "other-filter")
+                        {
+                            switch (filterValue.ToUpper())
+                            {
+                                case "REMINDER-SET":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.TaskReminders.Count > 0).ToList());
+                                    break;
+                                case "KSB":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.TaskLinkedKsbs.Count > 0).ToList());
+                                    break;
+                                case "NOTE-ATTACHED":
+                                    filteredTasks.AddRange(taskResult.Tasks.Where(x => x.Note != null).ToList());
+                                    break;
+                            }
+                        }
+                    }
+                    if (filteredTasks.Count > 0)
+                    {
+                        taskResult.Tasks = filteredTasks;
+                    }
+                }
+
                 var vm = new TasksPageModel
                 {
                     Year = DateTime.Now.Year,
-                    Tasks = taskResult.Tasks,
+                    Tasks = taskResult.Tasks
+
                 };
                 return PartialView("_TasksToDo", vm);
             }
@@ -190,6 +242,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     task.CompletionDateTime = DateTime.UtcNow;
                 }
+
+                task.ApprenticeshipCategoryId ??= 1;
                 
                     if (task.KsbsLinked != null)
                     {
