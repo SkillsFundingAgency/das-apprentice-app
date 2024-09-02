@@ -71,6 +71,29 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
         }
 
         [Test, MoqAutoData]
+        public async Task LoadToDoTasks_NoApprenticeId([Frozen] ApprenticeTasksCollection taskResult,
+           [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            taskResult.Tasks.Clear();
+            var result = await controller.ToDoTasks();
+            result.Should().BeOfType(typeof(PartialViewResult));
+            result.ViewName.Should().Be("_TasksNotStarted");
+        }
+
+        [Test, MoqAutoData]
         public async Task LoadDoneTasks([Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -119,6 +142,28 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             result.Should().BeOfType(typeof(PartialViewResult));
             result.ViewName.Should().Be("_TasksNotStarted");
         }
+        [Test, MoqAutoData]
+        public async Task LoadDoneTasks_NoApprenticeId([Frozen] ApprenticeTasksCollection taskResult,
+          [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            taskResult.Tasks.Clear();
+            var result = await controller.DoneTasks();
+            result.Should().BeOfType(typeof(PartialViewResult));
+            result.ViewName.Should().Be("_TasksNotStarted");
+        }
 
         [Test, MoqAutoData]
         public async Task Edit_Returns_View([Greedy] TasksController controller)
@@ -126,6 +171,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            var result = await controller.Edit(1);
+            result.Should().BeOfType(typeof(ViewResult));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Edit_Returns_View_NoApprenticeId([Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
             var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {

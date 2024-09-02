@@ -54,9 +54,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "");
+            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                apprenticeshipIdClaim,
+                standardUIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -64,9 +68,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             {
                 HttpContext = httpContext
             };
-
-            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
-            apprenticeDetails.MyApprenticeship = null;
 
             var result = await controller.Index() as RedirectToActionResult;
             using (new AssertionScope())
@@ -122,9 +123,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                apprenticeshipIdClaim,
+                standardUIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -139,7 +144,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
 
         [Test, MoqAutoData]
         public async Task LoadLinkKsbs_NoApprenticeship(
-             [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<IOuterApiClient> client,
             ApprenticeDetails apprenticeDetails,
             [Frozen] Mock<ILogger<KsbController>> logger,
             [Greedy] KsbController controller)
@@ -161,9 +166,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             {
                 HttpContext = httpContext
             };
-
-            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
-            apprenticeDetails.MyApprenticeship = null;
 
             var result = await controller.LinkKsbs() as RedirectToActionResult;
             using (new AssertionScope())

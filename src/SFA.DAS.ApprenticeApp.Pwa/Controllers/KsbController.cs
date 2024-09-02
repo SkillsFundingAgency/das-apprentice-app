@@ -32,7 +32,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
                 var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
 
-                if (apprenticeshipId != null)
+                if (!string.IsNullOrEmpty(apprenticeshipId))
                 {
                     //using default value of core until we have the correct value from Approvals api
                     var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(long.Parse(apprenticeshipId), standardUId, "core");
@@ -70,7 +70,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
                 var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
 
-                if (apprenticeshipId != null)
+                if (!string.IsNullOrEmpty(apprenticeshipId))
                 {
                     //using default value of core until we have the correct value from Approvals api
                     var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(long.Parse(apprenticeshipId), standardUId, "core");
