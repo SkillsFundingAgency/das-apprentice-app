@@ -54,13 +54,19 @@
                 <div class="app-checkboxes__item">
                     <input class="app-checkboxes__input" id="KSB" name="other-filter" type="checkbox" value="KSB">
                     <label class="app-label app-checkboxes__label" for="filter-ksb">
-                        <span class="app-tag">KSB</span>
+                        <span class="app-tag">Knowledge, skills and behaviours (KSBs) added</span>
                     </label>
                 </div>
                 <div class="app-checkboxes__item">
                     <input class="app-checkboxes__input" id="Reminder-set" name="other-filter" type="checkbox" value="Reminder-set">
                     <label class="app-label app-checkboxes__label" for="filter-reminder">
                         <span class="app-tag app-tag--pink">Reminder set</span>
+                    </label>
+                </div>
+                <div class="app-checkboxes__item">
+                    <input class="app-checkboxes__input" id="Files-attached" name="other-filter" type="checkbox" value="Files-attached">
+                    <label class="app-label app-checkboxes__label" for="filter-reminder">
+                        <span class="app-tag app-tag--pink">Files attached</span>
                     </label>
                 </div>
                 <div class="app-checkboxes__item">
@@ -98,7 +104,7 @@
 
 
                 // show the main page lozenges inside the div
-                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1] + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
+                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace("-", " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
 
             }
 

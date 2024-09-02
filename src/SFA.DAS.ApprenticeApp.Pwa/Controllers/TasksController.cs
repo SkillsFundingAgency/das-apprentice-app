@@ -328,6 +328,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                             case "NOTE-ATTACHED":
                                 filteredTasks.AddRange(tasks.Where(x => x.Note != null).ToList());
                                 break;
+                            case "FILES-ATTACHED":
+                                filteredTasks.AddRange(tasks.Where(x => x.TaskFiles.Count > 0).ToList());
+                                break;
                         }
                     }
                 }
