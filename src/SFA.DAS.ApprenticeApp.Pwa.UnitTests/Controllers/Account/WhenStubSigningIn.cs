@@ -1,25 +1,19 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.Testing.AutoFixture;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using SFA.DAS.ApprenticeApp.Application;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.ApplicationInsights.WindowsServer;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 {
@@ -78,10 +72,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             serviceProviderMock
                 .Setup(s => s.GetService(typeof(IAuthenticationService)))
                 .Returns(authenticationServiceMock.Object);
-            // mediator.Setup(x => x.Send(It.IsAny<GetTaskCategoriesQuery>(), default)).ReturnsAsync(categoriesResult);
-            
-
-
             var httpContext = new DefaultHttpContext() { RequestServices = serviceProviderMock.Object};
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
