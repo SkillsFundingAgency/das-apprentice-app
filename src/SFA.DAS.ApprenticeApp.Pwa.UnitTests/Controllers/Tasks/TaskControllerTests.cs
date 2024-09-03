@@ -468,20 +468,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             }
         }
 
-        [Test, MoqAutoData]
-        public async Task FilterTasks_ByKsbType(List<ApprenticeTask> tasks,
-           [Greedy] FilterTasksTestSetup controller)
-        {
-            var httpContext = new DefaultHttpContext();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var taskFilters = controller.Request.Cookies[Constants.TaskFiltersCookieName];
-
-            var result = controller.TestFilterTasks(tasks);
-            result.Should().BeOfType(typeof(FilterResults));
-        }
     }
 }

@@ -1,6 +1,9 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions.Equivalency;
+using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
+using SFA.DAS.Testing.AutoFixture;
+using System.ComponentModel;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
 {
@@ -23,6 +26,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
         [TestCase("K1", ExpectedResult = KsbType.Knowledge)]
         [TestCase("S1", ExpectedResult = KsbType.Skill)]
         [TestCase("B1", ExpectedResult = KsbType.Behaviour)]
+        [TestCase("X1", ExpectedResult = KsbType.Knowledge)]
         public KsbType GetKsbType_Returns_Knowledge_KsbType(string key)
         {
             // Act
