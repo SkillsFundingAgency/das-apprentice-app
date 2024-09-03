@@ -13,6 +13,7 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -142,6 +143,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             result.Should().BeOfType(typeof(PartialViewResult));
             result.ViewName.Should().Be("_TasksNotStarted");
         }
+       
         [Test, MoqAutoData]
         public async Task LoadDoneTasks_NoApprenticeId([Frozen] ApprenticeTasksCollection taskResult,
           [Greedy] TasksController controller)
@@ -464,6 +466,22 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 result.ActionName.Should().Be("Index");
                 result.ControllerName.Should().Be("Tasks");
             }
+        }
+
+        [Test, MoqAutoData]
+        public async Task FilterTasks_ByKsbType(List<ApprenticeTask> tasks,
+           [Greedy] FilterTasksTestSetup controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var taskFilters = controller.Request.Cookies[Constants.TaskFiltersCookieName];
+
+            var result = controller.TestFilterTasks(tasks);
+            result.Should().BeOfType(typeof(List<ApprenticeTask>));
         }
     }
 }

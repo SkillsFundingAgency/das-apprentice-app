@@ -107,6 +107,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ControllerName.Should().Be("Terms");
 
         }
+        
         [Test, MoqAutoData]
         public async Task Stay_On_Account_Details_If_UserId_Is_Missing (
            StubAuthUserDetails model,
