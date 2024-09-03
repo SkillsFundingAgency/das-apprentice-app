@@ -28,7 +28,7 @@
         <div class="app-form-group">
             <fieldset class="app-fieldset">
                 <legend class="app-fieldset__legend">
-                    Status
+                    Edit Status
                 </legend>
                 <div class="app-radios">
                     <fieldset id="CurrentStatus">
@@ -47,7 +47,13 @@
                         }
                     </fieldset>
                 </div>
+            </fieldset>
+        </div>
 
+        <div class="app-form-group">
+            <fieldset class="app-fieldset app-fieldset--radios">
+                <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
+               
             </fieldset>
         </div>
         <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
