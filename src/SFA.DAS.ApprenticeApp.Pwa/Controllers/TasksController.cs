@@ -4,6 +4,7 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -46,12 +47,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
-                var filterTasks = this.FilterTasks(taskResult.Tasks);
+                if (Request.Cookies[Constants.TaskFiltersCookieName] != null)
+                {
+                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersCookieName]);
 
-                if (filterTasks.FilterRun.Equals(true)) {
-                    taskResult.Tasks = filterTasks.FilteredTasks;
+                    if (filterTasks.HasFilterRun.Equals(true))
+                    {
+                        taskResult.Tasks = filterTasks.FilteredTasks;
+                    }
                 }
-                
+
                 var vm = new TasksPageModel
                 {
                     Year = DateTime.Now.Year,
@@ -80,11 +85,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
-                var filterTasks = this.FilterTasks(taskResult.Tasks);
-
-                if (filterTasks.FilterRun.Equals(true))
+                if (Request.Cookies[Constants.TaskFiltersCookieName] != null)
                 {
-                    taskResult.Tasks = filterTasks.FilteredTasks;
+                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersCookieName]);
+
+                    if (filterTasks.HasFilterRun.Equals(true))
+                    {
+                        taskResult.Tasks = filterTasks.FilteredTasks;
+                    }
                 }
 
                 var vm = new TasksPageModel
@@ -108,11 +116,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
                 var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
 
-                if(!string.IsNullOrEmpty(apprenticeshipId) && !string.IsNullOrEmpty(standardUId))
+                if (!string.IsNullOrEmpty(apprenticeshipId) && !string.IsNullOrEmpty(standardUId))
                 {
                     //using default value of core until we have the correct value from Approvals api
                     var taskdata = await _client.GetTaskViewData(long.Parse(apprenticeshipId), id, standardUId, "core");
-                    
+
                     var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
                     var vm = new EditTaskPageModel
                     {
@@ -142,8 +150,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (task.KsbsLinked != null)
                 {
-                    string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    task.KsbsLinked = ksbArray;
+                    if (task.KsbsLinked[0] != null)
+                    {
+                        string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                        task.KsbsLinked = ksbArray;
+                    }
                 }
                 try
                 {
@@ -154,7 +165,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     //temporarily handle 500 errors;
                 }
 
-                return RedirectToAction("Edit", "Tasks", task.TaskId);
+                return RedirectToAction("Index", new { status = (int)task.Status });
             }
 
             return View();
@@ -203,7 +214,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return RedirectToAction("Index", "Tasks");
                 }
 
-                if (task.Status == Domain.Models.TaskStatus.Done )
+                if (task.Status == Domain.Models.TaskStatus.Done)
                 {
                     task.CompletionDateTime = DateTime.UtcNow;
                 }
@@ -213,15 +224,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
 
                 task.ApprenticeshipCategoryId ??= 1;
-                
-                    if (task.KsbsLinked != null)
+
+                if (task.KsbsLinked != null)
+                {
+                    if (task.KsbsLinked[0] != null)
                     {
-                        string[] ksbArray = task.KsbsLinked[0].Split(new [] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                         task.KsbsLinked = ksbArray;
                     }
-                
-                    string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
-                    _logger.LogInformation(preMessage);
+                }
+
+                string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
+                _logger.LogInformation(preMessage);
 
                 try
                 {
@@ -234,8 +248,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
 
                 string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
-                    _logger.LogInformation(postMessage);
-                    return RedirectToAction("Index", new { status = (int)task.Status });
+                _logger.LogInformation(postMessage);
+                return RedirectToAction("Index", new { status = (int)task.Status });
 
             }
             return Unauthorized();
@@ -290,67 +304,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             return Unauthorized();
         }
-
-        protected FilterResults FilterTasks(List<ApprenticeTask> tasks)
-        {
-            var taskFilters = Request.Cookies[Constants.TaskFiltersCookieName];
-            var filteredTasks = new List<ApprenticeTask>();
-
-            if (taskFilters != null)
-            {
-                foreach (string filter in taskFilters.Split("&"))
-                {
-                    string[] filterparts = filter.Split("=");
-                    var filterType = filterparts[0];
-                    var filterValue = filterparts[1];
-
-                    if (filterType == "filter")
-                    {
-                        switch (filterValue.ToUpper())
-                        {
-                            case "ASSIGNMENT":
-                                filteredTasks.AddRange(tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 1).ToList());
-                                break;
-                            case "EPA":
-                                filteredTasks.AddRange(tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 2).ToList());
-                                break;
-                            case "DEADLINE":
-                                filteredTasks.AddRange(tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 3).ToList());
-                                break;
-                            case "MILESTONE":
-                                filteredTasks.AddRange(tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 4).ToList());
-                                break;
-                        }
-                    }
-                    if (filterType == "other-filter")
-                    {
-                        switch (filterValue.ToUpper())
-                        {
-                            case "REMINDER-SET":
-                                filteredTasks.AddRange(tasks.Where(x => x.TaskReminders.Count > 0).ToList());
-                                break;
-                            case "KSB":
-                                filteredTasks.AddRange(tasks.Where(x => x.TaskLinkedKsbs.Count > 0).ToList());
-                                break;
-                            case "NOTE-ATTACHED":
-                                filteredTasks.AddRange(tasks.Where(x => x.Note != null).ToList());
-                                break;
-                            case "FILES-ATTACHED":
-                                filteredTasks.AddRange(tasks.Where(x => x.TaskFiles.Count > 0).ToList());
-                                break;
-                        }
-                    }
-                }
-                return new FilterResults() { FilteredTasks = filteredTasks, FilterRun = true };
-            }
-
-            return new FilterResults() { FilteredTasks = new List<ApprenticeTask>(), FilterRun = false };
-        }
-    }
-
-    public class FilterResults
-    {
-        public List<ApprenticeTask>? FilteredTasks { get; set; }
-        public bool FilterRun { get; set; }
     }
 }
