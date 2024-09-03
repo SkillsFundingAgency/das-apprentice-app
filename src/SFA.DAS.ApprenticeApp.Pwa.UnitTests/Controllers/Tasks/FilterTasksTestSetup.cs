@@ -19,11 +19,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             _client = client;
         }
 
-        public List<ApprenticeTask> TestFilterTasks(List<ApprenticeTask> tasks)
+        public FilterResults TestFilterTasks(List<ApprenticeTask> tasks)
         {
              return FilterTasks(tasks);
         }
-
-       
     }
 }

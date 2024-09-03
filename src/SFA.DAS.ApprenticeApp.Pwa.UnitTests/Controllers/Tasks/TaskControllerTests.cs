@@ -481,7 +481,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             var taskFilters = controller.Request.Cookies[Constants.TaskFiltersCookieName];
 
             var result = controller.TestFilterTasks(tasks);
-            result.Should().BeOfType(typeof(List<ApprenticeTask>));
+            result.Should().BeOfType(typeof(FilterResults));
         }
     }
 }
