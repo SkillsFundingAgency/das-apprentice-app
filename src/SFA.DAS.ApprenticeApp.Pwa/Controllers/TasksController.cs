@@ -48,8 +48,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 var filterTasks = this.FilterTasks(taskResult.Tasks);
 
-                if (filterTasks.Count > 0) {
-                    taskResult.Tasks = filterTasks;
+                if (filterTasks.FilterRun.Equals(true)) {
+                    taskResult.Tasks = filterTasks.FilteredTasks;
                 }
                 
                 var vm = new TasksPageModel
@@ -82,9 +82,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 var filterTasks = this.FilterTasks(taskResult.Tasks);
 
-                if (filterTasks.Count > 0)
+                if (filterTasks.FilterRun.Equals(true))
                 {
-                    taskResult.Tasks = filterTasks;
+                    taskResult.Tasks = filterTasks.FilteredTasks;
                 }
 
                 var vm = new TasksPageModel
@@ -291,7 +291,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return Unauthorized();
         }
 
-        protected List<ApprenticeTask> FilterTasks(List<ApprenticeTask> tasks)
+        protected FilterResults FilterTasks(List<ApprenticeTask> tasks)
         {
             var taskFilters = Request.Cookies[Constants.TaskFiltersCookieName];
             var filteredTasks = new List<ApprenticeTask>();
@@ -341,8 +341,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         }
                     }
                 }
+                return new FilterResults() { FilteredTasks = filteredTasks, FilterRun = true };
             }
-            return filteredTasks;
+
+            return new FilterResults() { FilteredTasks = new List<ApprenticeTask>(), FilterRun = false };
         }
+    }
+
+    public class FilterResults
+    {
+        public List<ApprenticeTask>? FilteredTasks { get; set; }
+        public bool FilterRun { get; set; }
     }
 }
