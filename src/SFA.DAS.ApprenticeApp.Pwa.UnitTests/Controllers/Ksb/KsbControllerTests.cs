@@ -536,5 +536,75 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
 
             result.Should().BeOfType(typeof(UnauthorizedResult));
         }
+
+        [Test, MoqAutoData]
+        public async Task RemoveTaskFromKsbProgress_HttpDelete_Async(
+         int progressId, int taskId,
+         [Frozen] Mock<ILogger<KsbController>> logger,
+         [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+            apprenticeIdClaim,
+            apprenticeshipIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.RemoveTaskFromKsbProgress(progressId, taskId);
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Information,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Removing Task")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().BeOfType(typeof(OkResult));
+            }
+
+        }
+
+        [Test, MoqAutoData]
+        public async Task RemoveTaskFromKsbProgress_HttpDelete_Async_NoApprenticeId(
+         int progressId, int taskId,
+         [Frozen] Mock<ILogger<KsbController>> logger,
+         [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+            apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.RemoveTaskFromKsbProgress(progressId, taskId);
+
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Invalid apprentice id for method EditKsbProgress in KsbController")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().BeOfType(typeof(UnauthorizedResult));
+            }
+
+        }
+
     }
 }

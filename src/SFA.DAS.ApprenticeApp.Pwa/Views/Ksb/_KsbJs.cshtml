@@ -56,6 +56,20 @@
             $('.Behaviour').show();
         });
 
+        $('body').on('click', '.remove-ksb-task', function (e) {
+            var progressId = $('.progressId').val();
+            var taskId = $('.taskId').val();
+            $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
+            $(this).closest('.app-card').slideUp("slow", function () { $(this).remove();} );
+            
+             $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("RemoveTaskFromKsbProgress", "Ksb")',
+                data: { progressId: progressId, taskId: taskId },
+                dataType: "json"
+            });
+            return false;
+        });
     });
 
 </script>

@@ -159,7 +159,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
                     }
-                    catch 
+                    catch
                     {
                         //temporarily handle any 500 errors
                     }
@@ -176,7 +176,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> EditKsbProgress(Guid ksbId, string ksbKey, KsbType ksbType, KSBStatus ksbStatus, string note)
         {
             var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-            
+
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
@@ -203,6 +203,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return Ok();
             }
 
+            _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");
+            return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveTaskFromKsbProgress(int progressId, int taskId)
+        {
+            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+
+                string preMessage = $"Removing Task {taskId} from KsbProgress {progressId}";
+                _logger.LogInformation(preMessage);
+                try
+                {
+                    await _client.RemoveTaskToKsbProgress(long.Parse(apprenticeshipId), progressId, taskId);
+                    string postMessage = $"Removed Task {taskId} from KsbProgress {progressId}";
+                    _logger.LogInformation(postMessage);
+                }
+                catch
+                {
+                    //temporarily handle any 500 errors
+                }
+
+                return Ok();
+            }
+
+            _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");
             return Unauthorized();
         }
     }
