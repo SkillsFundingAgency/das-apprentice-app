@@ -12,7 +12,22 @@
   color: #62223f;
 }
 
+.app-tag--yellow {
+  color: govuk-shade(govuk-colour("yellow"), 65%);
+  background-color: govuk-tint(govuk-colour("yellow"), 75%);
+}
+
 .app-tag--red {
-  background-color: #f6d7c6;
-  color: #673920;
+  color: govuk-shade(govuk-colour("red"), 80%);
+  background-color: govuk-tint(govuk-colour("red"), 75%);
+}
+
+.app-tag--blue {
+  color: govuk-shade(govuk-colour("blue"), 60%);
+  background-color: govuk-tint(govuk-colour("blue"), 90%);
+}
+
+.app-tag--green {
+  color: govuk-shade(govuk-colour("green"), 20%);
+  background-color: govuk-tint(govuk-colour("green"), 80%);
 }

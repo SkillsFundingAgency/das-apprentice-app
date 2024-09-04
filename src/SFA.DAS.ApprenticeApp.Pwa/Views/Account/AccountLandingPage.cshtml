@@ -10,3 +10,45 @@
     <button class="govuk-button" style="width: 100%" onclick="location.href='@Url.Action("SigningOut", "Account")'">Sign
         Out</button>
 </div>
+
+
+<fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend">Set status</legend>
+
+    <div class="app-card">
+        <div class="app-collapse">
+            <div class="app-collapse__header">
+                <button class="app-collapse__button" aria-expanded="false" aria-controls="app-collapse-contents-status">
+                    <span class="app-collapse__title">Status</span>
+                    <span class="app-collapse__icon" aria-hidden="true"></span>
+                </button>
+            </div>
+        <div class="app-collapse__contents app-radios" id="app-collapse-contents-status">
+            <div class="app-radios__item">
+                <input class="app-radios__input" id="status-not-started" name="status" type="radio" value="not-started">
+                <label class="app-label app-radios__label" for="status-not-started">
+                    <span class="app-tag app-tag--pink">Not started</span>
+                </label>
+            </div>
+            <div class="app-radios__item">
+                <input class="app-radios__input" id="status-in-progress" name="status" type="radio" value="in-progress">
+                <label class="app-label app-radios__label" for="status-in-progress">
+                    <span class="app-tag app-tag--yellow">In progress</span>
+                </label>
+            </div>
+            <div class="app-radios__item">
+                <input class="app-radios__input" id="status-ready-for-review" name="status" type="radio" value="ready-for-review">
+                <label class="app-label app-radios__label" for="status-ready-for-review">
+                    <span class="app-tag app-tag--blue">Ready for review</span>
+                </label>
+            </div>
+            <div class="app-radios__item">
+                <input class="app-radios__input" id="status-done" name="status" type="radio" value="done">
+                <label class="app-label app-radios__label" for="status-done">
+                    <span class="app-tag app-tag--green">Done</span>
+                </label>
+            </div>
+        </div>
+</div>
+    </div>
+</fieldset>

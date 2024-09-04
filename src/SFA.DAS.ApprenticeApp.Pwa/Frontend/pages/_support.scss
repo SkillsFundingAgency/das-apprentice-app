@@ -1,113 +1,113 @@
 .govuk-accordion__section-content li {
-    color: #0b0c0c !important;
-    font-family: "GDS Transport", arial, sans-serif !important;
-    font-size: 1em !important;
-    line-height: 1.3157894737 !important;
+  color: #0b0c0c !important;
+  font-family: "GDS Transport", arial, sans-serif !important;
+  font-size: 1em !important;
+  line-height: 1.3157894737 !important;
 }
 
 .fa-thumbs-up {
-    background-image: url('/assets/images/icons/like.svg') !important;
-    width: 19px !important;
-    height: 18px !important;
-    margin-right: 15px !important;
+  background-image: url("/assets/images/icons/like.svg") !important;
+  width: 19px !important;
+  height: 18px !important;
+  margin-right: 15px !important;
 }
 
 .fa-thumbs-up:before {
-    content: "\00a0" !important;
+  content: "\00a0" !important;
 }
 
 .fa-thumbs-up.fa-regular {
-    background-image: url('/assets/images/icons/like.svg') !important;
+  background-image: url("/assets/images/icons/like.svg") !important;
 }
 
 .fa-thumbs-up.fa-solid {
-    background-image: url('/assets/images/icons/liked.svg') !important;
+  background-image: url("/assets/images/icons/liked.svg") !important;
 }
 
 .fa-thumbs-down {
-    background-image: url('/assets/images/icons/dislike.svg') !important;
-    width: 19px !important;
-    height: 18px !important;
+  background-image: url("/assets/images/icons/dislike.svg") !important;
+  width: 19px !important;
+  height: 18px !important;
 }
 
 .fa-thumbs-down:before {
-    content: "\00a0" !important;
+  content: "\00a0" !important;
 }
 
 .fa-thumbs-down.fa-regular {
-    background-image: url('/assets/images/icons/dislike.svg') !important;
+  background-image: url("/assets/images/icons/dislike.svg") !important;
 }
 
 .fa-thumbs-down.fa-solid {
-    background-image: url('/assets/images/icons/disliked.svg') !important;
+  background-image: url("/assets/images/icons/disliked.svg") !important;
 }
 
 .fa-bookmark {
-    background-image: url('/assets/images/icons/pin.svg') !important;
-    width: 15px !important;
-    height: 24px !important;
-    float: right !important
+  background-image: url("/assets/images/icons/pin.svg") !important;
+  width: 15px !important;
+  height: 24px !important;
+  float: right !important;
 }
 
 .fa-bookmark:before {
-    content: "\00a0" !important;
+  content: "\00a0" !important;
 }
 
 .fa-bookmark.fa-regular {
-    background-image: url('/assets/images/icons/pin.svg') !important;
+  background-image: url("/assets/images/icons/pin.svg") !important;
 }
 
 .fa-bookmark.fa-solid {
-    background-image: url('/assets/images/icons/pinned.svg') !important;
+  background-image: url("/assets/images/icons/pinned.svg") !important;
 }
 
 .share-btn {
-    float: right !important;
-    margin: 0 20px 0 0 !important;
+  float: right !important;
+  margin: 0 20px 0 0 !important;
 }
 
-.govuk-accordion__section-toggle-text, .govuk-accordion__controls {
-    display: none !important
+.govuk-accordion__section-toggle-text,
+.govuk-accordion__controls {
+  display: none !important;
 }
 
 .govuk-accordion__section-toggle {
-    float: right !important;
-    margin: -35px 10px 0 20px !important;
-    color: #00703d !important;
+  float: right !important;
+  margin: -35px 10px 0 20px !important;
+  color: #00703d !important;
 }
 
 .govuk-accordion__section {
-    background-color: #ffffff !important;
-    margin: 10px !important;
-    padding: 15px 15px 10px 15px !important;
+  background-color: #ffffff !important;
+  margin: 10px !important;
+  padding: 15px 15px 10px 15px !important;
 }
 
 .govuk-accordion__section-button {
-    border: 0 !important;
+  border: 0 !important;
 }
 
 .govuk-frontend-supported .govuk-accordion__section-header:hover {
-    border-top: none !important;
-    box-shadow: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
 }
 
 .govuk-accordion__section-content {
-    padding-bottom: 10px !important;
+  padding-bottom: 10px !important;
 }
 
 .govuk-accordion__section-heading {
-    margin-bottom: -10px !important;
+  margin-bottom: -10px !important;
 }
 
 .govuk-accordion__section-button:hover {
-    background: none !important;
+  background: none !important;
 }
 
 i:hover {
-    cursor: pointer !important;
+  cursor: pointer !important;
 }
 
-.app-list-links__link
-{
-    text-decoration: none !important
+.app-list-links__link {
+  text-decoration: none !important;
 }
