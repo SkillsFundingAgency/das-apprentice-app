@@ -1,3 +1,4 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 
 @{
@@ -120,16 +121,27 @@
                     </legend>
                     <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
                     <div id="linked-ksb-details" class="govuk-label">
+                        Select KSBs this task will help you gain
+                        <div class="app-card__heading app-sticky">
+                            <label class="app-label" for="ksb-popup-btn"></label>
+                        <input type="button" id="ksb-popup-btn" value="+" data-id="@Model.Task.TaskId" />
+                        </div>
                         
-                        <input type="button" class="govuk-inset-text" id="ksb-popup-btn" value="Select KSBs this task will help you gain" data-id="@Model.Task.TaskId" />
                         @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
-                            <div class="app-page-header app-sticky">
-                                <h3>@ksbProgressData.KsbKey</h3><a class='edit-ksb'>Edit</a>
+                            <div class="app-page-header">
+                                <h3>@ksbProgressData.KsbKey</h3>
                                 </div>
-                            <div>  <p>@ksbProgressData.Detail</p><br /><br />
-                            <p>@ksbProgressData.CurrentStatus</p></div>
+                            <div>  <p>@ksbProgressData.Detail</p><br />
+                                <span>
+                                @{
+                                    var statusItem = @ksbProgressData.CurrentStatus;
+                                    string statusItemDisplay = statusItem.GetEnumDescription();
+                                    <text>@statusItemDisplay</text>
+                                }
+                                </span>
+                            </div>
                         }
                     </div>
                 </fieldset>

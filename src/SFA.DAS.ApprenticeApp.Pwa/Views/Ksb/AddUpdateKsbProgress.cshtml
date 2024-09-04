@@ -57,6 +57,7 @@
                 {
                     @foreach (var task in Model.KsbProgress.Tasks)
                     {
+                        <div class="linkedTask">
                         <div class="app-card">
                             <h2 class="app-card__heading">@task.Title</h2>
                             <ul class="app-icon-list app-icon-list--muted">
@@ -168,6 +169,8 @@
                                 </ul>
                             </div>
                         </div>
+                        <hr class="app-separator" />
+                        </div>
                     }
                 }
             </fieldset>
@@ -179,7 +182,6 @@
         <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.KsbProgress.Tasks" />
    
     </form>
-    <hr class="app-separator" />
 </div>   
 
 @await Html.PartialAsync("_KsbJs.cshtml", Model)

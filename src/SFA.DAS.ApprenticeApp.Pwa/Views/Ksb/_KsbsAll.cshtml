@@ -4,7 +4,7 @@
 
 @foreach (var ksb in Model.Ksbs)
 {
-    <div class="ksb-item @ksb.Type">
+    <div class="app-card ksb-item @ksb.Type">
         <div class="app-page-header app-sticky">
         <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
 
@@ -13,7 +13,7 @@
                 <span>Edit</span>
             </a>
      </div>
-    <div class="app-card">@ksb.Detail<br /><br />
+            <p>@ksb.Detail</p>
         @if (ksb.Progress != null && ksb.Progress.Tasks.Count > 0)
         {
             <ul class="app-icon-list app-icon-list--muted">
@@ -36,7 +36,6 @@
                 </li>
                 </ul>
         }
-        <br /><br />
         <div class="app-tag">
             @if (ksb.Progress == null)
             {
@@ -51,6 +50,5 @@
         </div>
        
         <hr class="app-separator" />
-    </div>
     </div>
 }
