@@ -13,6 +13,7 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -142,6 +143,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             result.Should().BeOfType(typeof(PartialViewResult));
             result.ViewName.Should().Be("_TasksNotStarted");
         }
+       
         [Test, MoqAutoData]
         public async Task LoadDoneTasks_NoApprenticeId([Frozen] ApprenticeTasksCollection taskResult,
           [Greedy] TasksController controller)
@@ -172,10 +174,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
                 apprenticeIdClaim,
-                apprenticeshipIdClaim
+                apprenticeshipIdClaim,
+                standardUIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -463,5 +467,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 result.ControllerName.Should().Be("Tasks");
             }
         }
+
     }
 }

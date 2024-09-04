@@ -1,6 +1,9 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions.Equivalency;
+using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
+using SFA.DAS.Testing.AutoFixture;
+using System.ComponentModel;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
 {
@@ -19,31 +22,36 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             Assert.That(result, Contains.Item(KSBStatus.Completed));
         }
 
-        [Test]
-        public void GetKsbType_Returns_Knowledge_KsbType()
+       
+        [TestCase("K1", ExpectedResult = KsbType.Knowledge)]
+        [TestCase("S1", ExpectedResult = KsbType.Skill)]
+        [TestCase("B1", ExpectedResult = KsbType.Behaviour)]
+        [TestCase("X1", ExpectedResult = KsbType.Knowledge)]
+        public KsbType GetKsbType_Returns_Knowledge_KsbType(string key)
         {
             // Act
-            var result = KsbHelpers.GetKsbType("K1");
-            // Assert
-            Assert.AreEqual(KsbType.Knowledge, result);
+            return KsbHelpers.GetKsbType(key);
+        }
+
+
+        [Test]
+        [TestCase(KSBStatus.NotStarted, ExpectedResult = "Not started")]
+        [TestCase(KSBStatus.InProgress, ExpectedResult = "In progress")]
+        [TestCase(KSBStatus.ReadyForReview, ExpectedResult = "Ready for review")]
+        [TestCase(KSBStatus.Completed, ExpectedResult = "Completed")]
+        public string GetEnumDescription_Returns_Enum_Description(KSBStatus value)
+        {
+            // Act
+            return ViewHelpers.Helpers.GetEnumDescription(value);
         }
 
         [Test]
-        public void GetKsbType_Returns_Skills_KsbType()
+        public void GetEnumDescription_Returns_Null_When_Name_Not_Found()
         {
             // Act
-            var result = KsbHelpers.GetKsbType("S1");
+            var result = ViewHelpers.Helpers.GetEnumDescription((KSBStatus)100);
             // Assert
-            Assert.AreEqual(KsbType.Skill, result);
-        }
-
-        [Test]
-        public void GetKsbType_Returns_Behaviour_KsbType()
-        {
-            // Act
-            var result = KsbHelpers.GetKsbType("B1");
-            // Assert
-            Assert.AreEqual(KsbType.Behaviour, result);
+            Assert.IsNull(result);
         }
     }
 }

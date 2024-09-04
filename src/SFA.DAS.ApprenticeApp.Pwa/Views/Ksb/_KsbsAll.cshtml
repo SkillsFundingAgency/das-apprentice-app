@@ -4,7 +4,7 @@
 
 @foreach (var ksb in Model.Ksbs)
 {
-    <div class="ksb-item">
+    <div class="ksb-item @ksb.Type">
         <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
 
         <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" asp-route-key="@ksb.Key" asp-route-detail="@ksb.Detail" class="app-dropdown__menu-link">
