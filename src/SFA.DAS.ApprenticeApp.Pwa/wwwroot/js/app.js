@@ -97,6 +97,7 @@ function Dropdown(container) {
   this.menu = container.querySelector(".app-dropdown__menu");
   this.showMenuClassName = "app-dropdown__menu--visible";
 }
+
 Dropdown.prototype.init = function () {
   this.toggle.addEventListener("click", this.toggleMenu.bind(this));
 };
@@ -114,5 +115,57 @@ const appDropdowns = document.querySelectorAll(`[data-module="app-dropdown"]`);
 if (appDropdowns) {
   appDropdowns.forEach(function (dropdown) {
     new Dropdown(dropdown).init();
+  });
+}
+
+// Collapse
+
+function Collapse(container) {
+  this.container = container;
+  this.button = container.querySelector(".app-collapse__button");
+  this.title = container.querySelector(".app-collapse__title");
+  this.content = container.querySelector(".app-collapse__content");
+  this.radios = container.querySelectorAll(".app-radios__input");
+  this.expandedClass = "app-collapse--expanded";
+}
+
+Collapse.prototype.init = function () {
+  this.button.addEventListener("click", this.toggleContent.bind(this));
+  if (this.radios.length > 0) {
+    this.radios.forEach((radio) => {
+      if (radio.checked) {
+        const labelVal = document.querySelector("label[for=" + radio.id + "]");
+        this.title.innerHTML = labelVal.innerHTML;
+      }
+      radio.addEventListener("change", this.radioChange.bind(this));
+    });
+  }
+};
+
+Collapse.prototype.toggleContent = function () {
+  if (this.container.classList.contains(this.expandedClass)) {
+    this.button.setAttribute("aria-expanded", false);
+    this.container.classList.remove(this.expandedClass);
+  } else {
+    this.button.setAttribute("aria-expanded", true);
+    this.container.classList.add(this.expandedClass);
+  }
+};
+
+Collapse.prototype.radioChange = function (event) {
+  const radio = event.target;
+  if (radio.checked) {
+    const labelVal = document.querySelector("label[for=" + radio.id + "]");
+    this.title.innerHTML = labelVal.innerHTML;
+  }
+};
+
+const appCollapsable = document.querySelectorAll(
+  `[data-module="app-collapse"]`,
+);
+
+if (appCollapsable) {
+  appCollapsable.forEach(function (collapse) {
+    new Collapse(collapse).init();
   });
 }

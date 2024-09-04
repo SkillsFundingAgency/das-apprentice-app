@@ -1,0 +1,14 @@
+@mixin app-arrow {
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 9px;
+  height: 9px;
+  transform: rotate(225deg);
+  border: solid;
+  border-color: $app-brand-colour;
+  border-width: 0 0 2px 2px;
+  border-top-color: transparent;
+  content: "";
+  position: absolute;
+  border-radius: 1px;
+}
