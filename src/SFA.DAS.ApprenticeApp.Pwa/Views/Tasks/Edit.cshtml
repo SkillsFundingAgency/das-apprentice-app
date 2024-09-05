@@ -4,13 +4,12 @@
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
-    Layout = "_Layout";
+    Layout = null;
 }
 
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
 
-<div class="popup-wrapper">
     <div class="app-page-header">
         <div class="app-overlay-header__cancel">
             <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
@@ -24,7 +23,8 @@
     </div>
 
     <div>
-        <form method="post" enctype="multipart/form-data" class="form">
+        <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
+
             <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
             <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
             <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
@@ -124,9 +124,9 @@
                         Select KSBs this task will help you gain
                         <div class="app-card__heading app-sticky">
                             <label class="app-label" for="ksb-popup-btn"></label>
-                        <input type="button" id="ksb-popup-btn" value="+" data-id="@Model.Task.TaskId" />
+                            <input type="button" id="ksb-popup-btn" value="+" data-id="@Model.Task.TaskId" />
                         </div>
-                        
+
                         @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
@@ -134,14 +134,15 @@
                             {
                             <div class="app-page-header">
                                 <h3>@ksbProgressData.KsbKey</h3>
-                                </div>
-                            <div>  <p>@ksbProgressData.Detail</p><br />
+                            </div>
+                            <div>
+                                <p>@ksbProgressData.Detail</p><br />
                                 <span>
-                                @{
-                                    var statusItem = @ksbProgressData.CurrentStatus;
-                                    string statusItemDisplay = statusItem.GetEnumDescription();
-                                    <text>@statusItemDisplay</text>
-                                }
+                                    @{
+                                        var statusItem = @ksbProgressData.CurrentStatus;
+                                        string statusItemDisplay = statusItem.GetEnumDescription();
+                                        <text>@statusItemDisplay</text>
+                                    }
                                 </span>
                             </div>
                             }
@@ -149,8 +150,7 @@
                     </div>
                 </fieldset>
             </div>
-    </form>
-    </div>
+        </form>
     </div>
 
     @await Html.PartialAsync("_AddEditTasksJs.cshtml")

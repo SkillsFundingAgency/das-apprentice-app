@@ -53,13 +53,26 @@
     animation: slideUp ease 200ms;
 }
 
+#add-edit-wrapper {
+    position: absolute;
+    z-index: 100;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    display: none;
+    background: white;
+    margin-right: 15px;
+    width: 93%;
+    padding: 15px;
+    animation: slideUp ease 200ms;
+}
+
 .filter-tag {
     margin: 5px;
     background-color: #EEEFEF;
     color: #383F43;
 }
 
-.remove-filter {
+.remove-filter, .edit-btn {
     cursor: pointer;
 }
 

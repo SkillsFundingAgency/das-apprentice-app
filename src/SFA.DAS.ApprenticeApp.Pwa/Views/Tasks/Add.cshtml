@@ -3,13 +3,12 @@
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
-    Layout = "_Layout";
+    Layout = null;
 }
 
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
 
-<div class="popup-wrapper">
     <div class="app-page-header">
         <div class="app-overlay-header__cancel">
             <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
@@ -21,7 +20,7 @@
             <a class="app-overlay-header__link add-task">Add</a>
         </div>
     </div>
-    <form method="post" enctype="multipart/form-data" class="form">
+    <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form">
         <div class="app-form-group">
             <label class="app-label" for="title">
                 Title
@@ -117,7 +116,4 @@
 
     </form>
 
-</div>
-
 @await Html.PartialAsync("_AddEditTasksJs.cshtml")
-

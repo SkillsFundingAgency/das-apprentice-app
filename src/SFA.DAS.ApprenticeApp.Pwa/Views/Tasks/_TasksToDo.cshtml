@@ -83,7 +83,7 @@
                         <input type="hidden" class="taskId" value="@task.TaskId" />
                     </li>
                     <li>
-                        <a asp-controller="Tasks" asp-action="Edit" asp-route-id="@task.TaskId" class="app-dropdown__menu-link">
+                        <a data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
                             <span class="app-dropdown__menu-icon">
                               <svg>
                                  <use xlink:href="/assets/images/icons.svg#edit"></use>
