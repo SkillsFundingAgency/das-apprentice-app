@@ -5,6 +5,7 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -25,12 +26,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-                var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
+                var standardUId = Claims.GetClaim(HttpContext, Constants.StandardUIdClaimKey);
 
                 if (!string.IsNullOrEmpty(apprenticeshipId))
                 {
@@ -63,12 +64,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> LinkKsbs()
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-                var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
+                var standardUId = Claims.GetClaim(HttpContext, Constants.StandardUIdClaimKey);
 
                 if (!string.IsNullOrEmpty(apprenticeshipId))
                 {
@@ -101,11 +102,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> AddUpdateKsbProgress(Guid id, string key, string detail)
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
                 Guid[] guids = new Guid[1];
                 guids[0] = id;
 
@@ -146,11 +147,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             if (ksbProgressData != null && ksbProgressData.ApprenticeshipId == 0)
             {
-                var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+                var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
-                    var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                    var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
                     ksbProgressData.ApprenticeshipId = long.Parse(apprenticeshipId);
                     string message = $"AddUpdateKsbProgress for KSB {ksbProgressData.KsbId} and Apprenticeship: {ksbProgressData.ApprenticeshipId}";
                     _logger.LogInformation(message);
@@ -159,15 +160,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
                     }
-                    catch 
+                    catch
                     {
                         //temporarily handle any 500 errors
                     }
 
                     return RedirectToAction("Index", "Ksb");
                 }
+
+                _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
+                return Unauthorized();
             }
-            _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
             return View("Index");
         }
 
@@ -175,11 +178,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> EditKsbProgress(Guid ksbId, string ksbKey, KsbType ksbType, KSBStatus ksbStatus, string note)
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-            
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
                 ApprenticeKsbProgressData ksbProgressData = new ApprenticeKsbProgressData()
                 {
@@ -203,6 +206,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return Ok();
             }
 
+            _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");
+            return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveTaskFromKsbProgress(int progressId, int taskId)
+        {
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
+
+                string preMessage = $"Removing Task {taskId} from KsbProgress {progressId}";
+                _logger.LogInformation(preMessage);
+                try
+                {
+                    await _client.RemoveTaskToKsbProgress(long.Parse(apprenticeshipId), progressId, taskId);
+                    string postMessage = $"Removed Task {taskId} from KsbProgress {progressId}";
+                    _logger.LogInformation(postMessage);
+                }
+                catch
+                {
+                    //temporarily handle any 500 errors
+                }
+
+                return Ok();
+            }
+
+            _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");
             return Unauthorized();
         }
     }

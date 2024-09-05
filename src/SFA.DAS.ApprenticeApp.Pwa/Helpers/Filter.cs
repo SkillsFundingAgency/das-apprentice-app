@@ -8,7 +8,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
         {
             var filteredTasks = new List<ApprenticeTask>();
 
-            if (taskFiltersValue != null)
+            if (!string.IsNullOrEmpty(taskFiltersValue))
             {
                 foreach (string filter in taskFiltersValue.Split("&"))
                 {

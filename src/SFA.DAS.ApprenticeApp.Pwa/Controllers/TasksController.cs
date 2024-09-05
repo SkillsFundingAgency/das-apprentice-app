@@ -35,12 +35,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<PartialViewResult> ToDoTasks()
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
+                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -72,13 +72,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<PartialViewResult> DoneTasks()
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -109,12 +109,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-                var standardUId = HttpContext.User?.Claims?.First(c => c.Type == Constants.StandardUIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
+                var standardUId = Claims.GetClaim(HttpContext, Constants.StandardUIdClaimKey);
 
                 if (!string.IsNullOrEmpty(apprenticeshipId) && !string.IsNullOrEmpty(standardUId))
                 {
@@ -142,11 +142,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(ApprenticeTask task)
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
                 if (task.KsbsLinked != null)
                 {
@@ -179,7 +179,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> Add(int status = 0)
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -202,11 +202,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ApprenticeTask task)
         {
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
                 if (long.Parse(apprenticeshipId) != task.ApprenticeshipId)
                 {
@@ -246,7 +246,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     //temporarily handle 500 errors
                 }
 
-
                 string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
                 _logger.LogInformation(postMessage);
                 return RedirectToAction("Index", new { status = (int)task.Status });
@@ -264,7 +263,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -291,7 +290,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -299,9 +298,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 await _client.UpdateTaskStatus(long.Parse(apprenticeshipId), taskId, statusId);
 
-
                 return RedirectToAction("Index");
             }
+            
             return Unauthorized();
         }
     }

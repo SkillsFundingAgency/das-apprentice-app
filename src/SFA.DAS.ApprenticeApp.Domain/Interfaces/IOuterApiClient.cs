@@ -70,5 +70,9 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Get("/apprentices/{id}/progress/taskCategories/tasks/{taskId}/courses/{standardUid}/options/{option}/ksbs")]
         Task<ApprenticeTaskData> GetTaskViewData([Path] long id, [Path] int taskId, [Path] string standardUid, [Path] string option);
+
+        [Delete("/apprentices/{apprenticeshipId}/ksbs/{ksbProgressId}/taskid/{taskId}")]
+        Task RemoveTaskToKsbProgress([Path] long apprenticeshipId, [Path] int ksbProgressId, [Path] int taskId);
+
     }
 }

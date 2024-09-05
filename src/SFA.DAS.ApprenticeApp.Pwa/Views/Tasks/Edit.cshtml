@@ -1,3 +1,4 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 
 @{
@@ -118,16 +119,29 @@
                     <legend class="app-fieldset__legend">
                         Link knowledge, skills and behaviours (KSBs)
                     </legend>
-                    <label class="app-label">Select KSBs this task will help you gain</label>
                     <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
                     <div id="linked-ksb-details" class="govuk-label">
-                        <input type="button" id="ksb-popup-btn" value="Link KSBs" data-id="@Model.Task.TaskId" />
+                        Select KSBs this task will help you gain
+                        <div class="app-card__heading app-sticky">
+                            <label class="app-label" for="ksb-popup-btn"></label>
+                        <input type="button" id="ksb-popup-btn" value="+" data-id="@Model.Task.TaskId" />
+                        </div>
+                        
                         @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
-                            <strong>@ksbProgressData.KsbKey</strong> <a class='edit-ksb'>Edit</a>
-                            <p>@ksbProgressData.Detail</p><br /><br />
-                            <p>@ksbProgressData.CurrentStatus</p>
+                            <div class="app-page-header">
+                                <h3>@ksbProgressData.KsbKey</h3>
+                                </div>
+                            <div>  <p>@ksbProgressData.Detail</p><br />
+                                <span>
+                                @{
+                                    var statusItem = @ksbProgressData.CurrentStatus;
+                                    string statusItemDisplay = statusItem.GetEnumDescription();
+                                    <text>@statusItemDisplay</text>
+                                }
+                                </span>
+                            </div>
                         }
                     </div>
                 </fieldset>

@@ -13,7 +13,6 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -22,7 +21,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
     public class TaskControllerTests
     {
         [Test, MoqAutoData]
-        public async Task LoadToDoTasks([Greedy] TasksController controller)
+        public async Task LoadToDoTasks(
+            [Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -34,7 +34,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 apprenticeshipIdClaim
             })});
             httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
 
+            var result = await controller.ToDoTasks();
+            result.Should().BeOfType(typeof(PartialViewResult));
+            result.ViewName.Should().Be("_TasksToDo");
+        }
+
+        [Test, MoqAutoData]
+        public async Task LoadToDoTasks_with_filter(Mock<IRequestCookieCollection> cookies,
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+            cookies.Setup(c => c[Constants.TaskFiltersCookieName]).Returns("filter=Assignment");
+            httpContext.Request.Cookies = cookies.Object;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
@@ -108,6 +133,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             })});
             httpContext.User = claimsPrincipal;
 
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.DoneTasks();
+            result.Should().BeOfType(typeof(PartialViewResult));
+            result.ViewName.Should().Be("_TasksDone");
+        }
+
+        [Test, MoqAutoData]
+        public async Task LoadDoneTasks_withFilters(Mock<IRequestCookieCollection> cookies, 
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+            cookies.Setup(c => c[Constants.TaskFiltersCookieName]).Returns("filter=Assignment");
+            httpContext.Request.Cookies = cookies.Object;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
@@ -233,8 +284,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             };
             var result = await controller.Edit(task) as RedirectToActionResult;
             result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Edit");
-            result.ControllerName.Should().Be("Tasks");
+            result.ActionName.Should().Be("Index");
+            result.RouteValues["status"].Should().Be(0);
+        }
+
+        [Test, MoqAutoData]
+        public async Task EditTask_HandlesError(
+           [Frozen] Mock<IOuterApiClient> client,
+           ApprenticeTask task,
+           [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.UpdateApprenticeTask(123, task.TaskId, task)).ThrowsAsync(new Exception("Error"));
+            var result = await controller.Edit(task) as RedirectToActionResult;
+            result.Should().BeOfType(typeof(RedirectToActionResult));
+            result.ActionName.Should().Be("Index");
+            result.RouteValues["status"].Should().Be(0);
         }
 
         [Test, MoqAutoData]
@@ -350,6 +430,96 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             }
         }
 
+        [Test, MoqAutoData]
+        public async Task AddTask_ReturnsView(
+           [Frozen] Mock<IOuterApiClient> client,
+           [Frozen] ApprenticeDetails apprenticeDetails,
+           [Frozen] Mock<ILogger<TasksController>> logger,
+           [Frozen] ApprenticeTask task,
+           [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "1");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            task.ApprenticeshipId = 1;
+            var result = await controller.Add(task) as RedirectToActionResult;
+            
+            result.Should().NotBeNull();
+            result.ActionName.Should().Be("Index");
+            result.RouteValues["status"].Should().Be((int)task.Status);
+           
+        }
+
+        [Test, MoqAutoData]
+        public async Task AddTask_HandlesError(
+          [Frozen] Mock<IOuterApiClient> client,
+          [Frozen] ApprenticeDetails apprenticeDetails,
+          [Frozen] Mock<ILogger<TasksController>> logger,
+          [Frozen] ApprenticeTask task,
+          [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "1");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            task.ApprenticeshipId = 1;
+            client.Setup(x => x.AddApprenticeTask(1, task)).ThrowsAsync(new Exception("Error"));
+            var result = await controller.Add(task) as RedirectToActionResult;
+
+            result.Should().NotBeNull();
+            result.ActionName.Should().Be("Index");
+            result.RouteValues["status"].Should().Be((int)task.Status);
+
+        }
+       
+        [Test, MoqAutoData]
+        public async Task AddTask_MustHave_ValidApprenticeId(
+          [Frozen] ApprenticeTask task,
+          [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.Add(task);
+           
+            result.Should().BeOfType(typeof(UnauthorizedResult));           
+        }
+
 
         [Test, MoqAutoData]
         public async Task ListTasks_After_TaskDelete([Greedy] TasksController controller)
@@ -376,7 +546,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
         [Test, MoqAutoData]
         public async Task DeleteTask_Must_Have_ValidId(
-            [Frozen] Mock<ILogger<TasksController>> logger, [Greedy] TasksController controller)
+            [Frozen] Mock<ILogger<TasksController>> logger, 
+            [Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -405,6 +576,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 result.ActionName.Should().Be("Index");
                 result.ControllerName.Should().Be("Tasks");
             }
+        }
+
+        [Test, MoqAutoData]
+        public async Task DeleteTask_Must_Have_ValidApprenticeId(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            var result = await controller.DeleteApprenticeTask(1);
+
+            result.Should().BeOfType(typeof(UnauthorizedResult));
         }
 
         [Test, MoqAutoData]
@@ -468,5 +660,35 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             }
         }
 
+        [Test, MoqAutoData]
+        public async Task ChangeTaskStatus_Must_Have_ApprenticeId(
+            [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<TasksController>> logger, [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            var result = await controller.ChangeTaskStatus(1, 0);
+
+            result.Should().BeOfType(typeof(UnauthorizedResult));
+        }
+
+        [Test, MoqAutoData]
+        public async Task NoTasks_ReturnsView(
+               [Greedy] TasksController controller)
+        {
+            var result = controller.TasksNotStarted() as ViewResult;
+            result.Should().NotBeNull();
+        }
     }
 }
