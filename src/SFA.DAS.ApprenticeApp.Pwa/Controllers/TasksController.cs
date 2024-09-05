@@ -146,7 +146,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
                 if (task.KsbsLinked != null)
                 {
@@ -206,7 +206,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
                 if (long.Parse(apprenticeshipId) != task.ApprenticeshipId)
                 {
@@ -245,7 +245,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     //temporarily handle 500 errors
                 }
-
 
                 string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
                 _logger.LogInformation(postMessage);
