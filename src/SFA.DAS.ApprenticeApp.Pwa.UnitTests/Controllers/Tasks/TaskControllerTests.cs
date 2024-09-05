@@ -313,8 +313,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             client.Setup(x => x.UpdateApprenticeTask(123, task.TaskId, task)).ThrowsAsync(new Exception("Error"));
             var result = await controller.Edit(task) as RedirectToActionResult;
             result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Index");
-            result.RouteValues["status"].Should().Be((int)task.Status);
+            result.ActionName.Should().Be("Edit");
+            result.ControllerName.Should().Be("Tasks");
         }
 
         [Test, MoqAutoData]
