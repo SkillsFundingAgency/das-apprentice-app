@@ -32,7 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\img\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Configuration\" />
     <Folder Include="Views\Terms\" />
     <Folder Include="Authentication\" />

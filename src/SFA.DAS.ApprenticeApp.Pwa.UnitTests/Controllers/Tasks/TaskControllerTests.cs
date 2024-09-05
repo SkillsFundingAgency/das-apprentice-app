@@ -13,7 +13,6 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -233,8 +232,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             };
             var result = await controller.Edit(task) as RedirectToActionResult;
             result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Edit");
-            result.ControllerName.Should().Be("Tasks");
+            result.ActionName.Should().Be("Index");
+            result.RouteValues["status"].Should().Be(0);
         }
 
         [Test, MoqAutoData]
@@ -467,6 +466,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 result.ControllerName.Should().Be("Tasks");
             }
         }
+        [Test, MoqAutoData]
+        public async Task ChangeTaskStatus_Must_Have_ApprenticeId(
+            [Frozen] Mock<IOuterApiClient> client,
+            ApprenticeDetails apprenticeDetails,
+            [Frozen] Mock<ILogger<TasksController>> logger, [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
 
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            var result = await controller.ChangeTaskStatus(1, 0);
+
+            result.Should().BeOfType(typeof(UnauthorizedResult));
+        }
     }
 }

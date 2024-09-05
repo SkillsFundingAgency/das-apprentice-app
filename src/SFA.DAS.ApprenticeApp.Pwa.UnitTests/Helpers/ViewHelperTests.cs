@@ -1,9 +1,6 @@
-﻿using FluentAssertions.Equivalency;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
-using SFA.DAS.Testing.AutoFixture;
-using System.ComponentModel;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
 {
