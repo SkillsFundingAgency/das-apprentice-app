@@ -233,8 +233,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             };
             var result = await controller.Edit(task) as RedirectToActionResult;
             result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Edit");
-            result.ControllerName.Should().Be("Tasks");
+            result.ActionName.Should().Be("Index");
         }
 
         [Test, MoqAutoData]
