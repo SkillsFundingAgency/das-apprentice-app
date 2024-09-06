@@ -1,0 +1,68 @@
+.app-navigation {
+  display: flex;
+  height: 5rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid $app-border-colour;
+}
+
+.app-navigation__link {
+  text-align: center;
+  flex-grow: 1;
+  height: 5rem;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: $govuk-secondary-text-colour;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  &:active {
+    background: #eee;
+  }
+}
+
+.app-navigation__link--active {
+  color: $govuk-text-colour;
+  &:after {
+    content: "";
+    background-color: $app-brand-colour;
+    height: 3px;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+  }
+}
+
+.app-navigation__icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  display: block;
+  margin: $app-gap-half 0;
+  color: $govuk-secondary-text-colour;
+  .app-navigation__link--active & {
+    color: $app-brand-colour;
+  }
+  .app-navigation__link:hover & {
+    color: $app-brand-colour;
+  }
+  svg {
+    @include app-svg-common;
+    stroke: currentColor;
+  }
+}
+
+.app-navigation__link-text {
+  @include govuk-typography-common;
+  font-size: 0.75rem;
+  text-decoration: none;
+  display: block;
+  color: $govuk-secondary-text-colour;
+  .app-navigation__link--active & {
+    color: $govuk-text-colour;
+  }
+}

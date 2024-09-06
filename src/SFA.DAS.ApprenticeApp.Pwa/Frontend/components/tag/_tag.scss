@@ -1,0 +1,18 @@
+.app-tag {
+  @extend .govuk-tag;
+  border-radius: $app-border-radius;
+  margin: 0;
+  background-color: $app-brand-secondary;
+  color: $app-brand-dark;
+  max-width: none;
+}
+
+.app-tag--pink {
+  background-color: #f5e2eb;
+  color: #62223f;
+}
+
+.app-tag--red {
+  background-color: #f6d7c6;
+  color: #673920;
+}

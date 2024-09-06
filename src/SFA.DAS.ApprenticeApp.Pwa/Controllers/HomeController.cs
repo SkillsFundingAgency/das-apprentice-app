@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
@@ -22,7 +21,7 @@ public class HomeController : Controller
     {
         if (HttpContext.User.Identity.IsAuthenticated)
         {
-            return RedirectToAction("AccountLandingPage", "Account");
+            return RedirectToAction("Index", "Tasks");
         }
 
         var vm = new HomeViewModel();

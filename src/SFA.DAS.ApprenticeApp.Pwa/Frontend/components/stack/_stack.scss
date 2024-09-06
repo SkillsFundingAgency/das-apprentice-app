@@ -1,0 +1,37 @@
+.app-stack {
+  @extend .govuk-list;
+}
+
+.app-stack > li.app-stack__list-item {
+  margin-bottom: $app-gap;
+}
+
+.app-stack__link {
+  @include govuk-link-style-text;
+  @include govuk-font-size(24);
+  border-radius: $app-border-radius;
+  padding: $app-gap;
+  display: block;
+  background: #fff;
+  text-decoration: none;
+  font-weight: $govuk-font-weight-bold;
+  position: relative;
+  &:after {
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 10px;
+    height: 10px;
+    transform: rotate(225deg);
+    border: solid;
+    border-color: $app-brand-colour;
+    border-width: 0 0 3px 3px;
+    border-top-color: transparent;
+    content: "";
+    position: absolute;
+  }
+  &:focus {
+    &:after {
+      border-color: $govuk-text-colour;
+    }
+  }
+}

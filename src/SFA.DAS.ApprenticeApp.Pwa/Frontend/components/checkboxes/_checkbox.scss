@@ -1,0 +1,36 @@
+.app-checkboxes__item {
+  @extend .govuk-checkboxes__item;
+  background-color: #fff;
+  padding: $app-gap;
+  border-radius: $app-border-radius;
+  flex-direction: row-reverse;
+  margin-bottom: $app-gap;
+  justify-content: space-between;
+}
+
+.app-checkboxes__label {
+  @extend .govuk-checkboxes__label;
+  max-width: none;
+  padding: 0;
+  width: calc(100% - 44px);
+  &:before {
+    top: $app-gap;
+    left: auto;
+    right: $app-gap;
+    width: 24px;
+    height: 24px;
+  }
+  &:after {
+    top: calc($app-gap + 7px);
+    left: auto;
+    right: calc($app-gap + 6px);
+    width: 12px;
+    height: 6.5px;
+    border-width: 0 0 3px 3px;
+  }
+}
+
+.app-checkboxes__input {
+  @extend .govuk-checkboxes__input;
+  margin: -1rem;
+}

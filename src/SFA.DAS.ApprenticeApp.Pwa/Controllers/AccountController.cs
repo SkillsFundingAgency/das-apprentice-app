@@ -3,11 +3,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -16,15 +17,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
         public static ApplicationConfiguration _config { get; set; }
+        private readonly IOuterApiClient _client;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
-            ApplicationConfiguration configuration
+            ApplicationConfiguration configuration,
+            IOuterApiClient client
         )
         {
             _logger = logger;
             _stubAuthenticationService = stubAuthenticationService;
             _config = configuration;
+            _client = client;
         }
 
         [HttpGet]
@@ -37,7 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult Authenticated()
         {
-            return RedirectToAction("AccountLandingPage", "Account");
+            return RedirectToAction("Index", "Tasks");
         }
 
         [Authorize]
@@ -78,10 +82,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
 
+                var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+                if (!string.IsNullOrEmpty(apprenticeId))
+                {
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
+                    claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+                }
+
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
                 new AuthenticationProperties());
 
                 _logger.LogInformation($"Apprentice successfully logged in to app.");
+
                 return RedirectToAction("Index", "Terms");
             }
 

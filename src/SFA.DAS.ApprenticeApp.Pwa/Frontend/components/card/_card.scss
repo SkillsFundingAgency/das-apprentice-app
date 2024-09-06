@@ -1,0 +1,10 @@
+.app-card {
+  background: #fff;
+  border-radius: $app-border-radius;
+  padding: $app-gap;
+  margin-bottom: $app-gap;
+}
+
+.app-card__heading {
+  @extend .govuk-heading-s;
+}

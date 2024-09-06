@@ -1,0 +1,31 @@
+.app-radios__item {
+  @extend .govuk-radios__item;
+  margin: 0;
+  flex-direction: row-reverse;
+}
+
+.app-radios__label {
+  @extend .govuk-label;
+  @extend .govuk-radios__label;
+  padding-left: 0;
+  width: calc(100% - 44px);
+  max-width: none;
+  &:before {
+    top: 10px;
+    left: auto;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    border-color: $app-brand-colour;
+  }
+  &:after {
+    top: 17px;
+    left: auto;
+    right: 7px;
+    border-width: 5px;
+  }
+}
+
+.app-radios__input {
+  @extend .govuk-radios__input;
+}

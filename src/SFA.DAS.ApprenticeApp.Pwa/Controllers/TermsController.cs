@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
@@ -25,7 +26,7 @@ public class TermsController : Controller
     [Authorize]
     public async Task<IActionResult> Index()
     {
-        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
@@ -47,7 +48,7 @@ public class TermsController : Controller
     [Authorize]
     public async Task<IActionResult> TermsAccept()
     {
-        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
@@ -67,7 +68,7 @@ public class TermsController : Controller
     [Authorize]
     public IActionResult TermsDecline()
     {
-        var apprenticeId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
         _logger.LogInformation($"Apprentice declined the Terms. ApprenticeId: {apprenticeId}");
         return RedirectToAction("SigningOut", "Account");
     }

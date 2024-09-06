@@ -1,0 +1,64 @@
+.app-dropdown {
+  color: $app-brand-colour;
+  position: relative;
+}
+
+.app-dropdown__toggle {
+  text-decoration: none;
+  cursor: pointer;
+  @include govuk-font-size(19);
+}
+
+.app-dropdown__menu {
+  background: #fff;
+  padding: $app-gap $app-gap 1px;
+  border-radius: $app-border-radius;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid #f7f7f7;
+  position: absolute;
+  display: none;
+}
+
+.app-dropdown__menu--visible {
+  display: flex;
+}
+
+.app-dropdown__menu-list {
+  @extend .govuk-list;
+  list-style: none;
+  margin: 0 0 $app-gap;
+  padding: 0;
+  & > li {
+    margin-bottom: $app-gap;
+  }
+  & > li:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.app-dropdown__menu-link {
+  margin-bottom: $app-gap-half;
+  display: flex;
+  gap: $app-gap-half;
+  flex-direction: row;
+  align-items: flex-start;
+  text-decoration: none;
+  color: $govuk-text-colour;
+  &:link {
+    color: $govuk-text-colour;
+  }
+}
+
+.app-dropdown__menu-icon {
+  max-width: 1rem;
+  height: 1rem;
+  color: $app-brand-colour;
+  svg {
+    @include app-svg-common;
+    stroke: currentColor;
+  }
+  .app-dropdown__menu-link:focus &,
+  .app-dropdown__menu-link:active & {
+    color: inherit;
+  }
+}

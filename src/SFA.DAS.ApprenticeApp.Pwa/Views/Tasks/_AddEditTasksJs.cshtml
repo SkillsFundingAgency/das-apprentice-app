@@ -1,0 +1,159 @@
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".add-task").click(function (e) {
+            $(".form").submit();
+        });
+
+        $("#ksb-popup-btn").click(function (e)
+        {
+            // if dialogue has not been loaded, load it, else just show it
+            if ($("#ksb-popup").html().length > 0)
+            {
+                $('#ksb-popup').show();
+                var ksbIdList = $('#linked-ksb-ids').val();
+                ksbIdList = ksbIdList.split(',');
+                $('.link-ksb-checkbox').each(function () {
+                    var ksbId = $(this).val();
+                    if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
+                });
+            }
+            else
+            {
+                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
+
+                    $('#ksb-popup').show();
+                    var ksbIdList = $('#linked-ksb-ids').val();
+                    ksbIdList = ksbIdList.split(',');
+                    $('.link-ksb-checkbox').each(function () {
+                        var ksbId = $(this).val();
+                        if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
+                    });
+
+                    $('.add-edit-content-area').height($('.app-container').height() - 150);
+
+
+                });
+            }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+
+            
+        });
+
+        // edit ksb link
+        $('body').on('click', '.edit-ksb', function (e)
+        {
+            // if dialogue has not been loaded, load it, else just show it
+            if ($("#ksb-popup").html().length > 0)
+            {
+                $('#ksb-popup').show();
+            }
+            else
+            {
+                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
+                    $('#ksb-popup').show();
+
+                    $('.add-edit-content-area').height($('.app-container').height() - 150);
+
+
+                });
+            }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+
+        });
+
+        $('body').on('click', '.ksb-popup-cancel', function (e) {
+            $('#ksb-popup').hide();
+
+        });
+
+        // create or update local ksbprogress on checkbox click
+        $('body').on('click', '.link-ksb-checkbox', function (e)
+        {
+            var value = $(this).attr("value");
+            var ksbKey = $(this).attr("data-title");
+            var ksbType = $(this).attr("data-type");
+            var status = $(this).siblings('.ksb-status').attr("value")
+           
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EditKsbProgress", "Ksb")',
+                data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
+                dataType: "json"
+            });           
+        });
+
+        // create or update local ksbprogress with status on radio click
+        $('body').on('click', '.ksb-status', function (e) {
+            var value = $(this).attr("value");
+            var ksbId = $(this).attr("data-id");
+            var ksbKey = $(this).attr("data-key");
+            var ksbType = $(this).attr("data-type");
+            var note = $(this).attr("data-note");
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EditKsbProgress", "Ksb")',
+                data: { ksbId: ksbId, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: value, note: note },
+                dataType: "json"
+            });
+        });
+
+        $('body').on('click', '.link-ksb-confirm', function (e)
+        {
+            // iterate over  all checboxes
+            var result = $(".link-ksb-checkbox:checked").map(function (i, e) {
+                return $(e).attr("value");
+            }).get();
+
+            // update subform - hidden field
+            $("#linked-ksb-ids").val(result);
+
+            // update subform - nice visual output
+            var text = $(".link-ksb-checkbox:checked").map(function (i, e) {
+                return "<strong>" + $(e).attr("data-title") + "</strong> <a class='edit-ksb'>Edit</a><br/>" + $(e).attr("data-desc") + "<br/><br/>";
+            }).get();
+
+            $("#linked-ksb-details").html(text);
+
+            // close dialgoue
+            $('#ksb-popup').hide();
+        });
+
+
+        $('body').on('click', '.tab-knowledge', function (e) {
+
+            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
+            $(this).closest('li').addClass('app-tabs__list-item--selected');
+
+            $('.Knowledge').show();
+            $('.Skill').hide();
+            $('.Behaviour').hide();
+
+        });
+
+        $('body').on('click', '.tab-skills', function (e) {
+
+            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
+            $(this).closest('li').addClass('app-tabs__list-item--selected');
+
+            $('.Knowledge').hide();
+            $('.Skill').show();
+            $('.Behaviour').hide();
+
+        });
+
+        $('body').on('click', '.tab-behaviours', function (e) {
+
+            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
+            $(this).closest('li').addClass('app-tabs__list-item--selected');
+
+            $('.Knowledge').hide();
+            $('.Skill').hide();
+            $('.Behaviour').show();
+        });
+        
+    });
+</script>

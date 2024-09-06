@@ -1,20 +1,17 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.Testing.AutoFixture;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -52,8 +49,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         public void And_Terms_Accepted_Then_Profile_Displayed([Greedy] AccountController controller)
         {
             var result = controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("AccountLandingPage");
-            result.ControllerName.Should().Be("Account");
+            result.ActionName.Should().Be("Index");
+            result.ControllerName.Should().Be("Tasks");
 
         }
 
@@ -63,28 +60,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             string nameClaimValue,
             StubAuthUserDetails model,
             Mock<IStubAuthenticationService> stubAuthenticationService,
+            [Frozen] ClaimsPrincipal claims,            
             [Greedy] AccountController controller)
         {
             var authenticationServiceMock = new Mock<IAuthenticationService>();
             authenticationServiceMock
                 .Setup(a => a.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
                 .Returns(Task.CompletedTask);
-
+            
             var serviceProviderMock = new Mock<IServiceProvider>();
             serviceProviderMock
                 .Setup(s => s.GetService(typeof(IAuthenticationService)))
                 .Returns(authenticationServiceMock.Object);
             var httpContext = new DefaultHttpContext() { RequestServices = serviceProviderMock.Object};
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var emailClaim = new Claim(ClaimTypes.Email, emailClaimValue);
             var nameClaim = new Claim(ClaimTypes.NameIdentifier, nameClaimValue);
-            var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            emailClaim,
-            nameClaim
-        })});
-            httpContext.User = claimsPrinciple;
+            var apprenticeshipIdClaim = new Claim("apprenticeshipId", "1");
+            var standardUIdClaim = new Claim("standardUId", "1");
+                        
+            stubAuthenticationService.Setup(s => s.GetStubSignInClaims(model)).ReturnsAsync(claims);
+            claims.AddIdentity(new ClaimsIdentity(new[]
+            {
+                emailClaim,
+                nameClaim,
+                apprenticeshipIdClaim,
+                standardUIdClaim,
+                apprenticeIdClaim
+            }));
 
-           
+            httpContext.User = claims;
 
             controller.ControllerContext = new ControllerContext
             {
@@ -101,6 +107,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ControllerName.Should().Be("Terms");
 
         }
+        
         [Test, MoqAutoData]
         public async Task Stay_On_Account_Details_If_UserId_Is_Missing (
            StubAuthUserDetails model,

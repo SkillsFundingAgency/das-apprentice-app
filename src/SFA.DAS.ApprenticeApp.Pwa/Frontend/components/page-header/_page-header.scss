@@ -1,0 +1,22 @@
+.app-page-header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.app-page-header__heading {
+  @extend .govuk-heading-l;
+  width: 60%;
+  text-align: center;
+  margin: 0;
+}
+
+.app-page-header__back {
+  width: 20%;
+}
+
+.app-page-header__forward {
+  width: 20%;
+  text-align: right;
+}

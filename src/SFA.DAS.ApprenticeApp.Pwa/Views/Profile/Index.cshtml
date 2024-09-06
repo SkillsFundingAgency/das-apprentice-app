@@ -4,59 +4,69 @@
 @inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Profile";
+    ViewData["Section"] = "Account";
 }
 
-<h1 class="govuk-heading-xl">Your profile</h1>
-<h2 class="govuk-heading-l">Your details</h2>
-<div class="app-pane">
-    <dl class="app-content-list">
-        <dt class="app-content-list__title">
+<div class="app-page-header">
+    <div class="app-page-header__back"><a asp-action="AccountLandingPage" asp-controller="Account"
+            class="app-back-link">Back</a>
+    </div>
+    <h1 class="app-page-header__heading">Your profile</h1>
+    <div class="app-page-header__forward"></div>
+</div>
+
+<h2 class="govuk-heading-l govuk-!-margin-top-4">Your details</h2>
+<div class="app-card">
+    <dl class="app-dl-list">
+        <dt class="app-dl-list__title">
             Name:
         </dt>
-        <dd class="app-content-list__content">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
+        <dt class="app-dl-list__title">
             Email address:
         </dt>
-        <dd class="app-content-list__content">@Model?.Apprentice?.Email</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model?.Apprentice?.Email</dd>
+        <dt class="app-dl-list__title">
             Date of birth:
         </dt>
-        <dd class="app-content-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
     </dl>
 </div>
 
-
-<h2 class="govuk-heading-l">Your progress</h2>
-<h3 class="govuk-heading-m">Time remaining on your apprenticeship</h3>
-
-<div class="app-pane">
+<h2 class="govuk-heading-l govuk-!-margin-top-6">Your progress</h2>
+<div class="app-card">
     <p id="remaining-months"></p>
-    
-<div class="grid-container" >
+    <div class="grid-container">
         <div class="progress-bar progress-border">
             <div class="progress" id="progress"></div>
         </div>
-        <img src="~/assets/images/icons/progress-bar-icon.png" height="40px" width="40px"/>
+    </div>
+    <div class="app-progress__wrap">
+        <div class="app-progress" role="progressbar" aria-label="Your apprenticeship progress" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100">
+            <div class="app-progress__bar" id="progressBar"></div>
+        </div>
+        <div class="app-progress__label" id="progressLabel"></div>
+    </div>
+    <p>Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
+    <a href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
+        target="_blank">What is
+        an end-point assessment (EPA)?</a>
 
-
-</div>
-
-    <p class="">Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
-    <a href = "">What is an end-point assessment EPA?</a>
     <script>
         // Assuming your apprenticeship length in days is calculated on the server and passed to the view
         const apprenticeshipLengthInDays = @Model.MyApprenticeship?.ApprenticeshipLength?.Days ?? 0;
 
         // Assuming a function to convert days to months (approximately)
         const daysToMonths = (days) => days / 30.417; // This is a rough estimate
-      
+
 
         // Total duration for EPA in months
         const totalMonths = daysToMonths(apprenticeshipLengthInDays);
         var todayDate = new Date();
         var endDateString = '@Model.MyApprenticeship?.EndDate'; // Ensure this is a valid date string
         var endDate = endDateString ? new Date(endDateString) : null;
-        
+
         // calculate time difference
         var timeDifference = endDate.getTime() - todayDate.getTime();
 
@@ -64,13 +74,16 @@
         var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
         // calculate months difference
         const remainingMonths = daysToMonths(daysDifference);
-        
+
 
         // Set the progress bar width
-        const progressPercentage = ((totalMonths - remainingMonths) / totalMonths) * 100;
+        const progressPercentage = Math.round(((totalMonths - remainingMonths) / totalMonths) * 100);
         document.addEventListener("DOMContentLoaded", function () {
-            const progressElement = document.getElementById('progress');
+            const progressElement = document.getElementById('progressBar');
+            const progressLabel = document.getElementById('progressLabel');
+            progressElement.setAttribute("aria-valuenow", progressPercentage)
             progressElement.style.width = `${progressPercentage}%`;
+            progressLabel.innerHTML = `${progressPercentage}%`;
 
             // Display remaining months text
             const remainingMonthsText = document.getElementById('remaining-months');
@@ -79,39 +92,38 @@
     </script>
 </div>
 
-
 <h2 class="govuk-heading-l">Your apprenticeship</h2>
-<div class="app-pane">
-    <dl class="app-content-list">
-        <dt class="app-content-list__title">
+<div class="app-card">
+    <dl class="app-dl-list">
+        <dt class="app-dl-list__title">
             Current employer:
         </dt>
-        <dd class="app-content-list__content">@Model.MyApprenticeship?.EmployerName</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EmployerName</dd>
+        <dt class="app-dl-list__title">
             Training provider:
         </dt>
-        <dd class="app-content-list__content">@Model.MyApprenticeship?.TrainingProviderName</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.TrainingProviderName</dd>
+        <dt class="app-dl-list__title">
             Apprenticeship:
         </dt>
-        <dd class="app-content-list__content">@Model.MyApprenticeship?.Title</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.Title</dd>
+        <dt class="app-dl-list__title">
             Level:
         </dt>
-        <dd class="app-content-list__content">@Model.MyApprenticeship?.Level</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.Level</dd>
+        <dt class="app-dl-list__title">
             Planned training start date:
         </dt>
-        <dd class="app-content-list__content">@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</dd>
-        <dt class="app-content-list__title">
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</dd>
+        <dt class="app-dl-list__title">
             Planned training end date:
         </dt>
-        <dd class="app-content-list__content">@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</dd>
 
-        <dt class="app-content-list__title">
+        <dt class="app-dl-list__title">
             Estimated duration:
         </dt>
-        <dd class="app-content-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
+        <dd class="app-dl-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
     </dl>
 </div>
 
@@ -119,19 +131,12 @@
 <div class="app-modal enable-notifications">
     <div class="app-modal__content">
         <h2 class="govuk-heading-m">Please turn on push notifications</h2>
-        <p class="govuk-body">These could include reminders you set in the app and useful guidance about your apprenticeship.</p>
+        <p class="govuk-body">These could include reminders you set in the app and useful guidance about your
+            apprenticeship.</p>
         <div class="govuk-button-group">
             <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
         </div>
     </div>
-</div>
-
-
-<div>
-    <br /><br /><br />
-
-    <button class="govuk-button" onclick="testNotification()">Notify</button>
-
 </div>
 <script>
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));

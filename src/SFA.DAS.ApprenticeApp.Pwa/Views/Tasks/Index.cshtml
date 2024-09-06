@@ -1,0 +1,44 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    Layout = "_Layout";
+}
+
+<div id="add-edit-wrapper">
+    <div class="loader" style="margin-bottom: 40px"></div>
+</div>
+
+<h1 class="govuk-heading-xl">Your tasks</h1>
+
+<div class="app-tabs" data-module="app-tabs">
+    <div class="app-page-header app-sticky">
+        <ul class="app-tabs__list">
+            <li class="app-tabs__list-item app-tabs__list-item--selected todo-element">
+                <a class="app-tabs__tab todo" href="#todo">
+                    To do
+                </a>
+            </li>
+            <li class="app-tabs__list-item done-element">
+                <a class="app-tabs__tab done" href="#done">
+                    Done
+                </a>
+            </li>
+        </ul>
+        <partial name="_Filter.cshtml" />
+    </div>
+
+    <div id="filters-set" style="margin: 0 0 15px 0;"></div>
+
+
+    <div id="tasks-display">
+        <div class="loader"></div>
+    </div>
+</div>
+
+<a id="add-btn" data-status-id="0" href="#top" class="app-fab">
+    <span>Add a task</span>
+</a>
+
+@await Html.PartialAsync("_TasksJs.cshtml", Model)

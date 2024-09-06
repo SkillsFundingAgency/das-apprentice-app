@@ -1,0 +1,31 @@
+.app-pages-home {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  text-align: center;
+}
+
+.app-pages-home__header {
+  background-color: #000;
+  align-content: end;
+  height: 20vh;
+  margin-bottom: 10vh;
+}
+
+.app-pages-home__govuk-logo {
+  color: #fff;
+  margin: 0 0 $app-gap;
+  padding: 0;
+}
+
+.app-pages-home__middle {
+  height: 40vh;
+  align-content: center;
+}
+
+.app-pages-home__bottom {
+  height: 30vh;
+  padding: $app-gap;
+  align-content: end;
+}
