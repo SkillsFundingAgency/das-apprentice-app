@@ -23,6 +23,7 @@
             else
             {
                 $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
+
                     $('#ksb-popup').show();
                     var ksbIdList = $('#linked-ksb-ids').val();
                     ksbIdList = ksbIdList.split(',');
@@ -30,8 +31,14 @@
                         var ksbId = $(this).val();
                         if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                     });
+
+                    $('.add-edit-content-area').height($('.app-container').height() - 150);
+
+
                 });
             }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+
             
         });
 
@@ -47,8 +54,14 @@
             {
                 $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
                     $('#ksb-popup').show();
+
+                    $('.add-edit-content-area').height($('.app-container').height() - 150);
+
+
                 });
             }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+
         });
 
         $('body').on('click', '.ksb-popup-cancel', function (e) {

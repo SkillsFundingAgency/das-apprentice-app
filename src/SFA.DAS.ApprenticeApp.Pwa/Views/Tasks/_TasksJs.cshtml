@@ -120,9 +120,17 @@
             var addUrl = '@Url.Action("Add","Tasks")?status=' + status;
 
             $('#add-edit-wrapper').show();
-            $("#add-edit-wrapper").load(addUrl);
 
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+
+            $('#add-edit-wrapper').load(addUrl, function () {
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                // make height to the window
+                $('.add-edit-content-area').height($('.app-container').height() - 100);
+            });
+
+
         });
 
         $('body').on('click', '.edit-btn', function (e)
@@ -130,9 +138,16 @@
             $('#add-edit-wrapper').show();
             var taskId = $(this).attr("data-id");
             var editUrl = '@Url.Action("Edit","Tasks")/' + taskId;
-            $("#add-edit-wrapper").load(editUrl);
 
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+
+            $('#add-edit-wrapper').load(editUrl, function () {
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                // make height to the window
+                $('.add-edit-content-area').height($('.app-container').height() - 100);
+            });
+
         });
 
         $('body').on('click', '.post-form', function (e) {

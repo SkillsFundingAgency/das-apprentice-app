@@ -10,7 +10,7 @@
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
 
-    <div class="app-page-header">
+    <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
             <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
         </div>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div>
+    <div class="app-overlay__content add-edit-content-area">
         <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
 
             <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
@@ -130,21 +130,21 @@
                         @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
-                            if(ksbProgressData != null)
+                            if (ksbProgressData != null)
                             {
-                            <div class="app-page-header">
-                                <h3>@ksbProgressData.KsbKey</h3>
-                            </div>
-                            <div>
-                                <p>@ksbProgressData.Detail</p><br />
-                                <span>
-                                    @{
-                                        var statusItem = @ksbProgressData.CurrentStatus;
-                                        string statusItemDisplay = statusItem.GetEnumDescription();
-                                        <text>@statusItemDisplay</text>
-                                    }
-                                </span>
-                            </div>
+                                <div class="app-page-header">
+                                    <h3>@ksbProgressData.KsbKey</h3>
+                                </div>
+                                <div>
+                                    <p>@ksbProgressData.Detail</p><br />
+                                    <span>
+                                        @{
+                                            var statusItem = @ksbProgressData.CurrentStatus;
+                                            string statusItemDisplay = statusItem.GetEnumDescription();
+                                            <text>@statusItemDisplay</text>
+                                        }
+                                    </span>
+                                </div>
                             }
                         }
                     </div>
