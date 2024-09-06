@@ -9,13 +9,11 @@
   "theme_color": "#000000",
   "icons": [
     {
-
       "src": "/assets/images/icons/icon-crown-48.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-
       "src": "/assets/images/icons/icon-crown-72.png",
       "type": "image/png",
       "sizes": "72x72"

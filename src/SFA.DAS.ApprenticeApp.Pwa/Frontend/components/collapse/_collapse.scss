@@ -1,0 +1,45 @@
+.app-collapse {
+
+}
+
+.app-collapse__title {
+  min-height: 25px;
+}
+
+.app-collapse__button {
+  @include govuk-font(19);
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-collapse__icon {
+  @include app-arrow;
+  display: block;
+  position: relative;
+  top: -3px;
+  right: 7px;
+  transform: rotate(-45deg);
+  width: 11px;
+  height: 11px;
+
+  .app-collapse--expanded & {
+    transform: rotate(135deg);
+    top: 2px;
+  }
+}
+
+.app-collapse__contents {
+  display: none;
+
+  .app-collapse--expanded & {
+    display: block;
+    padding: $app-gap 0 0
+  }
+}

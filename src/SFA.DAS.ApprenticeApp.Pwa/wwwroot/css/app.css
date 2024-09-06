@@ -7981,6 +7981,79 @@ html {
   margin: -1rem;
 }
 
+.app-collapse__title {
+  min-height: 25px;
+}
+
+.app-collapse__button {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+@media print {
+  .app-collapse__button {
+    font-family: sans-serif;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-collapse__button {
+    font-size: 1.1875rem;
+    line-height: 1.3157894737;
+  }
+}
+@media print {
+  .app-collapse__button {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+.app-collapse__icon {
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 9px;
+  height: 9px;
+  transform: rotate(225deg);
+  border: solid;
+  border-color: #00703c;
+  border-width: 0 0 2px 2px;
+  border-top-color: transparent;
+  content: "";
+  position: absolute;
+  border-radius: 1px;
+  display: block;
+  position: relative;
+  top: -3px;
+  right: 7px;
+  transform: rotate(-45deg);
+  width: 11px;
+  height: 11px;
+}
+.app-collapse--expanded .app-collapse__icon {
+  transform: rotate(135deg);
+  top: 2px;
+}
+
+.app-collapse__contents {
+  display: none;
+}
+.app-collapse--expanded .app-collapse__contents {
+  display: block;
+  padding: 1rem 0 0;
+}
+
 .app-dropdown {
   color: #00703c;
   position: relative;
@@ -8009,7 +8082,7 @@ html {
   background: #fff;
   padding: 1rem 1rem 1px;
   border-radius: 5px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   border: 1px solid #f7f7f7;
   position: absolute;
   display: none;
@@ -8157,9 +8230,9 @@ html {
 }
 
 .app-icon-list--l .app-icon-list__icon-grad svg {
-  fill: url(#grad) #832C91;
+  fill: url(#grad) #832c91;
   color: transparent;
-  stroke: url(#grad) #832C91;
+  stroke: url(#grad) #832c91;
 }
 
 .app-icon-list--muted {
@@ -8530,15 +8603,16 @@ html {
 .app-stack__link:after {
   top: 1.2rem;
   right: 1.2rem;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   transform: rotate(225deg);
   border: solid;
   border-color: #00703c;
-  border-width: 0 0 3px 3px;
+  border-width: 0 0 2px 2px;
   border-top-color: transparent;
   content: "";
   position: absolute;
+  border-radius: 1px;
 }
 .app-stack__link:focus:after {
   border-color: #0b0c0c;
@@ -8627,9 +8701,24 @@ html {
   color: #62223f;
 }
 
+.app-tag--yellow {
+  color: #594d00;
+  background-color: #fff7bf;
+}
+
 .app-tag--red {
-  background-color: #f6d7c6;
-  color: #673920;
+  color: #2a0b06;
+  background-color: #f4cdc6;
+}
+
+.app-tag--blue {
+  color: #0c2d4a;
+  background-color: #e8f1f8;
+}
+
+.app-tag--green {
+  color: #005a30;
+  background-color: #cce2d8;
 }
 
 .app-input {
@@ -8823,7 +8912,8 @@ html {
   margin: 0 20px 0 0 !important;
 }
 
-.govuk-accordion__section-toggle-text, .govuk-accordion__controls {
+.govuk-accordion__section-toggle-text,
+.govuk-accordion__controls {
   display: none !important;
 }
 
@@ -8870,7 +8960,7 @@ i:hover {
 
 .loader {
   border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #3498db; /* Blue */
+  border-top: 8px solid #005a30; /* green */
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -8917,6 +9007,26 @@ i:hover {
   width: 100%;
   margin: 15px 0 0 0;
   animation: slideUp ease 200ms;
+}
+
+.filter-tag {
+  margin: 5px;
+  background-color: #eeefef;
+  color: #383f43;
+}
+
+.remove-filter {
+  cursor: pointer;
+}
+
+.remove-filter:hover {
+  text-decoration: none;
+}
+
+.remove-filter img {
+  top: 2px;
+  left: 4px;
+  position: relative;
 }
 
 /*# sourceMappingURL=app.css.map */
