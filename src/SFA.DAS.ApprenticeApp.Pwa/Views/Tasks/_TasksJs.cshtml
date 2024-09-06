@@ -51,7 +51,7 @@
 
             if (confirm('Are you sure you want to delete this task?')) {
                 var taskId = $(this).siblings('.taskId').val();
-                $(this).closest('.app-icon-list').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+                $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
                 var taskId = $('.taskId').val();
                 $.ajax({
