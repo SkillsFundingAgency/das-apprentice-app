@@ -26,7 +26,7 @@
                             Linked to @ksb.Progress.Tasks.Count.ToString()
                             @if (@ksb.Progress.Tasks.Count > 1)
                             {
-                                <text>tasks</text>
+                                 <text>tasks</text>
                             }
                             else
                             {
@@ -36,18 +36,20 @@
                 </li>
                 </ul>
         }
-        <div class="app-tag">
+       
             @if (ksb.Progress == null)
             {
+                <div class="app-tag app-tag--pink">
                 <text>Not started</text>
+                </div>
             }
             else
             {
                 var status = ksb.Progress.CurrentStatus;
                 string statusDisplay = status.GetEnumDescription();
-                <text>@statusDisplay</text>
+                <div class="ksb-status-display app-tag">
+                <text>@statusDisplay</text></div>
             }
-        </div>
        
         <hr class="app-separator" />
     </div>

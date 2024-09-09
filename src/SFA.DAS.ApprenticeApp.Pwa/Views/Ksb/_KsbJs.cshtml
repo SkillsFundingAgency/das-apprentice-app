@@ -3,6 +3,43 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+       
+        $('.ksb-status-radio').each(function () {
+            var value = $(this).val();
+            switch (value) { 
+               case 'NotStarted':
+                    $(this).closest('.app-radios__item').find('.app-tag').addClass('app-tag--pink');
+                    break;
+                case 'InProgress':
+                    $(this).closest('.app-radios__item').find('.app-tag').addClass('app-tag--yellow');
+                    break;
+                case 'ReadyForReview':
+                    $(this).closest('.app-radios__item').find('.app-tag').addClass('app-tag--blue');
+                    break;
+                case 'Completed':
+                    $(this).closest('.app-radios__item').find('.app-tag').addClass('app-tag--green');
+                    break;
+            }
+        });
+
+        $('.ksb-status-display').each(function () {
+            var statusDisplay = $(this).text();
+            switch (true){
+                case statusDisplay.includes('Not started'):
+                    $(this).addClass('app-tag--pink');
+                    break;
+                case statusDisplay.includes('In progress'):
+                    $(this).addClass('app-tag--yellow');
+                    break;
+                case statusDisplay.includes('Ready for review'):
+                    $(this).addClass('app-tag--blue');
+                    break;
+                case statusDisplay.includes('Completed'):
+                    $(this).addClass('app-tag--green');
+                    break;
+            }
+        });
+
         $('.ksb-status').click(function () {
             var ksbStatus = $('.ksb-status:checked').val();
             switch (taskCategory) {
@@ -19,6 +56,7 @@
                     $('.ksbStatus').val(0);
             }
         });
+
         $(".save-ksb").click(function (e) {
             $(".form").submit();
         });
@@ -72,6 +110,8 @@
             return false;
             }
         });
+
+
     });
 
 </script>
