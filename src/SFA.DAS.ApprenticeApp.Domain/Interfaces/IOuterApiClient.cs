@@ -53,6 +53,9 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksbs")]
         Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
 
+        [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksb/{ksbId}")]
+        Task<ApprenticeKsb> GetApprenticeshipKsb([Path] long id, [Path] string standardUid, [Path] string option, [Path] Guid ksbId);
+
         [Get("/apprentices/{id}/ksbs")]
         Task<List<ApprenticeKsbProgressData>> GetApprenticeshipKsbProgresses([Path] long id, [Query] Guid[] guids);
 

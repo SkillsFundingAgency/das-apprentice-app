@@ -5,17 +5,20 @@
     Layout = null;
 }
 
-    <div class="app-page-header">
-        <div class="app-overlay-header__cancel">
-            <a class="app-overlay-header__link ksb-popup-cancel">Cancel</a>
-        </div>
-        <h2 class="app-overlay-header__heading">
-            Link to knowledge, skills and behaviours (KSBs)
-        </h2>
-        <div class="app-overlay-header__save">
-            <a class="app-overlay-header__link link-ksb link-ksb-confirm">Confirm</a>
-        </div>
+<div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+        <a class="app-overlay-header__link ksb-popup-cancel">Cancel</a>
     </div>
+    <h2 class="app-overlay-header__heading">
+        Link to knowledge, skills and behaviours (KSBs)
+    </h2>
+    <div class="app-overlay-header__save">
+        <a class="app-overlay-header__link link-ksb link-ksb-confirm">Confirm</a>
+    </div>
+</div>
+
+
+<div class="app-overlay__content add-edit-content-area">
 
     <div class="app-tabs" data-module="app-tabs">
         <div class="app-page-header app-sticky">
@@ -40,57 +43,58 @@
     </div>
 
     <a>Help with linking KSBs</a>
-    <br /><br />
+    <br />
+    <br />
 
     @foreach (var ksb in Model.Ksbs)
     {
         <form class="@ksb.Type">
-        <div>
-            <h2 class="app-card__heading">@ksb.Key</h2>
-            <div class="govuk-body">@ksb.Detail</div>
-            <label class="govuk-body">Link this KSB to the task</label>
+            <div>
+                <h2 class="app-card__heading">@ksb.Key</h2>
+                <div class="govuk-body">@ksb.Detail</div>
+                <label class="govuk-body">Link this KSB to the task</label>
 
-            <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
+                <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
 
-            <div class="app-form-group">
-                <fieldset class="app-fieldset">
-                    <legend class="app-fieldset__legend">
-                        Status
-                    </legend>
-                    <div class="app-radios">
-                        <fieldset id="CurrentStatus">
-                            
-                            @foreach (var ksbStatus in Model.KsbStatuses)
-                            {
-                            var isChecked = false;
-                            if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
-                            {
-                                isChecked = true;
-                            }
-                            if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
-                            {
-                                isChecked = true;
-                            }
-                            <div class="app-radios__item">
-                                <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "")
-                                
-                                />
-                                    <label class="app-label app-radios__label" for="CurrentStatus">
-                                        @{
-                                            var statusItem = ksbStatus;
-                                            string statusItemDisplay = statusItem.GetEnumDescription();
-                                            <text>@statusItemDisplay</text>
-                                        }
-                                    </label>
-                                </div>
-                            }
-                        </fieldset>
-                    </div>
+                <div class="app-form-group">
+                    <fieldset class="app-fieldset">
+                        <legend class="app-fieldset__legend">
+                            Status
+                        </legend>
+                        <div class="app-radios">
+                            <fieldset id="CurrentStatus">
 
-                </fieldset>
+                                @foreach (var ksbStatus in Model.KsbStatuses)
+                                {
+                                    var isChecked = false;
+                                    if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
+                                    {
+                                        isChecked = true;
+                                    }
+                                    if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
+                                    {
+                                        isChecked = true;
+                                    }
+                                    <div class="app-radios__item">
+                                        <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
+                                        <label class="app-label app-radios__label" for="CurrentStatus">
+                                            @{
+                                                var statusItem = ksbStatus;
+                                                string statusItemDisplay = statusItem.GetEnumDescription();
+                                                <text>@statusItemDisplay</text>
+                                            }
+                                        </label>
+                                    </div>
+                                }
+                            </fieldset>
+                        </div>
+
+                    </fieldset>
+                </div>
+
+                <hr class="app-separator" />
             </div>
-
-            <hr class="app-separator" />
-        </div>
         </form>
     }
+
+</div>

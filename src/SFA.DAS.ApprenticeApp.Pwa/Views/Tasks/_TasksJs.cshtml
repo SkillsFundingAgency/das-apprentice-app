@@ -30,7 +30,7 @@
             $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
 
             // change add url
-            $(".app-fab").attr("href", "Tasks/Add?Status=0")
+            $(".app-fab").attr("data-status-id", "0")
 
         });
 
@@ -39,20 +39,9 @@
             $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
 
             // change add url
-            $(".app-fab").attr("href", "Tasks/Add?Status=1")
+            $(".app-fab").attr("data-status-id", "1")
 
         });
-
-        /* $('.delete-task').on('click', function () {
-            $('#deleteTaskModal').addClass("app-modal--visible");
-            return false;
-        });
-
-        $('.cancel-taskdelete').on('click', function () {
-            $('#deleteTaskModal').removeClass('app-modal--visible');
-            $('.app-dropdown__menu').removeClass('app-dropdown__menu--visible');
-            return false;
-        });*/
 
         $(".post-form").click(function (e) {
             $(".form").submit();
@@ -124,7 +113,46 @@
             }
         }
 
+        // add / edit tasks popup
+        $("#add-btn").click(function (e)
+        {
+            var status = $(this).attr("data-status-id");
+            var addUrl = '@Url.Action("Add","Tasks")?status=' + status;
+
+            $('#add-edit-wrapper').show();
+
+
+            $('#add-edit-wrapper').load(addUrl, function () {
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                // make height to the window
+                $('.add-edit-content-area').height($('.app-container').height() - 100);
+            });
+
+
+        });
+
+        $('body').on('click', '.edit-btn', function (e)
+        {
+            $('#add-edit-wrapper').show();
+            var taskId = $(this).attr("data-id");
+            var editUrl = '@Url.Action("Edit","Tasks")/' + taskId;
+
+
+            $('#add-edit-wrapper').load(editUrl, function () {
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+
+                // make height to the window
+                $('.add-edit-content-area').height($('.app-container').height() - 100);
+            });
+
+        });
+
+        $('body').on('click', '.post-form', function (e) {
+            $(".form").submit();
+        });
 
     });
-
 </script>

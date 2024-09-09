@@ -4,18 +4,19 @@
     {
         public static string GetClaim(HttpContext httpContext, string claimKey)
         {
-            if(httpContext.User != null && httpContext.User.Claims.Any())
+            if (httpContext.User != null && httpContext.User.Claims.Any())
             {
                 try
                 {
-                    return httpContext.User.Claims?.FirstOrDefault(c => c.Type == claimKey).Value;
+                    var claim = httpContext.User.Claims.FirstOrDefault(c => c.Type == claimKey);
+                    return claim?.Value ?? string.Empty;
                 }
                 catch
                 {
-                    return "";
+                    return string.Empty;
                 }
             }
-            return "";  
+            return string.Empty;
         }
     }
 }

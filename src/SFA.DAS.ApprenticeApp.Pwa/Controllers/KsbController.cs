@@ -100,45 +100,60 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> AddUpdateKsbProgress(Guid id, string key, string detail)
+        public async Task<IActionResult> AddUpdateKsbProgress(Guid id)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-                Guid[] guids = new Guid[1];
-                guids[0] = id;
+                var standardUId = Claims.GetClaim(HttpContext, Constants.StandardUIdClaimKey);
 
-                var ksbProgressResult = await _client.GetApprenticeshipKsbProgresses(long.Parse(apprenticeshipId), guids);
-                var vm = new EditKsbPageModel();
-                vm.KsbDetail = detail;
-                vm.KsbStatuses = KsbHelpers.KSBStatuses();
+                if (!string.IsNullOrEmpty(apprenticeshipId))
+                {
+                    var ksbResult = await _client.GetApprenticeshipKsb(long.Parse(apprenticeshipId), standardUId, "core", id);
+                    var vm = new EditKsbPageModel();
+                    vm.KsbStatuses = KsbHelpers.KSBStatuses();
 
-                if (ksbProgressResult != null && ksbProgressResult.Any(k => k.KsbId == id))
-                {
-                    var ksbProgress = ksbProgressResult.FirstOrDefault(k => k.KsbId == id);
-                    vm.KsbProgress = ksbProgress;
-                }
-                else
-                {
-                    vm.KsbProgress = new ApprenticeKsbProgressData()
+                    if (ksbResult != null)
                     {
-                        ApprenticeshipId = long.Parse(apprenticeshipId),
-                        KsbId = id,
-                        KsbKey = key,
-                        Note = string.Empty,
-                        CurrentStatus = KSBStatus.NotStarted,
-                        KsbProgressType = KsbHelpers.GetKsbType(key),
-                        Tasks = new List<ApprenticeTask>()
-                    };
+                        if (ksbResult.Progress != null)
+                        {
+                            vm.KsbProgress = ksbResult.Progress;
+                            vm.KsbDetail = ksbResult.Detail;
+                        }
+                        else
+                        {
+                            vm.KsbProgress = new ApprenticeKsbProgressData()
+                            {
+                                ApprenticeshipId = long.Parse(apprenticeshipId),
+                                KsbId = id,
+                                KsbKey = ksbResult.Key,
+                                Note = string.Empty,
+                                CurrentStatus = KSBStatus.NotStarted,
+                                KsbProgressType = KsbHelpers.GetKsbType(ksbResult.Key),
+                                Tasks = new List<ApprenticeTask>()
+                            };
+                        }
+                    }
+                    else
+                    {
+                        string noKsbMessage = $"Ksb not found for AddUpdateKsbProgress in KsbController";
+                        _logger.LogWarning(noKsbMessage);
+                        return View("Index");
+                    }
+
+                    return View(vm);
                 }
-                return View(vm);
+
+                string message = $"Invalid apprenticeshipId for AddUpdateKsbProgress in KsbController";
+                _logger.LogWarning(message);
+                return View("Index");
             }
 
-            string message = $"Invalid apprentice id for AddUpdateKsbProgress in KsbController";
-            _logger.LogWarning(message);
-            return View("Index");
+            string noApprMessage = $"Invalid apprenticeId for AddUpdateKsbProgress in KsbController";
+            _logger.LogWarning(noApprMessage);
+            return Unauthorized();
         }
 
         [Authorize]
