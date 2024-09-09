@@ -13,7 +13,9 @@
     </div>
 </div>
 
-<div class="ksb-item">
+
+<div class="app-overlay__content add-edit-content-area">
+    <div class="ksb-item">
     <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data" class="form">
     <h2 class="app-card__heading ksb-key">@Model.KsbProgress.KsbKey</h2>
     <div class="govuk-body">@Model.KsbDetail</div>
@@ -182,5 +184,5 @@
    
     </form>
 </div>   
-
+</div>
 @await Html.PartialAsync("_KsbJs.cshtml", Model)

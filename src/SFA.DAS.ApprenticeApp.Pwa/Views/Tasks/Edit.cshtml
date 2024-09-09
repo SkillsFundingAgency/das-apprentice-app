@@ -9,6 +9,7 @@
 
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
+<div id="ksb-edit-popup" style=""></div>
 
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -127,11 +128,13 @@
                             <input type="button" id="ksb-popup-btn" value="+" data-id="@Model.Task.TaskId" />
                         </div>
 
+                        <div>Knowledge, skills and behaviours (KSBs) added to this task</div>
                         @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
                             if (ksbProgressData != null)
                             {
+                                <div class="linkedKsb">
                                 <div class="app-page-header">
                                     <h3>@ksbProgressData.KsbKey</h3>
                                 </div>
@@ -141,10 +144,44 @@
                                         @{
                                             var statusItem = @ksbProgressData.CurrentStatus;
                                             string statusItemDisplay = statusItem.GetEnumDescription();
-                                            <text>@statusItemDisplay</text>
+                                            <div class="ksb-status-display app-tag">
+                                            <text>@statusItemDisplay</text></div>
                                         }
                                     </span>
+                                </div><br />
+                            <div class="app-dropdown" data-module="app-dropdown">
+                                <a class="app-dropdown__toggle" role="button" aria-expanded="false" onkeypress="myFunction()">
+                                    View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+                                </a>
+                                <div class="app-dropdown__menu">
+                                    <ul class="app-dropdown__menu-list">
+                                        <li class="share-link-container">
+                                            <a href="#" class="app-dropdown__menu-link edit-linkedksb" value="@ksbProgressData.KsbId">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Edit</span>
+
+                                            </a>
+                                            <input type="hidden" class="edit-ksb" />
+                                        </li>
+                                        <li>
+                                            <a href="#" class="app-dropdown__menu-link remove-ksb-task">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg><use xlink:href="/assets/images/icons.svg#unlink"></use></svg>
+                                                </span>
+                                                <span>Remove link to task</span>
+                                            </a>
+                                            <input type="hidden" class="progressId" value="@ksbProgressData.KsbProgressId" />
+                                            <input type="hidden" class="taskId" value="@Model.Task.TaskId" />
+                                        </li>
+                                    </ul>
                                 </div>
+                            </div>
+                            <hr class="app-separator" />
+                            </div>
                             }
                         }
                     </div>
@@ -152,5 +189,6 @@
             </div>
         </form>
     </div>
-
-    @await Html.PartialAsync("_AddEditTasksJs.cshtml")
+ 
+@await Html.PartialAsync("_AddEditTasksJs.cshtml")
+@await Html.PartialAsync("../Ksb/_KsbJs.cshtml")

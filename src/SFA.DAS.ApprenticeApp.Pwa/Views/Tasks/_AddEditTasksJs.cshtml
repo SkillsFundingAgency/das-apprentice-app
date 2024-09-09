@@ -155,5 +155,35 @@
             $('.Behaviour').show();
         });
         
+        $('body').on('click', '.edit-linkedksb', function (e) {
+            $('.app-dropdown__menu').hide();
+            var value = $(this).attr("value");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddUpdateKsbProgress", "Ksb")',
+                data: { id: value },
+                dataType: "json"
+            });
+        });
+
+        $(".edit-linkedksb").click(function (e) {
+            // load dialogue each time incase different ksb is being edited
+            if ($("#ksb-edit-popup").html().length > 0) {
+                $('#ksb-edit-popup').html() = "";
+            }
+            else {
+                $("ksb-edit-popup")
+                $('#ksb-edit-popup').load('@Url.Action("AddUpdateKsbProgress", "Ksb")', function () {
+
+                    $('#ksb-edit-popup').show();
+                    $('.add-edit-content-area').height($('.app-container').height() - 150);
+
+                });
+            }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+
+        });
+
+
     });
 </script>

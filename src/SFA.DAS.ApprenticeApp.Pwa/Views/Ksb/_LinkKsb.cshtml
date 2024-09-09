@@ -59,7 +59,7 @@
                 <div class="app-form-group">
                     <fieldset class="app-fieldset">
                         <legend class="app-fieldset__legend">
-                            Status
+                            Edit Status
                         </legend>
                         <div class="app-radios">
                             <fieldset id="CurrentStatus">
@@ -76,13 +76,15 @@
                                         isChecked = true;
                                     }
                                     <div class="app-radios__item">
-                                        <input class="app-radios__input ksb-status" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
+                                        <input class="app-radios__input ksb-status-radio" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
                                         <label class="app-label app-radios__label" for="CurrentStatus">
+                                            <span class="app-tag">
                                             @{
                                                 var statusItem = ksbStatus;
                                                 string statusItemDisplay = statusItem.GetEnumDescription();
                                                 <text>@statusItemDisplay</text>
                                             }
+                                            </span>
                                         </label>
                                     </div>
                                 }
@@ -98,3 +100,4 @@
     }
 
 </div>
+@await Html.PartialAsync("_KsbJs.cshtml", Model)
