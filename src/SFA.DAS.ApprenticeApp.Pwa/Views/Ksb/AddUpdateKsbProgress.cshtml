@@ -25,30 +25,27 @@
             </label>
             <input class="app-input" id="note" name="Note" type="text" placeholder="Add a Note" asp-for="@Model.KsbProgress.Note">
         </div>
-
         <div class="app-form-group">
-            <fieldset class="app-fieldset">
+            <fieldset class="app-fieldset"  id="CurrentStatus">
                 <legend class="app-fieldset__legend">
                     Set Status
                 </legend>
                 <div class="app-radios">
-                    <fieldset id="CurrentStatus">
-                         @foreach (var ksbStatus in Model.KsbStatuses)
-                        {
-                            <div class="app-radios__item">
-                                <input class="app-radios__input ksb-status-radio" name="currentstatus" type="radio" value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)" asp-for="@Model.KsbProgress.CurrentStatus"/>
-                                <label class="app-label app-radios__label" for="CurrentStatus">
-                                    <span class="app-tag">
-                                    @{
-                                        var statusItem = ksbStatus;
-                                        string statusItemDisplay = statusItem.GetEnumDescription();
-                                        <text>@statusItemDisplay</text>
-                                    }
-                                    </span>
-                                </label>
-                            </div>
-                        }
-                    </fieldset>
+                     @foreach (var ksbStatus in Model.KsbStatuses)
+                    {
+                        <div class="app-radios__item">
+                            <input class="app-radios__input ksb-status-radio" name="currentstatus" id="status@(ksbStatus)" type="radio" value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)" asp-for="@Model.KsbProgress.CurrentStatus"/>
+                            <label class="app-label app-radios__label" for="status@(ksbStatus)">
+                                <span class="app-tag">
+                                @{
+                                    var statusItem = ksbStatus;
+                                    string statusItemDisplay = statusItem.GetEnumDescription();
+                                    <text>@statusItemDisplay</text>
+                                }
+                                </span>
+                            </label>
+                        </div>
+                    }
                 </div>
             </fieldset>
         </div>

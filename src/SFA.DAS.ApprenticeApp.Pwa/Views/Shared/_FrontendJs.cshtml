@@ -142,7 +142,8 @@
         }
     };
 
-    Collapse.prototype.toggleContent = function () {
+    Collapse.prototype.toggleContent = function (e) {
+        e.preventDefault();
         if (this.container.classList.contains(this.expandedClass)) {
             this.button.setAttribute("aria-expanded", false);
             this.container.classList.remove(this.expandedClass);
