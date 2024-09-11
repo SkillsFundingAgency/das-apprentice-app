@@ -75,8 +75,8 @@
             var value = $(this).attr("value");
             var ksbKey = $(this).attr("data-title");
             var ksbType = $(this).attr("data-type");
-            var status = $(this).siblings('.ksb-status').attr("value")
-           
+            var status = $("#app-collapse-contents-status").find('.ksb-status-radio:checked').val();
+          
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("EditKsbProgress", "Ksb")',
