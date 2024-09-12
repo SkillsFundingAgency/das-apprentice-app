@@ -1,6 +1,9 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportArticlesPageModel
-
-
+@{
+    ViewData["Title"] = Model.CategoryPage?.First().Heading;
+    ViewData["Section"] = "Support";
+    Layout = "_Layout";
+}
 
 <div class="app-page-header">
     <div class="app-page-header__back">
