@@ -1,9 +1,13 @@
 .app-stack {
   @extend .govuk-list;
+  margin-bottom: 0;
 }
 
 .app-stack > li.app-stack__list-item {
   margin-bottom: $app-gap;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .app-stack__link {
