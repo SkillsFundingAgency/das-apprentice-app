@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "KSB";
-    ViewData["Section"] = "KSB";
+    ViewData["Section"] = "Ksbs";
     Layout = "_Layout";
 }
 
@@ -27,8 +27,19 @@
         </ul>
     </div>
 
-    <a>Help with linking KSBs</a>
-    <br /><br />
+    <details class="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+                Help with linking KSBs
+            </span>
+        </summary>
+        <div class="govuk-details__text">
+            <p>As part of your apprenticeship, you need to gain specific knowledge, skills and behaviours (KSBs). These
+                are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
+                assessment (EPA). Linking these KSBs to your completed tasks will help you gather evidence. </p>
+            <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
+        </div>
+    </details>
 
     <div class="app-tabs__panel">
         <partial name="_KsbsAll.cshtml" />
