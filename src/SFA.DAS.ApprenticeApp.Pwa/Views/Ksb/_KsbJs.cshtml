@@ -2,27 +2,10 @@
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-
     $(document).ready(function () {
 
-        $('.ksb-status').click(function () {
-            var ksbStatus = $('.ksb-status:checked').val();
-            switch (taskCategory) {
-                case "inprogress":
-                    $('.ksbStatus').val(1);
-                    break;
-                case "readyforreview":
-                    $('.ksbStatus').val(2);
-                    break;
-                case "completed":
-                    $('.ksbStatus').val(3);
-                    break;
-                default:
-                    $('.ksbStatus').val(0);
-            }
-        });
-
         $(".save-ksb").click(function (e) {
+            e.preventDefault();
             $(".form").submit();
         });
 
@@ -33,7 +16,6 @@
                 var progressId = $('.progressId').val();
                 var taskId = $('.taskId').val();
                 $(this).closest('.linkedTask', '.linkedKsb').hide();
-
                 $.ajax({
                     type: "DELETE",
                     url: '@Url.Action("RemoveTaskFromKsbProgress", "Ksb")',
@@ -44,7 +26,5 @@
             }
         });
 
-
     });
-
 </script>

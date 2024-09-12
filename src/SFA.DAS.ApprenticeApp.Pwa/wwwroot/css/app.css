@@ -1328,7 +1328,7 @@ p + .app-card__heading,
 
 
 .govuk-template {
-  background-color: #fafafa;
+  background-color: #f7f7f7;
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -2335,7 +2335,7 @@ p + .app-card__heading,
   }
 }
 
-.govuk-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-hint, .app-radios__label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-hint {
+.govuk-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-hint, .app-radios__label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-hint, .app-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-hint {
   margin-bottom: 10px;
 }
 
@@ -2348,7 +2348,7 @@ p + .app-card__heading,
 }
 
 
-.govuk-label, .app-radios__label {
+.govuk-label, .app-radios__label, .app-label {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2360,24 +2360,24 @@ p + .app-card__heading,
   margin-bottom: 5px;
 }
 @media print {
-  .govuk-label, .app-radios__label {
+  .govuk-label, .app-radios__label, .app-label {
     font-family: sans-serif;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-label, .app-radios__label {
+  .govuk-label, .app-radios__label, .app-label {
     font-size: 1.1875rem;
     line-height: 1.3157894737;
   }
 }
 @media print {
-  .govuk-label, .app-radios__label {
+  .govuk-label, .app-radios__label, .app-label {
     font-size: 14pt;
     line-height: 1.15;
   }
 }
 @media print {
-  .govuk-label, .app-radios__label {
+  .govuk-label, .app-radios__label, .app-label {
     color: #000000;
   }
 }
@@ -2734,7 +2734,7 @@ p + .app-card__heading,
   padding-left: 59px;
 }
 
-.govuk-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-checkboxes__hint, .app-radios__label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-checkboxes__hint {
+.govuk-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-checkboxes__hint, .app-radios__label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-checkboxes__hint, .app-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-checkboxes__hint {
   margin-bottom: 0;
 }
 
@@ -2880,7 +2880,7 @@ p + .app-card__heading,
 .govuk-cookie-banner {
   padding-top: 20px;
   border-bottom: 10px solid transparent;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
 }
 
 .govuk-cookie-banner[hidden] {
@@ -3564,7 +3564,7 @@ p + .app-card__heading,
   padding-bottom: 15px;
   border-top: 1px solid #b1b4b6;
   color: #0b0c0c;
-  background: #fafafa;
+  background: #f7f7f7;
 }
 @media print {
   .govuk-footer {
@@ -4969,7 +4969,7 @@ p + .app-card__heading,
   padding-left: 59px;
 }
 
-.govuk-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-radios__hint, .app-radios__label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-radios__hint {
+.govuk-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-radios__hint, .app-radios__label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-radios__hint, .app-label:not(.govuk-label--m):not(.govuk-label--l):not(.govuk-label--xl) + .govuk-radios__hint {
   margin-bottom: 0;
 }
 
@@ -5185,7 +5185,7 @@ p + .app-card__heading,
 
 .govuk-service-navigation {
   border-bottom: 1px solid #b1b4b6;
-  background-color: #fafafa;
+  background-color: #f7f7f7;
 }
 
 .govuk-service-navigation__container {
@@ -7834,7 +7834,7 @@ html {
 }
 
 .app-template__body {
-  background-color: #fafafa;
+  background-color: #f7f7f7;
 }
 
 .svg-placeholder {
@@ -8043,10 +8043,11 @@ html {
 }
 
 .app-button--secondary {
+  background-color: #e6e6e6;
   color: #0b0c0c;
   font-weight: 400;
 }
-.app-button--secondary:link, .app-button--secondary:visited {
+.app-button--secondary:hover, .app-button--secondary:active, .app-button--secondary:link, .app-button--secondary:visited {
   color: #0b0c0c;
 }
 
@@ -8098,6 +8099,13 @@ html {
   margin: -1rem;
 }
 
+.app-collapse__header {
+  margin: -1rem;
+}
+.app-collapse--expanded .app-collapse__header {
+  border-bottom: 1px solid #ddd;
+}
+
 .app-collapse__title {
   min-height: 25px;
 }
@@ -8114,7 +8122,7 @@ html {
   cursor: pointer;
   width: 100%;
   text-align: left;
-  padding: 0;
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8168,7 +8176,8 @@ html {
 }
 .app-collapse--expanded .app-collapse__contents {
   display: block;
-  padding: 1rem 0 0;
+  padding: 1.5rem 0 0;
+  margin-bottom: -0.5rem;
 }
 
 .app-dropdown {
@@ -8240,8 +8249,8 @@ html {
   color: #00703c;
 }
 .app-dropdown__menu-icon svg {
-  max-height: 100%;
-  max-width: 100%;
+  max-height: 98%;
+  max-width: 98%;
   fill: currentColor;
   stroke: currentColor;
 }
@@ -8276,10 +8285,6 @@ html {
   border: 1px solid #f7f7f7;
 }
 
-.app-fieldset__legend {
-  margin-bottom: 0;
-}
-
 .app-fieldset__legend--s {
   font-weight: 700;
   margin-bottom: 1rem;
@@ -8296,8 +8301,8 @@ html {
   height: 1rem;
 }
 .app-icon-list__icon svg {
-  max-height: 100%;
-  max-width: 100%;
+  max-height: 98%;
+  max-width: 98%;
   fill: currentColor;
   stroke: currentColor;
   display: block;
@@ -8339,8 +8344,8 @@ html {
   height: 2rem;
 }
 .app-icon-list--l .app-icon-list__icon svg {
-  max-height: 100%;
-  max-width: 100%;
+  max-height: 98%;
+  max-width: 98%;
   fill: currentColor;
   color: #00703c;
   stroke: #00703c;
@@ -8354,29 +8359,6 @@ html {
 
 .app-icon-list--muted {
   color: #505a5f;
-}
-
-[class=app-label] {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  -webkit-clip-path: inset(50%) !important;
-  clip-path: inset(50%) !important;
-  border: 0 !important;
-  white-space: nowrap !important;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-[class=app-label]::before {
-  content: " ";
-}
-[class=app-label]::after {
-  content: " ";
 }
 
 .app-modal {
@@ -8440,6 +8422,11 @@ html {
 .app-navigation__link:active {
   background: #eee;
 }
+.app-navigation__link:focus {
+  background: #eee;
+  box-shadow: none;
+  outline: none;
+}
 
 .app-navigation__link--active {
   color: #0b0c0c;
@@ -8458,7 +8445,7 @@ html {
   width: 1.6rem;
   height: 1.6rem;
   display: block;
-  margin: 0.5rem 0;
+  margin: 0.7rem 0 0.4rem;
   color: #505a5f;
 }
 .app-navigation__link--active .app-navigation__icon {
@@ -8468,10 +8455,11 @@ html {
   color: #00703c;
 }
 .app-navigation__icon svg {
-  max-height: 100%;
-  max-width: 100%;
+  max-height: 98%;
+  max-width: 98%;
   fill: currentColor;
   stroke: currentColor;
+  stroke-width: 0;
 }
 
 .app-navigation__link-text {
@@ -8499,7 +8487,7 @@ html {
   bottom: 0;
   width: 100%;
   z-index: 100;
-  background: #fafafa;
+  background: #f7f7f7;
   border-radius: 10px 10px 0 0;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   display: none;
@@ -8574,9 +8562,10 @@ html {
 
 .app-page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
 .app-page-header__heading {
@@ -8855,12 +8844,13 @@ html {
   padding: 1rem;
   border-radius: 10px;
   border: 1px solid #f7f7f7;
+  height: auto;
 }
 .app-input:focus {
   outline: none;
   outline-offset: 0;
   box-shadow: none;
-  border-color: #d9d9d9;
+  border-color: #00703c;
 }
 
 .app-pages-home {

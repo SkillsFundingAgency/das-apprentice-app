@@ -1,5 +1,8 @@
-.app-collapse {
-
+.app-collapse__header {
+  margin: -1rem;
+  .app-collapse--expanded & {
+    border-bottom: 1px solid #ddd;
+  }
 }
 
 .app-collapse__title {
@@ -13,7 +16,7 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
-  padding: 0;
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,6 +43,7 @@
 
   .app-collapse--expanded & {
     display: block;
-    padding: $app-gap 0 0
+    padding: 1.5rem 0 0;
+    margin-bottom: -0.5rem;
   }
 }

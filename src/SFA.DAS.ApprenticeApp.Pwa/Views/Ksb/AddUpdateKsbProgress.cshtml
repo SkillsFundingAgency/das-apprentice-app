@@ -5,77 +5,79 @@
     <div class="app-overlay-header__cancel">
         <a asp-action="Index" asp-controller="Ksb" class="app-overlay-header__link">Cancel</a>
     </div>
-    <h2 class="app-overlay-header__heading">
+    <h1 class="app-overlay-header__heading">
         Manage a knowledge, skill or behaviour (KSB)
-    </h2>
+    </h1>
     <div class="app-overlay-header__save">
-        <a class="app-overlay-header__link save-ksb">Confirm</a>
+        <a class="app-overlay-header__link save-ksb" href="#">Confirm</a>
     </div>
 </div>
 
 <div class="add-edit-content-area">
     <div class="ksb-item">
+
+        <div class="app-card">
+            <h2 class="app-card__heading ksb-key">@Model.KsbProgress.KsbKey</h2>
+            <p class="govuk-body">@Model.KsbDetail</p>
+        </div>
+
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
             class="form">
-            <h2 class="app-card__heading ksb-key">@Model.KsbProgress.KsbKey</h2>
-            <div class="govuk-body">@Model.KsbDetail</div>
-            <div class="app-form-group">
-                <label class="app-label" for="note">
-                    Note
-                </label>
-                <input class="app-input" id="note" name="Note" type="text" placeholder="Add a Note"
-                    asp-for="@Model.KsbProgress.Note">
-            </div>
 
             <div class="app-form-group">
-                <fieldset class="govuk-fieldset" id="CurrentStatus">
-                    <legend class="govuk-fieldset__legend">
-                        Set status
-                    </legend>
-                    <div class="app-card">
-                        <div class="app-collapse" data-module="app-collapse">
-                            <div class="app-collapse__header">
-                                <button class="app-collapse__button" aria-expanded="false"
-                                    aria-controls="app-collapse-contents-status">
-                                    <span class="app-collapse__title" id="CurrentStatusTitle">
-                                        @{
-                                            var statusTitle = Model.KsbProgress.CurrentStatus;
-                                            string statusTitleDisplay = statusTitle.GetEnumDescription();
-                                            <text>@statusTitleDisplay</text>
-                                        }
-                                    </span>
-                                    <span class="app-collapse__icon" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                            <div class="app-collapse__contents app-radios" id="app-collapse-contents-status">
-                                @foreach (var ksbStatus in Model.KsbStatuses)
-                                {
-                                    <div class="app-radios__item">
-                                        <input class="app-radios__input" name="currentstatus" type="radio"
-                                            value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
-                                            asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
-                                        <label class="app-label app-radios__label" for="ksbStatus_@ksbStatus">
-                                            <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">
-                                                @{
-                                                    var statusItem = ksbStatus;
-                                                    string statusItemDisplay = statusItem.GetEnumDescription();
-                                                    <text>@statusItemDisplay</text>
-                                                }
-                                            </span>
-                                        </label>
-                                    </div>
-                                }
-                            </div>
+                <label class="app-label" asp-for="@Model.KsbProgress.Note">
+                    Add a note
+                </label>
+                <input class="app-input" name="Note" type="text" asp-for="@Model.KsbProgress.Note">
+            </div>
+         
+            <fieldset class="govuk-fieldset" id="CurrentStatus">
+                <legend class="govuk-fieldset__legend">
+                    Set status
+                </legend>
+                <div class="app-card">
+                    <div class="app-collapse" data-module="app-collapse">
+                        <div class="app-collapse__header">
+                            <button class="app-collapse__button" aria-expanded="false"
+                                aria-controls="app-collapse-contents-status">
+                                <span class="app-collapse__title" id="CurrentStatusTitle">
+                                    @{
+                                        var statusTitle = Model.KsbProgress.CurrentStatus;
+                                        string statusTitleDisplay = statusTitle.GetEnumDescription();
+                                        <text>@statusTitleDisplay</text>
+                                    }
+                                </span>
+                                <span class="app-collapse__icon" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="app-collapse__contents app-radios" id="app-collapse-contents-status">
+                            @foreach (var ksbStatus in Model.KsbStatuses)
+                            {
+                                <div class="app-radios__item">
+                                    <input class="app-radios__input" name="currentstatus" type="radio"
+                                        value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
+                                        asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
+                                    <label class="app-label app-radios__label" for="ksbStatus_@ksbStatus">
+                                        <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">
+                                            @{
+                                                var statusItem = ksbStatus;
+                                                string statusItemDisplay = statusItem.GetEnumDescription();
+                                                <text>@statusItemDisplay</text>
+                                            }
+                                        </span>
+                                    </label>
+                                </div>
+                            }
                         </div>
                     </div>
-                </fieldset>
-            </div>
+                </div>
+            </fieldset>
 
+            @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
+            {
             <div class="app-form-group">
-                <fieldset class="app-fieldset app-fieldset--radios">
+                <fieldset class="app-fieldset">
                     <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
-                    @if (Model.KsbProgress.Tasks != null)
-                    {
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
                             <div class="linkedTask">
@@ -155,7 +157,9 @@
                                             </li>
                                         }
                                     </ul>
-                                </div>
+                             
+
+                                <hr class="app-separator" />
 
                                 <div class="app-dropdown" data-module="app-dropdown">
                                     <a class="app-dropdown__toggle" role="button" aria-expanded="false"
@@ -193,12 +197,14 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <hr class="app-separator" />
+                                   </div>
+
+
                             </div>
-                        }
                     }
                 </fieldset>
             </div>
+            }
             <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
             <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
             <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />

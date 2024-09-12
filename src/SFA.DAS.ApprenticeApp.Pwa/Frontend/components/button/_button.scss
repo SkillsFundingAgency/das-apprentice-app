@@ -6,8 +6,11 @@
 
 .app-button--secondary {
   @extend .govuk-button--secondary;
+  background-color: #e6e6e6;
   color: $govuk-text-colour;
   font-weight: $govuk-font-weight-regular;
+  &:hover,
+  &:active,
   &:link,
   &:visited {
     color: $govuk-text-colour;
