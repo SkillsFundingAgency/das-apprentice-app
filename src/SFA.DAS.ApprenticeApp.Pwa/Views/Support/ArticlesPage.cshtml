@@ -1,17 +1,16 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportArticlesPageModel
 
-<div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
 
-    <div class="app-page-header">
-        <div class="app-page-header__back">
-            <a asp-action="Index" asp-controller="Support"
-               class="app-back-link">Back</a>
-        </div>
-        <h1 class="app-page-header__heading">@Model.CategoryPage?.First().Heading</h1>
-        <div class="app-page-header__forward"></div>
+
+<div class="app-page-header">
+    <div class="app-page-header__back">
+        <a asp-action="Index" asp-controller="Support" class="app-back-link">Back</a>
     </div>
+    <h1 class="app-page-header__heading">@Model.CategoryPage?.First().Heading</h1>
+    <div class="app-page-header__forward"></div>
+</div>
 
-
+<div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
     @foreach (var item in Model.Articles.OrderBy(x => x.Heading))
     {
         <div class="govuk-accordion__section">

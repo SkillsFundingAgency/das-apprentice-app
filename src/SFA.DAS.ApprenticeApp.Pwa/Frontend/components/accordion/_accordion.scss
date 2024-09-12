@@ -1,0 +1,74 @@
+.app-accordion {
+  @extend .govuk-accordion;
+}
+
+.govuk-accordion__controls {
+  display: none;
+}
+
+.govuk-frontend-supported .govuk-accordion__section,
+.govuk-accordion__section {
+  background: #fff;
+  border-radius: $app-border-radius;
+  padding: 0.4rem $app-gap 0.3rem;
+  margin-bottom: $app-gap;
+}
+
+.govuk-frontend-supported .govuk-accordion__section-button {
+  border: none;
+  display: flex;
+}
+
+.govuk-accordion__section-toggle {
+  margin-left: auto;
+}
+
+.govuk-accordion__section-toggle-text {
+  display: none;
+}
+
+.govuk-frontend-supported .govuk-accordion__section-button:hover {
+  background: none;
+}
+
+@media (hover: none) {
+  .govuk-frontend-supported .govuk-accordion__section-header:hover {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.govuk-frontend-supported .govuk-accordion-nav__chevron {
+  color: $app-brand-colour;
+  border: none;
+  width: 2rem;
+  height: 2rem;
+  &:before {
+  }
+  &:after {
+    width: 0.7rem;
+    height: 0.7rem;
+    bottom: 25%;
+    left: 34%;
+  }
+}
+
+.govuk-frontend-supported
+  .govuk-accordion__section-button:focus
+  .govuk-accordion__section-toggle-focus {
+  background: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.govuk-frontend-supported
+  .govuk-accordion__section-button:hover
+  .govuk-accordion-nav__chevron {
+  background: none;
+}
+
+.govuk-frontend-supported
+  .govuk-accordion__section-button:hover
+  .govuk-accordion-nav__chevron::after {
+  color: #0b0c0c;
+}
