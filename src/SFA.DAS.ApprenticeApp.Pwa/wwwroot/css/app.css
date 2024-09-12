@@ -7872,7 +7872,7 @@ html {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
-.app-link:visited {
+.app-link:link, .app-link:visited {
   color: #00703c;
 }
 .app-link:focus {
@@ -8055,6 +8055,13 @@ html {
   border-radius: 5px;
   padding: 1rem;
   margin-bottom: 1rem;
+}
+
+.app-card__header {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .app-checkboxes__item {
@@ -8803,6 +8810,10 @@ html {
 }
 .app-tabs__list-item--selected .app-tabs__tab:after {
   background-color: #00703c;
+}
+
+.app-tabs__panel {
+  font-size: 1rem;
 }
 
 .app-tag {

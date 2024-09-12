@@ -15,18 +15,17 @@
                 </a>
             </li>
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab tab-skills" href="#skills">
+                <a class="app-tabs__tab tab-skills" href="#skill">
                     Skills (@Model.SkillCount.ToString())
                 </a>
             </li>
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab tab-behaviours" href="#behaviours">
+                <a class="app-tabs__tab tab-behaviours" href="#behaviour">
                     Behaviours (@Model.BehaviourCount.ToString())
                 </a>
             </li>
         </ul>
     </div>
-
     <details class="govuk-details">
         <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text">
@@ -40,10 +39,7 @@
             <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
         </div>
     </details>
-
-    <div class="app-tabs__panel">
-        <partial name="_KsbsAll.cshtml" />
-    </div>
+    <partial name="_KsbsAll.cshtml" />
 </div>
 
 @await Html.PartialAsync("_KsbJs.cshtml")

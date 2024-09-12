@@ -8,3 +8,10 @@
 .app-card__heading {
   @extend .govuk-heading-s;
 }
+
+.app-card__header {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+}
