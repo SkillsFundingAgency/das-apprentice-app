@@ -8,12 +8,12 @@
 }
 
 .app-tag--pink {
-  background-color: #f5e2eb;
-  color: #62223f;
+  background-color: #f6d7d2;
+  color: #260d08;
 }
 
 .app-tag--yellow {
-  color: govuk-shade(govuk-colour("yellow"), 65%);
+  color: #574d14;
   background-color: govuk-tint(govuk-colour("yellow"), 75%);
 }
 
@@ -23,11 +23,27 @@
 }
 
 .app-tag--blue {
-  color: govuk-shade(govuk-colour("blue"), 60%);
+  color: #152c48;
   background-color: govuk-tint(govuk-colour("blue"), 90%);
 }
 
 .app-tag--green {
   color: govuk-shade(govuk-colour("green"), 20%);
   background-color: govuk-tint(govuk-colour("green"), 80%);
+}
+
+.app-tag--status-notstarted {
+  @extend .app-tag--pink;
+}
+
+.app-tag--status-inprogress {
+  @extend .app-tag--yellow;
+}
+
+.app-tag--status-readyforreview {
+  @extend .app-tag--blue;
+}
+
+.app-tag--status-done {
+  @extend .app-tag--green;
 }

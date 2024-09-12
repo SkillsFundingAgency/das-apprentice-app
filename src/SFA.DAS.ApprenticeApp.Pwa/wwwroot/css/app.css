@@ -8824,13 +8824,13 @@ html {
   max-width: none;
 }
 
-.app-tag--pink {
-  background-color: #f5e2eb;
-  color: #62223f;
+.app-tag--pink, .app-tag--status-notstarted {
+  background-color: #f6d7d2;
+  color: #260d08;
 }
 
-.app-tag--yellow {
-  color: #594d00;
+.app-tag--yellow, .app-tag--status-inprogress {
+  color: #574d14;
   background-color: #fff7bf;
 }
 
@@ -8839,12 +8839,12 @@ html {
   background-color: #f4cdc6;
 }
 
-.app-tag--blue {
-  color: #0c2d4a;
+.app-tag--blue, .app-tag--status-readyforreview {
+  color: #152c48;
   background-color: #e8f1f8;
 }
 
-.app-tag--green {
+.app-tag--green, .app-tag--status-done {
   color: #005a30;
   background-color: #cce2d8;
 }
