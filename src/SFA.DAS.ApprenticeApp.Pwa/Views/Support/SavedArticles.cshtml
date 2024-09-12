@@ -31,48 +31,52 @@
                     <div class="govuk-body">No content was found for this article</div>
                 }
 
-                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == true))
-                {
-                    <i class="fa-solid fa-bookmark unsave"></i>
-                }
+                <div class="app-accordion__icons">
 
-                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == false))
-                {
-                    <i class="fa-regular fa-bookmark save"></i>
-                }
+                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == true))
+                    {
+                        <i class="fa-solid fa-bookmark unsave"></i>
+                    }
 
-                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == null))
-                {
-                    <i class="fa-regular fa-bookmark save"></i>
-                }
+                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == false))
+                    {
+                        <i class="fa-regular fa-bookmark save"></i>
+                    }
 
-                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == true))
-                {
-                    <i class="fa-solid fa-thumbs-up thumbs-up"></i>
-                    <i class="fa-regular fa-thumbs-down thumbs-down"></i>
-                }
+                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == null))
+                    {
+                        <i class="fa-regular fa-bookmark save"></i>
+                    }
 
-                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == false))
-                {
-                    <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                    <i class="fa-solid fa-thumbs-down thumbs-down"></i>
-                }
+                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == true))
+                    {
+                        <i class="fa-solid fa-thumbs-up thumbs-up"></i>
+                        <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                    }
 
-                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == null))
-                {
-                    <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                    <i class="fa-regular fa-thumbs-down thumbs-down"></i>
-                }
+                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == false))
+                    {
+                        <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                        <i class="fa-solid fa-thumbs-down thumbs-down"></i>
+                    }
 
-                @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Sys.Id).Count() == 0)
-                {
-                    <i class="fa-regular fa-bookmark save"></i>
+                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.LikeStatus == null))
+                    {
+                        <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                        <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                    }
 
-                    <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                    <i class="fa-regular fa-thumbs-down thumbs-down"></i>
-                }
+                    @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Sys.Id).Count() == 0)
+                    {
+                        <i class="fa-regular fa-bookmark save"></i>
 
-                <a class="share-btn"><img src="/assets/images/icons/share.svg" /></a>
+                        <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                        <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                    }
+
+                    <a class="share-btn"><img src="/assets/images/icons/share.svg" /></a>
+
+                </div>
 
                 <input class="article-title" type="hidden" value="@item.Heading" />
                 <input class="entryid" type="hidden" value="@item.Sys.Id" />

@@ -7942,6 +7942,17 @@ html {
   height: 100vh;
 }
 
+.app-accordion {
+  margin-top: 1rem;
+}
+
+.govuk-frontend-supported .govuk-accordion,
+.govuk-accordion,
+.app-accordion {
+  margin-top: 1.5rem;
+  border: none;
+}
+
 .govuk-accordion__controls {
   display: none;
 }
@@ -7957,9 +7968,17 @@ html {
 .govuk-frontend-supported .govuk-accordion__section-button {
   border: none;
   display: flex;
+  align-items: center;
+  padding: 5px 0;
 }
 
+.govuk-frontend-supported .govuk-accordion__section-heading-text {
+  margin: 0;
+}
+
+.govuk-frontend-supported .govuk-accordion__section-toggle,
 .govuk-accordion__section-toggle {
+  margin: 0;
   margin-left: auto;
 }
 
@@ -8002,6 +8021,16 @@ html {
 
 .govuk-frontend-supported .govuk-accordion__section-button:hover .govuk-accordion-nav__chevron::after {
   color: #0b0c0c;
+}
+
+.govuk-frontend-supported .govuk-accordion__section-content {
+  padding: 0;
+}
+
+.app-accordion__icons {
+  overflow: hidden;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .app-back-link:before {
