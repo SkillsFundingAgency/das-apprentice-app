@@ -1,18 +1,18 @@
 .app-main {
-  padding: $app-gap;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  padding-bottom: 5rem;
+  bottom: 5rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.app-main--flex {
-  margin-bottom: 5rem;
+.app-main__inner {
   position: relative;
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding: 1rem;
+  padding: $app-gap;
   overflow: auto;
 }
