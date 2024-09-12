@@ -8033,6 +8033,9 @@ html {
   margin-bottom: 1rem;
 }
 
+.app-back-link {
+  margin: 0;
+}
 .app-back-link:before {
   border-color: #00703c;
 }
