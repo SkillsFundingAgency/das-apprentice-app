@@ -19,7 +19,7 @@ builder.Services.AddServiceRegistration(applicationConfiguration);
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
 
 builder.Services.AddDataProtection();
-
+builder.Services.AddHealthChecks();
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 
 builder.Services.AddSession(options =>
@@ -51,6 +51,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseHealthChecks("/ping");
 
 app.UseAuthentication();
 app.UseRouting();
