@@ -1,6 +1,11 @@
 ﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditKsbPageModel
 
+@{
+    ViewData["Title"] = "Manage a knowledge, skill or behaviour (KSB)";
+    ViewData["Section"] = "Ksbs";
+}
+
 <div class="app-page-header">
     <div class="app-overlay-header__cancel">
         <a asp-action="Index" asp-controller="Ksb" class="app-overlay-header__link">Cancel</a>
