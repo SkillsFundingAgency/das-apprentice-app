@@ -12,7 +12,6 @@
             <h1 class="app-page-header__heading">Sign in (stub)</h1>
             <div class="app-page-header__forward"></div>
         </div>
-
         <form method="POST" asp-action="SignIn" asp-controller="Account">
             <div class="app-form-group">
                 <label asp-for="Id" class="app-label">ID</label>
@@ -24,13 +23,10 @@
             </div>
             <div class="govuk-button-group">
                 <button class="app-button" type="submit">Sign in</button>
-                <a class="app-button app-button--secondary" href="#"
-                    onclick="location.href='@Url.Action("Error", "Account")'">
-                    Fake error signing
-                    in
+                <a class="app-button app-button--secondary" asp-controller="Account" asp-action="Error">
+                    Fake error signing in
                 </a>
             </div>
         </form>
-
     </div>
 </div>
