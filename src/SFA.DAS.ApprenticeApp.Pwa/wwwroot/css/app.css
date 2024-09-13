@@ -8589,15 +8589,16 @@ html {
 .app-progress__wrap {
   margin-bottom: 1rem;
   display: flex;
+  align-items: center;
 }
 
 .app-progress {
   display: flex;
+  flex: auto;
   height: 1rem;
   overflow: hidden;
   background-color: #f5f5f5;
   border-radius: 10px;
-  width: 85%;
   border: 1px solid rgb(171, 0, 15);
 }
 
@@ -8612,8 +8613,11 @@ html {
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.25;
-  width: 15%;
-  text-align: right;
+  font-weight: 700;
+  background: linear-gradient(45deg, rgb(131, 44, 145) 0%, rgb(171, 0, 15) 50%, rgb(166, 92, 46) 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 1rem;
 }
 @media print {
   .app-progress__label {
