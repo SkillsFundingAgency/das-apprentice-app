@@ -8110,7 +8110,7 @@ html {
 }
 
 .app-collapse__title {
-  min-height: 25px;
+  min-height: 1rem;
 }
 
 .app-collapse__button {
@@ -8206,6 +8206,10 @@ html {
     line-height: 1.15;
   }
 }
+.app-dropdown__toggle:hover, .app-dropdown__toggle:focus {
+  color: #00703c;
+  text-decoration: underline;
+}
 
 .app-dropdown__menu {
   background: #fff;
@@ -8286,6 +8290,10 @@ html {
   background: #fff;
   border-radius: 10px;
   border: 1px solid #f7f7f7;
+}
+
+.govuk-fieldset__legend, .app-fieldset__legend {
+  font-weight: 700;
 }
 
 .app-fieldset__legend {

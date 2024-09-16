@@ -1,4 +1,5 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -7,11 +8,9 @@
             $(".form").submit();
         });
 
-        $("#ksb-popup-btn").click(function (e)
-        {
+        $("#ksb-popup-btn").click(function (e) {
             // if dialogue has not been loaded, load it, else just show it
-            if ($("#ksb-popup").html().length > 0)
-            {
+            if ($("#ksb-popup").html().length > 0) {
                 $('#ksb-popup').show();
                 var ksbIdList = $('#linked-ksb-ids').val();
                 ksbIdList = ksbIdList.split(',');
@@ -20,11 +19,19 @@
                     if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                 });
             }
-            else
-            {
+            else {
                 $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
 
                     $('#ksb-popup').show();
+                    const appCollapsable = this.querySelectorAll(
+                        `[data-module="app-collapse"]`,
+                    );
+
+                    if (appCollapsable) {
+                        appCollapsable.forEach(function (collapse) {
+                            new Collapse(collapse).init();
+                        });
+                    }
                     var ksbIdList = $('#linked-ksb-ids').val();
                     ksbIdList = ksbIdList.split(',');
                     $('.link-ksb-checkbox').each(function () {
@@ -39,19 +46,16 @@
             }
             $("html, body").animate({ scrollTop: 0 }, "slow");
 
-            
+
         });
 
         // edit ksb link
-        $('body').on('click', '.edit-ksb', function (e)
-        {
+        $('body').on('click', '.edit-ksb', function (e) {
             // if dialogue has not been loaded, load it, else just show it
-            if ($("#ksb-popup").html().length > 0)
-            {
+            if ($("#ksb-popup").html().length > 0) {
                 $('#ksb-popup').show();
             }
-            else
-            {
+            else {
                 $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
                     $('#ksb-popup').show();
 
@@ -70,19 +74,18 @@
         });
 
         // create or update local ksbprogress on checkbox click
-        $('body').on('click', '.link-ksb-checkbox', function (e)
-        {
+        $('body').on('click', '.link-ksb-checkbox', function (e) {
             var value = $(this).attr("value");
             var ksbKey = $(this).attr("data-title");
             var ksbType = $(this).attr("data-type");
             var status = $("#app-collapse-contents-status").find('.ksb-status-radio:checked').val();
-          
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("EditKsbProgress", "Ksb")',
                 data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
                 dataType: "json"
-            });           
+            });
         });
 
         // create or update local ksbprogress with status on radio click
@@ -101,8 +104,7 @@
             });
         });
 
-        $('body').on('click', '.link-ksb-confirm', function (e)
-        {
+        $('body').on('click', '.link-ksb-confirm', function (e) {
             // iterate over  all checboxes
             var result = $(".link-ksb-checkbox:checked").map(function (i, e) {
                 return $(e).attr("value");
@@ -154,7 +156,7 @@
             $('.Skill').hide();
             $('.Behaviour').show();
         });
-        
+
         $('body').on('click', '.edit-linkedksb', function (e) {
             $('.app-dropdown__menu').hide();
             var value = $(this).attr("value");

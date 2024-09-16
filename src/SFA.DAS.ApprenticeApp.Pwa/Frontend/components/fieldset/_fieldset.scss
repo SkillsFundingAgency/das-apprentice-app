@@ -9,6 +9,10 @@
   border: 1px solid #f7f7f7;
 }
 
+.govuk-fieldset__legend {
+  font-weight: $govuk-font-weight-bold;
+}
+
 .app-fieldset__legend {
   @extend .govuk-fieldset__legend;
   font-weight: $govuk-font-weight-bold;

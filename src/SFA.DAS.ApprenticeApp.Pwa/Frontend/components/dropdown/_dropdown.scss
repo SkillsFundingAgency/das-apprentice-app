@@ -9,6 +9,11 @@
   text-decoration: none;
   cursor: pointer;
   @include govuk-font-size(19);
+  &:hover,
+  &:focus {
+    color: $app-brand-colour;
+    text-decoration: underline;
+  }
 }
 
 .app-dropdown__menu {
