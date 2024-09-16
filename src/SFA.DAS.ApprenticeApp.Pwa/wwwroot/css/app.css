@@ -8075,9 +8075,11 @@ html {
   flex-direction: row-reverse;
   margin-bottom: 1rem;
   justify-content: space-between;
+  min-height: 3.5rem;
 }
 
 .app-checkboxes__label {
+  font-weight: 400 !important;
   max-width: none;
   padding: 0;
   width: calc(100% - 44px);
