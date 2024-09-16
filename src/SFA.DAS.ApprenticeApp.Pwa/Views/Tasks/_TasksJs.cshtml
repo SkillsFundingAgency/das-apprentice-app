@@ -122,7 +122,6 @@
             $('#add-edit-wrapper').show();
             $('#add-edit-wrapper').load(addUrl, function () {
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-                appInit();
                 // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });

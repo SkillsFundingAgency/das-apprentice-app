@@ -6,13 +6,10 @@
     Layout = null;
 }
 
-
-<div class="" style="height:100%">
-
+<div>
 
     <div class="loader" style="display:none"></div>
     <div id="ksb-popup" class="app-overlay" style=""></div>
-
 
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -32,24 +29,22 @@
                 <label class="app-label" for="title">
                     Title
                 </label>
-                <input class="app-input" id="title" name="title" type="text" placeholder="Title"
+                <input class="app-input" id="title" name="title" type="text" 
                     asp-for="@Model.Task.Title">
             </div>
             <div class="app-form-group">
                 <label class="app-label" for="date">
                     Due date
                 </label>
-                <input class="app-input" id="date" name="duedate" type="date" placeholder="Due date"
+                <input class="app-input" id="date" name="duedate" type="date" 
                     asp-for="@Model.Task.DueDate">
             </div>
-
             <div class="app-form-group">
                 <label class="app-label" for="time">
                     Due time
                 </label>
-                <input class="app-input" id="time" name="time" type="time" placeholder="Due time">
+                <input class="app-input" id="time" name="time" type="time">
             </div>
-
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend">Set a reminder</legend>
                 <div class="app-card">
@@ -146,8 +141,10 @@
 
         </form>
     </div>
-
-
 </div>
 
 @await Html.PartialAsync("_AddEditTasksJs.cshtml")
+
+<script>
+    appInit();
+</script>

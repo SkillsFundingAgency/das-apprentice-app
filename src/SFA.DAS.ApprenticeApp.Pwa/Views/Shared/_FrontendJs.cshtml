@@ -130,6 +130,7 @@
 
     Collapse.prototype.toggleContent = function (e) {
         e.preventDefault();
+        e.stopPropagation();
         if (this.container.classList.contains(this.expandedClass)) {
             this.button.setAttribute("aria-expanded", false);
             this.container.classList.remove(this.expandedClass);

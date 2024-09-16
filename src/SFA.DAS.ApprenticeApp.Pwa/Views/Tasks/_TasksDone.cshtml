@@ -67,7 +67,11 @@
                 <ul class="app-dropdown__menu-list">
                     <li>
                         <a href="#" class="app-dropdown__menu-link move-todo">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#arrowLeft"></use>
+                                </svg>
+                            </span>
                             <span>Move to To do</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />
@@ -75,13 +79,21 @@
 
                     <li>
                         <a data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                </svg>
+                            </span>
                             <span>Edit</span>
                         </a>
                     </li>
                     <li class="share-link-container">
                         <a href="#" class="app-dropdown__menu-link share-link">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#share"></use>
+                                </svg>
+                            </span>
                             <span>Share</span>
                         </a>
                         <input type="hidden" class="share-title" value="@task.Title" />
@@ -89,7 +101,11 @@
                     </li>
                     <li>
                         <a class="app-dropdown__menu-link delete-task">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#trash"></use>
+                                </svg>
+                            </span>
                             <span>Delete</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />

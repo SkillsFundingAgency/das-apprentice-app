@@ -37,26 +37,20 @@
                 <label class="app-label" for="title">
                     Title
                 </label>
-                <input class="app-input" id="title" name="title" type="text" placeholder="Title" value="@Model.Task.Title">
-            </div>
-            <div class="app-form-group">
-                <label class="app-label" for="title">
-                    Note
-                </label>
-                <input class="app-input" id="note" name="note" type="text" placeholder="Note" value="@Model.Task.Note">
+                <input class="app-input" id="title" name="title" type="text" value="@Model.Task.Title">
             </div>
 
             <div class="app-form-group">
-                <label class="app-label" for="date">
+                <label class="app-label" for="duedate">
                     Due date
                 </label>
-                <input class="app-input" id="duedate" name="duedate" type="date" placeholder="dd/mm/yyyy" value="@Model.Task.DueDate.GetValueOrDefault().ToString("yyyy-MM-dd")">
+                <input class="app-input" id="duedate" name="duedate" type="date" value="@Model.Task.DueDate.GetValueOrDefault().ToString("yyyy-MM-dd")">
             </div>
             <div class="app-form-group">
                 <label class="app-label" for="duetime">
                     Due time
                 </label>
-                <input class="app-input" id="duetime" name="duetime" type="time" placeholder="HH:mm" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
+                <input class="app-input" id="duetime" name="duetime" type="time" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
             </div>
 
             <div class="app-form-group">
@@ -157,8 +151,20 @@
                     </div>
                 </fieldset>
             </div>
+
+            <div class="app-form-group">
+                <label class="app-label" for="note">
+                    Note
+                </label>
+                <input class="app-input" id="note" name="note" type="text" value="@Model.Task.Note">
+            </div>
+
         </form>
     </div>
  
 @await Html.PartialAsync("_AddEditTasksJs.cshtml")
 @await Html.PartialAsync("../Ksb/_KsbJs.cshtml")
+
+<script>
+    appInit();
+</script>
