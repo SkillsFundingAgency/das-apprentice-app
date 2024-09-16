@@ -8032,6 +8032,9 @@ html {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
+.app-accordion__icons * {
+  cursor: pointer;
+}
 
 .app-back-link {
   margin: 0;
