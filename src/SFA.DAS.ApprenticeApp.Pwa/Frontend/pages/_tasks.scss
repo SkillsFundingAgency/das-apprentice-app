@@ -24,7 +24,7 @@
   border-radius: 10px 10px 0 0;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   display: none;
-  background: white;
+  background: $app-bg-colour;
   margin-top: 30px;
   animation: slideUp ease 200ms;
 }
@@ -43,7 +43,7 @@
   z-index: 100;
   border-radius: 10px 10px 0 0;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-  background: white;
+  background: $app-bg-colour;
   padding: 15px;
   width: 100%;
   margin: 15px 0 0 0;

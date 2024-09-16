@@ -11,7 +11,7 @@
 
 
     <div class="loader" style="display:none"></div>
-    <div id="ksb-popup" style=""></div>
+    <div id="ksb-popup" class="app-overlay" style=""></div>
 
 
     <div class="app-overlay-header">
@@ -106,7 +106,7 @@
                                     <input class="app-radios__input task-category" name="ApprenticeshipCategoryId" id="category_@cat.CategoryId"
                                         type="radio" value="@cat.CategoryId" />
                                     <label class="app-label app-radios__label" for="category_@cat.CategoryId">
-                                        @cat.Title
+                                        <span class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
                                     </label>
                                 </div>
                             }
@@ -114,6 +114,7 @@
                     </div>
                 </div>
             </fieldset>
+
             <div class="app-form-group">
                 <label class="app-label" for="note">
                     Add a note

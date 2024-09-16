@@ -120,22 +120,9 @@
             var addUrl = '@Url.Action("Add", "Tasks")?status=' + status;
 
             $('#add-edit-wrapper').show();
-
-
             $('#add-edit-wrapper').load(addUrl, function () {
-
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-
-                const appCollapsable = this.querySelectorAll(
-                    `[data-module="app-collapse"]`,
-                );
-
-                if (appCollapsable) {
-                    appCollapsable.forEach(function (collapse) {
-                        new Collapse(collapse).init();
-                    });
-                }
-
+                appInit();
                 // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });

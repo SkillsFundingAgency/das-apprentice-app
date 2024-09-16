@@ -1,38 +1,68 @@
-.app-checkboxes__item {
-  @extend .govuk-checkboxes__item;
-  background-color: #fff;
-  padding: $app-gap;
-  border-radius: $app-border-radius;
-  flex-direction: row-reverse;
-  margin-bottom: $app-gap;
-  justify-content: space-between;
-  min-height: 3.5rem;
+.app-checkboxes--small {
+  @extend .govuk-checkboxes--small;
+  .app-checkboxes__item {
+    @extend .govuk-checkboxes__item;
+    background-color: #fff;
+    padding: $app-gap;
+    border-radius: $app-border-radius;
+    flex-direction: row-reverse;
+    margin-bottom: $app-gap;
+    justify-content: space-between;
+    min-height: 3.5rem;
+  }
+
+  .app-checkboxes__label {
+    @extend .govuk-checkboxes__label;
+    font-weight: $govuk-font-weight-regular !important;
+    max-width: none;
+    padding: 0;
+    width: calc(100% - 44px);
+    &:before {
+      top: $app-gap;
+      left: auto;
+      right: $app-gap;
+      width: 24px;
+      height: 24px;
+      border-color: $app-brand-colour;
+    }
+    &:after {
+      top: calc($app-gap + 7px);
+      left: auto;
+      right: calc($app-gap + 6px);
+      width: 12px;
+      height: 6.5px;
+      border-width: 0 0 3px 3px;
+    }
+  }
+
+  .app-checkboxes__input {
+    @extend .govuk-checkboxes__input;
+    margin: -1rem;
+  }
 }
 
-.app-checkboxes__label {
-  @extend .govuk-checkboxes__label;
-  font-weight: $govuk-font-weight-regular !important;
-  max-width: none;
-  padding: 0;
-  width: calc(100% - 44px);
-  &:before {
-    top: $app-gap;
-    left: auto;
-    right: $app-gap;
-    width: 24px;
-    height: 24px;
+.app-checkboxes--single {
+  .app-checkboxes__item {
+    padding: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    min-height: 24px;
   }
-  &:after {
-    top: calc($app-gap + 7px);
-    left: auto;
-    right: calc($app-gap + 6px);
-    width: 12px;
-    height: 6.5px;
-    border-width: 0 0 3px 3px;
+  .app-checkboxes__input {
+    margin: 0;
+    margin-left: -10px;
   }
-}
-
-.app-checkboxes__input {
-  @extend .govuk-checkboxes__input;
-  margin: -1rem;
+  .app-checkboxes__label {
+    padding: 7px 0;
+    &:before {
+      top: 10px;
+      left: 0;
+      right: auto;
+    }
+    &:after {
+      top: 17px;
+      left: 6px;
+      right: auto;
+    }
+  }
 }
