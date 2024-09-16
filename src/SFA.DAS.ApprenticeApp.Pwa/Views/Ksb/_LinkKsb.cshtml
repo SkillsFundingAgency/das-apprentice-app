@@ -41,10 +41,21 @@
             </ul>
         </div>
     </div>
-
-    <a>Help with linking KSBs</a>
-    <br />
-    <br />
+    <details class="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+                Help with linking KSBs
+            </span>
+        </summary>
+        <div class="govuk-details__text">
+            <p>
+                As part of your apprenticeship, you need to gain specific knowledge, skills and behaviours (KSBs). These
+                are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
+                assessment (EPA). Linking these KSBs to your completed tasks will help you gather evidence.
+            </p>
+            <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
+        </div>
+    </details>
 
     @foreach (var ksb in Model.Ksbs)
     {
@@ -52,15 +63,18 @@
             <div>
                 <h2 class="app-card__heading">@ksb.Key</h2>
                 <div class="govuk-body">@ksb.Detail</div>
-                <label class="govuk-body">Link this KSB to the task</label>
-
-                <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
 
                 <div class="app-form-group">
+                <label class="govuk-body">Link this KSB to the task</label>
+                <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
+                </div>
+                
                     <fieldset class="govuk-fieldset" id="CurrentStatus">
                         <legend class="govuk-fieldset__legend">
                             Edit Status
                         </legend>
+
+
                         <div class="app-card">
                             <div class="app-collapse" data-module="app-collapse">
                                 <div class="app-collapse__header">
@@ -97,9 +111,11 @@
                                             isChecked = true;
                                         }
                                         <div class="app-radios__item">
-                                            <input class="app-radios__input ksb-status-radio" name="ksbstatus" type="radio" value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
-                                            <label class="app-label app-radios__label" for="CurrentStatus">
-                                                <span class="app-tag">
+                                        <input class="app-radios__input" name="currentstatus" type="radio" value="@ksbStatus.ToString()" 
+                                                    data-id="@ksb.Id" data-type="@ksb.Type" data-key="@ksb.Key" @(@isChecked ? "checked" : "")
+                                              id="ksbStatus_@ksbStatus"/>
+                                        <label class="app-label app-radios__label" for="ksbStatus_@ksbStatus">
+                                            <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">
                                                     @{
                                                         var statusItem = ksbStatus;
                                                         string statusItemDisplay = statusItem.GetEnumDescription();
@@ -113,12 +129,10 @@
                             </div>
                         </div>
                     </fieldset>
-                </div>
                 <hr class="app-separator" />
             </div>
         </form>
     }
-
 </div>
 
 @await Html.PartialAsync("_KsbJs.cshtml", Model)
