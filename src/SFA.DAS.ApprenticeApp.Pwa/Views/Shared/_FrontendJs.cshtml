@@ -35,7 +35,8 @@
         tab.parentElement.classList.add("app-tabs__list-item--selected");
         const { hash } = tab;
         const panel = document.getElementById(hash.substring(1));
-        panel.hidden = false;
+        if (panel != null)
+            panel.hidden = false;
     };
 
     const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
