@@ -8246,8 +8246,14 @@ html {
   text-decoration: none;
   color: #0b0c0c;
 }
-.app-dropdown__menu-link:link {
+.app-dropdown__menu-link:visited, .app-dropdown__menu-link:link {
   color: #0b0c0c;
+}
+.app-dropdown__menu-link:hover {
+  text-decoration: underline;
+}
+.app-dropdown__menu-link:hover:focus {
+  text-decoration: none;
 }
 
 .app-dropdown__menu-icon {
@@ -8665,18 +8671,24 @@ html {
   font-weight: 400;
 }
 .app-radios__label:before {
-  top: 10px;
+  top: 50%;
   left: auto;
   right: 0;
   width: 24px;
   height: 24px;
   border-color: #00703c;
+  margin-top: -12px;
 }
 .app-radios__label:after {
-  top: 17px;
+  top: 50%;
   left: auto;
-  right: 7px;
+  right: 12px;
   border-width: 5px;
+  border: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  margin-right: -5px;
 }
 
 .app-separator {
@@ -8837,9 +8849,9 @@ html {
   max-width: none;
 }
 
-.app-tag--pink, .app-tag--status-notstarted {
-  background-color: #f6d7d2;
-  color: #260d08;
+.app-tag--pink, .app-tag--category-endpointassessment, .app-tag--status-notstarted {
+  background-color: #f5e2eb;
+  color: #62223f;
 }
 
 .app-tag--yellow, .app-tag--status-inprogress {
@@ -8847,9 +8859,9 @@ html {
   background-color: #fff7bf;
 }
 
-.app-tag--red {
-  color: #2a0b06;
-  background-color: #f4cdc6;
+.app-tag--orange, .app-tag--category-deadline {
+  background-color: #f6d7c6;
+  color: #673920;
 }
 
 .app-tag--blue, .app-tag--status-readyforreview {
@@ -8857,7 +8869,7 @@ html {
   background-color: #e8f1f8;
 }
 
-.app-tag--green, .app-tag--status-done {
+.app-tag--green, .app-tag--category-assignment, .app-tag--status-done {
   color: #005a30;
   background-color: #cce2d8;
 }

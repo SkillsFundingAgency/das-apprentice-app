@@ -44,7 +44,7 @@
 
                         @if (ksb.Progress == null)
                         {
-                            <div class="app-tag app-tag--pink">
+                            <div class="app-tag app-tag--status-notstarted">
                                 <text>Not started</text>
                             </div>
                         }
@@ -52,7 +52,7 @@
                         {
                             var status = ksb.Progress.CurrentStatus;
                             string statusDisplay = status.GetEnumDescription();
-                            <div class="ksb-status-display app-tag">
+                            <div class="app-tag app-tag--status-@status.ToString().ToLower()">
                                 <text>@statusDisplay</text>
                             </div>
                         }

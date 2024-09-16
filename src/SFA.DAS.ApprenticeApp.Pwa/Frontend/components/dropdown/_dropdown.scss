@@ -53,9 +53,15 @@
   align-items: flex-start;
   text-decoration: none;
   color: $govuk-text-colour;
-
+  &:visited,
   &:link {
     color: $govuk-text-colour;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+  &:hover:focus {
+    text-decoration: none;
   }
 }
 
