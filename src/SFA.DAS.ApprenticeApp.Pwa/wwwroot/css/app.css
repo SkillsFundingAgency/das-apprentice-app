@@ -8288,6 +8288,10 @@ html {
   border: 1px solid #f7f7f7;
 }
 
+.app-fieldset__legend {
+  font-weight: 700;
+}
+
 .app-fieldset__legend--s {
   font-weight: 700;
   margin-bottom: 1rem;
@@ -8362,6 +8366,10 @@ html {
 
 .app-icon-list--muted {
   color: #505a5f;
+}
+
+.app-label {
+  font-weight: 700;
 }
 
 .app-modal {
@@ -8646,6 +8654,7 @@ html {
   padding-left: 0;
   width: calc(100% - 44px);
   max-width: none;
+  font-weight: 400;
 }
 .app-radios__label:before {
   top: 10px;
@@ -9084,7 +9093,7 @@ html {
   border-radius: 10px 10px 0 0;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
   display: none;
-  background: white;
+  background: #f7f7f7;
   margin-right: 15px;
   width: 100%;
   animation: slideUp ease 200ms;
@@ -9093,11 +9102,12 @@ html {
 
 .filter-tag {
   margin: 5px;
-  background-color: #EEEFEF;
-  color: #383F43;
+  background-color: #eeefef;
+  color: #383f43;
 }
 
-.remove-filter, .edit-btn {
+.remove-filter,
+.edit-btn {
   cursor: pointer;
 }
 
