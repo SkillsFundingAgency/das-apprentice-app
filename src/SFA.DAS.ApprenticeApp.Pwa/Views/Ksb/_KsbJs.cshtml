@@ -25,6 +25,22 @@
                 return false;
             }
         });
-
+        $('.ksb-status-display').each(function () {
+            var statusDisplay = $(this).text();
+            switch (true) {
+                case statusDisplay.includes('Not started'):
+                    $(this).addClass('app-tag--pink');
+                    break;
+                case statusDisplay.includes('In progress'):
+                    $(this).addClass('app-tag--yellow');
+                    break;
+                case statusDisplay.includes('Ready for review'):
+                    $(this).addClass('app-tag--blue');
+                    break;
+                case statusDisplay.includes('Completed'):
+                    $(this).addClass('app-tag--green');
+                    break;
+            }
+        });
     });
 </script>
