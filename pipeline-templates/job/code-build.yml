@@ -19,6 +19,7 @@ jobs:
         sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/CoverageResults/coverage.opencover.xml
         sonar.lang.patterns.web = **/*.html,**/*.xhtml,**/*.vbhtml,**/*.aspx,**/*.ascx,**/*.rhtml,**/*.erb,**/*.shtm,**/*.shtml,**/*.cmp,**/*.twig,**/*.cshtml
         sonar.lang.patterns.cs = **/*.cs,**/*.razor
+      ContinueOnVulnerablePackageScanError: true
 
   - task: DotNetCoreCLI@2
     displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}
