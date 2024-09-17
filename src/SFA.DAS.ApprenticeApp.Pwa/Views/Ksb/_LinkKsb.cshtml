@@ -72,10 +72,10 @@
                                 <p>@ksb.Detail</p>
                                 <div class="app-checkboxes app-checkboxes--small app-checkboxes--single" data-module="govuk-checkboxes">
                                     <div class="app-checkboxes__item">
-                                        <input class="app-checkboxes__input" type="checkbox" value="@ksb.Id" id="ksb-@ksb.Id" data-title="@ksb.Key"
-                                            data-desc="@ksb.Detail" data-type="@ksb.Type" />
-                                        <label class="app-label app-checkboxes__label" for="ksb-@ksb.Id">Link this KSB to the task</label>
-                                        
+                                        <input class="app-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
+                                            id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
+                                        <label class="app-label app-checkboxes__label" for="ksb-@ksb.Id">Link this KSB to the
+                                            task</label>
                                     </div>
                                 </div>
                             </div>
@@ -170,3 +170,7 @@
 </div>
 
 @await Html.PartialAsync("_KsbJs.cshtml", Model)
+
+<script>
+    appInit();
+</script>

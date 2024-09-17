@@ -9,30 +9,16 @@
         });
 
         $("#ksb-popup-btn").click(function (e) {
-            // if dialogue has not been loaded, load it, else just show it
-            if ($("#ksb-popup").html().length > 0) {
-                $('#ksb-popup').show().css("top", "-10px");
-                var ksbIdList = $('#linked-ksb-ids').val();
-                ksbIdList = ksbIdList.split(',');
+            e.preventDefault();
+            const $ksbOverlay = $("#ksb-popup");
+            $ksbOverlay.load('@Url.Action("LinkKsbs", "Ksb")', function () {
+                $ksbOverlay.css({ top: "-10px", display: "flex" });
+                const ksbIdList = $('#linked-ksb-ids').val();
                 $('.link-ksb-checkbox').each(function () {
                     var ksbId = $(this).val();
                     if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                 });
-            }
-            else {
-                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
-                    $('#ksb-popup').show();
-                    var ksbIdList = $('#linked-ksb-ids').val();
-                    ksbIdList = ksbIdList.split(',');
-                    $('.link-ksb-checkbox').each(function () {
-                        var ksbId = $(this).val();
-                        if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
-                    });
-                    // $('.add-edit-content-area').height($('.app-container').height() - 150);
-                });
-            }
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-
+            });
 
         });
 
