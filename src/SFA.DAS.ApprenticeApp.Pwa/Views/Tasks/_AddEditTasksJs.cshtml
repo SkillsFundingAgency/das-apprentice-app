@@ -51,7 +51,7 @@
             var value = $(this).attr("value");
             var ksbKey = $(this).attr("data-title");
             var ksbType = $(this).attr("data-type");
-            var status = $("#app-collapse-contents-status").find('.ksb-status-radio:checked').val();
+            var status = $(`#app-collapse-contents-status-${value}`).find('.ksb-status-radio:checked').val();
 
             $.ajax({
                 type: "POST",

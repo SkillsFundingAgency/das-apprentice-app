@@ -65,7 +65,7 @@
                     {
                         if (KSBType == ksb.Type.ToString())
                         {
-                            <div class="app-card ksb-item">
+                            <div class="app-card ksb-item govuk-!-margin-bottom-0 govuk-!-padding-bottom-0">
                                 <div class="app-card__header">
                                     <h2 class="app-card__heading">@ksb.Key</h2>
                                 </div>
@@ -79,94 +79,68 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="app-card">
+                                <div class="app-collapse" data-module="app-collapse">
+                                    <div class="app-collapse__header">
+                                        <button class="app-collapse__button" aria-expanded="false"
+                                            aria-controls="app-collapse-contents-status-@ksb.Id">
+                                            <span class="app-collapse__title ksb-status-display">
+                                                @{
+                                                    if (ksb.Progress != null)
+                                                    {
+                                                        var statusTitle = ksb.Progress.CurrentStatus;
+                                                        string statusTitleDisplay = statusTitle.GetEnumDescription();
+                                                        <text>@statusTitleDisplay</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        var statusTitle = Model.KsbStatuses.FirstOrDefault();
+                                                        string statusTitleDisplay = statusTitle.GetEnumDescription();
+                                                        <text>@statusTitleDisplay</text>
+                                                    }
+                                                }
+                                            </span>
+                                            <span class="app-collapse__icon" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="app-collapse__contents app-radios" id="app-collapse-contents-status-@ksb.Id">
+                                        @foreach (var ksbStatus in Model.KsbStatuses)
+                                        {
+                                            var isChecked = false;
+                                            if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
+                                            {
+                                                isChecked = true;
+                                            }
+                                            if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
+                                            {
+                                                isChecked = true;
+                                            }
+                                            <div class="app-radios__item">
+                                                <input class="app-radios__input ksb-status-radio" name="ksbstatus_@(ksb.Id)" type="radio"
+                                                    value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" id="ksb_@(ksb.Id)_status_@ksbStatus"
+                                                    data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
+                                                <label class="app-label app-radios__label" for="ksb_@(ksb.Id)_status_@ksbStatus">
+                                                    <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">
+                                                        @{
+                                                            var statusItem = ksbStatus;
+                                                            string statusItemDisplay = statusItem.GetEnumDescription();
+                                                            <text>@statusItemDisplay</text>
+                                                        }
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
                         }
                         ksbCount++;
                     }
                 </div>
             }
         }
-
     </div>
-
-    @*
-
-    @foreach (var ksb in Model.Ksbs)
-    {
-    <form class="@ksb.Type">
-    <div>
-    <h2 class="app-card__heading">@ksb.Key</h2>
-    <div class="govuk-body">@ksb.Detail</div>
-    <label class="govuk-body">Link this KSB to the task</label>
-
-    <input class="link-ksb-checkbox" type="checkbox" value="@ksb.Id" data-title="@ksb.Key"
-    data-desc="@ksb.Detail" data-type="@ksb.Type" />
-
-    <div class="app-form-group">
-    <fieldset class="govuk-fieldset" id="CurrentStatus">
-    <legend class="govuk-fieldset__legend">
-    Edit status
-    </legend>
-    <div class="app-card">
-    <div class="app-collapse" data-module="app-collapse">
-    <div class="app-collapse__header">
-    <button class="app-collapse__button" aria-expanded="false"
-    aria-controls="app-collapse-contents-status">
-    <span class="app-collapse__title ksb-status-display">
-    @{
-    if (ksb.Progress != null)
-    {
-    var statusTitle = ksb.Progress.CurrentStatus;
-    string statusTitleDisplay = statusTitle.GetEnumDescription();
-    <text>@statusTitleDisplay</text>
-    }
-    else
-    {
-    var statusTitle = Model.KsbStatuses.FirstOrDefault();
-    string statusTitleDisplay = statusTitle.GetEnumDescription();
-    <text>@statusTitleDisplay</text>
-    }
-    }
-    </span>
-    <span class="app-collapse__icon" aria-hidden="true"></span>
-    </button>
-    </div>
-    <div class="app-collapse__contents app-radios" id="app-collapse-contents-status">
-    @foreach (var ksbStatus in Model.KsbStatuses)
-    {
-    var isChecked = false;
-    if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
-    {
-    isChecked = true;
-    }
-    if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
-    {
-    isChecked = true;
-    }
-    <div class="app-radios__item">
-    <input class="app-radios__input ksb-status-radio" name="ksbstatus" type="radio"
-    value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type"
-    data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
-    <label class="app-label app-radios__label" for="ksb">
-    <span class="app-tag">
-    @{
-    var statusItem = ksbStatus;
-    string statusItemDisplay = statusItem.GetEnumDescription();
-    <text>@statusItemDisplay</text>
-    }
-    </span>
-    </label>
-    </div>
-    }
-    </div>
-    </div>
-    </div>
-    </fieldset>
-    </div>
-    <hr class="app-separator" />
-    </div>
-    </form>
-    } *@
-
 </div>
 
 @await Html.PartialAsync("_KsbJs.cshtml", Model)

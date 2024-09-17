@@ -118,8 +118,6 @@
         if (this.radios.length > 0) {
             this.radios.forEach((radio) => {
                 if (radio.checked) {
-                    console.log('Hettoing here')
-                    console.log(radio, radio.id)
                     const labelVal = document.querySelector("label[for=" + radio.id + "]");
                     this.title.innerHTML = labelVal.innerHTML;
                 }
