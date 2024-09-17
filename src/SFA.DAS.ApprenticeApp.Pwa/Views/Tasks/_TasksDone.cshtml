@@ -3,10 +3,13 @@
 @foreach (var task in Model.Tasks.OrderBy(x => x.CompletionDateTime))
 {
     <div class="app-card">
-        <h2 class="app-card__heading">@task.Title</h2>
-        <ul class="app-icon-list app-icon-list--muted">
-            <li><span class="app-icon-list__icon svg-placeholder"></span><span>Completed @string.Format("{0:d MMMM, h:mm}", task.CompletionDateTime)@string.Format("{0:tt}", task.CompletionDateTime).ToLower()</span></li>
-            @if (task.TaskReminders.Any())
+    <h2 class="app-card__heading">@task.Title</h2>
+    <ul class="app-icon-list app-icon-list--muted">
+        <li><span class="app-icon-list__icon"><svg>
+                    <use xlink:href="/assets/images/icons.svg#calendar"></use>
+                </svg></span><span>Completed @string.Format("{0:d MMMM, h:mm}",
+                task.CompletionDateTime)@string.Format("{0:tt}", task.CompletionDateTime).ToLower()</span></li>
+        @if (task.TaskReminders.Any())
             {
                 <li>
                     <span class="app-icon-list__icon svg-placeholder"></span><span>
@@ -38,25 +41,37 @@
             }
             @if (task.TaskFiles.Any())
             {
-                <li><span class="app-icon-list__icon svg-placeholder"></span><span>@task.TaskFiles.Count.ToString() file(s) attached</span></li>
+                <li><span class="app-icon-list__icon"><svg>
+                            <use xlink:href="/assets/images/icons.svg#attachment"></use>
+                        </svg></span><span>@task.TaskFiles.Count.ToString() file(s)
+                        attached</span></li>
             }
             @if (task.TaskLinkedKsbs.Any())
             {
-                <li><span class="app-icon-list__icon svg-placeholder"></span><span>Linked to @task.TaskLinkedKsbs.Count.ToString() KSBs</span></li>
+                <li><span class="app-icon-list__icon"><svg>
+                            <use xlink:href="/assets/images/icons.svg#ksbs"></use>
+                        </svg></span><span>Linked to
+                        @task.TaskLinkedKsbs.Count.ToString() KSBs</span></li>
             }
 
         </ul>
-        <div class="app-tag app-category">@task.ApprenticeshipCategory.First().Title</div>
+        <div
+            class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "")">
+            @task.ApprenticeshipCategory.First().Title</div>
         <hr class="app-separator" />
         <div class="app-dropdown" data-module="app-dropdown">
             <a class="app-dropdown__toggle" role="button" aria-expanded="false" onkeypress="myFunction()">
-                View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+                View actions<span class="govuk-visually-hidden"> for @task.Title</span>
             </a>
             <div class="app-dropdown__menu">
                 <ul class="app-dropdown__menu-list">
                     <li>
                         <a href="#" class="app-dropdown__menu-link move-todo">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#arrowLeft"></use>
+                                </svg>
+                            </span>
                             <span>Move to To do</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />
@@ -64,13 +79,21 @@
 
                     <li>
                         <a data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                </svg>
+                            </span>
                             <span>Edit</span>
                         </a>
                     </li>
                     <li class="share-link-container">
                         <a href="#" class="app-dropdown__menu-link share-link">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#share"></use>
+                                </svg>
+                            </span>
                             <span>Share</span>
                         </a>
                         <input type="hidden" class="share-title" value="@task.Title" />
@@ -78,7 +101,11 @@
                     </li>
                     <li>
                         <a class="app-dropdown__menu-link delete-task">
-                            <span class="app-dropdown__menu-icon svg-placeholder"></span>
+                            <span class="app-dropdown__menu-icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#trash"></use>
+                                </svg>
+                            </span>
                             <span>Delete</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />

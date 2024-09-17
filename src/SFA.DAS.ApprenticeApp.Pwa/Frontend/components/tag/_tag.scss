@@ -8,8 +8,8 @@
 }
 
 .app-tag--pink {
-  background-color: #f6d7d2;
-  color: #260d08;
+  background-color: #f5e2eb;
+  color: #62223f;
 }
 
 .app-tag--yellow {
@@ -17,9 +17,9 @@
   background-color: govuk-tint(govuk-colour("yellow"), 75%);
 }
 
-.app-tag--red {
-  color: govuk-shade(govuk-colour("red"), 80%);
-  background-color: govuk-tint(govuk-colour("red"), 75%);
+.app-tag--orange {
+  background-color: #f6d7c6;
+  color: #673920;
 }
 
 .app-tag--blue {
@@ -46,4 +46,16 @@
 
 .app-tag--status-done {
   @extend .app-tag--green;
+}
+
+.app-tag--category-assignment {
+  @extend .app-tag--green;
+}
+
+.app-tag--category-endpointassessment {
+  @extend .app-tag--pink;
+}
+
+.app-tag--category-deadline {
+  @extend .app-tag--orange;
 }

@@ -6,11 +6,10 @@
 }
 
 .app-collapse__title {
-  min-height: 25px;
+  min-height: 1rem;
 }
 
 .app-collapse__button {
-  @include govuk-font(19);
   background: none;
   border: none;
   cursor: pointer;
@@ -20,6 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @include govuk-font(19);
 }
 
 .app-collapse__icon {

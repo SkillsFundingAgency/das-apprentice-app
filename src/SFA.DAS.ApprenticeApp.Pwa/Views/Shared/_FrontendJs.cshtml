@@ -35,17 +35,12 @@
         tab.parentElement.classList.add("app-tabs__list-item--selected");
         const { hash } = tab;
         const panel = document.getElementById(hash.substring(1));
-        if (panel != null)
+        if (panel) {
             panel.hidden = false;
+        }
     };
 
-    const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
 
-    if (appTabs) {
-        appTabs.forEach(function (tabs) {
-            new Tabs(tabs).init();
-        });
-    }
 
     // Overlays
 
@@ -86,13 +81,6 @@
         this.overlay.classList.remove(this.showOverlayClassName);
     };
 
-    const appOverlays = document.querySelectorAll(`[data-module="app-overlay"]`);
-
-    if (appOverlays) {
-        appOverlays.forEach(function (overlay) {
-            new Overlay(overlay).init();
-        });
-    }
 
     // Dropdown Menus
 
@@ -113,13 +101,6 @@
         }
     };
 
-    const appDropdowns = document.querySelectorAll(`[data-module="app-dropdown"]`);
-
-    if (appDropdowns) {
-        appDropdowns.forEach(function (dropdown) {
-            new Dropdown(dropdown).init();
-        });
-    }
 
     // Collapse
 
@@ -147,6 +128,7 @@
 
     Collapse.prototype.toggleContent = function (e) {
         e.preventDefault();
+        e.stopPropagation();
         if (this.container.classList.contains(this.expandedClass)) {
             this.button.setAttribute("aria-expanded", false);
             this.container.classList.remove(this.expandedClass);
@@ -164,14 +146,44 @@
         }
     };
 
-    const appCollapsable = document.querySelectorAll(
-        `[data-module="app-collapse"]`,
-    );
 
-    if (appCollapsable) {
-        appCollapsable.forEach(function (collapse) {
-            new Collapse(collapse).init();
-        });
+    const appInit = () => {
+
+        const appOverlays = document.querySelectorAll(`[data-module="app-overlay"]`);
+
+        if (appOverlays) {
+            appOverlays.forEach(function (overlay) {
+                new Overlay(overlay).init();
+            });
+        }
+
+        const appDropdowns = document.querySelectorAll(`[data-module="app-dropdown"]`);
+
+        if (appDropdowns) {
+            appDropdowns.forEach(function (dropdown) {
+                new Dropdown(dropdown).init();
+            });
+        }
+
+        const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
+
+        if (appTabs) {
+            appTabs.forEach(function (tabs) {
+                new Tabs(tabs).init();
+            });
+        }
+
+        const appCollapsable = document.querySelectorAll(
+            `[data-module="app-collapse"]`,
+        );
+
+        if (appCollapsable) {
+            appCollapsable.forEach(function (collapse) {
+                new Collapse(collapse).init();
+            });
+        }
     }
+
+    appInit();
 
 </script>
