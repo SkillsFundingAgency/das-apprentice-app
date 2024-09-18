@@ -276,6 +276,77 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
         }
 
         [Test, MoqAutoData]
+        public async Task Add_Update_KsbProgress_Get_NewProgress(
+            ApprenticeKsb ksbResult,
+            [Frozen] Mock<IOuterApiClient> client,
+            [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.GetApprenticeshipKsb(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
+                  .ReturnsAsync(ksbResult);
+            Guid id = ksbResult.Id;
+            ksbResult.Progress = null;
+            var result = await controller.AddUpdateKsbProgress(id);
+            result.Should().BeOfType(typeof(ViewResult));
+
+        }
+
+        [Test, MoqAutoData]
+        public async Task Add_Update_KsbProgress_Get_NoKsb(
+           [Frozen] Mock<IOuterApiClient> client,
+           [Frozen] Mock<ILogger<KsbController>> logger,
+           [Greedy] KsbController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.GetApprenticeshipKsb(It.IsAny<long>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
+                 .ReturnsAsync((ApprenticeKsb?)null);
+            var result = await controller.AddUpdateKsbProgress(Guid.NewGuid());
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Ksb not found for AddUpdateKsbProgress in KsbController")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().BeOfType(typeof(ViewResult));
+            }
+
+        }
+
+        [Test, MoqAutoData]
         public async Task Add_Update_KsbProgress_Get_NoApprenticeId(
            [Frozen] Mock<IOuterApiClient> client,
            [Frozen] Mock<ILogger<KsbController>> logger,

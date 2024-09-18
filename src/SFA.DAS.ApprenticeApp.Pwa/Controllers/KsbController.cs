@@ -120,7 +120,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         if (ksbResult.Progress != null)
                         {
                             vm.KsbProgress = ksbResult.Progress;
-                            vm.KsbDetail = ksbResult.Detail;
                         }
                         else
                         {
@@ -129,12 +128,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                                 ApprenticeshipId = long.Parse(apprenticeshipId),
                                 KsbId = id,
                                 KsbKey = ksbResult.Key,
-                                Note = string.Empty,
+                                Note = string.Empty,                                
                                 CurrentStatus = KSBStatus.NotStarted,
                                 KsbProgressType = KsbHelpers.GetKsbType(ksbResult.Key),
                                 Tasks = new List<ApprenticeTask>()
                             };
                         }
+                        vm.KsbDetail = ksbResult.Detail;
                     }
                     else
                     {

@@ -1,17 +1,19 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportArticlesPageModel
+@{
+    ViewData["Title"] = Model.CategoryPage?.First().Heading;
+    ViewData["Section"] = "Support";
+    Layout = "_Layout";
+}
+
+<div class="app-page-header">
+    <div class="app-page-header__back">
+        <a asp-action="Index" asp-controller="Support" class="app-back-link">Back</a>
+    </div>
+    <h1 class="app-page-header__heading">@Model.CategoryPage?.First().Heading</h1>
+    <div class="app-page-header__forward"></div>
+</div>
 
 <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
-
-    <div class="app-page-header">
-        <div class="app-page-header__back">
-            <a asp-action="Index" asp-controller="Support"
-               class="app-back-link">Back</a>
-        </div>
-        <h1 class="app-page-header__heading">@Model.CategoryPage?.First().Heading</h1>
-        <div class="app-page-header__forward"></div>
-    </div>
-
-
     @foreach (var item in Model.Articles.OrderBy(x => x.Heading))
     {
         <div class="govuk-accordion__section">
@@ -33,51 +35,53 @@
                     <div class="govuk-body">No content was found for this article</div>
                 }
 
-                @if (Model.ApprenticeArticles != null)
-                {
-                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true))
+                <div class="app-accordion__icons">
+                    @if (Model.ApprenticeArticles != null)
                     {
-                        <i class="fa-solid fa-bookmark unsave"></i>
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true))
+                        {
+                            <i class="fa-solid fa-bookmark unsave"></i>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == false))
+                        {
+                            <i class="fa-regular fa-bookmark save"></i>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == null))
+                        {
+                            <i class="fa-regular fa-bookmark save"></i>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == true))
+                        {
+                            <i class="fa-solid fa-thumbs-up thumbs-up"></i>
+                            <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == false))
+                        {
+                            <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                            <i class="fa-solid fa-thumbs-down thumbs-down"></i>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == null))
+                        {
+                            <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                            <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                        }
+
+                        @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Id).Count() == 0)
+                        {
+                            <i class="fa-regular fa-bookmark save"></i>
+
+                            <i class="fa-regular fa-thumbs-up thumbs-up"></i>
+                            <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                        }
                     }
 
-                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == false))
-                    {
-                        <i class="fa-regular fa-bookmark save"></i>
-                    }
-
-                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == null))
-                    {
-                        <i class="fa-regular fa-bookmark save"></i>
-                    }
-
-                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == true))
-                    {
-                        <i class="fa-solid fa-thumbs-up thumbs-up"></i>
-                        <i class="fa-regular fa-thumbs-down thumbs-down"></i>
-                    }
-
-                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == false))
-                    {
-                        <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                        <i class="fa-solid fa-thumbs-down thumbs-down"></i>
-                    }
-
-                    @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == null))
-                    {
-                        <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                        <i class="fa-regular fa-thumbs-down thumbs-down"></i>
-                    }
-
-                    @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Id).Count() == 0)
-                    {
-                        <i class="fa-regular fa-bookmark save"></i>
-
-                        <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                        <i class="fa-regular fa-thumbs-down thumbs-down"></i>
-                    }
-                }
-
-                <a class="share-btn"><img src="/assets/images/icons/share.svg" /></a>
+                    <a class="share-btn"><img src="/assets/images/icons/share.svg" /></a>
+                </div>
 
                 <input class="article-title" type="hidden" value="@item.Heading" />
                 <input class="entryid" type="hidden" value="@item.Id" />

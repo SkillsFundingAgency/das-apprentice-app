@@ -1,4 +1,5 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -7,51 +8,27 @@
             $(".form").submit();
         });
 
-        $("#ksb-popup-btn").click(function (e)
-        {
-            // if dialogue has not been loaded, load it, else just show it
-            if ($("#ksb-popup").html().length > 0)
-            {
-                $('#ksb-popup').show();
-                var ksbIdList = $('#linked-ksb-ids').val();
-                ksbIdList = ksbIdList.split(',');
+        $("#ksb-popup-btn").click(function (e) {
+            e.preventDefault();
+            const $ksbOverlay = $("#ksb-popup");
+            $ksbOverlay.load('@Url.Action("LinkKsbs", "Ksb")', function () {
+                $ksbOverlay.css({ top: "-10px", display: "flex" });
+                const ksbIdList = $('#linked-ksb-ids').val();
                 $('.link-ksb-checkbox').each(function () {
                     var ksbId = $(this).val();
                     if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                 });
-            }
-            else
-            {
-                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
+            });
 
-                    $('#ksb-popup').show();
-                    var ksbIdList = $('#linked-ksb-ids').val();
-                    ksbIdList = ksbIdList.split(',');
-                    $('.link-ksb-checkbox').each(function () {
-                        var ksbId = $(this).val();
-                        if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
-                    });
-
-                    $('.add-edit-content-area').height($('.app-container').height() - 150);
-
-
-                });
-            }
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-
-            
         });
 
         // edit ksb link
-        $('body').on('click', '.edit-ksb', function (e)
-        {
+        $('body').on('click', '.edit-ksb', function (e) {
             // if dialogue has not been loaded, load it, else just show it
-            if ($("#ksb-popup").html().length > 0)
-            {
+            if ($("#ksb-popup").html().length > 0) {
                 $('#ksb-popup').show();
             }
-            else
-            {
+            else {
                 $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
                     $('#ksb-popup').show();
 
@@ -70,19 +47,18 @@
         });
 
         // create or update local ksbprogress on checkbox click
-        $('body').on('click', '.link-ksb-checkbox', function (e)
-        {
+        $('body').on('click', '.link-ksb-checkbox', function (e) {
             var value = $(this).attr("value");
             var ksbKey = $(this).attr("data-title");
             var ksbType = $(this).attr("data-type");
-            var status = $(this).siblings('.ksb-status').attr("value")
-           
+            var status = $(`#app-collapse-contents-status-${value}`).find('.ksb-status-radio:checked').val();
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("EditKsbProgress", "Ksb")',
                 data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
                 dataType: "json"
-            });           
+            });
         });
 
         // create or update local ksbprogress with status on radio click
@@ -101,8 +77,7 @@
             });
         });
 
-        $('body').on('click', '.link-ksb-confirm', function (e)
-        {
+        $('body').on('click', '.link-ksb-confirm', function (e) {
             // iterate over  all checboxes
             var result = $(".link-ksb-checkbox:checked").map(function (i, e) {
                 return $(e).attr("value");
@@ -122,38 +97,35 @@
             $('#ksb-popup').hide();
         });
 
+        $('body').on('click', '.edit-linkedksb', function (e) {
+            $('.app-dropdown__menu').hide();
+            var value = $(this).attr("value");
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("AddUpdateKsbProgress", "Ksb")',
+                data: { id: value },
+                dataType: "json"
+            });
+        });
 
-        $('body').on('click', '.tab-knowledge', function (e) {
+        $(".edit-linkedksb").click(function (e) {
+            // load dialogue each time incase different ksb is being edited
+            if ($("#ksb-edit-popup").html().length > 0) {
+                $('#ksb-edit-popup').html() = "";
+            }
+            else {
+                $("ksb-edit-popup")
+                $('#ksb-edit-popup').load('@Url.Action("AddUpdateKsbProgress", "Ksb")', function () {
 
-            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
-            $(this).closest('li').addClass('app-tabs__list-item--selected');
+                    $('#ksb-edit-popup').show();
+                    $('.add-edit-content-area').height($('.app-container').height() - 150);
 
-            $('.Knowledge').show();
-            $('.Skill').hide();
-            $('.Behaviour').hide();
+                });
+            }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
 
         });
 
-        $('body').on('click', '.tab-skills', function (e) {
 
-            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
-            $(this).closest('li').addClass('app-tabs__list-item--selected');
-
-            $('.Knowledge').hide();
-            $('.Skill').show();
-            $('.Behaviour').hide();
-
-        });
-
-        $('body').on('click', '.tab-behaviours', function (e) {
-
-            $('.app-tabs__list-item').removeClass('app-tabs__list-item--selected');
-            $(this).closest('li').addClass('app-tabs__list-item--selected');
-
-            $('.Knowledge').hide();
-            $('.Skill').hide();
-            $('.Behaviour').show();
-        });
-        
     });
 </script>

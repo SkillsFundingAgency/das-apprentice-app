@@ -9,6 +9,7 @@
 
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
+<div id="ksb-edit-popup" style=""></div>
 
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -36,26 +37,20 @@
                 <label class="app-label" for="title">
                     Title
                 </label>
-                <input class="app-input" id="title" name="title" type="text" placeholder="Title" value="@Model.Task.Title">
-            </div>
-            <div class="app-form-group">
-                <label class="app-label" for="title">
-                    Note
-                </label>
-                <input class="app-input" id="note" name="note" type="text" placeholder="Note" value="@Model.Task.Note">
+                <input class="app-input" id="title" name="title" type="text" value="@Model.Task.Title">
             </div>
 
             <div class="app-form-group">
-                <label class="app-label" for="date">
+                <label class="app-label" for="duedate">
                     Due date
                 </label>
-                <input class="app-input" id="duedate" name="duedate" type="date" placeholder="dd/mm/yyyy" value="@Model.Task.DueDate.GetValueOrDefault().ToString("yyyy-MM-dd")">
+                <input class="app-input" id="duedate" name="duedate" type="date" value="@Model.Task.DueDate.GetValueOrDefault().ToString("yyyy-MM-dd")">
             </div>
             <div class="app-form-group">
                 <label class="app-label" for="duetime">
                     Due time
                 </label>
-                <input class="app-input" id="duetime" name="duetime" type="time" placeholder="HH:mm" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
+                <input class="app-input" id="duetime" name="duetime" type="time" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
             </div>
 
             <div class="app-form-group">
@@ -127,13 +122,15 @@
                             <input type="button" id="ksb-popup-btn" value="+" data-id="@Model.Task.TaskId" />
                         </div>
 
+                        <div>Knowledge, skills and behaviours (KSBs) added to this task</div>
                         @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                         {
                             var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
                             if (ksbProgressData != null)
                             {
+                                <div class="linkedKsb">
                                 <div class="app-page-header">
-                                    <h3>@ksbProgressData.KsbKey</h3>
+                                    <h3>@ksbProgressData.KsbKey</h3><a class='edit-ksb'>Edit</a>
                                 </div>
                                 <div>
                                     <p>@ksbProgressData.Detail</p><br />
@@ -141,16 +138,33 @@
                                         @{
                                             var statusItem = @ksbProgressData.CurrentStatus;
                                             string statusItemDisplay = statusItem.GetEnumDescription();
-                                            <text>@statusItemDisplay</text>
+                                            <div class="ksb-status-display app-tag">
+                                            <text>@statusItemDisplay</text></div>
                                         }
                                     </span>
-                                </div>
+                                </div><br />
+                            
+                            <hr class="app-separator" />
+                            </div>
                             }
                         }
                     </div>
                 </fieldset>
             </div>
+
+            <div class="app-form-group">
+                <label class="app-label" for="note">
+                    Note
+                </label>
+                <input class="app-input" id="note" name="note" type="text" value="@Model.Task.Note">
+            </div>
+
         </form>
     </div>
+ 
+@await Html.PartialAsync("_AddEditTasksJs.cshtml")
+@await Html.PartialAsync("../Ksb/_KsbJs.cshtml")
 
-    @await Html.PartialAsync("_AddEditTasksJs.cshtml")
+<script>
+    appInit();
+</script>

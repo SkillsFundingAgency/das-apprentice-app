@@ -5,6 +5,7 @@
   padding: $app-gap;
   border-radius: $app-border-radius-inputs;
   border: 1px solid #f7f7f7;
+  height: auto;
   &:focus {
     @include app-focused;
   }

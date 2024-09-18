@@ -1,4 +1,5 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -51,7 +52,7 @@
 
             if (confirm('Are you sure you want to delete this task?')) {
                 var taskId = $(this).siblings('.taskId').val();
-                $(this).closest('.app-icon-list').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+                $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
                 var taskId = $('.taskId').val();
                 $.ajax({
@@ -114,18 +115,13 @@
         }
 
         // add / edit tasks popup
-        $("#add-btn").click(function (e)
-        {
+        $("#add-btn").click(function (e) {
             var status = $(this).attr("data-status-id");
-            var addUrl = '@Url.Action("Add","Tasks")?status=' + status;
+            var addUrl = '@Url.Action("Add", "Tasks")?status=' + status;
 
             $('#add-edit-wrapper').show();
-
-
             $('#add-edit-wrapper').load(addUrl, function () {
-
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-
                 // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });
@@ -133,11 +129,10 @@
 
         });
 
-        $('body').on('click', '.edit-btn', function (e)
-        {
+        $('body').on('click', '.edit-btn', function (e) {
             $('#add-edit-wrapper').show();
             var taskId = $(this).attr("data-id");
-            var editUrl = '@Url.Action("Edit","Tasks")/' + taskId;
+            var editUrl = '@Url.Action("Edit", "Tasks")/' + taskId;
 
 
             $('#add-edit-wrapper').load(editUrl, function () {

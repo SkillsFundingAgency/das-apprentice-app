@@ -1,8 +1,9 @@
 .app-page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: $app-gap;
 }
 
 .app-page-header__heading {

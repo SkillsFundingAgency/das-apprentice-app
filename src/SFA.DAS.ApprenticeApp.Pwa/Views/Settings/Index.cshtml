@@ -14,9 +14,9 @@
     <div class="app-page-header__forward"></div>
 </div>
 <div class="app-card">
-    <div class="govuk-grid-row settings-grid-container">
-        <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOn">
-            <h2 class="govuk-heading-l">
+    <div class="app-settings-wrap settings-grid-container">
+        <div class="app-settings-content-wrap" style="display:none" id="notificationsOn">
+            <h2 class="govuk-heading-m">
                 Push notifications
             </h2>
             <p class="govuk-body">
@@ -31,8 +31,8 @@
                 To turn off push notifications, use the toggle and block notifications when prompted.
             </p>
         </div>
-        <div class="govuk-grid-column-three-quarters" style="display:none" id="notificationsOff">
-            <h2 class="govuk-heading-l">
+        <div class="app-settings-content-wrap" style="display:none" id="notificationsOff">
+            <h2 class="govuk-heading-m">
                 Push notifications
             </h2>
             <p class="govuk-body">
@@ -47,11 +47,11 @@
                 To turn on push notifications, use the toggle and allow notifications when prompted.
             </p>
         </div>
-        <div class="govuk-grid-column-one-quarter">
-            <label class="nswitch">
+        <div class="app-settings-switch-wrap">
+            <label class="toggle">
                 <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()"
                     onkeydown="toggleNotifications()" onkeypress="toggleNotifications()">
-                <span class="slider round"></span>
+                <span class="slider"></span>
             </label>
         </div>
     </div>

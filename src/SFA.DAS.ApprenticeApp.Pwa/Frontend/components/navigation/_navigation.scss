@@ -23,6 +23,11 @@
   &:active {
     background: #eee;
   }
+  &:focus {
+    background: #eee;
+    box-shadow: none;
+    outline: none;
+  }
 }
 
 .app-navigation__link--active {
@@ -42,7 +47,7 @@
   width: 1.6rem;
   height: 1.6rem;
   display: block;
-  margin: $app-gap-half 0;
+  margin: 0.7rem 0 0.4rem;
   color: $govuk-secondary-text-colour;
   .app-navigation__link--active & {
     color: $app-brand-colour;
@@ -53,6 +58,7 @@
   svg {
     @include app-svg-common;
     stroke: currentColor;
+    stroke-width: 0;
   }
 }
 
