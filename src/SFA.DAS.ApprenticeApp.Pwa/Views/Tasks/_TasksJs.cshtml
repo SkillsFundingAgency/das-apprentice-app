@@ -4,52 +4,19 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        let params = new URLSearchParams(window.location.search)
-        if (params.has('status')) {
-            var state = params.get('status');
-            if (state == 0) {
-
-                $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
-                $('.todo-element').addClass('app-tabs__list-item--selected');
-                $('.done-element').removeClass('app-tabs__list-item--selected');
-            }
-            if (state == 1) {
-                $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
-                $('.done-element').addClass('app-tabs__list-item--selected');
-                $('.todo-element').removeClass('app-tabs__list-item--selected');
-            }
-        }
-        else {
-            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
-            $('.todo-element').addClass('app-tabs__list-item--selected');
-            $('.done-element').removeClass('app-tabs__list-item--selected');
-        }
-
-
-        $('.todo').on('click', function () {
-            $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
-
-            // change add url
-            $(".app-fab").attr("data-status-id", "0")
-
+        $('#tasks-todo__tasks').load('@Url.Action("ToDoTasks", "Tasks")', function () {
+            $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
-        $('.done').on('click', function () {
-            $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
 
-            // change add url
-            $(".app-fab").attr("data-status-id", "1")
-
-        });
+        //  appInit();
 
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
 
         $('body').on('click', '.delete-task', function (e) {
-
+            e.preventDefault()
             if (confirm('Are you sure you want to delete this task?')) {
                 var taskId = $(this).siblings('.taskId').val();
                 $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
@@ -64,10 +31,6 @@
 
                 return false;
             }
-        });
-
-        $('body').on('click', '.app-dropdown__toggle', function (e) {
-            $(this).siblings('.app-dropdown__menu').toggle();
         });
 
         $('body').on('click', '.share-link', function (e) {
@@ -115,7 +78,7 @@
         }
 
         // add / edit tasks popup
-        $("#add-btn").click(function (e) {
+        $(".add-btn").click(function (e) {
             var status = $(this).attr("data-status-id");
             var addUrl = '@Url.Action("Add", "Tasks")?status=' + status;
 

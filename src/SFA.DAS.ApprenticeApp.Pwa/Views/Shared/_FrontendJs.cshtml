@@ -18,7 +18,12 @@
             tab.setAttribute("role", "tabpanel");
         });
 
-        this.tabs[0].click()
+        const params = new URLSearchParams(window.location.search)
+        if (params.has('status')) {
+            this.tabs[params.get('status')].click()
+        } else {
+            this.tabs[0].click()
+        }
     };
 
     Tabs.prototype.handleTabClick = function (event) {
@@ -88,12 +93,14 @@
         this.toggle = container.querySelector(".app-dropdown__toggle");
         this.menu = container.querySelector(".app-dropdown__menu");
         this.showMenuClassName = "app-dropdown__menu--visible";
+        delete container.dataset.module;
     }
     Dropdown.prototype.init = function () {
         this.toggle.addEventListener("click", this.toggleMenu.bind(this));
     };
 
-    Dropdown.prototype.toggleMenu = function () {
+    Dropdown.prototype.toggleMenu = function (e) {
+        e.preventDefault();
         if (this.menu.classList.contains(this.showMenuClassName)) {
             this.menu.classList.remove(this.showMenuClassName);
         } else {

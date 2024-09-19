@@ -16,7 +16,7 @@
             <a asp-action="Index" asp-controller="Tasks" class="app-overlay-header__link">Cancel</a>
         </div>
         <h2 class="app-overlay-header__heading">
-            Add a new task
+            Add a @(Model.StatusId == 1 ? "completed" : "new") task
         </h2>
         <div class="app-overlay-header__save">
             <a class="app-overlay-header__link add-task">Add</a>
