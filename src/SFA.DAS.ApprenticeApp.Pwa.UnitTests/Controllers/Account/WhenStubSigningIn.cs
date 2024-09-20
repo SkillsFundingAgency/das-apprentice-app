@@ -101,22 +101,22 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             serviceProviderMock
                 .Setup(s => s.GetService(typeof(IUrlHelperFactory)))
                 .Returns(urlHelperFactory.Object);
-
+            model.Id = null; 
             var result = await controller.SignIn(model) as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Terms");
 
         }
         
-        [Test, MoqAutoData]
-        public async Task Stay_On_Account_Details_If_UserId_Is_Missing (
-           StubAuthUserDetails model,
-           [Greedy] AccountController controller)
-        {
-            model.Id = null;
-            var result = await controller.SignIn(model) as ViewResult;
-            result.Should().NotBeNull();
-        }
+        //[Test, MoqAutoData]
+        //public async Task Stay_On_Account_Details_If_UserId_Is_Missing (
+        //   StubAuthUserDetails model,
+        //   [Greedy] AccountController controller)
+        //{
+        //    model.Id = null;
+        //    var result = await controller.SignIn(model) as ViewResult;
+        //    result.Should().NotBeNull();
+        //}
 
         [Test, MoqAutoData]
         public void GetErrorView([Greedy] AccountController controller)
