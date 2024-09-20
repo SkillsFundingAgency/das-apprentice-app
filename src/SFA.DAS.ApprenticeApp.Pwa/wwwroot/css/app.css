@@ -2452,7 +2452,7 @@ p + .app-card__heading,
 
 
 
-.govuk-textarea {
+.govuk-textarea, .app-textarea {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2471,33 +2471,33 @@ p + .app-card__heading,
   -webkit-appearance: none;
 }
 @media print {
-  .govuk-textarea {
+  .govuk-textarea, .app-textarea {
     font-family: sans-serif;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-textarea {
+  .govuk-textarea, .app-textarea {
     font-size: 1.1875rem;
     line-height: 1.25;
   }
 }
 @media print {
-  .govuk-textarea {
+  .govuk-textarea, .app-textarea {
     font-size: 14pt;
     line-height: 1.25;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-textarea {
+  .govuk-textarea, .app-textarea {
     margin-bottom: 30px;
   }
 }
-.govuk-textarea:focus {
+.govuk-textarea:focus, .app-textarea:focus {
   outline: 3px solid #ffdd00;
   outline-offset: 0;
   box-shadow: inset 0 0 0 2px;
 }
-.govuk-textarea:disabled {
+.govuk-textarea:disabled, .app-textarea:disabled {
   opacity: 0.5;
   color: inherit;
   background-color: transparent;
@@ -2521,7 +2521,8 @@ p + .app-card__heading,
   }
 }
 .govuk-character-count .govuk-form-group,
-.govuk-character-count .govuk-textarea {
+.govuk-character-count .govuk-textarea,
+.govuk-character-count .app-textarea {
   margin-bottom: 5px;
 }
 
@@ -8903,6 +8904,21 @@ html {
   background-color: #cce2d8;
 }
 
+.app-textarea {
+  background-color: #fff;
+  line-height: 1;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #f7f7f7;
+  height: auto;
+}
+.app-textarea:focus {
+  outline: none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: #00703c;
+}
+
 .app-input {
   background-color: #fff;
   line-height: 1;
@@ -8916,6 +8932,12 @@ html {
   outline-offset: 0;
   box-shadow: none;
   border-color: #00703c;
+}
+.app-input.govuk-js-character-count {
+  margin-bottom: 5px;
+}
+.app-input.app-input--error, .app-input.govuk-textarea--error {
+  border-color: #d4351c;
 }
 
 .app-pages-home {
