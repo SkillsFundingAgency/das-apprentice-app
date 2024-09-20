@@ -13,7 +13,7 @@ builder.Services.AddSingleton(applicationConfiguration!);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddServiceRegistration(applicationConfiguration);
+builder.Services.AddServiceRegistration(builder.Configuration, applicationConfiguration);
 
 // Add outerapi
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);

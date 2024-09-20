@@ -1,5 +1,4 @@
 ﻿using AutoFixture.NUnit3;
-using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Http.Configuration;
 using SFA.DAS.Testing.AutoFixture;
 using System;
@@ -50,7 +49,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
             var appConfig = GenerateAppConfig();
             var config = GenerateConfiguration();
             serviceCollection.AddSingleton<IConfiguration>(config);
-            serviceCollection.AddServiceRegistration(appConfig);
+            serviceCollection.AddServiceRegistration(config, appConfig);
         }
 
         private static IConfiguration GenerateConfiguration()

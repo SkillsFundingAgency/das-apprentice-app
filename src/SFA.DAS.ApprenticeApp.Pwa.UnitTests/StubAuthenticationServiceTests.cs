@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -12,9 +8,13 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
-using SFA.DAS.ApprenticeApp.Pwa.Models;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.GovUK.Auth.Models;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Testing.AutoFixture;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
 {
@@ -28,7 +28,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
         {
             configuration.Setup(x => x["StubAuth"]).Returns("true");
             var service = new StubAuthenticationService(configuration.Object, null, null);
-            service.AddStubApprenticeAuth(responseCookies.Object, model);
+            service.AddStubEmployerAuth(responseCookies.Object, model);
             responseCookies.Verify(x => x.Append(Constants.StubAuthCookieName, JsonConvert.SerializeObject(model), It.Is<CookieOptions>(c => c.Domain!.Equals("localhost") && !c.IsEssential)));
         }
 
@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             configuration.Setup(x => x["StubAuth"]).Returns("true");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
-            service.AddStubApprenticeAuth(responseCookies.Object, model, true);
+            service.AddStubEmployerAuth(responseCookies.Object, model, true);
 
             responseCookies.Verify(x => x.Append(Constants.StubAuthCookieName, JsonConvert.SerializeObject(model),
                 It.Is<CookieOptions>(c =>
@@ -62,7 +62,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests
             configuration.Setup(x => x["EnvironmentName"]).Returns("PRD");
             var service = new StubAuthenticationService(configuration.Object, null, null);
 
-            service.AddStubApprenticeAuth(responseCookies.Object, model);
+            service.AddStubEmployerAuth(responseCookies.Object, model);
 
             responseCookies.Verify(x => x.Append(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CookieOptions>()), Times.Never());
         }

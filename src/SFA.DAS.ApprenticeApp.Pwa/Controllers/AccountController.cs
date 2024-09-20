@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Models;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.GovUK.Auth.Models;
+using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
@@ -39,6 +39,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
+        //[Route("account-details")]
         public IActionResult Authenticated()
         {
             return RedirectToAction("Index", "Tasks");
@@ -87,8 +88,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
-                    claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+                    //claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
+                    //claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
                 }
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,

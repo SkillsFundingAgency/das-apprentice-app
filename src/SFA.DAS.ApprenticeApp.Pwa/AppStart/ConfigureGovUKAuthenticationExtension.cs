@@ -8,7 +8,6 @@ using Azure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
@@ -37,9 +36,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             {
                 services.AddAuthentication(options =>
                 {
-                   ConfigureSharedAuthenticationOptions(options); })
+                    ConfigureSharedAuthenticationOptions(options);
+                })
                     .AddOpenIdConnect(options => { ConfigureOpenIdConnectOptions(options); })
-                    .AddCookie(options => {  ConfigureCookieOptions(options); });
+                    .AddCookie(options => { ConfigureCookieOptions(options); });
             }
             services.AddAuthorization(o =>
             {
@@ -65,7 +65,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
         {
             options.ClientId = _config.ClientId;
             options.MetadataAddress = _config.MetadataAddress;
-            options.ResponseType = OpenIdConnectResponseType.Code;
+           // options.ResponseType = OpenIdConnectResponseType.Code;
             options.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
             options.SignedOutRedirectUri = "/";
             options.SignedOutCallbackPath = "/signed-out";

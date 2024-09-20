@@ -1,4 +1,5 @@
-﻿using SFA.DAS.ApprenticePortal.Authentication;
+﻿using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticePortal.Authentication;
 
 namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
