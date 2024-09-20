@@ -78,8 +78,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn(StubAuthUserDetails model)
         {
-            if (model.Id != null)
+            //if (model.Id != null)
+            if (model.Id == null) //hardcoded id to hide field from private beta
             {
+                model.Id = "test";
                 var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
 
                 var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
