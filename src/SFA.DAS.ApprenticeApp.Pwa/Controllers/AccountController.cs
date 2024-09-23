@@ -95,7 +95,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 _logger.LogInformation($"Apprentice successfully logged in to app.");
 
-                return RedirectToAction("Index", "Terms");
+                return RedirectToAction("Index", "Profile");
         }
 
         [HttpGet]

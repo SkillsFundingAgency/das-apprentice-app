@@ -104,7 +104,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             model.Id = null; 
             var result = await controller.SignIn(model) as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Terms");
+            result.ControllerName.Should().Be("Profile");
 
         }
         
