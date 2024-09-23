@@ -7,12 +7,32 @@
 
 .app-dropdown__toggle {
   text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0 20px 0 0;
+  color: $app-brand-colour;
+  position: relative;
   cursor: pointer;
-  @include govuk-font-size(19);
+  @include govuk-font(19);
   &:hover,
   &:focus {
+    text-underline-offset: 0.2em;
     color: $app-brand-colour;
     text-decoration: underline;
+  }
+  &:after {
+    @include app-arrow;
+    display: block;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    transform: rotate(-45deg);
+    width: 9px;
+    height: 9px;
+    .app-dropdown--expanded & {
+      transform: rotate(135deg);
+      top: 8px;
+    }
   }
 }
 
@@ -24,10 +44,10 @@
   border: 1px solid #f7f7f7;
   position: absolute;
   display: none;
-}
-
-.app-dropdown__menu--visible {
-  display: flex;
+  margin-top: 5px;
+  .app-dropdown--expanded & {
+    display: flex;
+  }
 }
 
 .app-dropdown__menu-list {

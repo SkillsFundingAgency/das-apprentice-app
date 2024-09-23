@@ -89,10 +89,12 @@
 
     // Dropdown Menus
 
-    function Dropdown(container) {
+    function Dropdown(container, appDropdowns) {
+        this.container = container;
         this.toggle = container.querySelector(".app-dropdown__toggle");
         this.menu = container.querySelector(".app-dropdown__menu");
-        this.showMenuClassName = "app-dropdown__menu--visible";
+        this.showMenuClassName = "app-dropdown--expanded";
+        this.appDropdowns = appDropdowns
         delete container.dataset.module;
     }
     Dropdown.prototype.init = function () {
@@ -101,10 +103,16 @@
 
     Dropdown.prototype.toggleMenu = function (e) {
         e.preventDefault();
-        if (this.menu.classList.contains(this.showMenuClassName)) {
-            this.menu.classList.remove(this.showMenuClassName);
-        } else {
-            this.menu.classList.add(this.showMenuClassName);
+        const currentlyExpanded = this.container.classList.contains(this.showMenuClassName)
+
+        this.appDropdowns.forEach((dropdown) => {
+            dropdown.classList.remove(this.showMenuClassName)
+            dropdown.querySelector('.app-dropdown__toggle').setAttribute('aria-expanded', false)
+        })
+
+        if (!currentlyExpanded) {
+            this.container.classList.add(this.showMenuClassName);
+            this.toggle.setAttribute('aria-expanded', true)
         }
     };
 
@@ -168,7 +176,7 @@
 
         if (appDropdowns) {
             appDropdowns.forEach(function (dropdown) {
-                new Dropdown(dropdown).init();
+                new Dropdown(dropdown, appDropdowns).init();
             });
         }
 

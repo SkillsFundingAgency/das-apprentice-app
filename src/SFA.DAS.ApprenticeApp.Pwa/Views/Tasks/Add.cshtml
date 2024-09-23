@@ -1,5 +1,4 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.AddTaskPageModel
-
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
@@ -86,7 +85,6 @@
                     </fieldset>
                 }
             }
-
             <div class="app-form-group">
                 <p class="app-label">
                     Link knowledge, skills and behaviours (KSBs)
@@ -98,7 +96,6 @@
             </div>
             <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
             <div id="linked-ksb-details"></div>
-
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend">Assign a category</legend>
                 <div class="app-card">

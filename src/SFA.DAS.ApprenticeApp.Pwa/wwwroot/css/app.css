@@ -8284,9 +8284,23 @@ html {
 
 .app-dropdown__toggle {
   text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0 20px 0 0;
+  color: #00703c;
+  position: relative;
   cursor: pointer;
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
   font-size: 1rem;
   line-height: 1.25;
+}
+@media print {
+  .app-dropdown__toggle {
+    font-family: sans-serif;
+  }
 }
 @media (min-width: 40.0625em) {
   .app-dropdown__toggle {
@@ -8301,8 +8315,34 @@ html {
   }
 }
 .app-dropdown__toggle:hover, .app-dropdown__toggle:focus {
+  text-underline-offset: 0.2em;
   color: #00703c;
   text-decoration: underline;
+}
+.app-dropdown__toggle:after {
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 9px;
+  height: 9px;
+  transform: rotate(225deg);
+  border: solid;
+  border-color: #00703c;
+  border-width: 0 0 2px 2px;
+  border-top-color: transparent;
+  content: "";
+  position: absolute;
+  border-radius: 1px;
+  display: block;
+  position: absolute;
+  top: 2px;
+  right: 0;
+  transform: rotate(-45deg);
+  width: 9px;
+  height: 9px;
+}
+.app-dropdown--expanded .app-dropdown__toggle:after {
+  transform: rotate(135deg);
+  top: 8px;
 }
 
 .app-dropdown__menu {
@@ -8313,9 +8353,9 @@ html {
   border: 1px solid #f7f7f7;
   position: absolute;
   display: none;
+  margin-top: 5px;
 }
-
-.app-dropdown__menu--visible {
+.app-dropdown--expanded .app-dropdown__menu {
   display: flex;
 }
 
