@@ -86,17 +86,19 @@
                     </fieldset>
                 }
             }
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend">
+
+            <div class="app-form-group">
+                <p class="app-label">
                     Link knowledge, skills and behaviours (KSBs)
-                </legend>
-                <div class="app-card">
-                    <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value=""
-                        asp-for="@Model.Task.KsbsLinked" />
-                    <div id="linked-ksb-details" class="govuk-label"></div>
-                    <input type="button" id="ksb-popup-btn" value="Link KSBs" />
-                </div>
-            </fieldset>
+                </p>
+                <button class="app-button--field" id="ksb-popup-btn">
+                    Select KSBs this task will help you gain
+                    <span class="app-button--field-icon"></span>
+                </button>
+            </div>
+            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
+            <div id="linked-ksb-details"></div>
+
             <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend">Assign a category</legend>
                 <div class="app-card">
@@ -146,8 +148,6 @@
 <script type="module">import {
         initAll
     } from '/js/libs/govuk-frontend.min.js'
-    initAll()
-</script>
-<script>
+    initAll();
     appInit();
 </script>

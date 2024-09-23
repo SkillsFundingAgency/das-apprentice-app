@@ -79,7 +79,12 @@
 
         $('body').on('click', '.link-ksb-confirm', function (e) {
             // iterate over  all checboxes
-            var result = $(".link-ksb-checkbox:checked").map(function (i, e) {
+
+            var checboxes = $(".link-ksb-checkbox:checked")
+
+            console.log(checboxes)
+
+            var result = checboxes.map(function (i, e) {
                 return $(e).attr("value");
             }).get();
 
@@ -87,8 +92,8 @@
             $("#linked-ksb-ids").val(result);
 
             // update subform - nice visual output
-            var text = $(".link-ksb-checkbox:checked").map(function (i, e) {
-                return "<strong>" + $(e).attr("data-title") + "</strong> <a class='edit-ksb'>Edit</a><br/>" + $(e).attr("data-desc") + "<br/><br/>";
+            var text = checboxes.map(function (i, e) {
+                return "<div class=\"app-card ksb-item\"><h2 class=\"app-card__heading\">" + $(e).attr("data-title") + "</h2><p>" + $(e).attr("data-desc") + "</p></div>";
             }).get();
 
             $("#linked-ksb-details").html(text);

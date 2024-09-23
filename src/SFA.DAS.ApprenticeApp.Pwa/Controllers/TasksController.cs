@@ -107,7 +107,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, int status = 0)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
@@ -127,7 +127,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         Task = taskdata.Task,
                         Categories = taskdata.TaskCategories.TaskCategories,
                         KsbProgressData = taskdata.KsbProgress,
-                        LinkedKsbGuids = String.Join(",", guids)
+                        LinkedKsbGuids = String.Join(",", guids),
+                        StatusId = status
                     };
                     return View(vm);
                 }

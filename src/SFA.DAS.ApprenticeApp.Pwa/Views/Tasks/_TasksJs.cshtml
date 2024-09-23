@@ -95,7 +95,8 @@
         $('body').on('click', '.edit-btn', function (e) {
             $('#add-edit-wrapper').show();
             var taskId = $(this).attr("data-id");
-            var editUrl = '@Url.Action("Edit", "Tasks")/' + taskId;
+            var status = $(this).attr("data-status") || 0;
+            var editUrl = '@Url.Action("Edit", "Tasks")/' + taskId + '?status=' + status;
 
 
             $('#add-edit-wrapper').load(editUrl, function () {
