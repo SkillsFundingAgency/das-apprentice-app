@@ -108,16 +108,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
         }
         
-        //[Test, MoqAutoData]
-        //public async Task Stay_On_Account_Details_If_UserId_Is_Missing (
-        //   StubAuthUserDetails model,
-        //   [Greedy] AccountController controller)
-        //{
-        //    model.Id = null;
-        //    var result = await controller.SignIn(model) as ViewResult;
-        //    result.Should().NotBeNull();
-        //}
-
         [Test, MoqAutoData]
         public void GetErrorView([Greedy] AccountController controller)
         {
