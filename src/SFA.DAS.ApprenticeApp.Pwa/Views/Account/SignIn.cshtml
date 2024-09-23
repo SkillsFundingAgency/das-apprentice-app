@@ -9,7 +9,7 @@
         <a asp-action="Index" asp-controller="Home"
            class="app-back-link">Back</a>
     </div>
-    <h1 class="app-page-header__heading">Sign in (stub)</h1>
+    <h1 class="app-page-header__heading">Sign in</h1>
     <div class="app-page-header__forward"></div>
 </div>
 
@@ -18,12 +18,12 @@
     <dl class="app-dl-list">
         <div class="app-pane">
             <form method="POST" asp-action="SignIn" asp-controller="Account">
-            <dt class="app-content-list__title">
+            @* <dt class="app-content-list__title">
                 <label asp-for="Id">Id</label>:
-            </dt>
-            <dd class="app-content-list__content" style="margin: 0">
-                <input asp-for="Id" required="required" style="width: 100%; padding: 3px;"/>
-            </dd>
+            </dt> *@
+           @*  <dd class="app-content-list__content" style="margin: 0" >
+                <input asp-for="Id" style="width: 100%; padding: 3px;"/>
+            </dd> *@
             <dt class="app-content-list__title" style="padding-top:1rem">
                 <label asp-for="Email">Email</label>:
             </dt>
@@ -32,12 +32,12 @@
             </dd>
             <p><button class="govuk-button" type="submit" style="margin-top: 14px;">Log me in</button></p>
             </form>
-            <p>
+            @* <p>
                 <button class="govuk-button" onclick="location.href='@Url.Action("Error", "Account")'">
                     Fake error signing
                     in
                 </button>
-            </p>
+            </p> *@
         </div>
     </dl>
 </div>

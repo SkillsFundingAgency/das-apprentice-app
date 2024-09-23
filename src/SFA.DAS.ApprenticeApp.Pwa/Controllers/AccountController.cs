@@ -78,8 +78,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn(StubAuthUserDetails model)
         {
-            if (model.Id != null)
-            {
+                model.Id = "test";
                 var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
 
                 var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
@@ -96,10 +95,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 _logger.LogInformation($"Apprentice successfully logged in to app.");
 
-                return RedirectToAction("Index", "Terms");
-            }
-
-            return View();
+                return RedirectToAction("Index", "Profile");
         }
 
         [HttpGet]

@@ -21,7 +21,7 @@ public class HomeController : Controller
     {
         if (HttpContext.User.Identity.IsAuthenticated)
         {
-            return RedirectToAction("Index", "Tasks");
+            return RedirectToAction("Index", "Profile");
         }
 
         var vm = new HomeViewModel();
