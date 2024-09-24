@@ -94,7 +94,7 @@
         this.toggle = container.querySelector(".app-dropdown__toggle");
         this.menu = container.querySelector(".app-dropdown__menu");
         this.showMenuClassName = "app-dropdown--expanded";
-        this.appDropdowns = appDropdowns
+        this.appDropdowns = appDropdowns;
         delete container.dataset.module;
     }
     Dropdown.prototype.init = function () {
@@ -160,6 +160,83 @@
             this.title.innerHTML = labelVal.innerHTML;
         }
     };
+
+
+    // Modals 
+
+    function Modal(button, callBack, id) {
+        this.callBack = callBack;
+        this.id = id;
+        this.button = button;
+    }
+
+    Modal.prototype.init = function () {
+        this.showModal()
+    };
+
+    Modal.prototype.showModal = function () {
+        modal = this.createModal()
+        modal.classList.add('app-modal--visible')
+    }
+
+    Modal.prototype.hideModel = function () {
+        this.removeModal()
+    }
+
+    Modal.prototype.handleCallBack = function () {
+        if (typeof this.callBack === "function") {
+            this.callBack(this.id, this.button)
+        }
+        this.hideModel()
+    }
+
+    Modal.prototype.createModal = function () {
+        const modal = document.createElement('div');
+        const that = this
+        modal.classList.add('app-modal')
+        modal.id = 'appModal';
+
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('app-modal__content')
+
+        const buttonGroup = document.createElement('div');
+        buttonGroup.classList.add('app-button-group')
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.classList.add('app-button', 'app-button--secondary')
+        cancelBtn.innerHTML = 'Cancel';
+        cancelBtn.addEventListener("click", this.hideModel.bind(this))
+
+        const removeBtn = document.createElement('button');
+        removeBtn.classList.add('app-button', 'app-button--warning')
+        removeBtn.innerHTML = 'Remove article';
+        removeBtn.addEventListener("click", this.handleCallBack.bind(this))
+
+        buttonGroup.appendChild(removeBtn)
+        buttonGroup.appendChild(cancelBtn)
+
+        const modalText = document.createElement('p');
+        modalText.textContent = `Are you sure you want to remove this article from your saved articles?`
+
+        modalContent.appendChild(modalText);
+        modalContent.appendChild(buttonGroup);
+
+
+        modal.appendChild(modalContent);
+
+        document.body.appendChild(modal);
+        return modal
+    }
+
+
+
+    Modal.prototype.removeModal = function () {
+        document.getElementById("appModal").remove()
+    }
+
+
+
+
 
 
     const appInit = () => {

@@ -17,6 +17,10 @@
   }
 }
 
+.app-button--warning {
+  @extend .govuk-button--warning;
+}
+
 .app-button--field {
   @include govuk-font(19);
   color: $govuk-secondary-text-colour;
@@ -57,5 +61,16 @@
     height: 3px;
     top: 50%;
     margin-top: -1px;
+  }
+}
+
+.app-button-group {
+  display: flex;
+  flex-direction: row;
+  gap: $app-gap;
+  .app-button {
+    margin-bottom: 0;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }

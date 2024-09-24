@@ -2212,17 +2212,17 @@ p + .app-card__heading,
   background-color: #f3f2f1;
 }
 
-.govuk-button--warning {
+.govuk-button--warning, .app-button--warning {
   background-color: #d4351c;
   box-shadow: 0 2px 0 #55150b;
 }
-.govuk-button--warning, .govuk-button--warning:link, .govuk-button--warning:visited, .govuk-button--warning:active, .govuk-button--warning:hover {
+.govuk-button--warning, .app-button--warning, .govuk-button--warning:link, .govuk-button--warning:visited, .govuk-button--warning:active, .govuk-button--warning:hover {
   color: #ffffff;
 }
-.govuk-button--warning:hover {
+.govuk-button--warning:hover, .app-button--warning:hover {
   background-color: #aa2a16;
 }
-.govuk-button--warning:hover[disabled] {
+.govuk-button--warning:hover[disabled], .app-button--warning:hover[disabled] {
   background-color: #d4351c;
 }
 
@@ -8120,6 +8120,17 @@ html {
   height: 3px;
   top: 50%;
   margin-top: -1px;
+}
+
+.app-button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.app-button-group .app-button {
+  margin-bottom: 0;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .app-card {

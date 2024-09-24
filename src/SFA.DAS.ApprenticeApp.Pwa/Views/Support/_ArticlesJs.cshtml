@@ -35,8 +35,8 @@
             return false;
         });
 
-        $('.save').on('click', function () {
-            $(this).removeClass('fa-regular').addClass('fa-solid');
+        $('body').on('click', '.save', function () {
+            $(this).removeClass('save').removeClass('fa-regular').addClass('unsave').addClass('fa-solid');
 
             $.ajax({
                 type: "GET",
@@ -48,24 +48,24 @@
             return false;
         });
 
-        $('.unsave').on('click', function () {
-            var accordionId = $(this).parent().siblings('.entryid').val();
-            $(this).removeClass('fa-solid').addClass('fa-regular');
-
+        const removeBookmark = (id, button) => {
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).parent().siblings('.entryid').val(), isSaved: "false" },
-                beforeSend: function () {
-                    return confirm("Are you sure you want to remove this from your saved articles?");
-                },
+                data: { entryId: id, isSaved: "false" },
                 complete: function () {
-                    $('#accordion-' + accordionId).hide();
+                    $('#accordion-' + id).hide();
+                    $(button).removeClass('unsave').removeClass('fa-solid').addClass('save').addClass('fa-regular')
                 },
                 dataType: "json",
                 contentType: "application/json"
             });
+        }
 
+        $('body').on('click', '.unsave', function () {
+            const id = $(this).parent().siblings('.entryid').val();
+            const modal = new Modal(this, removeBookmark, id).init();
+            console.log(modal)
             return false;
         });
 
