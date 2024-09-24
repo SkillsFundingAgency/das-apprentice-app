@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart;
 
 public static class AddServiceRegistrationExtension
 {
-    public static void AddServiceRegistration(this IServiceCollection services, 
+       public static void AddServiceRegistration(this IServiceCollection services, 
         IConfiguration configuration,
         ApplicationConfiguration appConfig)
     {
@@ -25,9 +25,10 @@ public static class AddServiceRegistrationExtension
             services.AddGovLoginAuthentication(appConfig, configuration);
         }
         else
-        {  
+        {
+            IWebHostEnvironment environment;
             services.AddTransient<ICustomClaims, CustomClaims>();
-            services.AddAndConfigureApprenticeAuthentication(appConfig);
+            //services.AddApprenticeAuthentication(appConfig.MetadataAddress, environment);
         }
     }
 }
