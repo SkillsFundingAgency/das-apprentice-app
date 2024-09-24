@@ -2,7 +2,7 @@
     Layout = null;
 }
 
-<div>
+<div class="empty-tasks">
     <h2 class="govuk-heading-m">You have not added any tasks yet</h2>
     <p class="govuk-body-l">
         Use this area to organise your workload and gather evidence for your end-point
@@ -49,3 +49,7 @@
         </li>
     </ul>
 </div>
+
+<script>
+    $(document).find('.empty-tasks').parent().parent().find('.add-btn').addClass('app-fab--highlight')
+</script>

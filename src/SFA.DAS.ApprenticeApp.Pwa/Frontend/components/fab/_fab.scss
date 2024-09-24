@@ -21,3 +21,8 @@
     border-color: transparent;
   }
 }
+
+.app-fab--highlight {
+  left: calc(1.5 * $app-gap);
+  border-radius: $app-border-radius;
+}
