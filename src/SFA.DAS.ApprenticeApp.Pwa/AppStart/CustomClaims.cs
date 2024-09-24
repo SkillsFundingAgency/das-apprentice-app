@@ -16,7 +16,8 @@ public class CustomClaims : ICustomClaims
         {
             new Claim(Constants.ApprenticeIdClaimKey,$"fd0daf58-af19-440d-b52f-7e1d47267d3b"),
             new Claim(ClaimTypes.Name,$"Mr Active Apprentice"),
-            new Claim(ClaimTypes.DateOfBirth, "01/01/2005")
+            new Claim(ClaimTypes.DateOfBirth, "01/01/2005"),
+            new Claim(Constants.ApprenticeshipIdClaimKey,$"123")
         };
     }
 }

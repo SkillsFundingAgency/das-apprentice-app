@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
             var tokenValidatedContext = ArrangeTokenValidatedContext();
             var result = await customClaims.GetClaims(tokenValidatedContext);
             
-            result.Count().Should().Be(3);
+            result.Count().Should().Be(4);
         }
 
         private TokenValidatedContext ArrangeTokenValidatedContext()

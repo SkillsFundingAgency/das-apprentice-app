@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.GovUK.Auth.Services;
 
@@ -24,7 +25,7 @@ public static class AddServiceRegistrationExtension
             services.AddGovLoginAuthentication(appConfig, configuration);
         }
         else
-        {
+        {  
             services.AddTransient<ICustomClaims, CustomClaims>();
             services.AddAndConfigureApprenticeAuthentication(appConfig);
         }
