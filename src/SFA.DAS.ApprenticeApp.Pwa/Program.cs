@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging.ApplicationInsights;
+﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -33,10 +34,11 @@ builder.Services.AddLogging(builder =>
     builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Warning);
 });
 
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddApplicationInsightsTelemetry(new Microsoft.ApplicationInsights.AspNetCore.Extensions.ApplicationInsightsServiceOptions
-{
-    ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]
+
+// Add the OpenTelemetry telemetry service to the application.
+// This service will collect and send telemetry data to Azure Monitor.
+builder.Services.AddOpenTelemetry().UseAzureMonitor(options => {
+    options.ConnectionString = "InstrumentationKey=c567e48f-edc4-417b-8097-9a1dc3fdac27";
 });
 
 var app = builder.Build();
