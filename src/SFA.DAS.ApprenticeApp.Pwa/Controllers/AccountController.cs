@@ -7,7 +7,6 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
-using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 
@@ -46,7 +45,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public IActionResult Authenticated()
         {
             return View();
-            //return RedirectToAction("Index", "Tasks");
         }
 
         [HttpGet]
@@ -74,6 +72,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
 
             var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
+
+            if(claims == null)
+                 return RedirectToAction("Error", "Account");
+
             var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
             if (!string.IsNullOrEmpty(apprenticeId))
@@ -116,38 +118,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //[HttpGet]
-        //public IActionResult SignIn()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> SignIn(StubAuthUserDetails model)
-        //{
-        //    if (model.Id != null)
-        //    {
-        //        var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
-
-        //        var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-
-        //        if (!string.IsNullOrEmpty(apprenticeId))
-        //        {
-        //            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-        //            //claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
-        //            //claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
-        //        }
-
-        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-        //        new AuthenticationProperties());
-
-        //        _logger.LogInformation($"Apprentice successfully logged in to app.");
-
-        //        return RedirectToAction("Index", "Terms");
-        //    }
-
-        //    return View();
-        //}
+        
 
         [HttpGet]
         [Authorize]
