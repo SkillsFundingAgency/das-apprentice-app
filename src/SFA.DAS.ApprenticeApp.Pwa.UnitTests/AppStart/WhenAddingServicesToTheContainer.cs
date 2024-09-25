@@ -49,7 +49,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
             var appConfig = GenerateAppConfig();
             var config = GenerateConfiguration();
             serviceCollection.AddSingleton<IConfiguration>(config);
-            serviceCollection.AddServiceRegistration(config, appConfig);
+            //serviceCollection.AddServiceRegistration(config, appConfig);
         }
 
         private static IConfiguration GenerateConfiguration()

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
@@ -16,17 +17,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
-        public static ApplicationConfiguration _config { get; set; }
+        private readonly IConfiguration _config;
+        public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
-            ApplicationConfiguration configuration,
+            ApplicationConfiguration appConfig,
+            IConfiguration configuration,
             IOuterApiClient client
         )
         {
             _logger = logger;
             _stubAuthenticationService = stubAuthenticationService;
+            _appConfig = appConfig;
             _config = configuration;
             _client = client;
         }
@@ -39,11 +43,51 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
-        //[Route("account-details")]
         public IActionResult Authenticated()
         {
-            return RedirectToAction("Index", "Tasks");
+            return View();
+            //return RedirectToAction("Index", "Tasks");
         }
+
+        [HttpGet]
+        [Route("account-details", Name = RouteNames.StubAccountDetailsGet)]
+        public IActionResult AccountDetails([FromQuery] string returnUrl)
+        {
+            if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
+            {
+                return NotFound();
+            }
+
+            return View("AccountDetails", new StubAuthenticationViewModel
+            {
+                ReturnUrl = returnUrl
+            });
+        }
+
+        [HttpPost]
+        [Route("account-details", Name = RouteNames.StubAccountDetailsPost)]
+        public async Task<IActionResult> AccountDetails(StubAuthenticationViewModel model)
+        {
+            if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
+            {
+                return NotFound();
+            }
+
+            var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
+            var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
+                claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+            }
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
+                new AuthenticationProperties());
+
+            return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
+        }
+
 
         [Authorize]
         [HttpGet]
@@ -60,59 +104,63 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme
             };
 
-            _ = bool.TryParse(_config.StubAuth, out var stubAuth);
+            _ = bool.TryParse(_appConfig.StubAuth, out var stubAuth);
             if (!stubAuth)
             {
                 schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
             }
 
-            return SignOut(
-                authenticationProperties, schemes.ToArray());
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public IActionResult SignIn()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult SignIn()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> SignIn(StubAuthUserDetails model)
-        {
-            if (model.Id != null)
-            {
-                var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
+        //[HttpPost]
+        //public async Task<IActionResult> SignIn(StubAuthUserDetails model)
+        //{
+        //    if (model.Id != null)
+        //    {
+        //        var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
 
-                var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+        //        var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-                if (!string.IsNullOrEmpty(apprenticeId))
-                {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    //claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
-                    //claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
-                }
+        //        if (!string.IsNullOrEmpty(apprenticeId))
+        //        {
+        //            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+        //            //claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
+        //            //claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+        //        }
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-                new AuthenticationProperties());
+        //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
+        //        new AuthenticationProperties());
 
-                _logger.LogInformation($"Apprentice successfully logged in to app.");
+        //        _logger.LogInformation($"Apprentice successfully logged in to app.");
 
-                return RedirectToAction("Index", "Terms");
-            }
+        //        return RedirectToAction("Index", "Terms");
+        //    }
 
-            return View();
-        }
+        //    return View();
+        //}
 
         [HttpGet]
         [Authorize]
+        [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
         public IActionResult StubSignedIn()
         {
-            var viewModel = new StubAuthUserDetails
+            var viewModel = new StubAuthenticationViewModel
             {
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
-            return View(viewModel);
+           
+            return RedirectToAction("Index", "Terms");
         }
 
         [HttpGet]
@@ -122,7 +170,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
-        public IActionResult AccountLandingPage()
+        public IActionResult YourAccount()
         {
             return View();
         }

@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         [Test, MoqAutoData]
         public void Loading_Page([Greedy] AccountController controller)
         {
-            var result = controller.AccountLandingPage() as ActionResult;
+            var result = controller.YourAccount() as ActionResult;
             result.Should().NotBeNull();
         }
     }

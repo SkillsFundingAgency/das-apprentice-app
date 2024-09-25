@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
-using SFA.DAS.ApprenticeApp.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Services;
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
-namespace SFA.DAS.ApprenticeApp.AppStart
+namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
     public class ApprenticeStubAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {

@@ -27,10 +27,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             ApplicationConfiguration config,
             IConfiguration configuration)
         {
-
             services.AddGovLoginAuthentication(configuration);
-            services.AddApplicationAuthorisation();
             services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
+            services.AddAuthorization();
+            services.AddScoped<AuthenticatedUser>();
+            services.AddHttpContextAccessor();
             services.AddTransient((_) => config);
         }
 
@@ -41,7 +42,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            services.AddApprenticeAuthentication(config.Authentication.MetadataAddress, environment);
+            services.AddApprenticeAuthentication(config.MetadataAddress, environment);
             services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
             return services;
         }
