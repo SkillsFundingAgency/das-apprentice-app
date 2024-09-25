@@ -65,7 +65,6 @@
         $('body').on('click', '.unsave', function () {
             const id = $(this).parent().siblings('.entryid').val();
             const modal = new Modal(this, removeBookmark, id).init();
-            console.log(modal)
             return false;
         });
 
