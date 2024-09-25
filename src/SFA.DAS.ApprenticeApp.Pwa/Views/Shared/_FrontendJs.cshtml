@@ -4,6 +4,7 @@
     function Tabs(container) {
         this.tabs = container.querySelectorAll(".app-tabs__tab");
         this.tabPanels = container.querySelectorAll(".app-tabs__panel");
+        delete container.dataset.module;
     }
 
     Tabs.prototype.init = function () {

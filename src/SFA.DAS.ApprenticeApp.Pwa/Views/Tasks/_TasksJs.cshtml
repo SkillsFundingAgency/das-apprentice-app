@@ -8,9 +8,6 @@
             $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
-
-        //  appInit();
-
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
@@ -45,6 +42,7 @@
         });
 
         $('body').on('click', '.move-done', function (e) {
+            e.preventDefault();
             var taskId = $(this).siblings('.taskId').val();
             $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
@@ -52,13 +50,15 @@
                 type: "GET",
                 url: '@Url.Action("ChangeTaskStatus", "Tasks")',
                 data: { taskId: taskId, statusId: 1 },
-                dataType: "json"
+                dataType: "json",
+                complete: () => { $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")'); }
             });
 
             return false;
         });
 
         $('body').on('click', '.move-todo', function (e) {
+            e.preventDefault();
             var taskId = $(this).siblings('.taskId').val();
             $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
@@ -66,8 +66,10 @@
                 type: "GET",
                 url: '@Url.Action("ChangeTaskStatus", "Tasks")',
                 data: { taskId: taskId, statusId: 0 },
-                dataType: "json"
+                dataType: "json",
+                complete: () => { $('#tasks-todo__tasks').load('@Url.Action("ToDoTasks", "Tasks")'); }
             });
+
             return false;
         });
 
