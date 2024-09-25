@@ -27,6 +27,7 @@
   background: $app-bg-colour;
   margin-top: 30px;
   animation: slideUp ease 200ms;
+  flex-direction: column;
 }
 
 @keyframes slideUp {

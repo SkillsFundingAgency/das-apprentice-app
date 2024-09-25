@@ -8,5 +8,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
         public List<ApprenticeshipCategory>? Categories { get; set; }
         public List<ApprenticeKsbData>? KsbProgressData { get; set; }
         public string? LinkedKsbGuids { get; set; }
+        public int? StatusId { get; set; }
     }
 }

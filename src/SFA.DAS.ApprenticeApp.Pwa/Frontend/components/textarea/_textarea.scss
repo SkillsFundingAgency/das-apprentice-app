@@ -1,5 +1,5 @@
-.app-input {
-  @extend .govuk-input;
+.app-textarea {
+  @extend .govuk-textarea;
   background-color: #fff;
   line-height: 1;
   padding: $app-gap;
@@ -8,12 +8,5 @@
   height: auto;
   &:focus {
     @include app-focused;
-  }
-  &.govuk-js-character-count {
-    margin-bottom: 5px;
-  }
-  &.app-input--error,
-  &.govuk-textarea--error {
-    border-color: $govuk-error-colour;
   }
 }
