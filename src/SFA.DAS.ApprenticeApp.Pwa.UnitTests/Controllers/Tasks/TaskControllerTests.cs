@@ -44,7 +44,62 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             result.ViewName.Should().Be("_TasksToDo");
         }
 
+        [Test, MoqAutoData]
+        public async Task LoadToDoTasksWithSortingByDueDate(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
 
+            httpContext.Response.Cookies.Append(Constants.TaskFilterSortCookieName, "due_date");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.ToDoTasks();
+
+            result.Should().BeOfType(typeof(PartialViewResult));
+            result.ViewName.Should().Be("_TasksToDo");
+        }
+
+
+        [Test, MoqAutoData]
+        public async Task LoadToDoTasksWithSortingByRecentlyAdded(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            httpContext.Response.Cookies.Append(Constants.TaskFilterSortCookieName, "recently_added");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.ToDoTasks();
+
+            result.Should().BeOfType(typeof(PartialViewResult));
+            result.ViewName.Should().Be("_TasksToDo");
+        }
 
         [Test, MoqAutoData]
         public async Task LoadToDoTasks_NoTasks([Frozen] ApprenticeTasksCollection taskResult,
