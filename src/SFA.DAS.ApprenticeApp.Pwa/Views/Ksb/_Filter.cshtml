@@ -4,13 +4,13 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <a href="#filter" data-module="app-overlay" class="app-icon-action">
-    <span class="app-icon-action__icon">
+    <span class="app-icon-action__icon ksb-filter-view">
         <svg>
             <use xlink:href="/assets/images/icons.svg#filter">
             </use>
         </svg>
     </span>
-    <span class="app-icon-action__label">Filters</span>
+    <span class="app-icon-action__label ksb-filter-line-header">Filters</span>
 </a>
 
 
@@ -102,15 +102,13 @@
             for (var k in data) {
 
                 // check all the filter page checkboxes
-                var newData = data[k].split('=');
+                var line = data[k].split('=');
 
-                $("#" + newData[1]).prop('checked', true);
+                $("#" + line[1]).prop('checked', true);
 
                 // show the main page lozenges inside the div
-                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace(/\-/g," ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
-
+                $("#filters-set").append("<div class='app-tag filter-tag'>" + line[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + line[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
             }
-
         }
         else {
             $("#filters-set").hide();
@@ -119,10 +117,10 @@
 
         $(".remove-filter").click(function (e) {
             // get the one in question
-            var filterName = $(this).attr('data-id');
+            var filterNames = $(this).attr('data-id');
 
             // uncheck the hidden screen
-            $("#" + filterName).prop('checked', false);
+            $("#" + filterNames).prop('checked', false);
 
             applyAndSaveFiltersKsb()
         });
@@ -136,10 +134,10 @@
 
 
     function applyAndSaveFiltersKsb() {
-        var sList = "";
+        var ssList = "";
 
         $('input[type=checkbox]').each(function () {
-            sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
+            ssList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
         });
 
         setCookieKsb('SFA.ApprenticeApp.KsbFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
@@ -148,10 +146,10 @@
     }
 
     function getCookieKsb(name) {
-        let matches = document.cookie.match(new RegExp(
+        let matchess = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
+        return matchess ? decodeURIComponent(matchess[1]) : undefined;
     }
 
 
@@ -165,17 +163,17 @@
             attributes.expires = attributes.expires.toUTCString();
         }
 
-        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+        let updatedCookies = encodeURIComponent(name) + "=" + encodeURIComponent(value);
 
-        for (let attributeKey in attributes) {
-            updatedCookie += "; " + attributeKey;
-            let attributeValue = attributes[attributeKey];
-            if (attributeValue !== true) {
-                updatedCookie += "=" + attributeValue;
+        for (let attributeKeys in attributes) {
+            updatedCookies += "; " + attributeKeys;
+            let attributeValues = attributes[attributeKeys];
+            if (attributeValues !== true) {
+                updatedCookies += "=" + attributeValues;
             }
         }
 
-        document.cookie = updatedCookie;
+        document.cookie = updatedCookies;
     }
 
 </script>
