@@ -140,17 +140,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             // Arrange
             var ksbs = new List<ApprenticeKsb>
             {
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() }
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.NotStarted } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.Completed } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.InProgress } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.ReadyForReview } }
             };
 
             // Act
-            var result = Filter.FilterKsbResults(ksbs, "filter=ASSIGNMENT&filter=EPA&filter=DEADLINE&filter=MILESTONE");
+            var result = Filter.FilterKsbResults(ksbs, "filter=ASSIGNMENT&filter=EPA&filter=NOT-STARTED&filter=IN-PROGRESS&filter=READY-FOR-REVIEW&filter=COMPLETED");
 
             // Assert
-            result.FilteredKsbs.Count.Should().Be(0);
+            result.FilteredKsbs.Count.Should().Be(4);
             result.HasFilterRun.Should().BeTrue();
         }
 
@@ -184,10 +184,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             // Arrange
             var tasks = new List<ApprenticeKsb>
             {
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() }
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.NotStarted } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.Completed } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.InProgress } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.ReadyForReview } }
             };
 
             // Act
