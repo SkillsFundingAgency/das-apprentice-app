@@ -42,6 +42,16 @@
   font-size: 1.5rem;
 }
 
+.app-dropdown__toggle-sort-label {
+  font-size: 14px;
+}
+
+.app-dropdown__toggle-sort-value {
+  font-weight: $govuk-font-weight-bold;
+  font-size: 1rem;
+  display: block;
+}
+
 .app-dropdown__menu {
   background: #fff;
   padding: $app-gap $app-gap 1px;
@@ -57,6 +67,19 @@
 }
 
 .app-dropdown--year .app-dropdown__menu {
+  right: 20px;
+}
+
+.app-dropdown--sort {
+  margin-left: auto;
+  margin-right: 1.125rem;
+}
+
+.app-dropdown--sort .app-dropdown__toggle {
+  text-align: left;
+}
+
+.app-dropdown--sort .app-dropdown__menu {
   right: 20px;
 }
 

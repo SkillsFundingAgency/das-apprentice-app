@@ -52,9 +52,34 @@
                 </a>
             </li>
         </ul>
+        <div class="app-dropdown app-dropdown--sort" data-module="app-dropdown">
+            <button class="app-dropdown__toggle" aria-expanded="false">
+                <span class="app-dropdown__toggle-sort-label">Sort by:</span>
+                <span class="app-dropdown__toggle-sort-value" id="sortby">Date due</span>
+            </button>
+            <div class="app-dropdown__menu">
+                <ul class="app-dropdown__menu-list">
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            Date due
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="app-dropdown__menu-link">
+                            Recently added
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <partial name="_Filter.cshtml" />
     </div>
-
+    <span class="app-navigation__icon">
+        <svg>
+            <use xlink:href="/assets/images/icons.svg#unlink">
+            </use>
+        </svg>
+    </span>
     <div id="filters-set" class="govuk-!-margin-bottom-4"></div>
 
     <div class="app-tabs__panel" id="tasks-todo">
