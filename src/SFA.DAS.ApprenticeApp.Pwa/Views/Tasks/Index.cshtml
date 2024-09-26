@@ -1,4 +1,4 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
 
 @{
     ViewData["Title"] = "Tasks";
@@ -14,23 +14,23 @@
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Your tasks</h1>
     <div class="app-dropdown app-dropdown--year" data-module="app-dropdown">
         <button class="app-dropdown__toggle" aria-expanded="false">
-            <span class="govuk-visually-hidden">Tasks for the year </span>2024
+            <span class="govuk-visually-hidden">Tasks for the year </span>@Model.Year
         </button>
         <div class="app-dropdown__menu">
             <ul class="app-dropdown__menu-list">
                 <li>
-                    <a href="#" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year </span>2023
+                    <a href="?year=@DateTime.Now.AddYears(-1).Year" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.AddYears(-1).Year
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year </span>2024
+                    <a href="?year=@DateTime.Now.Year" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.Year
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year </span>2025
+                    <a href="?year=@DateTime.Now.AddYears(1).Year" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.AddYears(1).Year
                     </a>
                 </li>
             </ul>
@@ -55,17 +55,17 @@
         <div class="app-dropdown app-dropdown--sort" data-module="app-dropdown">
             <button class="app-dropdown__toggle" aria-expanded="false">
                 <span class="app-dropdown__toggle-sort-label">Sort by:</span>
-                <span class="app-dropdown__toggle-sort-value" id="sortby">Date due</span>
+                <span class="app-dropdown__toggle-sort-value" id="sortby">@Model.Sort.Replace("_", " ")</span>
             </button>
             <div class="app-dropdown__menu">
                 <ul class="app-dropdown__menu-list">
                     <li>
-                        <a href="#" class="app-dropdown__menu-link">
+                        <a href="?sort=date_due" class="app-dropdown__menu-link">
                             Date due
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="app-dropdown__menu-link">
+                        <a href="?sort=recently_added" class="app-dropdown__menu-link">
                             Recently added
                         </a>
                     </li>

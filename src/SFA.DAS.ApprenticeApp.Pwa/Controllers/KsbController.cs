@@ -22,6 +22,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _logger = logger;
             _client = client;
         }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -38,8 +39,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     //using default value of core until we have the correct value from Approvals api
                     var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(long.Parse(apprenticeshipId), standardUId, "core");
 
-                    ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
+                    if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
+                    {
+                        var filterKsbs = Filter.FilterKsbResults(apprenticeKsbResult, Request.Cookies[Constants.KsbFiltersCookieName]);
 
+                        if (filterKsbs.HasFilterRun.Equals(true))
+                        {
+                            apprenticeKsbResult = filterKsbs.FilteredKsbs;
+                        }
+                    }
+
+                    ApprenticeKsbsPageModel apprenticeKsbsPageModel = new()
                     {
                         Ksbs = apprenticeKsbResult,
                         KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
