@@ -1,190 +1,106 @@
 @using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
-
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
     Layout = null;
 }
-
 <div class="loader" style="display:none"></div>
 <div id="ksb-popup" style=""></div>
 <div id="ksb-edit-popup" style=""></div>
-
-    <div class="app-overlay-header">
-        <div class="app-overlay-header__cancel">
-            <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId" class="app-overlay-header__link">Cancel</a>
-        </div>
-        <h2 class="app-overlay-header__heading">
-            View or edit a task
-        </h2>
-        <div class="app-overlay-header__save">
-            <a href="#" class="app-overlay-header__link add-task post-form">Save</a>
-        </div>
+<div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+        <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+            class="app-overlay-header__link">Cancel</a>
     </div>
-
-    <div class="app-overlay__content add-edit-content-area">
-        <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
-
-            <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
-            <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
-            <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
-            <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
-            <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
-            <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
-
-            <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150">
-                <label class="app-label" asp-for="@Model.Task.Title">
-                    Name of the task
-                </label>
-                <input class="app-input govuk-js-character-count" name="title" type="text" asp-for="@Model.Task.Title"
-                    aria-describedby="Task_Title-info">
-                <div id="Task_Title-info" class="govuk-hint govuk-character-count__message">
-                    You can enter up to 150 characters
-                </div>
-            </div>
-
-            <div class="app-form-group">
-                <label class="app-label" for="duedate">
-                    Select date the task @(Model.StatusId == 1 ? "was completed" : "is due")
-                </label>
-                <input class="app-input" id="duedate" name="duedate" type="date" value="@Model.Task.DueDate.GetValueOrDefault().ToString("yyyy-MM-dd")">
-            </div>
-            <div class="app-form-group">
-                <label class="app-label" for="duetime">
-                    @(Model.StatusId == 1 ? "Enter the time the task was completed" : "Select time the task is due")
-                </label>
-                <input class="app-input" id="duetime" name="duetime" type="time" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
-            </div>
-
-            @{
-                if (Model.StatusId != 1)
+    <h2 class="app-overlay-header__heading">
+        View or edit a task
+    </h2>
+    <div class="app-overlay-header__save">
+        <a href="#" class="app-overlay-header__link add-task post-form">Save</a>
+    </div>
+</div>
+<div class="app-overlay__content add-edit-content-area">
+    <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
+        <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
+        <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
+        <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
+        <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
+        <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
+        <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
+        <partial name="_AddEditForm" model="@Model" />
+        <div class="app-form-group">
+            <p class="app-label">
+                Knowledge, skills and behaviours (KSBs) added to this task
+            </p>
+            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids"
+                asp-for="@Model.Task.KsbsLinked" />
+            <div id="linked-ksb-details">
+                @foreach (var ksb in Model.Task.TaskLinkedKsbs)
                 {
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend">Set a reminder</legend>
-                        <div class="app-card">
-                            <div class="app-collapse" data-module="app-collapse">
-                                <div class="app-collapse__header">
-                                    <button class="app-collapse__button" aria-expanded="false"
-                                        aria-controls="app-collapse-task-reminder">
-                                        <span class="app-collapse__title">None</span>
-                                        <span class="app-collapse__icon" aria-hidden="true"></span>
-                                    </button>
-                                </div>
-                                <div class="app-collapse__contents app-radios" id="app-collapse-task-reminder">
-                                    <div class="app-radios__item">
-                                        <input class="app-radios__input task-reminder" id="reminder-none" name="reminder"
-                                            type="radio" value="none">
-                                        <label class="app-label app-radios__label" for="reminder-none">
-                                            None
-                                        </label>
+                    var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId ==
+                    ksb.KSBProgressId).FirstOrDefault();
+                    if (ksbProgressData != null)
+                    {
+                        <div class="app-card ksb-item">
+                            <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                            <p>@ksbProgressData.Detail</p>
+                            <span>
+                                @{
+                                    var statusItem = @ksbProgressData.CurrentStatus;
+                                    string statusItemDisplay = statusItem.GetEnumDescription();
+                                    <div class="ksb-status-display app-tag">
+                                        <text>@statusItemDisplay</text>
                                     </div>
-                                    <div class="app-radios__item">
-                                        <input class="app-radios__input task-reminder" id="reminder-time" name="reminder"
-                                            type="radio" value="time">
-                                        <label class="app-label app-radios__label" for="reminder-time">
-                                            At the time of activity
-                                        </label>
-                                    </div>
-                                    <div class="app-radios__item">
-                                        <input class="app-radios__input task-reminder" id="reminder-5mins" name="reminder"
-                                            type="radio" value="5mins">
-                                        <label class="app-label app-radios__label" for="reminder-5mins">
-                                            5 minutes before
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                                }
+                            </span>
                         </div>
-                    </fieldset>
+                    }
                 }
-            }
-
-<div class="app-form-group">
-    <p class="app-label">
-        Link knowledge, skills and behaviours (KSBs)
-    </p>
-    <button class="app-button--field"  id="ksb-popup-btn" data-id="@Model.Task.TaskId">
-        Select KSBs this task will help you gain
-        <span class="app-button--field-icon"></span>
-    </button>
-</div>
-
-<div class="app-form-group">
-    <p class="app-label">
-        Knowledge, skills and behaviours (KSBs) added to this task
-    </p>
-    <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
-    <div id="linked-ksb-details">
-        @foreach (var ksb in Model.Task.TaskLinkedKsbs)
-        {
-            var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId == ksb.KSBProgressId).FirstOrDefault();
-            if (ksbProgressData != null)
-            {
-                <div class="app-card ksb-item">
-                    <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
-                    <p>@ksbProgressData.Detail</p>
-                    <span>
-                        @{
-                            var statusItem = @ksbProgressData.CurrentStatus;
-                            string statusItemDisplay = statusItem.GetEnumDescription();
-                            <div class="ksb-status-display app-tag">
-                            <text>@statusItemDisplay</text></div>
-                        }
-                    </span>
             </div>
-            }
-        }
-    </div>
-</div>
-
-        
-
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend">Assign a category</legend>
-                <div class="app-card">
-                    <div class="app-collapse" data-module="app-collapse">
-                        <div class="app-collapse__header">
-                            <button class="app-collapse__button" aria-expanded="false"
-                                aria-controls="app-collapse-task-cat">
-                                <span class="app-collapse__title">None</span>
-                                <span class="app-collapse__icon" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                        <div class="app-collapse__contents app-radios" id="app-collapse-task-cat">
-                            @foreach (var cat in Model.Categories)
-                            {
-                                <div class="app-radios__item">
-                                    <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
-                                        id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId" checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
-                                    <label class="app-label app-radios__label" for="category_@cat.CategoryId">
-                                        <span
-                                            class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
-                                    </label>
-                                </div>
-                            }
-                        </div>
+        </div>
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend">Assign a category</legend>
+            <div class="app-card">
+                <div class="app-collapse" data-module="app-collapse">
+                    <div class="app-collapse__header">
+                        <button class="app-collapse__button" aria-expanded="false"
+                            aria-controls="app-collapse-task-cat">
+                            <span class="app-collapse__title">None</span>
+                            <span class="app-collapse__icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="app-collapse__contents app-radios" id="app-collapse-task-cat">
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <div class="app-radios__item">
+                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                                    id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
+                                    checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                                <label class="app-label app-radios__label" for="category_@cat.CategoryId">
+                                    <span
+                                        class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
+                                </label>
+                            </div>
+                        }
                     </div>
                 </div>
-            </fieldset>
-
-            <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
-                <label class="app-label" for="note">
-                    Add a note
-                </label>
-                <textarea class="app-textarea govuk-js-character-count" id="note" name="note" rows="5"
-                    aria-describedby="note-info" value="@Model.Task.Note"></textarea>
-                <div id="note-info" class="govuk-hint govuk-character-count__message">
-                    You can enter up to 1000 characters
-                </div>
             </div>
-
-        </form>
-    </div>
- 
+        </fieldset>
+        <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+            <label class="app-label" for="note">
+                Add a note
+            </label>
+            <textarea class="app-textarea govuk-js-character-count" id="note" name="note" rows="5"
+                aria-describedby="note-info" value="@Model.Task.Note"></textarea>
+            <div id="note-info" class="govuk-hint govuk-character-count__message">
+                You can enter up to 1000 characters
+            </div>
+        </div>
+    </form>
+</div>
 @await Html.PartialAsync("_AddEditTasksJs.cshtml")
 @await Html.PartialAsync("../Ksb/_KsbJs.cshtml")
-
 <script type="module">import {
         initAll
     } from '/js/libs/govuk-frontend.min.js'
