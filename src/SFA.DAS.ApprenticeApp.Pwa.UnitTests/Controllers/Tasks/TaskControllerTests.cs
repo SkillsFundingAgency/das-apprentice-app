@@ -373,7 +373,43 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             result.RouteValues["status"].Should().Be((int)task.Status);
 
         }
-       
+
+        [Test, MoqAutoData]
+        public async Task Task_Index_load(
+          [Frozen] Mock<IOuterApiClient> client,
+          [Frozen] ApprenticeDetails apprenticeDetails,
+          [Frozen] Mock<ILogger<TasksController>> logger,
+          [Frozen] ApprenticeTask task,
+          [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "1");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            httpContext.Response.Cookies.Append(Constants.TaskFilterYearCookieName, "2024");
+            httpContext.Response.Cookies.Append(Constants.TaskFilterSortCookieName, "sort");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            string sortoder = "sort";
+            int year = 2024;
+
+            var result = controller.Index(sortoder, year);
+
+            result.Should().NotBeNull();
+
+        }
+
         [Test, MoqAutoData]
         public async Task AddTask_MustHave_ValidApprenticeId(
           [Frozen] ApprenticeTask task,
