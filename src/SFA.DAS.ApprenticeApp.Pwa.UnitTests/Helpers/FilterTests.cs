@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
@@ -127,6 +128,73 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
 
             // Assert
             result.FilteredTasks.Count.Should().Be(0);
+            result.HasFilterRun.Should().BeFalse();
+        }
+
+
+        // KSB FILTERS TESTS
+
+        [Test]
+        public void FilterKsbResults_Filter_Returns_Results()
+        {
+            // Arrange
+            var ksbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() }
+            };
+
+            // Act
+            var result = Filter.FilterKsbResults(ksbs, "filter=ASSIGNMENT&filter=EPA&filter=DEADLINE&filter=MILESTONE");
+
+            // Assert
+            result.FilteredKsbs.Count.Should().Be(0);
+            result.HasFilterRun.Should().BeTrue();
+        }
+
+        [Test]
+        public void FilterKsbResults_OtherFilter_ProgressSet_Returns_Results()
+        {
+            // Arrange
+            var tasks = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() }
+            };
+
+            tasks[0].Progress = new ApprenticeKsbProgressData() { KsbProgressId = 1, CurrentStatus = KSBStatus.Completed };
+
+            // Act
+            var result = Filter.FilterKsbResults(tasks, "other-filter=REMINDER-SET");
+
+            // Assert
+            result.FilteredKsbs.Count.Should().Be(0);
+            result.HasFilterRun.Should().BeTrue();
+        }
+
+ 
+
+        [Test]
+        public void FilterKsbResults_No_Filter_Returns_No_Results()
+        {
+            // Arrange
+            var tasks = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() },
+                new ApprenticeKsb {  Id = Guid.NewGuid() }
+            };
+
+            // Act
+            var result = Filter.FilterKsbResults(tasks, "");
+
+            // Assert
+            result.FilteredKsbs.Count.Should().Be(0);
             result.HasFilterRun.Should().BeFalse();
         }
     }
