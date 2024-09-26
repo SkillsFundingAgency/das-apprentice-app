@@ -12,7 +12,50 @@
   color: #62223f;
 }
 
-.app-tag--red {
+.app-tag--yellow {
+  color: #574d14;
+  background-color: govuk-tint(govuk-colour("yellow"), 75%);
+}
+
+.app-tag--orange {
   background-color: #f6d7c6;
   color: #673920;
+}
+
+.app-tag--blue {
+  color: #152c48;
+  background-color: govuk-tint(govuk-colour("blue"), 90%);
+}
+
+.app-tag--green {
+  color: govuk-shade(govuk-colour("green"), 20%);
+  background-color: govuk-tint(govuk-colour("green"), 80%);
+}
+
+.app-tag--status-notstarted {
+  @extend .app-tag--pink;
+}
+
+.app-tag--status-inprogress {
+  @extend .app-tag--yellow;
+}
+
+.app-tag--status-readyforreview {
+  @extend .app-tag--blue;
+}
+
+.app-tag--status-done {
+  @extend .app-tag--green;
+}
+
+.app-tag--category-assignment {
+  @extend .app-tag--green;
+}
+
+.app-tag--category-endpointassessment {
+  @extend .app-tag--pink;
+}
+
+.app-tag--category-deadline {
+  @extend .app-tag--orange;
 }

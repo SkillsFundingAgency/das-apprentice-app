@@ -1,77 +1,89 @@
 ﻿<!DOCTYPE html>
 <html lang="en" class="govuk-template">
-   <head>
-      <meta charset="utf-8" />
-      <meta name="viewport"
-         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-      <meta name="theme-color" content="#0b0c0c" />
-      <title>@(ViewData["Title"] == null ? "Apprentice App" : ViewData["Title"])</title>
-      <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
-      <link rel="icon" sizes="any" href="/assets/images/favicon.svg" type="image/svg+xml" />
-      <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" />
-      <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png" />
-      <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
-   </head>
-   <body class="govuk-template__body app-template__body">
-       <div id="top"></div>
-       <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
-       <div class="app-container">
-           <main class="app-main">
-               @RenderBody()
-           </main>
-           <nav class="app-navigation">
-               <a asp-controller="Tasks" asp-action="Index" class="app-navigation__link  @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
-                   <span class="app-navigation__icon">
-                       <svg>
-                           <use xlink:href="/assets/images/icons.svg#tasks@(ViewBag.Section == "Tasks" ? "Active" :"")"></use>
-                       </svg>
-                   </span>
-                   <span class="app-navigation__link-text">Tasks</span>
-               </a>
-               <a asp-controller="Ksb" asp-action="Index" class="app-navigation__link @(ViewBag.Section == "Ksbs" ? "app-navigation__link--active" :"")">
-                   <span class="app-navigation__icon">
-                       <svg>
-                           <use xlink:href="/assets/images/icons.svg#ksbs@(ViewBag.Section == "Ksbs" ? "Active" :"")"></use>
-                       </svg>
-                   </span>
-                   <span class="app-navigation__link-text">Ksbs</span>
-               </a>
-               <a asp-controller="Support" asp-action="Index"
-                  class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
-                   <span class="app-navigation__icon">
-                       <svg>
-                           <use xlink:href="/assets/images/icons.svg#support@(ViewBag.Section == "Support" ? "Active" :"")"></use>
-                       </svg>
-                   </span>
-                   <span class="app-navigation__link-text">Support</span>
-               </a>
-               <a href="link1" class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
-                   <span class="app-navigation__icon">
-                       <svg>
-                           <use xlink:href="/assets/images/icons.svg#notifications@(ViewBag.Section == "Notifications" ? "Active" :"")"></use>
-                       </svg>
-                   </span>
-                   <span class="app-navigation__link-text">Notifications</span>
-               </a>
-               <a asp-controller="Account" asp-action="AccountLandingPage"
-                  class="app-navigation__link @(ViewBag.Section == "Account" ? "app-navigation__link--active" :"")">
-                   <span class="app-navigation__icon">
-                       <svg>
-                           <use xlink:href="/assets/images/icons.svg#account@(ViewBag.Section == "Account" ? "Active" :"")"></use>
-                       </svg>
-                   </span>
-                   <span class="app-navigation__link-text">Account</span>
-               </a>
-           </nav>
-       </div>
-       <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
-       <script type="module">import {
-               initAll
-           } from '/js/libs/govuk-frontend.min.js'
-           initAll()</script>
 
-       @await Html.PartialAsync("_FrontendJs.cshtml")
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0c0c" />
+    <title>@(ViewData["Title"] == null ? "Apprentice App" : ViewData["Title"])</title>
+    <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
+    <link rel="icon" sizes="any" href="/assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" />
+    <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+</head>
 
+<body class="govuk-template__body app-template__body" id="top">
+    <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+    <div class="app-container">
+        <main class="app-main">
+            <div class="app-main__inner">
+                @RenderBody()
+            </div>
+        </main>
+        <nav class="app-navigation">
+            <a asp-controller="Tasks" asp-action="Index"
+                class="app-navigation__link  @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon">
+                    <svg>
+                        <use xlink:href="/assets/images/icons.svg#tasks@(ViewBag.Section == "Tasks" ? "Active" :"")">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-navigation__link-text">Tasks</span>
+            </a>
+            <a asp-controller="Ksb" asp-action="Index"
+                class="app-navigation__link @(ViewBag.Section == "Ksbs" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon">
+                    <svg>
+                        <use xlink:href="/assets/images/icons.svg#ksbs@(ViewBag.Section == "Ksbs" ? "Active" :"")">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-navigation__link-text">KSBs</span>
+            </a>
+            <a asp-controller="Support" asp-action="Index"
+                class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon">
+                    <svg>
+                        <use
+                            xlink:href="/assets/images/icons.svg#support@(ViewBag.Section == "Support" ? "Active" :"")">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-navigation__link-text">Support</span>
+            </a>
+            <a asp-controller="Notifications" asp-action="Index"
+                class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon">
+                    <svg>
+                        <use
+                            xlink:href="/assets/images/icons.svg#notifications@(ViewBag.Section == "Notifications" ? "Active" :"")">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-navigation__link-text">Notifications</span>
+            </a>
+            <a asp-controller="Account" asp-action="AccountLandingPage"
+                class="app-navigation__link @(ViewBag.Section == "Account" ? "app-navigation__link--active" :"")">
+                <span class="app-navigation__icon">
+                    <svg>
+                        <use
+                            xlink:href="/assets/images/icons.svg#account@(ViewBag.Section == "Account" ? "Active" :"")">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-navigation__link-text">Account</span>
+            </a>
+        </nav>
+    </div>
+    <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
+    <script type="module">import {
+            initAll
+        } from '/js/libs/govuk-frontend.min.js'
+        initAll()</script>
+    @await Html.PartialAsync("_FrontendJs.cshtml")
+</body>
 
-   </body>
 </html>
