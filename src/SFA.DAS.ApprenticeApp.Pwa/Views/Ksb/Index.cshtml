@@ -26,19 +26,32 @@
             </li>
         </ul>
     </div>
-    <details class="govuk-details">
-        <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-                Help with linking KSBs
+    <div class="app-page-header">
+        <details class="govuk-details govuk-!-margin-top-2">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Help with linking KSBs
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p>As part of your apprenticeship, you need to gain specific knowledge, skills and behaviours (KSBs).
+                    These
+                    are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
+                    assessment (EPA). Linking these KSBs to your completed tasks will help you gather evidence. </p>
+                <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
+            </div>
+        </details>
+        <a href="#filter" data-module="app-overlay" class="app-icon-action">
+            <span class="app-icon-action__icon">
+                <svg>
+                    <use xlink:href="/assets/images/icons.svg#filter">
+                    </use>
+                </svg>
             </span>
-        </summary>
-        <div class="govuk-details__text">
-            <p>As part of your apprenticeship, you need to gain specific knowledge, skills and behaviours (KSBs). These
-                are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
-                assessment (EPA). Linking these KSBs to your completed tasks will help you gather evidence. </p>
-            <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
-        </div>
-    </details>
+            <span class="app-icon-action__label">Filters</span>
+        </a>
+
+    </div>
     <partial name="_KsbsAll.cshtml" />
 </div>
 
