@@ -155,6 +155,26 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
         }
 
         [Test]
+        public void FilterKsbResults_otherFilter_Returns_Results()
+        {
+            // Arrange
+            var ksbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.NotStarted, Tasks = new List<ApprenticeTask>() { new ApprenticeTask() { TaskId = 1 }, new ApprenticeTask() { TaskId = 2 } } } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.Completed } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.InProgress } },
+                new ApprenticeKsb {  Id = Guid.NewGuid(), Progress = new ApprenticeKsbProgressData() { CurrentStatus = KSBStatus.ReadyForReview } }
+            };
+
+            // Act
+            var result = Filter.FilterKsbResults(ksbs, "other-filter=LINKED-TO-A-TASK");
+
+            // Assert
+            result.FilteredKsbs.Count.Should().Be(1);
+            result.HasFilterRun.Should().BeTrue();
+        }
+
+        [Test]
         public void FilterKsbResults_OtherFilter_ProgressSet_Returns_Results()
         {
             // Arrange
