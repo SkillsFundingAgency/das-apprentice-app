@@ -24,16 +24,32 @@
     @include app-arrow;
     display: block;
     position: absolute;
-    top: 2px;
+    top: 50%;
     right: 0;
     transform: rotate(-45deg);
     width: 9px;
     height: 9px;
+    margin-top: -7px;
     .app-dropdown--expanded & {
       transform: rotate(135deg);
-      top: 8px;
+      margin-top: -3px;
     }
   }
+}
+
+.app-dropdown--year .app-dropdown__toggle {
+  font-weight: $govuk-font-weight-bold;
+  font-size: 1.5rem;
+}
+
+.app-dropdown__toggle-sort-label {
+  font-size: 14px;
+}
+
+.app-dropdown__toggle-sort-value {
+  font-weight: $govuk-font-weight-bold;
+  font-size: 1rem;
+  display: block;
 }
 
 .app-dropdown__menu {
@@ -48,6 +64,23 @@
   .app-dropdown--expanded & {
     display: flex;
   }
+}
+
+.app-dropdown--year .app-dropdown__menu {
+  right: 20px;
+}
+
+.app-dropdown--sort {
+  margin-left: auto;
+  margin-right: 1.125rem;
+}
+
+.app-dropdown--sort .app-dropdown__toggle {
+  text-align: left;
+}
+
+.app-dropdown--sort .app-dropdown__menu {
+  right: 20px;
 }
 
 .app-dropdown__menu-list {
@@ -66,13 +99,13 @@
 }
 
 .app-dropdown__menu-link {
-  margin-bottom: $app-gap-half;
   display: flex;
   gap: $app-gap-half;
   flex-direction: row;
   align-items: flex-start;
   text-decoration: none;
   color: $govuk-text-colour;
+  min-width: 100px;
   &:visited,
   &:link {
     color: $govuk-text-colour;
