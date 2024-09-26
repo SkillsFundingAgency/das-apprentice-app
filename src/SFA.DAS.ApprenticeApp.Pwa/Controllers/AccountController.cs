@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
@@ -71,23 +72,29 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return NotFound();
             }
 
-            var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
-
-            if(claims == null)
-                 return RedirectToAction("Error", "Account");
-
-            var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-
-            if (!string.IsNullOrEmpty(apprenticeId))
+            try
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
-                claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
-            }
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-                new AuthenticationProperties());
+                var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
+                var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
-            return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
+                if (!string.IsNullOrEmpty(apprenticeId))
+                {
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
+                    claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+                }
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
+                    new AuthenticationProperties());
+
+                return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
+            }
+            catch (NullReferenceException)
+            {
+                return RedirectToAction("Error", "Account");
+            }
+            
+            
+           
         }
 
 
