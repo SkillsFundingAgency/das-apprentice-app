@@ -88,7 +88,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
             }
-            catch (NullReferenceException)
+            catch (Exception)
             {
                 return RedirectToAction("Error", "Account");
             }
@@ -121,6 +121,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
             return RedirectToAction("Index", "Home");
         }

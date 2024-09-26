@@ -10,7 +10,6 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <Compile Remove="Models\StubAuthUserDetails.cs" />
-    <Compile Remove="Services\StubAuthenticationService.cs" />
   </ItemGroup>
  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
