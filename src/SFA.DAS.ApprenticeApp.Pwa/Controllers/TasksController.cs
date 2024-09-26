@@ -116,10 +116,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
 
                 // sorting
-                var sortCookie = Request.Cookies[Constants.TaskFilterSortCookieName];
-                if (sortCookie != null)
+                var sortingValue = Request.Cookies[Constants.TaskFilterSortCookieName];
+                if (sortingValue != null)
                 {
-                    taskResult.Tasks = sortCookie switch
+                    taskResult.Tasks = sortingValue switch
                     {
                         "due_date" => taskResult.Tasks.OrderBy(x => x.DueDate).ToList(),
                         "recently_added" => taskResult.Tasks.OrderByDescending(x => x.TaskId).ToList(),
@@ -147,16 +147,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                int year = DateTime.Now.Year;
-                var yearCookie = Request.Cookies[Constants.TaskFilterYearCookieName];
-                if (yearCookie != null)
+                int yearValue = DateTime.Now.Year;
+                var yearSet = Request.Cookies[Constants.TaskFilterYearCookieName];
+                if (yearSet != null)
                 {
-                    year = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
+                    yearValue = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
                 var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
