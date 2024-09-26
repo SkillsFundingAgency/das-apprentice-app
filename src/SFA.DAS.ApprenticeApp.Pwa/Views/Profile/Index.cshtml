@@ -1,5 +1,6 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
 @using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
 @inject ApplicationConfiguration applicationConfiguration
 @{
@@ -29,7 +30,7 @@
         <dt class="app-dl-list__title">
             Date of birth:
         </dt>
-        <dd class="app-dl-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model?.Apprentice?.DateOfBirth?.ToGdsFormat()</dd>
     </dl>
 </div>
 
@@ -49,7 +50,8 @@
         <div class="app-progress__label" id="progressLabel"></div>
     </div>
     <p>Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
-    <a href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
+    <a class="govuk-link govuk-link--no-visited-state"
+        href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
         target="_blank">What is
         an end-point assessment (EPA)?</a>
 
@@ -114,11 +116,11 @@
         <dt class="app-dl-list__title">
             Planned training start date:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.StartDate?.ToGdsFormat()</dd>
         <dt class="app-dl-list__title">
             Planned training end date:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EndDate?.ToGdsFormat()</dd>
 
         <dt class="app-dl-list__title">
             Estimated duration:

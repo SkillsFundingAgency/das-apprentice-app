@@ -4,6 +4,7 @@
     function Tabs(container) {
         this.tabs = container.querySelectorAll(".app-tabs__tab");
         this.tabPanels = container.querySelectorAll(".app-tabs__panel");
+        delete container.dataset.module;
     }
 
     Tabs.prototype.init = function () {
@@ -17,13 +18,20 @@
         this.tabPanels.forEach((tab) => {
             tab.setAttribute("role", "tabpanel");
         });
+
+        const params = new URLSearchParams(window.location.search)
+        if (params.has('status')) {
+            this.tabs[params.get('status')].click()
+        } else {
+            this.tabs[0].click()
+        }
     };
 
     Tabs.prototype.handleTabClick = function (event) {
         event.preventDefault();
         const tab = event.target;
         this.tabPanels.forEach(function (panel) {
-            //panel.hidden = true;
+            panel.hidden = true;
         });
         this.tabs.forEach((tab) => {
             tab.ariaSelected = false;
@@ -33,16 +41,12 @@
         tab.parentElement.classList.add("app-tabs__list-item--selected");
         const { hash } = tab;
         const panel = document.getElementById(hash.substring(1));
-        //panel.hidden = false;
+        if (panel) {
+            panel.hidden = false;
+        }
     };
 
-    const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
 
-    if (appTabs) {
-        appTabs.forEach(function (tabs) {
-            new Tabs(tabs).init();
-        });
-    }
 
     // Overlays
 
@@ -83,41 +87,196 @@
         this.overlay.classList.remove(this.showOverlayClassName);
     };
 
-    const appOverlays = document.querySelectorAll(`[data-module="app-overlay"]`);
-
-    if (appOverlays) {
-        appOverlays.forEach(function (overlay) {
-            new Overlay(overlay).init();
-        });
-    }
 
     // Dropdown Menus
 
-    function Dropdown(container) {
+    function Dropdown(container, appDropdowns) {
+        this.container = container;
         this.toggle = container.querySelector(".app-dropdown__toggle");
         this.menu = container.querySelector(".app-dropdown__menu");
-        this.showMenuClassName = "app-dropdown__menu--visible";
+        this.showMenuClassName = "app-dropdown--expanded";
+        this.appDropdowns = appDropdowns;
+        delete container.dataset.module;
     }
     Dropdown.prototype.init = function () {
         this.toggle.addEventListener("click", this.toggleMenu.bind(this));
     };
 
-    Dropdown.prototype.toggleMenu = function () {
-        if (this.menu.classList.contains(this.showMenuClassName)) {
-            this.menu.classList.remove(this.showMenuClassName);
-        } else {
-            this.menu.classList.add(this.showMenuClassName);
+    Dropdown.prototype.toggleMenu = function (e) {
+        e.preventDefault();
+        const currentlyExpanded = this.container.classList.contains(this.showMenuClassName)
+
+        this.appDropdowns.forEach((dropdown) => {
+            dropdown.classList.remove(this.showMenuClassName)
+            dropdown.querySelector('.app-dropdown__toggle').setAttribute('aria-expanded', false)
+        })
+
+        if (!currentlyExpanded) {
+            this.container.classList.add(this.showMenuClassName);
+            this.toggle.setAttribute('aria-expanded', true)
         }
     };
 
-    const appDropdowns = document.querySelectorAll(`[data-module="app-dropdown"]`);
 
-    if (appDropdowns) {
-        appDropdowns.forEach(function (dropdown) {
-            new Dropdown(dropdown).init();
-        });
+    // Collapse
+
+    function Collapse(container) {
+        this.container = container;
+        this.button = container.querySelector(".app-collapse__button");
+        this.title = container.querySelector(".app-collapse__title");
+        this.content = container.querySelector(".app-collapse__content");
+        this.radios = container.querySelectorAll(".app-radios__input");
+        this.expandedClass = "app-collapse--expanded";
+    }
+
+    Collapse.prototype.init = function () {
+        this.button.addEventListener("click", this.toggleContent.bind(this));
+        if (this.radios.length > 0) {
+            this.radios.forEach((radio) => {
+                if (radio.checked) {
+                    const labelVal = document.querySelector("label[for=" + radio.id + "]");
+                    this.title.innerHTML = labelVal.innerHTML;
+                }
+                radio.addEventListener("change", this.radioChange.bind(this));
+            });
+        }
+    };
+
+    Collapse.prototype.toggleContent = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.container.classList.contains(this.expandedClass)) {
+            this.button.setAttribute("aria-expanded", false);
+            this.container.classList.remove(this.expandedClass);
+        } else {
+            this.button.setAttribute("aria-expanded", true);
+            this.container.classList.add(this.expandedClass);
+        }
+    };
+
+    Collapse.prototype.radioChange = function (event) {
+        const radio = event.target;
+        if (radio.checked) {
+            const labelVal = document.querySelector("label[for=" + radio.id + "]");
+            this.title.innerHTML = labelVal.innerHTML;
+        }
+    };
+
+
+    // Modals 
+
+    function Modal(button, callBack, id) {
+        this.callBack = callBack;
+        this.id = id;
+        this.button = button;
+    }
+
+    Modal.prototype.init = function () {
+        this.showModal()
+    };
+
+    Modal.prototype.showModal = function () {
+        modal = this.createModal()
+        modal.classList.add('app-modal--visible')
+    }
+
+    Modal.prototype.hideModel = function () {
+        this.removeModal()
+    }
+
+    Modal.prototype.handleCallBack = function () {
+        if (typeof this.callBack === "function") {
+            this.callBack(this.id, this.button)
+        }
+        this.hideModel()
+    }
+
+    Modal.prototype.createModal = function () {
+        const modal = document.createElement('div');
+        const that = this
+        modal.classList.add('app-modal')
+        modal.id = 'appModal';
+
+        const modalContent = document.createElement('div');
+        modalContent.classList.add('app-modal__content')
+
+        const buttonGroup = document.createElement('div');
+        buttonGroup.classList.add('app-button-group')
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.classList.add('app-button', 'app-button--secondary')
+        cancelBtn.innerHTML = 'Cancel';
+        cancelBtn.addEventListener("click", this.hideModel.bind(this))
+
+        const removeBtn = document.createElement('button');
+        removeBtn.classList.add('app-button', 'app-button--warning')
+        removeBtn.innerHTML = 'Remove article';
+        removeBtn.addEventListener("click", this.handleCallBack.bind(this))
+
+        buttonGroup.appendChild(removeBtn)
+        buttonGroup.appendChild(cancelBtn)
+
+        const modalText = document.createElement('p');
+        modalText.textContent = `Are you sure you want to remove this article from your saved articles?`
+
+        modalContent.appendChild(modalText);
+        modalContent.appendChild(buttonGroup);
+
+
+        modal.appendChild(modalContent);
+
+        document.body.appendChild(modal);
+        return modal
     }
 
 
+
+    Modal.prototype.removeModal = function () {
+        document.getElementById("appModal").remove()
+    }
+
+
+
+
+
+
+    const appInit = () => {
+
+        const appOverlays = document.querySelectorAll(`[data-module="app-overlay"]`);
+
+        if (appOverlays) {
+            appOverlays.forEach(function (overlay) {
+                new Overlay(overlay).init();
+            });
+        }
+
+        const appDropdowns = document.querySelectorAll(`[data-module="app-dropdown"]`);
+
+        if (appDropdowns) {
+            appDropdowns.forEach(function (dropdown) {
+                new Dropdown(dropdown, appDropdowns).init();
+            });
+        }
+
+        const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
+
+        if (appTabs) {
+            appTabs.forEach(function (tabs) {
+                new Tabs(tabs).init();
+            });
+        }
+
+        const appCollapsable = document.querySelectorAll(
+            `[data-module="app-collapse"]`,
+        );
+
+        if (appCollapsable) {
+            appCollapsable.forEach(function (collapse) {
+                new Collapse(collapse).init();
+            });
+        }
+    }
+
+    appInit();
 
 </script>
