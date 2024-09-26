@@ -8344,15 +8344,21 @@ html {
   border-radius: 1px;
   display: block;
   position: absolute;
-  top: 2px;
+  top: 50%;
   right: 0;
   transform: rotate(-45deg);
   width: 9px;
   height: 9px;
+  margin-top: -7px;
 }
 .app-dropdown--expanded .app-dropdown__toggle:after {
   transform: rotate(135deg);
-  top: 8px;
+  margin-top: -3px;
+}
+
+.app-dropdown--year .app-dropdown__toggle {
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .app-dropdown__menu {
@@ -8369,6 +8375,10 @@ html {
   display: flex;
 }
 
+.app-dropdown--year .app-dropdown__menu {
+  right: 20px;
+}
+
 .app-dropdown__menu-list {
   list-style: none;
   margin: 0 0 1rem;
@@ -8382,13 +8392,13 @@ html {
 }
 
 .app-dropdown__menu-link {
-  margin-bottom: 0.5rem;
   display: flex;
   gap: 0.5rem;
   flex-direction: row;
   align-items: flex-start;
   text-decoration: none;
   color: #0b0c0c;
+  min-width: 100px;
 }
 .app-dropdown__menu-link:visited, .app-dropdown__menu-link:link {
   color: #0b0c0c;

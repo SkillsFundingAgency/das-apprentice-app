@@ -10,7 +10,33 @@
     <div class="loader" style="margin-bottom: 40px"></div>
 </div>
 
-<h1 class="govuk-heading-xl">Your tasks</h1>
+<div class="app-page-header app-sticky">
+    <h1 class="govuk-heading-xl">Your tasks</h1>
+    <div class="app-dropdown app-dropdown--year" data-module="app-dropdown">
+        <button class="app-dropdown__toggle" aria-expanded="false">
+            <span class="govuk-visually-hidden">Tasks for the year </span>2024
+        </button>
+        <div class="app-dropdown__menu">
+            <ul class="app-dropdown__menu-list">
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>2023
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>2024
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>2025
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="app-tabs" data-module="app-tabs">
     <div class="app-page-header app-sticky">
