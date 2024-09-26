@@ -127,6 +127,7 @@
         this.content = container.querySelector(".app-collapse__content");
         this.radios = container.querySelectorAll(".app-radios__input");
         this.expandedClass = "app-collapse--expanded";
+        delete container.dataset.module;
     }
 
     Collapse.prototype.init = function () {
