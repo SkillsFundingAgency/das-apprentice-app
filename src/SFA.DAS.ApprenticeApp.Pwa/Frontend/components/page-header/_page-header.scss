@@ -7,6 +7,10 @@
   z-index: 1;
 }
 
+.app-page-header--align-bottom {
+  align-items: flex-end;
+}
+
 .app-page-header__heading {
   @extend .govuk-heading-l;
   width: 60%;

@@ -37,6 +37,16 @@
   }
 }
 
+.app-dropdown--sort .app-dropdown__toggle:after {
+  top: auto;
+  bottom: 7px;
+}
+
+.app-dropdown--sort.app-dropdown--expanded .app-dropdown__toggle:after {
+  top: auto;
+  bottom: 1px;
+}
+
 .app-dropdown--year .app-dropdown__toggle {
   font-weight: $govuk-font-weight-bold;
   font-size: 1.5rem;
@@ -67,7 +77,7 @@
 }
 
 .app-dropdown--year .app-dropdown__menu {
-  right: 20px;
+  right: 10px;
 }
 
 .app-dropdown--sort {
@@ -80,7 +90,7 @@
 }
 
 .app-dropdown--sort .app-dropdown__menu {
-  right: 20px;
+  right: 10px;
 }
 
 .app-dropdown__menu-list {
@@ -106,6 +116,7 @@
   text-decoration: none;
   color: $govuk-text-colour;
   min-width: 100px;
+  white-space: nowrap;
   &:visited,
   &:link {
     color: $govuk-text-colour;

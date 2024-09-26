@@ -11,7 +11,7 @@
 </div>
 
 <div class="app-page-header app-sticky">
-    <h1 class="govuk-heading-xl">Your tasks</h1>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Your tasks</h1>
     <div class="app-dropdown app-dropdown--year" data-module="app-dropdown">
         <button class="app-dropdown__toggle" aria-expanded="false">
             <span class="govuk-visually-hidden">Tasks for the year </span>2024
@@ -39,7 +39,7 @@
 </div>
 
 <div class="app-tabs" data-module="app-tabs">
-    <div class="app-page-header app-sticky">
+    <div class="app-page-header app-page-header--align-bottom">
         <ul class="app-tabs__list">
             <li class="app-tabs__list-item">
                 <a class="app-tabs__tab todo" href="#tasks-todo">
@@ -74,12 +74,6 @@
         </div>
         <partial name="_Filter.cshtml" />
     </div>
-    <span class="app-navigation__icon">
-        <svg>
-            <use xlink:href="/assets/images/icons.svg#unlink">
-            </use>
-        </svg>
-    </span>
     <div id="filters-set" class="govuk-!-margin-bottom-4"></div>
 
     <div class="app-tabs__panel" id="tasks-todo">
