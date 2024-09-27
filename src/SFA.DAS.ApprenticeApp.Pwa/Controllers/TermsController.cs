@@ -30,9 +30,9 @@ public class TermsController : Controller
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
-            var apprentice = await _client.GetApprentice(new Guid(apprenticeId));
+            var termsAccepted = Claims.GetClaim(HttpContext, Constants.TermsAcceptedClaimKey);
 
-            if (apprentice?.TermsOfUseAccepted == true)
+            if (termsAccepted == "True")
             {
                 return RedirectToAction("Index", "Welcome");
             }

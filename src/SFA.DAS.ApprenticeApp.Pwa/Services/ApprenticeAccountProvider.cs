@@ -26,8 +26,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Services
         }
 
         public async Task<IApprenticeAccount?> PutApprenticeAccount(string email, string govIdentifier)
-        {
-            
+        {   
             return await _client.PutApprentice(new PutApprenticeRequest(email, govIdentifier));
         }
     }

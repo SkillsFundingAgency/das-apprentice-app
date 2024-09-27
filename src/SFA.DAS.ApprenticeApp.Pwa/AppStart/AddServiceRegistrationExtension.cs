@@ -17,29 +17,6 @@ public static class AddServiceRegistrationExtension
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         services.AddSingleton<IUrlHelperFactory, UrlHelperFactory>();
         services.AddTransient<ICustomClaims, ApprenticeAccountPostAuthenticationClaimsHandler>();
-        if (appConfig.UseGovSignIn)
-        {
-            services.AddGovLoginAuthentication(appConfig, configuration);
-        }
-        //else
-        //{
-        //    services.AddTransient<IOidcService, StubOidcService>();
-        //    services.AddAuthentication(appConfig, environment);
-        //}
-
-
-        //services.AddTransient<IStubAuthenticationService, StubAuthenticationService>();
-
-        //if (appConfig.UseGovSignIn)
-        //{
-        //    services.AddTransient<ICustomClaims, ApprenticeAccountPostAuthenticationClaimsHandler>();
-        //    services.AddGovLoginAuthentication(appConfig, configuration);
-        //}
-        //else
-        //{
-           
-        //    services.AddTransient<ICustomClaims, CustomClaims>();
-        //    //services.AddApprenticeAuthentication(appConfig.MetadataAddress, environment);
-        //}
+        services.AddGovLoginAuthentication(appConfig, configuration);
     }
 }

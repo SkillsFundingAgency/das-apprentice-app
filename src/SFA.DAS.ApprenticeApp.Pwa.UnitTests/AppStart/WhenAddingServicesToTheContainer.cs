@@ -17,20 +17,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.AppStart
 {
     public class WhenAddingServicesToTheContainer
     {
-        //[Test]
-        //[TestCase(typeof(ApprenticeAccountPostAuthenticationClaimsHandler))]
-        //public void Then_The_Dependencies_Are_Correctly_Resolved(Type toResolve)
-        //{
-        //    ServiceCollection serviceCollection = new();
-        //    SetupServiceCollection(serviceCollection);
-
-        //    var provider = serviceCollection.BuildServiceProvider();
-        //    var type = provider.GetService(toResolve);
-
-        //    Assert.That(type, Is.Not.Null);
-        //}
-
-
         [Test, MoqAutoData]
         public void Then_The_OuterApi_Is_Added(
             [Frozen] Configuration.OuterApiConfiguration configuration)

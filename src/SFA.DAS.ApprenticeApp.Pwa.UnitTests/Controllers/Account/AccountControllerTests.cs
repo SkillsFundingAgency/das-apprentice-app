@@ -24,15 +24,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         }
 
         [Test, MoqAutoData]
-        public void Loading_Login_Page([Greedy] AccountController controller)
-        {
-            var result = controller.Login() as RedirectToActionResult;
-            result.Should().NotBeNull();
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Home");
-        }
-
-        [Test, MoqAutoData]
         public void Loading_YourAccount_Page([Greedy] AccountController controller)
         {
             var result = controller.YourAccount() as ActionResult;

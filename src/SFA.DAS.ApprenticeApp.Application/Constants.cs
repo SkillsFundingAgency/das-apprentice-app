@@ -6,6 +6,7 @@
         public const string WelcomeSplashScreenCookieName = "SFA.ApprenticeApp.WelcomeSplashScreen";
         public const string TaskFiltersCookieName = "SFA.ApprenticeApp.TaskFilters";
         public const string ApprenticeIdClaimKey = "apprentice_id";
+        public const string TermsAcceptedClaimKey = "TermsOfUseAccepted";
         public const string ApprenticeshipIdClaimKey = "ApprenticeshipId";
         public const string StandardUIdClaimKey = "StandardUId";
 

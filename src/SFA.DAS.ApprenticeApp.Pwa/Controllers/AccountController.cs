@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
@@ -33,12 +34,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
