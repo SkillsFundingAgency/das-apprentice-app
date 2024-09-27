@@ -6,11 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -21,10 +26,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
+        private readonly IOidcService _oidcService;
+        private readonly AuthenticatedUser _user;
+        private readonly IApprenticeAccountProvider _apprenticeAccountProvider;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
             ApplicationConfiguration appConfig,
+            AuthenticatedUser user,
+            IOidcService oidcService, IApprenticeAccountProvider apprenticeAccountProvider,
             IConfiguration configuration,
             IOuterApiClient client
         )
@@ -34,13 +44,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
+            _oidcService = oidcService;
+            _apprenticeAccountProvider = apprenticeAccountProvider;
+            _user = user;
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult Authenticated()
+        public async Task<IActionResult> Authenticated()
         {
-            return View();
+            var apprenticeId = User.Identities.First().Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+            var additionalClaims = new ClaimsIdentity();
+
+            additionalClaims.AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
+            additionalClaims.AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+
+            User.AddIdentity(additionalClaims);
+
+            return RedirectToAction("Index", "Terms");
+           
         }
 
         [HttpGet]

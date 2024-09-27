@@ -32,7 +32,7 @@ public class TermsController : Controller
         {
             var termsAccepted = Claims.GetClaim(HttpContext, Constants.TermsAcceptedClaimKey);
 
-            if (termsAccepted == "True")
+            if (termsAccepted != null && termsAccepted == "True")
             {
                 return RedirectToAction("Index", "Welcome");
             }
