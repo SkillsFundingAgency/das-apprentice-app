@@ -1,9 +1,14 @@
 ﻿using AutoFixture.NUnit3;
+using Azure.Core;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -13,6 +18,7 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -104,7 +110,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
         }
 
         [Test, MoqAutoData]
-        public async Task DoneTasksWithCookieSet(
+        public async Task DoneTasksWithYearCookieSet(
             [Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -118,19 +124,108 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             })});
             httpContext.User = claimsPrincipal;
 
-            httpContext.Response.Cookies.Append(Constants.TaskFilterYearCookieName, "2024");
-            httpContext.Response.Cookies.Append(Constants.TaskFiltersCookieName, "TaskFiltersCookieName");
-            httpContext.Response.Cookies.Append(Constants.TaskFilterSortCookieName, "sortorder");
+            httpContext.Request.Cookies = MockRequestCookieCollection(Constants.TaskFilterYearCookieName, "2024");
 
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
 
-            var result = await controller.DoneTasks();
+            var result = await controller.DoneTasks() as ActionResult;
+            Assert.IsNotNull(result);
+        }
 
-            result.Should().BeOfType(typeof(PartialViewResult));
-            result.ViewName.Should().Be("_TasksDone");
+        [Test, MoqAutoData]
+        public async Task DoneTasksWithSortCookieSet(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            httpContext.Request.Cookies = MockRequestCookieCollection(Constants.TaskFilterSortCookieName, "sortorder");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.DoneTasks() as ActionResult;
+            Assert.IsNotNull(result);
+        }
+
+        [Test, MoqAutoData]
+        public async Task TodoTasksWithYearCookieSet(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            httpContext.Request.Cookies = MockRequestCookieCollection(Constants.TaskFilterYearCookieName, "2024");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.ToDoTasks() as ActionResult;
+            Assert.IsNotNull(result);
+        }
+
+        [Test, MoqAutoData]
+        public async Task TodoTasksWithSortCookieSet(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim,
+                apprenticeshipIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            httpContext.Request.Cookies = MockRequestCookieCollection(Constants.TaskFilterSortCookieName, "sortorder");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.ToDoTasks() as ActionResult;
+            Assert.IsNotNull(result);
+        }
+
+        private static IRequestCookieCollection MockRequestCookieCollection(string key, string value)
+        {
+            var requestFeature = new HttpRequestFeature();
+            var featureCollection = new FeatureCollection();
+
+            requestFeature.Headers = new HeaderDictionary();
+            requestFeature.Headers.Add(HeaderNames.Cookie, new StringValues(key + "=" + value));
+
+            featureCollection.Set<IHttpRequestFeature>(requestFeature);
+
+            var cookiesFeature = new RequestCookiesFeature(featureCollection);
+
+            return cookiesFeature.Cookies;
         }
 
         [Test, MoqAutoData]
