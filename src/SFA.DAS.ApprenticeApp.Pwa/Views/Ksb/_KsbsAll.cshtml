@@ -2,53 +2,63 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 
 
-@foreach (var ksb in Model.Ksbs)
-{
-    <div class="app-card ksb-item @ksb.Type">
-        <div class="app-page-header app-sticky">
-        <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
+@{
+    string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
+    foreach (var KSBType in KSBTypes)
+    {
+        <div class="app-tabs__panel" id="@KSBType.ToLower()">
+            @foreach (var ksb in Model.Ksbs)
+            {
+                if (KSBType == ksb.Type.ToString())
+                {
+                    <div class="app-card ksb-item">
+                        <div class="app-card__header">
+                            <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
+                            <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" class="app-link">
+                                <span>Edit</span>
+                            </a>
+                        </div>
+                        <p>@ksb.Detail</p>
+                        @if (ksb.Progress != null && ksb.Progress.Tasks.Count > 0)
+                        {
+                            <ul class="app-icon-list app-icon-list--muted">
+                                <li>
+                                    <span class="app-icon-list__icon">
+                                        <svg>
+                                            <use xlink:href="/assets/images/icons.svg#tasks"></use>
+                                        </svg>
+                                    </span><span>
+                                        Linked to @ksb.Progress.Tasks.Count.ToString()
+                                        @if (@ksb.Progress.Tasks.Count > 1)
+                                        {
+                                            <text>tasks</text>
+                                        }
+                                        else
+                                        {
+                                            <text>task</text>
+                                        }
+                                    </span>
+                                </li>
+                            </ul>
+                        }
 
-        <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" class="app-dropdown__menu-link">
-                <span class="app-dropdown__menu-icon svg-placeholder"></span>
-                <span>Edit</span>
-            </a>
-     </div>
-            <p>@ksb.Detail</p>
-        @if (ksb.Progress != null && ksb.Progress.Tasks.Count > 0)
-        {
-            <ul class="app-icon-list app-icon-list--muted">
-                <li>
-                    <span class="app-icon-list__icon">
-                        <svg>
-                            <use xlink:href="/assets/images/icons.svg#tasks"></use>
-                        </svg>
-                        </span><span>
-                            Linked to @ksb.Progress.Tasks.Count.ToString()
-                            @if (@ksb.Progress.Tasks.Count > 1)
-                            {
-                                <text>tasks</text>
-                            }
-                            else
-                            {
-                                <text>task</text>
-                            }
-                        </span>
-                </li>
-                </ul>
-        }
-        <div class="app-tag">
-            @if (ksb.Progress == null)
-            {
-                <text>Not started</text>
-            }
-            else
-            {
-                var status = ksb.Progress.CurrentStatus;
-                string statusDisplay = status.GetEnumDescription();
-                <text>@statusDisplay</text>
+                        @if (ksb.Progress == null)
+                        {
+                            <div class="app-tag app-tag--status-notstarted">
+                                <text>Not started</text>
+                            </div>
+                        }
+                        else
+                        {
+                            var status = ksb.Progress.CurrentStatus;
+                            string statusDisplay = status.GetEnumDescription();
+                            <div class="app-tag app-tag--status-@status.ToString().ToLower()">
+                                <text>@statusDisplay</text>
+                            </div>
+                        }
+                    </div>
+                }
             }
         </div>
-       
-        <hr class="app-separator" />
-    </div>
+    }
 }
