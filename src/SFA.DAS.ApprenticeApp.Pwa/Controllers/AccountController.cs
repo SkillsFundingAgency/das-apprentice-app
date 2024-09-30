@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
@@ -38,7 +39,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> Authenticated()
         {
-            var apprenticeId = User.Identities.First().Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
             var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
             if (apprenticeDetails.MyApprenticeship != null) {
@@ -70,7 +71,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     Response.Cookies.Append(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString(), cookieOptions);
                 }
 
-                string message = $"User authenticated and cookies added for {apprenticeId}";
+                string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
                 return RedirectToAction("Index", "Terms");
             }
@@ -123,8 +124,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Error", "Account");
             }
             
-            
-           
         }
 
 
