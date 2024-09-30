@@ -3,19 +3,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
-using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
-using SFA.DAS.ApprenticeApp.Pwa.Services;
-using SFA.DAS.ApprenticePortal.Authentication;
-using SFA.DAS.ApprenticePortal.SharedUi.Menu;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -26,15 +19,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
-        private readonly IOidcService _oidcService;
-        private readonly AuthenticatedUser _user;
-        private readonly IApprenticeAccountProvider _apprenticeAccountProvider;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
-            ApplicationConfiguration appConfig,
-            AuthenticatedUser user,
-            IOidcService oidcService, IApprenticeAccountProvider apprenticeAccountProvider,
+            ApplicationConfiguration appConfig, 
             IConfiguration configuration,
             IOuterApiClient client
         )
@@ -44,9 +32,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
-            _oidcService = oidcService;
-            _apprenticeAccountProvider = apprenticeAccountProvider;
-            _user = user;
         }
 
         [Authorize]
@@ -56,15 +41,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             var apprenticeId = User.Identities.First().Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
             var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
 
-            var additionalClaims = new ClaimsIdentity();
+            if (apprenticeDetails.MyApprenticeship != null) {
+                var appCookie = Request.Cookies[Constants.ApprenticeshipIdClaimKey];
 
-            additionalClaims.AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
-            additionalClaims.AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+                if (appCookie == null)
+                {
+                    var cookieOptions = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddHours(1),
+                        Path = "/",
+                        Secure = true,
+                        HttpOnly = true
+                    };
+                    Response.Cookies.Append(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString(), cookieOptions);
+                }
 
-            User.AddIdentity(additionalClaims);
+                var crsCookie = Request.Cookies[Constants.StandardUIdClaimKey];
 
-            return RedirectToAction("Index", "Terms");
-           
+                if (crsCookie == null)
+                {
+                    var cookieOptions = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddHours(1),
+                        Path = "/",
+                        Secure = true,
+                        HttpOnly = true
+                    };
+                    Response.Cookies.Append(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString(), cookieOptions);
+                }
+
+                string message = $"User authenticated and cookies added for {apprenticeId}";
+                _logger.LogInformation(message);
+                return RedirectToAction("Index", "Terms");
+            }
+            return RedirectToAction("Error", "Account");
+
         }
 
         [HttpGet]
@@ -127,20 +138,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             authenticationProperties.Parameters.Clear();
             authenticationProperties.Parameters.Add("id_token", idToken);
 
-            var schemes = new List<string>
-            {
-                CookieAuthenticationDefaults.AuthenticationScheme
-            };
-
             _ = bool.TryParse(_appConfig.StubAuth, out var stubAuth);
-            if (!stubAuth)
+           
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if(!stubAuth)
             {
-                schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
+                await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             }
 
-
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+            HttpContext.Response.Cookies.Delete(Constants.ApprenticeshipIdClaimKey);
+            HttpContext.Response.Cookies.Delete(Constants.StandardUIdClaimKey);
 
             return RedirectToAction("Index", "Home");
         }

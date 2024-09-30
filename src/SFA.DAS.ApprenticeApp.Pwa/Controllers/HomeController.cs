@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
@@ -19,11 +21,19 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        if (HttpContext.User.Identity.IsAuthenticated)
+        if (HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
         {
-            return RedirectToAction("Index", "Tasks");
-        }
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
+                if (!string.IsNullOrEmpty(apprenticeshipId))
+                {
+                    return RedirectToAction("Index", "Tasks");
+                }
+            }
+        }
         var vm = new HomeViewModel();
         return View(vm);
     }
