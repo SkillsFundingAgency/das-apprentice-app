@@ -49,7 +49,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     var cookieOptions = new CookieOptions
                     {
-                        Expires = DateTime.Now.AddHours(1),
+                        Expires = DateTime.Now.AddDays(1),
                         Path = "/",
                         Secure = true,
                         HttpOnly = true
@@ -63,7 +63,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     var cookieOptions = new CookieOptions
                     {
-                        Expires = DateTime.Now.AddHours(1),
+                        Expires = DateTime.Now.AddDays(1),
                         Path = "/",
                         Secure = true,
                         HttpOnly = true
