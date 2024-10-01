@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Security.Claims;
-using System.Threading.RateLimiting;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
-
-namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
+﻿namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
 {
     public static class Claims
     {
@@ -14,12 +9,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                 try
                 {
                     var claim = httpContext.User.Claims.FirstOrDefault(c => c.Type == claimKey);
-
-                    if (claim == null)
-                    {
-                        return httpContext.Request.Cookies[claimKey].ToString() ?? string.Empty;
-                          
-                    }
                     return claim?.Value ?? string.Empty;
                 }
                 catch

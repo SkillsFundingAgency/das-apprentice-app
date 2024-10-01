@@ -30,30 +30,25 @@ public class ProfileController : Controller
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
-            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+            var termsOfUseAccepted = Claims.GetClaim(HttpContext, Constants.TermsAcceptedClaimKey);
 
-            if (apprenticeDetails.Apprentice != null)
+            if (termsOfUseAccepted.ToLower() == "true")
             {
-                if (apprenticeDetails.Apprentice?.TermsOfUseAccepted != false)
-                {
-                    return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship });
-                }
-                else
-                {
-                    string termsMessage = $"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}";
-                    _logger.LogInformation(termsMessage);
-                    return RedirectToAction("Index", "Terms");
-                }
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship });
             }
-
-            string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Profile Index. ApprenticeId: {apprenticeId}";
-            _logger.LogWarning(message);
+            else
+            {
+                string termsMessage = $"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}";
+                _logger.LogInformation(termsMessage);
+                return RedirectToAction("Index", "Terms");
+            }
         }
         else
         {
             _logger.LogWarning("ApprenticeId not found in user claims for Profile Index.");
+            return RedirectToAction("Index", "Home");
         }
-        return RedirectToAction("Index", "Home");
     }
 
     [Authorize]

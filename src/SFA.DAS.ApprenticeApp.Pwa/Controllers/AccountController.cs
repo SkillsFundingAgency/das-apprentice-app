@@ -40,43 +40,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> Authenticated()
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-
-            if (apprenticeDetails.MyApprenticeship != null) {
-                var appCookie = Request.Cookies[Constants.ApprenticeshipIdClaimKey];
-
-                if (appCookie == null)
-                {
-                    var cookieOptions = new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddDays(1),
-                        Path = "/",
-                        Secure = true,
-                        HttpOnly = true
-                    };
-                    Response.Cookies.Append(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString(), cookieOptions);
-                }
-
-                var crsCookie = Request.Cookies[Constants.StandardUIdClaimKey];
-
-                if (crsCookie == null)
-                {
-                    var cookieOptions = new CookieOptions
-                    {
-                        Expires = DateTime.Now.AddDays(1),
-                        Path = "/",
-                        Secure = true,
-                        HttpOnly = true
-                    };
-                    Response.Cookies.Append(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString(), cookieOptions);
-                }
-
+            if(!string.IsNullOrEmpty(apprenticeId))
+            { 
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
                 return RedirectToAction("Index", "Terms");
             }
             return RedirectToAction("Error", "Account");
-
         }
 
         [HttpGet]
@@ -148,6 +118,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             HttpContext.Response.Cookies.Delete(Constants.ApprenticeshipIdClaimKey);
             HttpContext.Response.Cookies.Delete(Constants.StandardUIdClaimKey);
+            
 
             return RedirectToAction("Index", "Home");
         }

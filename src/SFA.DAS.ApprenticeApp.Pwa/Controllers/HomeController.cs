@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
@@ -10,16 +11,19 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IOuterApiClient _client;
 
     public HomeController
         (
-        ILogger<HomeController> logger
+        ILogger<HomeController> logger,
+        IOuterApiClient client
         )
     {
         _logger = logger;
+        _client = client;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         if (HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
         {
@@ -27,8 +31,8 @@ public class HomeController : Controller
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-                if (!string.IsNullOrEmpty(apprenticeshipId))
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
                 {
                     return RedirectToAction("Index", "Tasks");
                 }

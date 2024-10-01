@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
     public class WhenLoadingHomePage
     {
         [Test, MoqAutoData]
-        public void Then_The_Homepage_Is_Loaded([Greedy] HomeController controller)
+        public async Task Then_The_Homepage_Is_Loaded([Greedy] HomeController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -30,12 +31,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
                 HttpContext = httpContext
             };
 
-            var result = controller.Index() as ActionResult;
+            var result = await controller.Index() as ActionResult;
             result.Should().NotBeNull();
         }
 
         [Test, MoqAutoData]
-        public void Redirect_If_logged_in([Greedy] HomeController controller)
+        public async Task Redirect_If_logged_in([Greedy] HomeController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -59,7 +60,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
 
             if (httpContext.User.Identity.IsAuthenticated)
             {
-                var result = controller.Index() as ActionResult;
+                var result = await controller.Index() as ActionResult;
                 result.Should().NotBeNull();
             }
         }

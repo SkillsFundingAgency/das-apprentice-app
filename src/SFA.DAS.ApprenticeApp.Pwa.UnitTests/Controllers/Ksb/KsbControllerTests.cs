@@ -57,13 +57,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "");
-            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim,
-                apprenticeshipIdClaim,
-                standardUIdClaim
+                apprenticeIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -71,6 +67,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             {
                 HttpContext = httpContext
             };
+
+            client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync((ApprenticeDetails)null);
 
             var result = await controller.Index() as RedirectToActionResult;
             using (new AssertionScope())
@@ -155,13 +153,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "");
-            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim,
-                apprenticeshipIdClaim,
-                standardUIdClaim
+                apprenticeIdClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -169,6 +163,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             {
                 HttpContext = httpContext
             };
+
+            client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync((ApprenticeDetails)null);
 
             var result = await controller.LinkKsbs() as RedirectToActionResult;
             using (new AssertionScope())
@@ -390,7 +386,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             Guid id = Guid.NewGuid();
 
             var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid;
+            var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
@@ -403,7 +399,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             {
                 HttpContext = httpContext
             };
-
+            client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync((ApprenticeDetails)null);
             var result = await controller.AddUpdateKsbProgress(id) as ViewResult;
             using (new AssertionScope())
             {

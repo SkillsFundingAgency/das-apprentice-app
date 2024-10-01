@@ -69,8 +69,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
            [Greedy] AccountController controller)
         {
             var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
 
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
@@ -83,8 +82,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
                 HttpContext = httpContext
             };
 
-            client.Setup(c => c.GetApprenticeDetails(apprenticeId)).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null});
-            var result = await controller.Authenticated() as RedirectToActionResult;
+             var result = await controller.Authenticated() as RedirectToActionResult;
             result.ActionName.Should().Be("Error");
             result.ControllerName.Should().Be("Account");
         }
