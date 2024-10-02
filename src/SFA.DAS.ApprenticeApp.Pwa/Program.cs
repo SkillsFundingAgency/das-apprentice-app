@@ -37,9 +37,7 @@ builder.Services.AddLogging(builder =>
 
 // Add the OpenTelemetry telemetry service to the application.
 // This service will collect and send telemetry data to Azure Monitor.
-builder.Services.AddOpenTelemetry().UseAzureMonitor(options => {
-    options.ConnectionString = "APPINSIGHTS_INSTRUMENTATIONKEY";
-});
+builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 var app = builder.Build();
 
