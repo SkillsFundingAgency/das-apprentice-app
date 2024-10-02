@@ -39,12 +39,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-
-                    var taskResult = await _client.GetApprenticeTasks(apprenticeshipId, Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                    var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                     if (taskResult == null || taskResult.Tasks.Count == 0)
                     {
@@ -69,7 +64,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     };
                     return PartialView("_TasksToDo", vm);
                 }
-            }
             return PartialView("_TasksNotStarted");
         }
 
@@ -81,12 +75,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-
-                    var taskResult = await _client.GetApprenticeTasks(apprenticeshipId, Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                    var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 12));
 
                     if (taskResult == null || taskResult.Tasks.Count == 0)
                     {
@@ -109,7 +98,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         Tasks = taskResult.Tasks,
                     };
                     return PartialView("_TasksDone", vm);
-                }
+                
             }
                 return PartialView("_TasksNotStarted");
         }
@@ -122,14 +111,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-                    var standardUId = apprenticeDetails.MyApprenticeship.StandardUId;
-
-                    //using default value of core until we have the correct value from Approvals api
-                    var taskdata = await _client.GetTaskViewData(apprenticeshipId, id, standardUId, "core");
+                
+                    var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
 
                     var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
                     var vm = new EditTaskPageModel
@@ -143,10 +126,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return View(vm);
                 }
 
-                return RedirectToAction("Index", "Tasks");
-            }
-
-            return View();
+            return RedirectToAction("Index", "Tasks");
         }
 
         [HttpPost]
@@ -157,11 +137,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString();
-
                     if (task.KsbsLinked != null)
                     {
                         if (task.KsbsLinked[0] != null)
@@ -172,7 +147,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
                     try
                     {
-                        await _client.UpdateApprenticeTask(long.Parse(apprenticeshipId), task.TaskId, task);
+                        await _client.UpdateApprenticeTask(new Guid(apprenticeId), task.TaskId, task);
                     }
                     catch
                     {
@@ -180,7 +155,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
 
                     return RedirectToAction("Index", new { status = (int)task.Status });
-                }
             }
 
             return View();
@@ -203,7 +177,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString();
 
-                    var categories = await _client.GetTaskCategories(long.Parse(apprenticeshipId));
+                    var categories = await _client.GetTaskCategories(new Guid(apprenticeId));
 
                     var vm = new AddTaskPageModel
                     {
@@ -289,12 +263,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-
                 string preMessage = $"Deleting task with id {taskId}";
                 _logger.LogInformation(preMessage);
 
-                await _client.DeleteApprenticeTask(long.Parse(apprenticeshipId), taskId);
+                await _client.DeleteApprenticeTask(new Guid(apprenticeId), taskId);
                 string postMessage = $"Deleting task with id {taskId}";
                 _logger.LogInformation(postMessage);
 
@@ -316,9 +288,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-
-                await _client.UpdateTaskStatus(long.Parse(apprenticeshipId), taskId, statusId);
+                await _client.UpdateTaskStatus(new Guid(apprenticeId), taskId, statusId);
 
                 return RedirectToAction("Index");
             }

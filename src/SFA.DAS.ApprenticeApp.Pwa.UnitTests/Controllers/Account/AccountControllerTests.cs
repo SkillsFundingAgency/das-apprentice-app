@@ -19,6 +19,10 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using System.Linq;
 using SFA.DAS.GovUK.Auth.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 {
@@ -128,6 +132,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ControllerName.Should().Be("Account");
         }
 
+        
         [Test, MoqAutoData]
         public void Get_AccountDetails_StubFails_InProd(
            [Frozen] Mock<IConfiguration> configuration,

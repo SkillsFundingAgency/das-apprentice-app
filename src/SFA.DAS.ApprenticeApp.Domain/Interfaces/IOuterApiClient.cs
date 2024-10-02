@@ -7,17 +7,46 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 {
     public interface IOuterApiClient
     {
+        //Apprentice
         [Get("/apprentices/{id}")]
         Task<Apprentice> GetApprentice([Path] Guid id);
+
+        [Patch("/apprentices/{id}")]
+        Task UpdateApprentice([Path] Guid id, [Body] JsonPatchDocument<Apprentice> patch);
+
+        [Post("/apprentices/{id}/subscriptions")]
+        Task ApprenticeAddSubscription([Path] Guid id, [Body] ApprenticeAddSubscriptionRequest request);
+
+        [Delete("/apprentices/{id}/subscriptions")]
+        Task ApprenticeRemoveSubscription([Path] Guid id, [Body] ApprenticeRemoveSubscriptionRequest request);
 
         [Put("/apprentices")]
         Task<Apprentice> PutApprentice([Body] PutApprenticeRequest request);
 
+        //ApprenticeDetails
         [Get("/apprentices/{id}/details")]
         Task<ApprenticeDetails> GetApprenticeDetails([Path] Guid id);
 
-        [Patch("/apprentices/{apprenticeId}")]
-        Task UpdateApprentice([Path] Guid apprenticeId, [Body] JsonPatchDocument<Apprentice> patch);
+        //KsbProgress
+        [Post("/apprentices/{id}/ksbs")]
+        Task AddUpdateKsbProgress([Path] long id, [Body] ApprenticeKsbProgressData data);
+
+        [Get("/apprentices/{id}/ksbs")]
+        Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] Guid id);
+
+        [Delete("/apprentices/{id}/ksbs/{ksbProgressId}/taskid/{taskId}")]
+        Task RemoveTaskToKsbProgress([Path] Guid id, [Path] int ksbProgressId, [Path] int taskId);
+
+        [Get("/apprentices/{id}/ksbs")]
+        Task<List<ApprenticeKsbProgressData>> GetApprenticeshipKsbProgresses([Path] Guid id, [Query] Guid[] guids);
+
+        [Get("/apprentices/{id}/ksbs/taskid/{taskId}")]
+        Task<List<ApprenticeKsbProgressData>> GetKsbProgressForTask([Path] Guid id, [Path] int taskId);
+
+        [Get("/apprentices/{id}/ksbs/{ksbId}")]
+        Task<ApprenticeKsb> GetApprenticeshipKsb([Path] Guid id, [Path] Guid ksbId);
+
+        //Support&Guidance
 
         [Get("/supportguidance/categories/{contentType}")]
         Task<List<ApprenticeAppCategoryPage>> GetCategories([Path] string contentType);
@@ -31,53 +60,29 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Post("/apprentices/{id}/articles/{articleIdentifier}")]
         Task AddUpdateApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Body] ApprenticeArticleRequest request);
 
-        [Post("/apprentices/{id}/subscriptions")]
-        Task ApprenticeAddSubscription([Path] Guid id, [Body] ApprenticeAddSubscriptionRequest request);
-
-        [Delete("/apprentices/{id}/subscriptions")]
-        Task ApprenticeRemoveSubscription([Path] Guid id, [Body] ApprenticeRemoveSubscriptionRequest request);
-
-        [Get("/apprentices/{id}/progress/tasks")]
-        Task<ApprenticeTasksCollection> GetApprenticeTasks([Path] long id, int status, DateTime fromDate, DateTime toDate);
-
-        [Get("/apprentices/{id}/progress/tasks/{taskId}")]
-        Task<ApprenticeTasksCollection> GetApprenticeTaskById([Path] long id, [Path] int taskId);
+        //Tasks
+        [Get("/apprentices/{id}/progress/taskCategories")]
+        Task<ApprenticeTaskCategoryCollection> GetTaskCategories([Path] Guid id);
 
         [Post("/apprentices/{apprenticeshipId}/progress/tasks")]
         Task AddApprenticeTask([Path] long apprenticeshipId, [Body] ApprenticeTask request);
 
-        [Put("/apprentices/{id}/progress/tasks/{taskId}")]
-        Task UpdateApprenticeTask([Path] long id, [Path] int taskId, [Body] ApprenticeTask request);
+        [Get("/apprentices/{id}/progress/tasks")]
+        Task<ApprenticeTasksCollection> GetApprenticeTasks([Path] Guid id, int status, DateTime fromDate, DateTime toDate);
+
+        [Get("/apprentices/{id}/progress/tasks/{taskId}")]
+        Task<ApprenticeTasksCollection> GetApprenticeTaskById([Path] Guid id, [Path] int taskId);
 
         [Delete("/apprentices/{id}/progress/tasks/{taskId}")]
-        Task DeleteApprenticeTask([Path] long id, [Path] int taskId);
+        Task DeleteApprenticeTask([Path] Guid id, [Path] int taskId);
 
-        [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksbs")]
-        Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] long id, [Path] string standardUid, [Path] string option);
-
-        [Get("/apprentices/{id}/apprenticeship/{standardUid}/options/{option}/ksb/{ksbId}")]
-        Task<ApprenticeKsb> GetApprenticeshipKsb([Path] long id, [Path] string standardUid, [Path] string option, [Path] Guid ksbId);
-
-        [Get("/apprentices/{id}/ksbs")]
-        Task<List<ApprenticeKsbProgressData>> GetApprenticeshipKsbProgresses([Path] long id, [Query] Guid[] guids);
-
-        [Post("/apprentices/{id}/ksbs")]
-        Task AddUpdateKsbProgress([Path] long id, [Body] ApprenticeKsbProgressData data);
-
-        [Get("/apprentices/{id}/progress/taskCategories")]
-        Task<ApprenticeTaskCategoryCollection> GetTaskCategories([Path] long id);
+        [Put("/apprentices/{id}/progress/tasks/{taskId}")]
+        Task UpdateApprenticeTask([Path] Guid id, [Path] int taskId, [Body] ApprenticeTask request);
 
         [Post("/apprentices/{id}/progress/tasks/{taskId}/status/{statusId}")]
-        Task UpdateTaskStatus([Path] long id, [Path] int taskId, [Path] int statusId);
+        Task UpdateTaskStatus([Path] Guid id, [Path] int taskId, [Path] int statusId);
 
-        [Get("/apprentices/{id}/ksbs/taskid/{taskId}")]
-        Task<List<ApprenticeKsbProgressData>> GetKsbProgressForTask([Path] long id, [Path] int taskId);
-
-        [Get("/apprentices/{id}/progress/taskCategories/tasks/{taskId}/courses/{standardUid}/options/{option}/ksbs")]
-        Task<ApprenticeTaskData> GetTaskViewData([Path] long id, [Path] int taskId, [Path] string standardUid, [Path] string option);
-
-        [Delete("/apprentices/{apprenticeshipId}/ksbs/{ksbProgressId}/taskid/{taskId}")]
-        Task RemoveTaskToKsbProgress([Path] long apprenticeshipId, [Path] int ksbProgressId, [Path] int taskId);
-
+        [Get("/apprentices/{id}/progress/taskCategories/tasks/{taskId}/ksbs")]
+        Task<ApprenticeTaskData> GetTaskViewData([Path] Guid id, [Path] int taskId);
     }
 }

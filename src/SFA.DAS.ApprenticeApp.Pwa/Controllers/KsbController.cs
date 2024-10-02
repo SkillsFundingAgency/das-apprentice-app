@@ -30,14 +30,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-                    var standardUId = apprenticeDetails.MyApprenticeship.StandardUId;
-
-                    //using default value of core until we have the correct value from Approvals api
-                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeshipId, standardUId, "core");
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
 
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
@@ -49,12 +42,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     };
 
                     return View(apprenticeKsbsPageModel);
-                }
-                else
-                {
-                    string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs Index. ApprenticeId: {apprenticeId}";
-                    _logger.LogWarning(message);
-                }
             }
             else
             {
@@ -71,15 +58,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-                    var standardUId = apprenticeDetails.MyApprenticeship.StandardUId;
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+                    
+                    if(apprenticeKsbResult == null)
+                    {
+                        _logger.LogWarning("No Ksbs found for apprentice in LinkKsbs.");
+                        return RedirectToAction("Index", "Ksb");
+                    }
 
-                    //using default value of core until we have the correct value from Approvals api
-                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(apprenticeshipId, standardUId, "core");
-                    ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
+                ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
                     {
                         Ksbs = apprenticeKsbResult,
@@ -89,14 +76,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         KsbStatuses = KsbHelpers.KSBStatuses()
                     };
 
-                    return View("_LinkKsb", apprenticeKsbsPageModel);
-                }
-                else 
-                {
-                    string message = $"Apprentice Details not found - 'apprenticeDetails' is null in Ksbs LinkKsbs. ApprenticeId: {apprenticeId}";
-                    _logger.LogWarning(message);
-                }
-              
+                return View("_LinkKsb", apprenticeKsbsPageModel);   
             }
             else
             {
@@ -113,13 +93,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-                    var standardUId = apprenticeDetails.MyApprenticeship.StandardUId;
-
-                    var ksbResult = await _client.GetApprenticeshipKsb(apprenticeshipId, standardUId, "core", id);
+                    var ksbResult = await _client.GetApprenticeshipKsb(new Guid(apprenticeId), id);
                     var vm = new EditKsbPageModel();
                     vm.KsbStatuses = KsbHelpers.KSBStatuses();
 
@@ -131,6 +105,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         }
                         else
                         {
+                            var apprenticeDetails = _client.GetApprenticeDetails(new Guid(apprenticeId));
+                            var apprenticeshipId = apprenticeDetails.Result.MyApprenticeship.ApprenticeshipId;
+
                             vm.KsbProgress = new ApprenticeKsbProgressData()
                             {
                                 ApprenticeshipId = apprenticeshipId,
@@ -153,14 +130,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     return View(vm);
                 }
-                else
-                {
-                    string message = $"Invalid apprenticeshipId for AddUpdateKsbProgress in KsbController";
-                    _logger.LogWarning(message);
-                    return View("Index");
-                }
-            }
-
+               
             string noApprMessage = $"Invalid apprenticeId for AddUpdateKsbProgress in KsbController";
             _logger.LogWarning(noApprMessage);
             return Unauthorized();
@@ -256,16 +226,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                {
-                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
-
                     string preMessage = $"Removing Task {taskId} from KsbProgress {progressId}";
                     _logger.LogInformation(preMessage);
                     try
                     {
-                        await _client.RemoveTaskToKsbProgress(apprenticeshipId, progressId, taskId);
+                        await _client.RemoveTaskToKsbProgress(new Guid(apprenticeId), progressId, taskId);
                         string postMessage = $"Removed Task {taskId} from KsbProgress {progressId}";
                         _logger.LogInformation(postMessage);
                     }
@@ -275,7 +240,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
 
                     return Ok();
-                }
             }
 
             _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");
