@@ -97,8 +97,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     year = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -154,9 +153,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     yearValue = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -204,13 +201,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-                var standardUId = Claims.GetClaim(HttpContext, Constants.StandardUIdClaimKey);
-
-                if (!string.IsNullOrEmpty(apprenticeshipId) && !string.IsNullOrEmpty(standardUId))
-                {
-                    //using default value of core until we have the correct value from Approvals api
-                    var taskdata = await _client.GetTaskViewData(long.Parse(apprenticeshipId), id, standardUId, "core");
+                    var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
 
                     var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
                     var vm = new EditTaskPageModel
@@ -222,12 +213,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         StatusId = status
                     };
                     return View(vm);
-                }
-
-                return RedirectToAction("Index", "Tasks");
             }
-
-            return View();
+            return RedirectToAction("Index", "Tasks");
         }
 
         [HttpPost]
@@ -238,8 +225,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-
+                
                 if (task.KsbsLinked != null)
                 {
                     if (task.KsbsLinked[0] != null)
@@ -250,7 +236,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
                 try
                 {
-                    await _client.UpdateApprenticeTask(long.Parse(apprenticeshipId), task.TaskId, task);
+                    await _client.UpdateApprenticeTask(new Guid(apprenticeId), task.TaskId, task);
                 }
                 catch
                 {
@@ -275,17 +261,22 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-                var categories = await _client.GetTaskCategories(long.Parse(apprenticeshipId));
-
-                var vm = new AddTaskPageModel
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                if (apprenticeDetails.MyApprenticeship != null)
                 {
-                    Task = new ApprenticeTask() { ApprenticeshipId = long.Parse(apprenticeshipId) },
-                    Categories = categories.TaskCategories,
-                    StatusId = status
-                };
+                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString();
 
-                return View(vm);
+                    var categories = await _client.GetTaskCategories(new Guid(apprenticeId));
+
+                    var vm = new AddTaskPageModel
+                    {
+                        Task = new ApprenticeTask() { ApprenticeshipId = long.Parse(apprenticeshipId) },
+                        Categories = categories.TaskCategories,
+                        StatusId = status
+                    };
+
+                    return View(vm);
+                }
             }
             return View();
         }
@@ -298,50 +289,52 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-
-                if (long.Parse(apprenticeshipId) != task.ApprenticeshipId)
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                if (apprenticeDetails.MyApprenticeship != null)
                 {
-                    _logger.LogWarning("Invalid apprenticeship id. Cannot add task.");
-                    return RedirectToAction("Index", "Tasks");
-                }
-
-                if (task.Status == Domain.Models.TaskStatus.Done)
-                {
-                    task.CompletionDateTime = DateTime.UtcNow;
-                }
-                if (task.CompletionDateTime == null)
-                {
-                    task.CompletionDateTime = DateTime.UtcNow;
-                }
-
-                task.ApprenticeshipCategoryId ??= 1;
-
-                if (task.KsbsLinked != null)
-                {
-                    if (task.KsbsLinked[0] != null)
+                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
+                    if (apprenticeshipId != task.ApprenticeshipId)
                     {
-                        string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                        task.KsbsLinked = ksbArray;
+                        _logger.LogWarning("Invalid apprenticeship id. Cannot add task.");
+                        return RedirectToAction("Index", "Tasks");
                     }
+
+                    if (task.Status == Domain.Models.TaskStatus.Done)
+                    {
+                        task.CompletionDateTime = DateTime.UtcNow;
+                    }
+                    if (task.CompletionDateTime == null)
+                    {
+                        task.CompletionDateTime = DateTime.UtcNow;
+                    }
+
+                    task.ApprenticeshipCategoryId ??= 1;
+
+                    if (task.KsbsLinked != null)
+                    {
+                        if (task.KsbsLinked[0] != null)
+                        {
+                            string[] ksbArray = task.KsbsLinked[0].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                            task.KsbsLinked = ksbArray;
+                        }
+                    }
+
+                    string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
+                    _logger.LogInformation(preMessage);
+
+                    try
+                    {
+                        await _client.AddApprenticeTask(apprenticeshipId, task);
+                    }
+                    catch
+                    {
+                        //temporarily handle 500 errors
+                    }
+
+                    string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
+                    _logger.LogInformation(postMessage);
+                    return RedirectToAction("Index", new { status = (int)task.Status });
                 }
-
-                string preMessage = $"Adding new task for apprentice with id {apprenticeId}";
-                _logger.LogInformation(preMessage);
-
-                try
-                {
-                    await _client.AddApprenticeTask(long.Parse(apprenticeshipId), task);
-                }
-                catch
-                {
-                    //temporarily handle 500 errors
-                }
-
-                string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
-                _logger.LogInformation(postMessage);
-                return RedirectToAction("Index", new { status = (int)task.Status });
-
             }
             return Unauthorized();
         }
@@ -359,12 +352,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-
                 string preMessage = $"Deleting task with id {taskId}";
                 _logger.LogInformation(preMessage);
 
-                await _client.DeleteApprenticeTask(long.Parse(apprenticeshipId), taskId);
+                await _client.DeleteApprenticeTask(new Guid(apprenticeId), taskId);
                 string postMessage = $"Deleting task with id {taskId}";
                 _logger.LogInformation(postMessage);
 
@@ -386,13 +377,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = HttpContext.User?.Claims?.First(c => c.Type == Constants.ApprenticeshipIdClaimKey)?.Value;
-
-                await _client.UpdateTaskStatus(long.Parse(apprenticeshipId), taskId, statusId);
+                await _client.UpdateTaskStatus(new Guid(apprenticeId), taskId, statusId);
 
                 return RedirectToAction("Index");
             }
-            
+
             return Unauthorized();
         }
     }
