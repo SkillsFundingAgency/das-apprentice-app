@@ -4,6 +4,11 @@
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: $app-gap;
+  z-index: 1;
+}
+
+.app-page-header--align-bottom {
+  align-items: flex-end;
 }
 
 .app-page-header__heading {

@@ -5,6 +5,7 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -26,9 +27,59 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(string sort, int year)
         {
-            return View();
+            int yearSet = DateTime.Now.Year;
+            string sortSet = "date_due";
+
+            var yearCookie = Request.Cookies[Constants.TaskFilterYearCookieName];
+            var sortCookie = Request.Cookies[Constants.TaskFilterSortCookieName];
+
+            if (yearCookie != null)
+            {
+                yearSet = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
+            }
+
+            if (sortCookie != null)
+            {
+                sortSet = Request.Cookies[Constants.TaskFilterSortCookieName];
+            }
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                sortSet = sort;
+
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddYears(99),
+                    Path = "/",
+                    Secure = true,
+                    HttpOnly = true
+                };
+                Response.Cookies.Append(Constants.TaskFilterSortCookieName, sort, cookieOptions);
+            }
+
+            if (year > 0)
+            {
+                yearSet = year;
+
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.Now.AddYears(99),
+                    Path = "/",
+                    Secure = true,
+                    HttpOnly = true
+                };
+                Response.Cookies.Append(Constants.TaskFilterYearCookieName, year.ToString(), cookieOptions); 
+            }
+
+            TasksBaseModel vm = new()
+            {
+                Year = yearSet,
+                Sort = sortSet
+            };
+
+            return View(vm);
         }
 
         [HttpGet]
@@ -39,8 +90,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
+                int year = DateTime.Now.Year;
+                var yearCookie = Request.Cookies[Constants.TaskFilterYearCookieName];
+                if (yearCookie != null)
+                {
+                    year = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
+                }
+
                 var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.ToDoStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -57,12 +115,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
                 }
 
+                // sorting
+                var sortingValue = Request.Cookies[Constants.TaskFilterSortCookieName];
+                if (sortingValue != null)
+                {
+                    taskResult.Tasks = sortingValue switch
+                    {
+                        "due_date" => taskResult.Tasks.OrderBy(x => x.DueDate).ToList(),
+                        "recently_added" => taskResult.Tasks.OrderByDescending(x => x.TaskId).ToList(),
+                        _ => taskResult.Tasks.OrderBy(x => x.DueDate).ToList(),
+                    };
+                }
+
                 var vm = new TasksPageModel
                 {
                     Year = DateTime.Now.Year,
                     Tasks = taskResult.Tasks
 
                 };
+
                 return PartialView("_TasksToDo", vm);
             }
             return PartialView("_TasksNotStarted");
@@ -76,9 +147,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
+                int yearValue = DateTime.Now.Year;
+                var yearSet = Request.Cookies[Constants.TaskFilterYearCookieName];
+                if (yearSet != null)
+                {
+                    yearValue = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
+                }
+
                 var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
 
-                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(long.Parse(apprenticeshipId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 31));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -95,11 +173,24 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
                 }
 
+                // sorting
+                var sortCookie = Request.Cookies[Constants.TaskFilterSortCookieName];
+                if (sortCookie != null)
+                {
+                    taskResult.Tasks = sortCookie switch
+                    {
+                        "due_date" => taskResult.Tasks.OrderBy(x => x.DueDate).ToList(),
+                        "recently_added" => taskResult.Tasks.OrderByDescending(x => x.TaskId).ToList(),
+                        _ => taskResult.Tasks.OrderBy(x => x.DueDate).ToList(),
+                    };
+                }
+
                 var vm = new TasksPageModel
                 {
                     Year = DateTime.Now.Year,
                     Tasks = taskResult.Tasks,
                 };
+
                 return PartialView("_TasksDone", vm);
             }
             return PartialView("_TasksNotStarted");
