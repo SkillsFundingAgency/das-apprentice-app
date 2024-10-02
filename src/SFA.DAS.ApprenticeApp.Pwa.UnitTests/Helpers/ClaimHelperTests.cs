@@ -12,15 +12,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
     {
         [Test]
         [TestCase(Constants.ApprenticeIdClaimKey, ExpectedResult = "00000000-0000-0000-0000-000000000000")]
-        [TestCase(Constants.ApprenticeshipIdClaimKey, ExpectedResult = "Test User")]
-        [TestCase(Constants.StandardUIdClaimKey, ExpectedResult = "ST001")]
+        [TestCase(Constants.TermsAcceptedClaimKey, ExpectedResult = "True")]
         [TestCase("NonexistentClaim", ExpectedResult = "")]
         public string GetClaim_Returns_Claim(string claimKey)
         {
            
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "00000000-0000-0000-0000-000000000000");
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "Test User");
-            var standardUIdClaim = new Claim(Constants.StandardUIdClaimKey, "ST001");
+            var termsAcceptedClaim = new Claim(Constants.TermsAcceptedClaimKey, "True");
 
             // Arrange
             var httpContext = new DefaultHttpContext();
@@ -28,9 +26,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             ClaimsPrincipal claims = new ClaimsPrincipal();
             claims.AddIdentity(new ClaimsIdentity(new[]
             {
-                apprenticeshipIdClaim,
-                standardUIdClaim,
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                termsAcceptedClaim
             }));
 
             httpContext.User = claims;

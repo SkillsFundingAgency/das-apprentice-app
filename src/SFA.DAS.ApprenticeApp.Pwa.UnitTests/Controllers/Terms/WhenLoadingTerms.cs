@@ -24,9 +24,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var termsAcceptedClaim = new Claim(Constants.TermsAcceptedClaimKey, "True");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim
+            apprenticeIdClaim,
+            termsAcceptedClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -69,9 +71,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var termsAcceptedClaim = new Claim(Constants.TermsAcceptedClaimKey, "False");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim
+            apprenticeIdClaim,
+            termsAcceptedClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -79,8 +83,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
                 HttpContext = httpContext
             };
             
-            client.Setup(x => x.GetApprentice(apprenticeId));
-
             var actual = await controller.Index() as ViewResult;
             actual.Should().NotBeNull();
         }

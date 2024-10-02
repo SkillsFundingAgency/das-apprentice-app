@@ -1,9 +1,10 @@
-﻿@using SFA.DAS.ApprenticeApp.Pwa.Models
+﻿@using SFA.DAS.ApprenticeApp.Pwa.Models;
 
 @model StubAuthenticationViewModel
 @{
     Layout = "_LayoutBasic";
 }
+
 
 <div class="app-main">
     <div class="app-main__inner">
@@ -14,7 +15,8 @@
             <h1 class="app-page-header__heading">Sign in (stub)</h1>
             <div class="app-page-header__forward"></div>
         </div>
-        <form method="POST" asp-action="SignIn" asp-controller="Account">
+        <form method="POST" asp-route="@RouteNames.StubAccountDetailsPost">
+            <input asp-for="ReturnUrl" type="hidden" />
             <div class="app-form-group">
                 <label asp-for="Id" class="app-label">ID</label>
                 <input asp-for="Id" required="required" class="app-input" />
@@ -25,9 +27,6 @@
             </div>
             <div class="govuk-button-group">
                 <button class="app-button" type="submit">Sign in</button>
-                <a class="app-button app-button--secondary" asp-controller="Account" asp-action="Error">
-                    Fake error signing in
-                </a>
             </div>
         </form>
     </div>

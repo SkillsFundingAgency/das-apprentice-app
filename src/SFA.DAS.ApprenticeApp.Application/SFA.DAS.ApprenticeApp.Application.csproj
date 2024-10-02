@@ -5,11 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
-  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj" />

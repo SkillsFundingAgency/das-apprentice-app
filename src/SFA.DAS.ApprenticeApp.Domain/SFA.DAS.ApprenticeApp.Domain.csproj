@@ -8,15 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="RestEase" Version="1.6.4" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.3" />
-    <PackageReference Include="SFA.DAS.ApprenticePortal.Authentication" Version="1.1.78" />
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.8" />
+    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.82-prerelease-4" />
     <PackageReference Include="Markdig" Version="0.37.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Api\" />
   </ItemGroup>
 
 </Project>
