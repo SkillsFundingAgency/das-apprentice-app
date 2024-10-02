@@ -4,7 +4,18 @@
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 
-<a href="#filter" data-module="app-overlay" class="app-link">Filter</a>
+<a href="#filter" data-module="app-overlay" class="app-icon-action">
+    <span class="app-icon-action__icon">
+        <svg>
+            <use xlink:href="/assets/images/icons.svg#filter">
+            </use>
+        </svg>
+    </span>
+    <span class="app-icon-action__label">Filters</span>
+</a>
+
+
+
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -22,29 +33,33 @@
             <fieldset class="app-fieldset">
                 <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
                 <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-none" name="filter" type="checkbox"
-                            value="None">
+                        <input class="app-checkboxes__input" id="none" name="filter" type="checkbox"
+                            value="none">
                         <label class="app-label app-checkboxes__label" for="filter-none">
                             None
                         </label>
                     </div>
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-assignment" name="filter" type="checkbox"
-                            value="Assignment">
+                        <input class="app-checkboxes__input" id="assignment" name="filter" type="checkbox"
+                            value="assignment">
                         <label class="app-label app-checkboxes__label" for="filter-assignment">
                             <span class="app-tag app-tag--category-assignment">Assignment</span>
                         </label>
                     </div>
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-epa" name="filter" type="checkbox" value="EPA">
+                        <input class="app-checkboxes__input" id="epa" name="filter" type="checkbox" value="epa">
                         <label class="app-label app-checkboxes__label" for="filter-epa">
                             <span class="app-tag app-tag--category-endpointassessment">End-point assessment</span>
                         </label>
                     </div>
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-deadline" name="filter" type="checkbox"
-                            value="Deadline">
+                        <input class="app-checkboxes__input" id="deadline" name="filter" type="checkbox"
+                            value="deadline">
                         <label class="app-label app-checkboxes__label" for="filter-deadline">
                             <span class="app-tag app-tag--category-deadline">Deadline</span>
                         </label>
@@ -57,34 +72,39 @@
             <fieldset class="app-fieldset">
                 <legend class="app-fieldset__legend app-fieldset__legend--s">Other filter options:</legend>
                 <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-ksb" name="other-filter" type="checkbox"
-                            value="KSB">
+                        <input class="app-checkboxes__input" id="ksb" name="other-filter" type="checkbox"
+                            value="ksb">
                         <label class="app-label app-checkboxes__label" for="filter-ksb">
                             Knowledge, skills and behaviours (KSBs) added
                         </label>
                     </div>
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-reminder" name="other-filter" type="checkbox"
-                            value="Reminder-set">
+                        <input class="app-checkboxes__input" id="reminder" name="other-filter" type="checkbox"
+                            value="reminder">
                         <label class="app-label app-checkboxes__label" for="filter-reminder">
                             Reminder set
                         </label>
                     </div>
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-files-attached" name="other-filter"
-                            type="checkbox" value="Files-attached">
+                        <input class="app-checkboxes__input" id="files-attached" name="other-filter"
+                            type="checkbox" value="files-attached">
                         <label class="app-label app-checkboxes__label" for="filter-files-attached">
                             Files attached
                         </label>
                     </div>
+
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="filter-note-attached" name="other-filter"
-                            type="checkbox" value="Note-attached">
+                        <input class="app-checkboxes__input" id="note-attached" name="other-filter"
+                            type="checkbox" value="note-attached">
                         <label class="app-label app-checkboxes__label" for="filter-note-attached">
                             Note attached
                         </label>
                     </div>
+
                 </div>
             </fieldset>
         </div>
@@ -108,11 +128,11 @@
 
                 // check all the filter page checkboxes
                 var newData = data[k].split('=');
+
                 $("#" + newData[1]).prop('checked', true);
 
-
                 // show the main page lozenges inside the div
-                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace("-", " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
+                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
 
             }
 

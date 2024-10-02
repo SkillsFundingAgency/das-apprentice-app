@@ -3,7 +3,7 @@
     Layout = null;
 }
 
-@foreach (var task in Model.Tasks.OrderBy(x => x.DueDate))
+@foreach (var task in Model.Tasks)
 {
     <div class="app-card">
     <h2 class="app-card__heading">@task.Title</h2>
