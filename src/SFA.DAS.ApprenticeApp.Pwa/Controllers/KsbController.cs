@@ -147,14 +147,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
-                    var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-                    ksbProgressData.ApprenticeshipId = long.Parse(apprenticeshipId);
                     string message = $"AddUpdateKsbProgress for KSB {ksbProgressData.KsbId} and Apprenticeship: {ksbProgressData.ApprenticeshipId}";
                     _logger.LogInformation(message);
 
                     try
                     {
-                        await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+                        await _client.AddUpdateKsbProgress(new Guid(apprenticeId), ksbProgressData);
                     }
                     catch
                     {
@@ -178,28 +176,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeshipId = Claims.GetClaim(HttpContext, Constants.ApprenticeshipIdClaimKey);
-
-                ApprenticeKsbProgressData ksbProgressData = new ApprenticeKsbProgressData()
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
                 {
-                    ApprenticeshipId = long.Parse(apprenticeshipId),
-                    KsbId = ksbId,
-                    KsbKey = ksbKey,
-                    KsbProgressType = ksbType,
-                    CurrentStatus = ksbStatus,
-                    Note = note
-                };
+                    var apprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
 
-                try
-                {
-                    await _client.AddUpdateKsbProgress(ksbProgressData.ApprenticeshipId, ksbProgressData);
+                    ApprenticeKsbProgressData ksbProgressData = new ApprenticeKsbProgressData()
+                    {
+                        ApprenticeshipId = apprenticeshipId,
+                        KsbId = ksbId,
+                        KsbKey = ksbKey,
+                        KsbProgressType = ksbType,
+                        CurrentStatus = ksbStatus,
+                        Note = note
+                    };
+
+                    try
+                    {
+                        await _client.AddUpdateKsbProgress(new Guid(apprenticeId), ksbProgressData);
+                    }
+                    catch
+                    {
+                        //temporarily handle any 500 errors
+                    }
+
+                    return Ok();
                 }
-                catch
-                {
-                    //temporarily handle any 500 errors
-                }
-
-                return Ok();
             }
 
             _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");

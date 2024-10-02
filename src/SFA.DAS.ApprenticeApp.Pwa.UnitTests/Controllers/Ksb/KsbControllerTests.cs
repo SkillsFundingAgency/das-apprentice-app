@@ -356,11 +356,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim,
-            apprenticeshipIdClaim
+            apprenticeIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -396,11 +394,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim,
-            apprenticeshipIdClaim
+            apprenticeIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -409,7 +405,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             };
 
             ksbProgressData.ApprenticeshipId = 0;
-            client.Setup(c => c.AddUpdateKsbProgress(It.IsAny<long>(), It.IsAny<ApprenticeKsbProgressData>())).ThrowsAsync(new Exception("Error"));
+            client.Setup(c => c.AddUpdateKsbProgress(apprenticeId, It.IsAny<ApprenticeKsbProgressData>())).ThrowsAsync(new Exception("Error"));
             var result = await controller.AddUpdateKsbProgress(ksbProgressData) as RedirectToActionResult;
 
             using (new AssertionScope())
@@ -436,11 +432,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim,
-            apprenticeshipIdClaim
+            apprenticeIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -470,11 +464,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeshipIdClaim = new Claim(Constants.ApprenticeshipIdClaimKey, "123");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
-            apprenticeIdClaim,
-            apprenticeshipIdClaim
+            apprenticeIdClaim
         })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
@@ -488,7 +480,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             var ksbStatus = KSBStatus.Completed;
             var note = "This is the note";
 
-            client.Setup(c => c.AddUpdateKsbProgress(It.IsAny<long>(), It.IsAny<ApprenticeKsbProgressData>())).ThrowsAsync(new Exception("Error"));
+            client.Setup(c => c.AddUpdateKsbProgress(apprenticeId, It.IsAny<ApprenticeKsbProgressData>())).ThrowsAsync(new Exception("Error"));
             var result = await controller.EditKsbProgress(ksbId, ksbKey, ksbType, ksbStatus, note);
 
             result.Should().BeOfType(typeof(OkResult));
@@ -497,7 +489,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
 
 
         [Test, MoqAutoData]
-        public async Task EditKsbProgress_Async_NoApprenticeshipId(
+        public async Task EditKsbProgress_Async_NoApprenticeId(
            [Frozen] Mock<IOuterApiClient> client,
            ApprenticeDetails apprenticeDetails,
            [Frozen] Mock<ILogger<KsbController>> logger,

@@ -29,7 +29,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         //KsbProgress
         [Post("/apprentices/{id}/ksbs")]
-        Task AddUpdateKsbProgress([Path] long id, [Body] ApprenticeKsbProgressData data);
+        Task AddUpdateKsbProgress([Path] Guid id, [Body] ApprenticeKsbProgressData data);
 
         [Get("/apprentices/{id}/ksbs")]
         Task<List<ApprenticeKsb>> GetApprenticeshipKsbs([Path] Guid id);
