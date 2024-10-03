@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="RestEase" Version="1.6.4" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.8" />
-    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.82-prerelease-4" />
+    <PackageReference Include="SFA.DAS.ApprenticePortal.SharedUi" Version="1.1.83" />
     <PackageReference Include="Markdig" Version="0.37.0" />
   </ItemGroup>
 

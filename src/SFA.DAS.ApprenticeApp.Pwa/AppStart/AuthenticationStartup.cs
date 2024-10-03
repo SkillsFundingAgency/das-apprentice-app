@@ -14,7 +14,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             IWebHostEnvironment environment)
         {
             services
-                .AddApplicationAuthentication(config, environment)
                 .AddApplicationAuthorisation();
 
             services.AddTransient((_) => config);
