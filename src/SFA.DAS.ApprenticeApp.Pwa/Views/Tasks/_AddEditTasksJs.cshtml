@@ -1,12 +1,75 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TaskViewModelBase
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $(".add-task").click(function (e) {
-            $(".form").submit();
+        $(".add-task").click(function (e)
+        {
+            var titleValid1 = true, titleValid2 = true, noteValid = true, dateValid1 = true, dateValid2 = true, timeValid = true;
+
+            if ($("#Task_Title").val().length > 150)
+            {
+                $(".title-error-1").text("Name of the task must be 150 characters or less");
+                titleValid1 = false;
+            } else {
+                $(".title-error-1").text("");
+            }
+
+            if ($("#Task_Title").val().length == 0) {
+                $(".title-error-2").text("Enter the name of the task");
+                titleValid2 = false;
+            } else {
+                $(".title-error-2").text("");
+            }
+
+            if ($("#note").val().length > 1000) {
+                $(".note-error").text("Note must be 1000 characters or less");
+                noteValid = false;
+            } else {
+                $(".note-error").text("");
+            }
+
+            if (!isValidDate($("#date").val())) {
+                $(".date-error-1").text("Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date");
+                dateValid1 = false;
+            }
+            else {
+                $(".date-error-1").text("");
+            }
+
+            if ($("#date").val() == "") {
+                $(".date-error-2").text("Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")");
+                dateValid2 = false;
+            }
+            else {
+                $(".date-error-2").text("");
+            }
+
+            if ($("#time").val() == "") {
+                $(".time-error").text("Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")");
+                timeValid = false;
+            }
+            else {
+                $(".time-error").text("");
+            }
+
+            if (titleValid1 == true &&
+                titleValid2 == true &&
+                noteValid == true &&
+                dateValid1 == true &&
+                dateValid2 == true &&
+                timeValid == true)
+            {
+               $(".form").submit();
+            }
+
         });
+
+        function isValidDate(d) {
+            return !isNaN((new Date(d)).getTime());
+        }
 
         $("#ksb-popup-btn").click(function (e) {
             e.preventDefault();
@@ -19,12 +82,10 @@
                     if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                 });
             });
-
         });
 
-        // edit ksb link
-        $('body').on('click', '.edit-ksb', function (e) {
-            // if dialogue has not been loaded, load it, else just show it
+        $('body').on('click', '.edit-ksb', function (e)
+        {
             if ($("#ksb-popup").html().length > 0) {
                 $('#ksb-popup').show();
             }
@@ -33,8 +94,6 @@
                     $('#ksb-popup').show();
 
                     $('.add-edit-content-area').height($('.app-container').height() - 150);
-
-
                 });
             }
             $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -43,10 +102,8 @@
 
         $('body').on('click', '.ksb-popup-cancel', function (e) {
             $('#ksb-popup').hide();
-
         });
 
-        // create or update local ksbprogress on checkbox click
         $('body').on('click', '.link-ksb-checkbox', function (e) {
             var value = $(this).attr("value");
             var ksbKey = $(this).attr("data-title");
@@ -61,7 +118,6 @@
             });
         });
 
-        // create or update local ksbprogress with status on radio click
         $('body').on('click', '.ksb-status', function (e) {
             var value = $(this).attr("value");
             var ksbId = $(this).attr("data-id");
@@ -78,27 +134,21 @@
         });
 
         $('body').on('click', '.link-ksb-confirm', function (e) {
-            // iterate over  all checboxes
 
             var checboxes = $(".link-ksb-checkbox:checked")
-
-            console.log(checboxes)
 
             var result = checboxes.map(function (i, e) {
                 return $(e).attr("value");
             }).get();
 
-            // update subform - hidden field
             $("#linked-ksb-ids").val(result);
 
-            // update subform - nice visual output
             var text = checboxes.map(function (i, e) {
                 return "<div class=\"app-card ksb-item\"><h2 class=\"app-card__heading\">" + $(e).attr("data-title") + "</h2><p>" + $(e).attr("data-desc") + "</p></div>";
             }).get();
 
             $("#linked-ksb-details").html(text);
 
-            // close dialgoue
             $('#ksb-popup').hide();
         });
 
@@ -113,8 +163,8 @@
             });
         });
 
-        $(".edit-linkedksb").click(function (e) {
-            // load dialogue each time incase different ksb is being edited
+        $(".edit-linkedksb").click(function (e)
+        {
             if ($("#ksb-edit-popup").html().length > 0) {
                 $('#ksb-edit-popup').html() = "";
             }
@@ -128,9 +178,6 @@
                 });
             }
             $("html, body").animate({ scrollTop: 0 }, "slow");
-
         });
-
-
     });
 </script>

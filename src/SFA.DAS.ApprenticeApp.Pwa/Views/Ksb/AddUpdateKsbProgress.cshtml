@@ -27,12 +27,13 @@
         </div>
 
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
-            class="form">
+            class="form submit-form">
 
             <div class="app-form-group">
                 <label class="app-label" asp-for="@Model.KsbProgress.Note">
                     Add a note
                 </label>
+                <div class="note-error form-error govuk-hint"></div>
                 <input class="app-input" name="Note" type="text" asp-for="@Model.KsbProgress.Note">
             </div>
          

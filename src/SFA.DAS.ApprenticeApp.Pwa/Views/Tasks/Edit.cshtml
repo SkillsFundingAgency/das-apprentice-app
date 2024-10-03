@@ -91,15 +91,16 @@
             <label class="app-label" for="note">
                 Add a note
             </label>
+            <div class="note-error form-error govuk-hint"></div>
             <textarea class="app-textarea govuk-js-character-count" id="note" name="note" rows="5"
-                aria-describedby="note-info" value="@Model.Task.Note"></textarea>
+                      aria-describedby="note-info" value="@Model.Task.Note"></textarea>
             <div id="note-info" class="govuk-hint govuk-character-count__message">
                 You can enter up to 1000 characters
             </div>
         </div>
     </form>
 </div>
-@await Html.PartialAsync("_AddEditTasksJs.cshtml")
+@await Html.PartialAsync("_AddEditTasksJs.cshtml", Model)
 @await Html.PartialAsync("../Ksb/_KsbJs.cshtml")
 <script type="module">import {
         initAll

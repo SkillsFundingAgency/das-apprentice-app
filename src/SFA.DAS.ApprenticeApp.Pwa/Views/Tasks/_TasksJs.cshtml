@@ -1,5 +1,4 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -79,7 +78,6 @@
             }
         }
 
-        // add / edit tasks popup
         $(".add-btn").click(function (e) {
             var status = $(this).attr("data-status-id");
             var addUrl = '@Url.Action("Add", "Tasks")?status=' + status;
@@ -87,11 +85,8 @@
             $('#add-edit-wrapper').show();
             $('#add-edit-wrapper').load(addUrl, function () {
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-                // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });
-
-
         });
 
         $('body').on('click', '.edit-btn', function (e) {
@@ -100,12 +95,8 @@
             var status = $(this).attr("data-status") || 0;
             var editUrl = '@Url.Action("Edit", "Tasks")/' + taskId + '?status=' + status;
 
-
             $('#add-edit-wrapper').load(editUrl, function () {
-
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-
-                // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });
 
@@ -115,11 +106,47 @@
             $(".form").submit();
         });
 
+        $('body').on('click', '.todo', function (e) {
+            setQueryStringParameter("status", "0");
+            $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=0');
+            $('.due-date-menu-item').prop('href', '?sort=date_due&status=0');
+        });
 
-        // change year filter
+        $('body').on('click', '.done', function (e) {
+            setQueryStringParameter("status", "1");
+            $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=1');
+            $('.due-date-menu-item').prop('href', '?sort=date_due&status=1');
+        });
 
+        $(document).ready(function () {
+            var statusId = getUrlParameter('status');
 
-        // change sort order
+            if (statusId != false) {
+                $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=' +statusId+ '');
+                $('.due-date-menu-item').prop('href', '?sort=date_due&status=' +statusId+ '');
+            }
+        });
+        
+        function setQueryStringParameter(name, value) {
+            const params = new URLSearchParams(window.location.search);
+            params.set(name, value);
+            window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`));
+        }
 
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
     });
 </script>

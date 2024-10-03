@@ -13,7 +13,6 @@
     <span class="app-icon-action__label ksb-filter-line-header">Filters</span>
 </a>
 
-
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -89,11 +88,10 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        // get cookie
+    $(document).ready(function ()
+    {
         var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
 
-        // if cookie is set
         if (cookieFilter != null && cookieFilter != "") {
             var filters = getCookieKsb("@Constants.KsbFiltersCookieName");
 
@@ -101,12 +99,10 @@
 
             for (var k in data) {
 
-                // check all the filter page checkboxes
                 var line = data[k].split('=');
 
                 $("#" + line[1]).prop('checked', true);
 
-                // show the main page lozenges inside the div
                 $("#filters-set").append("<div class='app-tag filter-tag'>" + line[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + line[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
             }
         }
@@ -114,24 +110,18 @@
             $("#filters-set").hide();
         }
 
-
-        $(".remove-filter").click(function (e) {
-            // get the one in question
+        $(".remove-filter").click(function (e)
+        {
             var filterNames = $(this).attr('data-id');
-
-            // uncheck the hidden screen
             $("#" + filterNames).prop('checked', false);
-
             applyAndSaveFiltersKsb()
         });
-
 
         $(".apply").click(function (e) {
             applyAndSaveFiltersKsb()
         });
 
     });
-
 
     function applyAndSaveFiltersKsb() {
         var ssList = "";
@@ -156,7 +146,6 @@
     function setCookieKsb(name, value, attributes = {}) {
         attributes = {
             path: '/',
-            // add other defaults here if necessary ...attributes
         };
 
         if (attributes.expires instanceof Date) {

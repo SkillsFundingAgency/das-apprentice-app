@@ -14,8 +14,6 @@
     <span class="app-icon-action__label">Filters</span>
 </a>
 
-
-
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -111,54 +109,43 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        // get cookie
+    $(document).ready(function ()
+    {
         var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
 
-        // if cookie is set
         if (cookieFilter != null && cookieFilter != "") {
             var filters = getCookie("@Constants.TaskFiltersCookieName");
 
             data = filters.split('&');
             for (var k in data) {
 
-                // check all the filter page checkboxes
                 var newData = data[k].split('=');
 
                 $("#" + newData[1]).prop('checked', true);
 
-                // show the main page lozenges inside the div
                 $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
-
             }
-
         }
         else {
             $("#filters-set").hide();
         }
 
 
-        $(".remove-filter").click(function (e) {
-            // get the one in question
+        $(".remove-filter").click(function (e)
+        {
             var filterName = $(this).attr('data-id');
 
-            // uncheck the hidden screen
             $("#" + filterName).prop('checked', false);
 
             applyAndSaveFilters()
         });
 
-
         $(".apply").click(function (e) {
             applyAndSaveFilters()
         });
-
     });
-
 
     function applyAndSaveFilters() {
         var sList = "";
@@ -168,7 +155,6 @@
         });
 
         setCookie('SFA.ApprenticeApp.TaskFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
-
         location.reload();
     }
 
@@ -179,11 +165,9 @@
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-
     function setCookie(name, value, attributes = {}) {
         attributes = {
             path: '/',
-            // add other defaults here if necessary ...attributes
         };
 
         if (attributes.expires instanceof Date) {

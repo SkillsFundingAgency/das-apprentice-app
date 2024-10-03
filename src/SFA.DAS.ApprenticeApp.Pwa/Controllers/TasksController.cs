@@ -6,6 +6,7 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using System.Threading.Tasks;
+using System;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -250,6 +251,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
                 try
                 {
+                    if (task.Status == Domain.Models.TaskStatus.Done)
+                    {
+                        task.CompletionDateTime = task.CompletionDateTime.Value.Date + TimeSpan.Parse(HttpContext.Request.Form["time"]);
+                    }
+                    else
+                    {
+                        task.DueDate = task.DueDate.Value.Date + TimeSpan.Parse(HttpContext.Request.Form["time"]);
+                    }
                     await _client.UpdateApprenticeTask(long.Parse(apprenticeshipId), task.TaskId, task);
                 }
                 catch
@@ -306,14 +315,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return RedirectToAction("Index", "Tasks");
                 }
 
+                task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
+
                 if (task.Status == Domain.Models.TaskStatus.Done)
                 {
-                    task.CompletionDateTime = DateTime.UtcNow;
+                    task.CompletionDateTime = task.DueDate;
                 }
                 if (task.CompletionDateTime == null)
                 {
-                    task.CompletionDateTime = DateTime.UtcNow;
+                    task.CompletionDateTime = task.DueDate;
                 }
+
+                
 
                 task.ApprenticeshipCategoryId ??= 1;
 

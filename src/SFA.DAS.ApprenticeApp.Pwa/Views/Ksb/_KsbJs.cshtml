@@ -1,5 +1,4 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -7,6 +6,23 @@
         $(".save-ksb").click(function (e) {
             e.preventDefault();
             $(".form").submit();
+        });
+
+        $(".submit-form").click(function (e)
+        {
+            var noteValid = true;
+
+            if ($("#note").val().length > 1000) {
+                $(".note-error").text("Note must be 1000 characters or less");
+                noteValid = false;
+            } else {
+                $(".note-error").text("");
+            }
+
+            if (noteValid == true)
+            {
+               $(".form").submit();
+            }
         });
 
         $('body').on('click', '.remove-ksb-task', function (e) {
@@ -25,6 +41,7 @@
                 return false;
             }
         });
+
         $('.ksb-status-display').each(function () {
             var statusDisplay = $(this).text();
             switch (true) {
