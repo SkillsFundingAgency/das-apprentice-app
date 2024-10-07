@@ -1,6 +1,7 @@
 ﻿using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.GovUK.Auth.AppStart;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
@@ -31,6 +32,36 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
                 .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
 
             return services;
+        }
+
+        public static void AddGovLoginAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var cookieDomain = DomainExtensions.GetDomain(configuration["ResourceEnvironmentName"]);
+            var stubLoginRedirect = string.IsNullOrEmpty(cookieDomain) ? "" : $"https://{cookieDomain}/account-details";
+            var signedOutRedirectUrl = string.IsNullOrEmpty(cookieDomain) ? "https://localhost:5003/apprentice-signed-out" : $"https://{cookieDomain}/apprentice-signed-out";
+            services.AddAndConfigureGovUkAuthentication(configuration,
+                typeof(ApprenticeAccountPostAuthenticationClaimsHandler), signedOutRedirectUrl, "/account-details", cookieDomain, stubLoginRedirect);
+
+            services.AddHttpContextAccessor();
+        }
+
+        public static class DomainExtensions
+        {
+            public static string GetDomain(string environment)
+            {
+                string text = environment.ToLower();
+                if ((text != "local"))
+                {
+                    if (text == "prd")
+                    {
+                        return "my.apprenticeships.education.gov.uk";
+                    }
+
+                    return environment.ToLower() + "-apprentice-app.apprenticeships.education.gov.uk";
+                }
+
+                return "";
+            }
         }
     }
 }
