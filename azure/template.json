@@ -17,10 +17,6 @@
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
-        "configNames": {
-            "type": "string",
-            "defaultValue": "SFA.DAS.ApprenticeApp.Pwa,SFA.DAS.Apprentice.GovSignIn"
-        },
         "loggingRedisConnectionString": {
             "type": "securestring"
         },
@@ -77,7 +73,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.ApprenticeApp.Pwa"
+        "configNames": "SFA.DAS.ApprenticeApp.Pwa,SFA.DAS.Apprentice.GovSignIn"
     },
     "resources": [
         {
