@@ -19,10 +19,10 @@
 
 .app-main--basic {
   display: flex;
-  height: 100%;
+  height: 100dvh;
   flex-direction: column;
 }
 
 .app-template__body {
-  height: 100vh;
+  height: 100dvh;
 }

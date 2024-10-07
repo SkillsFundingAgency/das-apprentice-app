@@ -7814,7 +7814,7 @@ p + .app-card__heading,
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .app-form-group {
@@ -7939,12 +7939,12 @@ html {
 
 .app-main--basic {
   display: flex;
-  height: 100%;
+  height: 100dvh;
   flex-direction: column;
 }
 
 .app-template__body {
-  height: 100vh;
+  height: 100dvh;
 }
 
 .app-accordion {
@@ -8615,14 +8615,16 @@ html {
   max-height: 98%;
   max-width: 98%;
   fill: currentColor;
-  color: #00703c;
   stroke: #00703c;
+  width: 2rem;
+  max-width: unset;
 }
 
 .app-icon-list--l .app-icon-list__icon-grad svg {
+  color: rgb(166, 92, 46);
   fill: url(#grad) #832c91;
-  color: transparent;
   stroke: url(#grad) #832c91;
+  stroke-width: 0;
 }
 
 .app-icon-list--muted {
@@ -9166,15 +9168,15 @@ html {
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100dvh;
   text-align: center;
 }
 
 .app-pages-home__header {
   background-color: #000;
   align-content: end;
-  height: 20%;
-  margin-bottom: 10%;
+  height: 20dvh;
+  margin-bottom: 10dvh;
 }
 
 .app-pages-home__govuk-logo {
@@ -9184,12 +9186,12 @@ html {
 }
 
 .app-pages-home__middle {
-  height: 40%;
+  height: 40dvh;
   align-content: center;
 }
 
 .app-pages-home__bottom {
-  height: 30%;
+  height: 30dvh;
   padding: 1rem;
   align-content: end;
 }
@@ -9235,7 +9237,7 @@ html {
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .app-pages-welcome__header {
@@ -9244,7 +9246,7 @@ html {
   background-size: cover;
   background-position: top right;
   align-content: end;
-  height: 30vh;
+  height: 30dvh;
   text-align: center;
   position: relative;
 }
@@ -9261,12 +9263,12 @@ html {
 }
 
 .app-pages-welcome__middle {
-  height: 50vh;
+  height: 50dvh;
   padding: 1rem;
 }
 
 .app-pages-welcome__bottom {
-  height: 20vh;
+  height: 20dvh;
   padding: 1rem;
   align-content: center;
 }

@@ -2,7 +2,7 @@
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .app-pages-welcome__header {
@@ -11,7 +11,7 @@
   background-size: cover;
   background-position: top right;
   align-content: end;
-  height: 30vh;
+  height: 30dvh;
   text-align: center;
   position: relative;
 }
@@ -29,12 +29,12 @@
 }
 
 .app-pages-welcome__middle {
-  height: 50vh;
+  height: 50dvh;
   padding: $app-gap;
 }
 
 .app-pages-welcome__bottom {
-  height: 20vh;
+  height: 20dvh;
   padding: $app-gap;
   align-content: center;
 }
