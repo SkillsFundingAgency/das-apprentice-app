@@ -207,6 +207,10 @@
                                     "value": "[reference(concat(variables('appServiceName'), '-app-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
                                 },
                                 {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
+                                },
+                                {
                                     "name": "LoggingRedisConnectionString",
                                     "value": "[parameters('loggingRedisConnectionString')]"
                                 },
