@@ -33,9 +33,8 @@
                 <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
 
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="none" name="filter" type="checkbox"
-                            value="none">
-                        <label class="app-label app-checkboxes__label" for="filter-none">
+                        <input class="app-checkboxes__input" id="none" name="filter" type="checkbox" value="none">
+                        <label class="app-label app-checkboxes__label" for="none">
                             None
                         </label>
                     </div>
@@ -43,14 +42,14 @@
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="assignment" name="filter" type="checkbox"
                             value="assignment">
-                        <label class="app-label app-checkboxes__label" for="filter-assignment">
+                        <label class="app-label app-checkboxes__label" for="assignment">
                             <span class="app-tag app-tag--category-assignment">Assignment</span>
                         </label>
                     </div>
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="epa" name="filter" type="checkbox" value="epa">
-                        <label class="app-label app-checkboxes__label" for="filter-epa">
+                        <label class="app-label app-checkboxes__label" for="epa">
                             <span class="app-tag app-tag--category-endpointassessment">End-point assessment</span>
                         </label>
                     </div>
@@ -58,7 +57,7 @@
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="deadline" name="filter" type="checkbox"
                             value="deadline">
-                        <label class="app-label app-checkboxes__label" for="filter-deadline">
+                        <label class="app-label app-checkboxes__label" for="deadline">
                             <span class="app-tag app-tag--category-deadline">Deadline</span>
                         </label>
                     </div>
@@ -72,9 +71,8 @@
                 <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
 
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="ksb" name="other-filter" type="checkbox"
-                            value="ksb">
-                        <label class="app-label app-checkboxes__label" for="filter-ksb">
+                        <input class="app-checkboxes__input" id="ksb" name="other-filter" type="checkbox" value="ksb">
+                        <label class="app-label app-checkboxes__label" for="ksb">
                             Knowledge, skills and behaviours (KSBs) added
                         </label>
                     </div>
@@ -82,23 +80,23 @@
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="reminder" name="other-filter" type="checkbox"
                             value="reminder">
-                        <label class="app-label app-checkboxes__label" for="filter-reminder">
+                        <label class="app-label app-checkboxes__label" for="reminder">
                             Reminder set
                         </label>
                     </div>
 
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="files-attached" name="other-filter"
-                            type="checkbox" value="files-attached">
-                        <label class="app-label app-checkboxes__label" for="filter-files-attached">
+                        <input class="app-checkboxes__input" id="files-attached" name="other-filter" type="checkbox"
+                            value="files-attached">
+                        <label class="app-label app-checkboxes__label" for="files-attached">
                             Files attached
                         </label>
                     </div>
 
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="note-attached" name="other-filter"
-                            type="checkbox" value="note-attached">
-                        <label class="app-label app-checkboxes__label" for="filter-note-attached">
+                        <input class="app-checkboxes__input" id="note-attached" name="other-filter" type="checkbox"
+                            value="note-attached">
+                        <label class="app-label app-checkboxes__label" for="note-attached">
                             Note attached
                         </label>
                     </div>
@@ -111,8 +109,7 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
 
         if (cookieFilter != null && cookieFilter != "") {
@@ -133,8 +130,7 @@
         }
 
 
-        $(".remove-filter").click(function (e)
-        {
+        $(".remove-filter").click(function (e) {
             var filterName = $(this).attr('data-id');
 
             $("#" + filterName).prop('checked', false);
