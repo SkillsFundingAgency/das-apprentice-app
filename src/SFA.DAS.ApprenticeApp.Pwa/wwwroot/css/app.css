@@ -8669,6 +8669,9 @@ html {
   border-radius: 5px;
   background-color: #fff;
 }
+.app-modal__content:focus {
+  outline: 4px solid rgba(0, 0, 0, 0.2);
+}
 
 .app-navigation {
   display: flex;

@@ -29,12 +29,15 @@
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
             class="form submit-form">
 
-            <div class="app-form-group">
+            <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
                 <label class="app-label" asp-for="@Model.KsbProgress.Note">
                     Add a note
                 </label>
-                <div class="note-error form-error govuk-hint"></div>
-                <input class="app-input" name="Note" type="text" asp-for="@Model.KsbProgress.Note">
+                <textarea class="app-textarea govuk-js-character-count" asp-for="@Model.KsbProgress.Note" rows="2"
+                        aria-describedby="KsbProgress_Note-info" value="@Model.KsbProgress.Note"></textarea>
+                <div id="KsbProgress_Note-info" class="govuk-hint govuk-character-count__message">
+                    You can enter up to 1000 characters
+                </div>
             </div>
          
             <fieldset class="govuk-fieldset" id="CurrentStatus">
@@ -86,7 +89,7 @@
                     <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
-                            <div class="linkedTask">
+                            <div class="linkedTask" id="ksb-task-@task.TaskId">
                                 <div class="app-card">
                                     <h2 class="app-card__heading">@task.Title</h2>
                                     <ul class="app-icon-list app-icon-list--muted">
@@ -168,9 +171,8 @@
                                 <hr class="app-separator" />
 
                                 <div class="app-dropdown" data-module="app-dropdown">
-                                    <a class="app-dropdown__toggle" role="button" aria-expanded="false"
-                                        onkeypress="myFunction()">
-                                        View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
+                                    <a class="app-dropdown__toggle" role="button" aria-expanded="false">
+                                        View actions<span class="govuk-visually-hidden"> for @task.Title</span>
                                     </a>
                                     <div class="app-dropdown__menu">
                                         <ul class="app-dropdown__menu-list">
@@ -182,13 +184,12 @@
                                                         </svg>
                                                     </span>
                                                     <span>Share</span>
-
                                                 </a>
                                                 <input type="hidden" class="share-title" value="@task.Title" />
                                                 <input type="hidden" class="share-note" value="@task.Note" />
                                             </li>
                                             <li>
-                                                <a href="#" class="app-dropdown__menu-link remove-ksb-task">
+                                                <a href="#" class="app-dropdown__menu-link remove-ksb-task" data-progressId="@Model.KsbProgress.KsbProgressId" data-taskId="@task.TaskId">
                                                     <span class="app-dropdown__menu-icon">
                                                         <svg>
                                                             <use xlink:href="/assets/images/icons.svg#unlink"></use>
@@ -196,9 +197,6 @@
                                                     </span>
                                                     <span>Remove link to task</span>
                                                 </a>
-                                                <input type="hidden" class="progressId"
-                                                    value="@Model.KsbProgress.KsbProgressId" />
-                                                <input type="hidden" class="taskId" value="@task.TaskId" />
                                             </li>
                                         </ul>
                                     </div>
