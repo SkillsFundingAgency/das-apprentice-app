@@ -1,4 +1,5 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -8,56 +9,29 @@
             $(".form").submit();
         });
 
-        $(".submit-form").click(function (e)
-        {
-            var noteValid = true;
+        const removeLink = (id, button) => {
+            const taskId = button.dataset.taskid;
+            const progressId = button.dataset.progressid;
 
-            if ($("#note").val().length > 1000) {
-                $(".note-error").text("Note must be 1000 characters or less");
-                noteValid = false;
-            } else {
-                $(".note-error").text("");
-            }
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("RemoveTaskFromKsbProgress", "Ksb")',
+                data: { progressId, taskId },
+                complete: function () {
+                    $('#ksb-task-' + taskId).hide();
+                },
+                dataType: "json"
+            });
 
-            if (noteValid == true)
-            {
-               $(".form").submit();
-            }
-        });
+        }
 
         $('body').on('click', '.remove-ksb-task', function (e) {
-            $('.app-dropdown__menu').hide();
-            $(this).closest('.linkedKsb').hide();
-            if (confirm('Are you sure you want to remove the link between this task and the knowledge, skill or behaviour (KSB)?')) {
-                var progressId = $('.progressId').val();
-                var taskId = $('.taskId').val();
-                $(this).closest('.linkedTask', '.linkedKsb').hide();
-                $.ajax({
-                    type: "DELETE",
-                    url: '@Url.Action("RemoveTaskFromKsbProgress", "Ksb")',
-                    data: { progressId: progressId, taskId: taskId },
-                    dataType: "json"
-                });
-                return false;
+            const modalContent = {
+                message: 'Are you sure you want to remove the link between this task and the knowledge, skill or behaviour (KSB)?',
+                confirmButton: 'Remove link'
             }
+            const modal = new Modal(this, removeLink, null, modalContent).init();
         });
 
-        $('.ksb-status-display').each(function () {
-            var statusDisplay = $(this).text();
-            switch (true) {
-                case statusDisplay.includes('Not started'):
-                    $(this).addClass('app-tag--pink');
-                    break;
-                case statusDisplay.includes('In progress'):
-                    $(this).addClass('app-tag--yellow');
-                    break;
-                case statusDisplay.includes('Ready for review'):
-                    $(this).addClass('app-tag--blue');
-                    break;
-                case statusDisplay.includes('Completed'):
-                    $(this).addClass('app-tag--green');
-                    break;
-            }
-        });
     });
 </script>

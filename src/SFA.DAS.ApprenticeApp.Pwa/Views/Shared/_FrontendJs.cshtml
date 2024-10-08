@@ -166,10 +166,15 @@
 
     // Modals 
 
-    function Modal(button, callBack, id) {
+    function Modal(button, callBack, id, content) {
+        const defaultContent = {
+            message: "Are you sure you want to remove this article from your saved articles?",
+            confirmButton: "Remove article"
+        }
         this.callBack = callBack;
         this.id = id;
         this.button = button;
+        this.content = { ...defaultContent, ...content };
     }
 
     Modal.prototype.init = function () {
@@ -179,6 +184,7 @@
     Modal.prototype.showModal = function () {
         modal = this.createModal()
         modal.classList.add('app-modal--visible')
+        modal.querySelector('.app-modal__content').focus()
     }
 
     Modal.prototype.hideModel = function () {
@@ -200,6 +206,7 @@
 
         const modalContent = document.createElement('div');
         modalContent.classList.add('app-modal__content')
+        modalContent.tabIndex = 0;
 
         const buttonGroup = document.createElement('div');
         buttonGroup.classList.add('app-button-group')
@@ -211,18 +218,17 @@
 
         const removeBtn = document.createElement('button');
         removeBtn.classList.add('app-button', 'app-button--warning')
-        removeBtn.innerHTML = 'Remove article';
+        removeBtn.innerHTML = this.content.confirmButton;
         removeBtn.addEventListener("click", this.handleCallBack.bind(this))
 
         buttonGroup.appendChild(removeBtn)
         buttonGroup.appendChild(cancelBtn)
 
         const modalText = document.createElement('p');
-        modalText.textContent = `Are you sure you want to remove this article from your saved articles?`
+        modalText.textContent = this.content.message
 
         modalContent.appendChild(modalText);
         modalContent.appendChild(buttonGroup);
-
 
         modal.appendChild(modalContent);
 
