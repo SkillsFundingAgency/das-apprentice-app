@@ -1,6 +1,6 @@
 ﻿namespace SFA.DAS.ApprenticeApp.Pwa.Authentication
 {
-    public static class DomainExtensions
+    public static class AppDomainExtensions
     {
         public static string GetDomain(string environment)
         {
@@ -9,7 +9,7 @@
             {
                 if (text == "prd")
                 {
-                    return "my.apprenticeships.education.gov.uk";
+                    return "apprentice-app.apprenticeships.education.gov.uk";
                 }
 
                 return environment.ToLower() + "-apprentice-app.apprenticeships.education.gov.uk";
