@@ -28,18 +28,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
+            var termsAccepted = "True";
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var termsAcceptedClaim = new Claim(Constants.TermsAcceptedClaimKey, termsAccepted);
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                termsAcceptedClaim
             })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
-
-            client.Setup(x => x.GetApprentice(apprenticeId));
+            client.Setup(c => c.GetApprenticeDetails(It.IsAny<Guid>()))
+                .ReturnsAsync(new ApprenticeDetails
+                {
+                    Apprentice = new Apprentice(),
+                    MyApprenticeship = new MyApprenticeship()
+                });
             var result = await controller.Index() as ViewResult;
             result.Model.Should().BeOfType(typeof(ProfileViewModel));
         }
@@ -53,21 +60,19 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
+            var termsAccepted = "False";
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var termsAcceptedClaim = new Claim(Constants.TermsAcceptedClaimKey, termsAccepted);
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-                apprenticeIdClaim
+                apprenticeIdClaim,
+                termsAcceptedClaim
             })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
-
-            ;
-            client.Setup(x => x.GetApprentice(apprenticeId));
-            Apprentice apprentice = apprenticeDetails.Apprentice;
-            apprentice.TermsOfUseAccepted = false;
 
             var result = await controller.Index() as RedirectToActionResult;
 
@@ -93,8 +98,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
             [Greedy] ProfileController controller)
         {
             var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
             apprenticeIdClaim
@@ -105,8 +109,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 HttpContext = httpContext
             };
 
-            client.Setup(x => x.GetApprenticeDetails(apprenticeId));
-            apprenticeDetails = null;
             var result = await controller.Index() as RedirectToActionResult;
 
             using (new AssertionScope())
@@ -114,7 +116,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                 logger.Verify(x => x.Log(LogLevel.Warning,
                     It.IsAny<EventId>(),
                     It.Is<It.IsAnyType>((object v, Type _) =>
-                            v.ToString().Contains($"Apprentice Details not found")),
+                            v.ToString().Contains($"ApprenticeId not found in user claims for Profile Index")),
                     It.IsAny<Exception>(),
                     (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
 

@@ -2,7 +2,9 @@
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,9 @@ builder.Services.AddSingleton(applicationConfiguration!);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddServiceRegistration(applicationConfiguration);
+
+var environment = builder.Environment;
+builder.Services.AddServiceRegistration(environment, builder.Configuration, applicationConfiguration);
 
 // Add outerapi
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
