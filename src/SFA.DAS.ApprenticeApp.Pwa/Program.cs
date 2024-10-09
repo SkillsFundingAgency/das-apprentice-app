@@ -17,7 +17,7 @@ builder.Services.AddSingleton(applicationConfiguration!);
 builder.Services.AddControllersWithViews();
 
 var environment = builder.Environment;
-builder.Services.AddServiceRegistration(environment, builder.Configuration, applicationConfiguration);
+builder.Services.AddServiceRegistration(environment, rootConfiguration, applicationConfiguration);
 
 // Add outerapi
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
