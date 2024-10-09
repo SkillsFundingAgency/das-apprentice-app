@@ -1,6 +1,8 @@
-﻿using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+﻿using SFA.DAS.ApprenticeApp.Pwa.Authentication;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
+using SFA.DAS.GovUK.Auth.AppStart;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
@@ -8,20 +10,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 
     public static class AuthenticationStartup
     {
-        public static IServiceCollection AddAuthentication(
-            this IServiceCollection services,
-            ApplicationConfiguration config,
-            IWebHostEnvironment environment)
-        {
-            services
-                .AddApplicationAuthentication(config, environment)
-                .AddApplicationAuthorisation();
-
-            services.AddTransient((_) => config);
-
-            return services;
-        }
-
         public static void AddGovLoginAuthentication(
             this IServiceCollection services,
             ApplicationConfiguration config,
@@ -35,17 +23,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             services.AddTransient((_) => config);
         }
 
-        private static IServiceCollection AddApplicationAuthentication(
-            this IServiceCollection services,
-            ApplicationConfiguration config,
-            IWebHostEnvironment environment)
-        {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-            services.AddApprenticeAuthentication(config.MetadataAddress, environment);
-            services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
-            return services;
-        }
 
         private static IServiceCollection AddApplicationAuthorisation(
             this IServiceCollection services)
@@ -56,6 +33,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
                 .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
 
             return services;
+        }
+
+        public static void AddGovLoginAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            var cookieDomain = AppDomainExtensions.GetDomain(configuration["ResourceEnvironmentName"]);
+            var stubLoginRedirect = string.IsNullOrEmpty(cookieDomain) ? "" : $"https://{cookieDomain}/account-details";
+            var signedOutRedirectUrl = string.IsNullOrEmpty(cookieDomain) ? "https://localhost:5003/apprentice-signed-out" : $"https://{cookieDomain}/apprentice-signed-out";
+            services.AddAndConfigureGovUkAuthentication(configuration,
+                typeof(ApprenticeAccountPostAuthenticationClaimsHandler), signedOutRedirectUrl, "/account-details", cookieDomain, stubLoginRedirect);
+
+            services.AddHttpContextAccessor();
         }
     }
 }

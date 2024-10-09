@@ -73,7 +73,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
-        "configNames": "SFA.DAS.ApprenticeApp.Pwa"
+        "configNames": "SFA.DAS.ApprenticeApp.Pwa,SFA.DAS.Apprentice.GovSignIn"
     },
     "resources": [
         {
@@ -205,6 +205,10 @@
                                 {
                                     "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
                                     "value": "[reference(concat(variables('appServiceName'), '-app-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
                                 },
                                 {
                                     "name": "LoggingRedisConnectionString",
