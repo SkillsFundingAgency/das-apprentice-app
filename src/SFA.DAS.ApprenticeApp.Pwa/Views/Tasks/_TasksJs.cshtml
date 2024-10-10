@@ -1,4 +1,5 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -11,22 +12,27 @@
             $(".form").submit();
         });
 
+        const deleteTask = (taskId) => {
+            console.log(taskId)
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
+                data: { taskId: taskId },
+                complete: function () {
+                    $('#task-' + taskId).slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+                },
+                dataType: "json"
+            });
+        }
+
         $('body').on('click', '.delete-task', function (e) {
-            e.preventDefault()
-            if (confirm('Are you sure you want to delete this task?')) {
-                var taskId = $(this).siblings('.taskId').val();
-                $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
-
-                var taskId = $('.taskId').val();
-                $.ajax({
-                    type: "DELETE",
-                    url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                    data: { taskId: taskId },
-                    dataType: "json"
-                });
-
-                return false;
+            const modalContent = {
+                message: 'Are you sure you want to delete this task?',
+                confirmButton: 'Delete task'
             }
+            const taskId = $(this).siblings('.taskId').val();
+            console.log(taskId)
+            const modal = new Modal(this, deleteTask, taskId, modalContent).init();
         });
 
         $('body').on('click', '.share-link', function (e) {
@@ -122,11 +128,11 @@
             var statusId = getUrlParameter('status');
 
             if (statusId != false) {
-                $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=' +statusId+ '');
-                $('.due-date-menu-item').prop('href', '?sort=date_due&status=' +statusId+ '');
+                $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=' + statusId + '');
+                $('.due-date-menu-item').prop('href', '?sort=date_due&status=' + statusId + '');
             }
         });
-        
+
         function setQueryStringParameter(name, value) {
             const params = new URLSearchParams(window.location.search);
             params.set(name, value);

@@ -370,7 +370,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 string postMessage = $"Deleting task with id {taskId}";
                 _logger.LogInformation(postMessage);
 
-                return RedirectToAction("Index");
+                return Ok();
             }
             return Unauthorized();
         }
