@@ -1,0 +1,22 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'macOS-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  sdkVersion: '6.x'
+
+steps:
+  # Step 1: Use .NET SDK
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '$(sdkVersion)'
+
+  # Step 2: Simple script to echo a message
+  - script: echo "hello from macOS"
+    displayName: "Say Hello from macOS"
