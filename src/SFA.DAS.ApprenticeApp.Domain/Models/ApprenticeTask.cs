@@ -11,6 +11,7 @@
         public DateTime? CompletionDateTime { get; set; } = null!;
         public DateTime? CreatedDateTime { get; set; } = null!;
         public TaskStatus? Status { get; set; } = null!;
+        public int? ReminderValue { get; set; } = null!;
 
         public List<TaskFile>? TaskFiles { get; set; } = null!;
         public List<TaskKSBs>? TaskLinkedKsbs { get; set; } = null!;
