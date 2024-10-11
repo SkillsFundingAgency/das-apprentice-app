@@ -658,8 +658,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 HttpContext = httpContext
             };
             var result = await controller.DeleteApprenticeTask(1) as RedirectToActionResult;
-            result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Index");
+            result.Should().BeNull();
         }
 
         [Test, MoqAutoData]
