@@ -2,60 +2,55 @@
     ViewData["Title"] = "Terms";
     Layout = "_LayoutBasic";
 }
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header govuk-!-margin-bottom-8">
+            <h1 class="app-page-header__heading">Terms &amp; conditions</h1>
+        </div>
+        <p class="govuk-body">
+            To use this service you must be:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>a minimum of 15 years old</li>
+            <li>on an apprenticeship</li>
+        </ul>
+        <p>By using this service you agree to</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>use a legitimate email address that only you have access to</li>
+            <li>keep your sign in details secure and not share them with anyone</li>
+            <li>provide true and accurate information</li>
+            <li>not allow anyone to confirm any data on your behalf</li>
+            <li>not submit data on anyone else’s behalf</li>
+            <li>adhere to the <a href="https://www.legislation.gov.uk/ukpga/1990/18/contents">Computer Misuse Act
+                    1990</a> </li>
+            <li>notify us of a change to your email address</li>
+        </ul>
+        <h2 class="govuk-heading-m">Responsibility for the service</h2>
+        <p>
+            This service is run by the Department for Education (DfE). We do our best to make sure it is:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>constantly available</li>
+            <li>virus free</li>
+            <li>providing information that is accurate and complete</li>
+            <li>alerting users to any changes to terms of use and updates to the service</li>
+        </ul>
 
-<header class="app-page-header">
-    <div class="app-page-header__left">
+        <p>The DfE accepts no liability for:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>you being unable to access the service (for example, because of excessive demand or because we've taken
+                the service down for maintenance)</li>
+            <li>delay or failure in receiving data</li>
+            <li>indirect damages arising from you using the service or relying on its content</li>
+            <li>the content and availability of external websites that link to the service or which are linked from it
+            </li>
+        </ul>
     </div>
-    <div class="app-page-header__middle">
-        <h1 class="govuk-heading-l">Terms and conditions</h1>
-    </div>
-</header>
-
-<p class="govuk-body">
-    To use this service you must be:
-</p>
-<ul class="govuk-body">
-    <li>a minimum of 15 years old</li>
-    <li>on an apprenticeship</li>
-</ul>
-
-<br />
-<p>By using this service you agree to</p>
-<ul class="govuk-body">
-    <li>use a legitimate email address that only you have access to</li>
-    <li>keep your sign in details secure and not share them with anyone</li>
-    <li>provide true and accurate information</li>
-    <li>not allow anyone to confirm any data on your behalf</li>
-    <li>not submit data on anyone else’s behalf</li>
-    <li>adhere to the <a href="https://www.legislation.gov.uk/ukpga/1990/18/contents">Computer Misuse Act 1990</a> </li>
-    <li>notify us of a change to your email address</li>
-</ul>
-
-<h2 class="govuk-heading-m">Responsibility for the service</h2>
-<p>
-    This service is run by the Department for Education (DfE). We do our best to make sure it is:
-</p>
-
-<ul class="govuk-body">
-    <li>constantly available</li>
-    <li>virus free</li>
-    <li>providing information that is accurate and complete</li>
-    <li>alerting users to any changes to terms of use and updates to the service</li>
-</ul>
-<br />
-<p>The DfE accepts no liability for:</p>
-<ul class="govuk-body">
-    <li>you being unable to access the service (for example, because of excessive demand or because we've taken the service down for maintenance)</li>
-    <li>delay or failure in receiving data</li>
-    <li>indirect damages arising from you using the service or relying on its content</li>
-    <li>the content and availability of external websites that link to the service or which are linked from it</li>
-</ul>
-
-
-<div class="govuk-button-group">
-    <button class="govuk-button" onclick="location.href='@Url.Action("TermsAccept", "Terms")'">Accept</button>
-    <button class="govuk-button govuk-button--secondary" onclick="location.href='@Url.Action("TermsDecline", "Terms")'">Decline</button>
 </div>
-
-
-
+<div class="app-button-group__wrap">
+    <div class="app-button-group">
+        <button class="app-button" onclick="location.href='@Url.Action("TermsAccept", "Terms")'">Accept</button>
+        <button class="app-button app-button--secondary"
+            onclick="location.href='@Url.Action("TermsDecline", "Terms")'">Decline</button>
+    </div>
+</div>

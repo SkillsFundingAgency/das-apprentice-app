@@ -1,7 +1,7 @@
 @using SFA.DAS.ApprenticeApp.Application
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <a href="#filter" data-module="app-overlay" class="app-icon-action">
     <span class="app-icon-action__icon ksb-filter-view">
@@ -12,7 +12,6 @@
     </span>
     <span class="app-icon-action__label ksb-filter-line-header">Filters</span>
 </a>
-
 
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
@@ -34,33 +33,33 @@
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="not-started" name="filter" type="checkbox"
-                               value="not-started">
+                            value="not-started">
                         <label class="app-label app-checkboxes__label" for="not-started">
-                            <span class="app-tag app-tag--category-not-started">Not started</span>
+                            <span class="app-tag app-tag--status-notstarted">Not started</span>
 
                         </label>
                     </div>
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="in-progress" name="filter" type="checkbox"
-                               value="in-progress">
-                        <label class="app-label app-checkboxes__label" for="filter-in-progress">
-                            <span class="app-tag app-tag--category-in-progress">In Progress</span>
+                            value="in-progress">
+                        <label class="app-label app-checkboxes__label" for="in-progress">
+                            <span class="app-tag app-tag--status-inprogress">In progress</span>
                         </label>
                     </div>
 
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="ready-for-review" name="filter" type="checkbox" value="ready-for-review">
-                        <label class="app-label app-checkboxes__label" for="filter-ready-for-review">
-                            <span class="app-tag app-tag--category-ready-for-review">Ready for review</span>
+                        <input class="app-checkboxes__input" id="ready-for-review" name="filter" type="checkbox"
+                            value="ready-for-review">
+                        <label class="app-label app-checkboxes__label" for="ready-for-review">
+                            <span class="app-tag app-tag--status-readyforreview">Ready for review</span>
                         </label>
                     </div>
 
                     <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="done" name="filter" type="checkbox"
-                               value="done">
-                        <label class="app-label app-checkboxes__label" for="filter-done">
-                            <span class="app-tag app-tag--category-done">Done</span>
+                        <input class="app-checkboxes__input" id="done" name="filter" type="checkbox" value="done">
+                        <label class="app-label app-checkboxes__label" for="done">
+                            <span class="app-tag app-tag--status-done">Done</span>
                         </label>
                     </div>
 
@@ -75,8 +74,8 @@
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="linked-to-a-task" name="other-filter" type="checkbox"
-                               value="linked-to-a-task">
-                        <label class="app-label app-checkboxes__label" for="filter-linked-to-a-task">
+                            value="linked-to-a-task">
+                        <label class="app-label app-checkboxes__label" for="linked-to-a-task">
                             Linked to a task
                         </label>
                     </div>
@@ -90,10 +89,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        // get cookie
         var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
 
-        // if cookie is set
         if (cookieFilter != null && cookieFilter != "") {
             var filters = getCookieKsb("@Constants.KsbFiltersCookieName");
 
@@ -101,12 +98,10 @@
 
             for (var k in data) {
 
-                // check all the filter page checkboxes
                 var line = data[k].split('=');
 
                 $("#" + line[1]).prop('checked', true);
 
-                // show the main page lozenges inside the div
                 $("#filters-set").append("<div class='app-tag filter-tag'>" + line[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + line[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
             }
         }
@@ -114,24 +109,17 @@
             $("#filters-set").hide();
         }
 
-
         $(".remove-filter").click(function (e) {
-            // get the one in question
             var filterNames = $(this).attr('data-id');
-
-            // uncheck the hidden screen
             $("#" + filterNames).prop('checked', false);
-
             applyAndSaveFiltersKsb()
         });
-
 
         $(".apply").click(function (e) {
             applyAndSaveFiltersKsb()
         });
 
     });
-
 
     function applyAndSaveFiltersKsb() {
         var ssList = "";
@@ -156,7 +144,6 @@
     function setCookieKsb(name, value, attributes = {}) {
         attributes = {
             path: '/',
-            // add other defaults here if necessary ...attributes
         };
 
         if (attributes.expires instanceof Date) {

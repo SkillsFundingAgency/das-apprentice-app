@@ -6,8 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <Compile Remove="Models\StubAuthUserDetails.cs" />
   </ItemGroup>
@@ -43,9 +41,11 @@
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Domain\SFA.DAS.ApprenticeApp.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+      <ReferenceSourceTarget></ReferenceSourceTarget>
     </ProjectReference>
     <ProjectReference Include="..\SFA.DAS.ApprenticeApp.Application\SFA.DAS.ApprenticeApp.Application.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+      <ReferenceSourceTarget></ReferenceSourceTarget>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
