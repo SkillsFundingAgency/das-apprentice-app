@@ -31,4 +31,7 @@
   padding: $app-gap;
   border-radius: $app-border-radius;
   background-color: #fff;
+  &:focus {
+    outline: 4px solid rgba(0, 0, 0, 0.2);
+  }
 }

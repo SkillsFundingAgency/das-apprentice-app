@@ -1,26 +1,41 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TaskViewModelBase
 
 <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150">
+
     <label class="app-label" asp-for="@Model.Task.Title">
         Name of the task
     </label>
+    <div class="title-error-1 form-error govuk-hint"></div>
+    <div class="title-error-2 form-error govuk-hint"></div>
     <input class="app-input govuk-js-character-count" name="title" type="text" asp-for="@Model.Task.Title"
-        aria-describedby="Task_Title-info">
+           aria-describedby="Task_Title-info">
     <div id="Task_Title-info" class="govuk-hint govuk-character-count__message">
         You can enter up to 150 characters
     </div>
 </div>
+
 <div class="app-form-group">
     <label class="app-label" for="date">
         Select date the task @(Model.StatusId == 1 ? "was completed" : "is due")
     </label>
+    <div class="date-error-1 form-error govuk-hint"></div>
+    <div class="date-error-2 form-error govuk-hint"></div>
     <input class="app-input" id="date" name="duedate" type="date" asp-for="@Model.Task.DueDate">
 </div>
 <div class="app-form-group">
     <label class="app-label" for="time">
         @(Model.StatusId == 1 ? "Enter the time the task was completed" : "Select time the task is due")
     </label>
-    <input class="app-input" id="time" name="time" type="time">
+    <div class="time-error form-error govuk-hint"></div>
+
+    @if (Model.StatusId == 0)
+    {
+        <input class="app-input" id="time" name="time" type="time" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
+    }
+    else
+    {
+        <input class="app-input" id="time" name="time" type="time" value="@Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm")">
+    }
 </div>
 @{
     if (Model.StatusId != 1)
@@ -37,23 +52,23 @@
                     </div>
                     <div class="app-collapse__contents app-radios" id="app-collapse-task-reminder">
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="reminder-none" name="reminder" type="radio"
-                                value="none">
-                            <label class="app-label app-radios__label" for="reminder-none">
+                            <input class="app-radios__input task-reminder" id="ReminderValue" name="ReminderValue" type="radio"
+                                value="">
+                            <label class="app-label app-radios__label" for="ReminderValue">
                                 None
                             </label>
                         </div>
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="reminder-time" name="reminder" type="radio"
-                                value="time">
-                            <label class="app-label app-radios__label" for="reminder-time">
+                            <input class="app-radios__input task-reminder" id="ReminderValue" name="ReminderValue" type="radio"
+                                   value="0">
+                            <label class="app-label app-radios__label" for="ReminderValue">
                                 At the time of activity
                             </label>
                         </div>
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="reminder-5mins" name="reminder" type="radio"
-                                value="5mins">
-                            <label class="app-label app-radios__label" for="reminder-5mins">
+                            <input class="app-radios__input task-reminder" id="ReminderValue" name="ReminderValue" type="radio"
+                                value="5">
+                            <label class="app-label app-radios__label" for="ReminderValue">
                                 5 minutes before
                             </label>
                         </div>

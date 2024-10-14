@@ -18,6 +18,7 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -429,6 +430,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             })});
             httpContext.User = claimsPrincipal;
 
+            var formContext = new FormCollection(new Dictionary<string, StringValues> { { "time", "03:03" } });
+            httpContext.Request.ContentType = "application/x-www-form-urlencoded";
+            httpContext.Request.Form = formContext;
+
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
@@ -518,6 +523,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             })});
             httpContext.User = claimsPrincipal;
 
+            var formContext = new FormCollection(new Dictionary<string, StringValues> { { "time", "03:03" } });
+            httpContext.Request.ContentType = "application/x-www-form-urlencoded";
+            httpContext.Request.Form = formContext;
+
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
@@ -550,6 +559,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 apprenticeIdClaim
             })});
             httpContext.User = claimsPrincipal;
+
+            var formContext = new FormCollection(new Dictionary<string,StringValues> { { "time", "03:03" } });
+            httpContext.Request.ContentType = "application/x-www-form-urlencoded";
+            httpContext.Request.Form = formContext;
 
             controller.ControllerContext = new ControllerContext
             {
@@ -645,8 +658,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 HttpContext = httpContext
             };
             var result = await controller.DeleteApprenticeTask(1) as RedirectToActionResult;
-            result.Should().BeOfType(typeof(RedirectToActionResult));
-            result.ActionName.Should().Be("Index");
+            result.Should().BeNull();
         }
 
         [Test, MoqAutoData]

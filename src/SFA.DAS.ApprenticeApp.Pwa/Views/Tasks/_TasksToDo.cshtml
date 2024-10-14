@@ -5,7 +5,7 @@
 
 @foreach (var task in Model.Tasks)
 {
-    <div class="app-card">
+    <div class="app-card" id="task-@task.TaskId">
     <h2 class="app-card__heading">@task.Title</h2>
     <ul class="app-icon-list app-icon-list--muted">
         <li>
@@ -135,10 +135,11 @@
                             </span>
                             <span>Delete</span>
                         </a>
+                        <input class="taskId" type="hidden" value="@task.TaskId" />
                     </li>
                 </ul>
             </div>
-            <input class="taskId" type="hidden" value="@task.TaskId" />
+
         </div>
     </div>
 }

@@ -6,7 +6,7 @@
 
 @foreach (var task in Model.Tasks)
 {
-    <div class="app-card">
+    <div class="app-card" id="task-@task.TaskId">
     <h2 class="app-card__heading">@task.Title</h2>
     <ul class="app-icon-list app-icon-list--muted">
         <li><span class="app-icon-list__icon"><svg>
