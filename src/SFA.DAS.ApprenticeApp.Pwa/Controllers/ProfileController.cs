@@ -30,19 +30,9 @@ public class ProfileController : Controller
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
-            var termsOfUseAccepted = Claims.GetClaim(HttpContext, Constants.TermsAcceptedClaimKey);
-
-            if (termsOfUseAccepted.ToLower() == "true")
-            {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship });
-            }
-            else
-            {
-                string termsMessage = $"Apprentice redirected to Terms page as Terms not yet accepted. Apprentice Id: {apprenticeId}";
-                _logger.LogInformation(termsMessage);
-                return RedirectToAction("Index", "Terms");
-            }
+           var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+           return View(new ProfileViewModel() { Apprentice = apprenticeDetails.Apprentice, MyApprenticeship = apprenticeDetails.MyApprenticeship });
+           
         }
         else
         {

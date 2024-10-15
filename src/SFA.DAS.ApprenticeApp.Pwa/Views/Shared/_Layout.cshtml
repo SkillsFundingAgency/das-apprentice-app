@@ -23,7 +23,7 @@
             </div>
         </main>
         <nav class="app-navigation">
-            <a asp-controller="Tasks" asp-action="Index"
+            <a
                 class="app-navigation__link  @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon">
                     <svg>
@@ -33,7 +33,7 @@
                 </span>
                 <span class="app-navigation__link-text">Tasks</span>
             </a>
-            <a asp-controller="Ksb" asp-action="Index"
+            <a
                 class="app-navigation__link @(ViewBag.Section == "Ksbs" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon">
                     <svg>
@@ -54,7 +54,7 @@
                 </span>
                 <span class="app-navigation__link-text">Support</span>
             </a>
-            <a asp-controller="Notifications" asp-action="Index"
+            <a
                 class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon">
                     <svg>
