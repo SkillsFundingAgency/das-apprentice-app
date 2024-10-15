@@ -40,11 +40,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> Authenticated()
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            if(!string.IsNullOrEmpty(apprenticeId))
-            { 
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
-                return RedirectToAction("Index", "Terms");
+
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                if (apprenticeDetails?.MyApprenticeship != null)
+                {
+                    return RedirectToAction("Index", "Terms");
+                }
+
+                return RedirectToAction("Error", "Account");
             }
             return RedirectToAction("Error", "Account");
         }

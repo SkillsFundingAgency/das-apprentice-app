@@ -68,7 +68,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         }
 
         [Test, MoqAutoData]
-        public async Task Loading_Authenticated_Page_LoadsError_ForNoApprenticeship(
+        public async Task Loading_Authenticated_Page_LoadsError_ForNoApprentice(
            [Frozen] Mock<IOuterApiClient> client,
            [Greedy] AccountController controller)
         {
@@ -86,10 +86,38 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
                 HttpContext = httpContext
             };
 
-             var result = await controller.Authenticated() as RedirectToActionResult;
+            var result = await controller.Authenticated() as RedirectToActionResult;
             result.ActionName.Should().Be("Error");
             result.ControllerName.Should().Be("Account");
         }
+
+        [Test, MoqAutoData]
+        public async Task Loading_Authenticated_Page_LoadsError_ForNoApprenticeship(
+          [Frozen] Mock<IOuterApiClient> client,
+          [Greedy] AccountController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+               apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null });
+            var result = await controller.Authenticated() as RedirectToActionResult;
+            result.ActionName.Should().Be("Error");
+            result.ControllerName.Should().Be("Account");
+        }
+        //  
+
 
         [Test, MoqAutoData]
         public void Loading_YourAccount_Page([Greedy] AccountController controller)
