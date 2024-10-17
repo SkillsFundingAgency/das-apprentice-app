@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 
             var result = controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Tasks");
+            result.ControllerName.Should().Be("Profile");
 
         }
     }

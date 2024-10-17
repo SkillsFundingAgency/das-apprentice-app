@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Tasks");
+                return RedirectToAction("Index", "Profile");
 
             }
         }
