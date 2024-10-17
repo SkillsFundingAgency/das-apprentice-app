@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                             case "KSB":
                                 filteredTasks.AddRange(tasks.Where(x => x.TaskLinkedKsbs.Count > 0).ToList());
                                 break;
-                            case "NOTE-ATTACHED":
+                            case "NOTE-ADDED":
                                 filteredTasks.AddRange(tasks.Where(x => x.Note != null).ToList());
                                 break;
                             case "FILES-ATTACHED":
