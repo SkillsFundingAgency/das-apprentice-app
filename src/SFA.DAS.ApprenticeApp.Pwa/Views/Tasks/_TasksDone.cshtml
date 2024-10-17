@@ -43,6 +43,17 @@
 
                 </li>
             }
+            @if (!String.IsNullOrEmpty(task.Note))
+            {
+                <li>
+                    <span class="app-icon-list__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#edit"></use>
+                        </svg>
+                    </span>
+                    <span>Note added</span>
+                </li>
+            }
             @if (task.TaskFiles.Any())
             {
                 <li><span class="app-icon-list__icon"><svg>

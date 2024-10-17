@@ -85,7 +85,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
                 new ApprenticeTask { ApprenticeshipCategoryId = 4 }
             };
             // Act
-            var result = Filter.FilterTaskResults(tasks, "other-filter=NOTE-ATTACHED");
+            var result = Filter.FilterTaskResults(tasks, "other-filter=NOTE-ADDED");
 
             // Assert
             result.FilteredTasks.Count.Should().Be(1);
