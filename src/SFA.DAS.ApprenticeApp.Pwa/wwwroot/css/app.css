@@ -4837,13 +4837,13 @@ p + .app-card__heading,
 }
 
 
-.govuk-phase-banner {
+.govuk-phase-banner, .app-phase-banner {
   padding-top: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #b1b4b6;
 }
 
-.govuk-phase-banner__content {
+.govuk-phase-banner__content, .app-phase-banner__content {
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -4855,24 +4855,24 @@ p + .app-card__heading,
   margin: 0;
 }
 @media print {
-  .govuk-phase-banner__content {
+  .govuk-phase-banner__content, .app-phase-banner__content {
     font-family: sans-serif;
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-phase-banner__content {
+  .govuk-phase-banner__content, .app-phase-banner__content {
     font-size: 1rem;
     line-height: 1.25;
   }
 }
 @media print {
-  .govuk-phase-banner__content {
+  .govuk-phase-banner__content, .app-phase-banner__content {
     font-size: 14pt;
     line-height: 1.2;
   }
 }
 @media print {
-  .govuk-phase-banner__content {
+  .govuk-phase-banner__content, .app-phase-banner__content {
     color: #000000;
   }
 }
@@ -8863,6 +8863,20 @@ html {
 .app-page-header__forward {
   width: 20%;
   text-align: right;
+}
+
+.app-phase-banner {
+  background: #fff;
+  border: none;
+  margin: -1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.app-phase-banner__content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .app-progress__wrap {

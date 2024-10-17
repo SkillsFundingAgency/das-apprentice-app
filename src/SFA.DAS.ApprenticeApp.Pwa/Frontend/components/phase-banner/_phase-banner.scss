@@ -1,0 +1,15 @@
+.app-phase-banner {
+  @extend .govuk-phase-banner;
+  background: #fff;
+  border: none;
+  margin: -1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.app-phase-banner__content {
+  @extend .govuk-phase-banner__content;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
