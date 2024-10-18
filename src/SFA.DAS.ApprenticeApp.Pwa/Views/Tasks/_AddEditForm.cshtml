@@ -8,7 +8,7 @@
     <div class="title-error-1 form-error govuk-hint"></div>
     <div class="title-error-2 form-error govuk-hint"></div>
     <input class="app-input govuk-js-character-count" name="title" type="text" asp-for="@Model.Task.Title"
-           aria-describedby="Task_Title-info">
+        aria-describedby="Task_Title-info">
     <div id="Task_Title-info" class="govuk-hint govuk-character-count__message">
         You can enter up to 150 characters
     </div>
@@ -30,11 +30,13 @@
 
     @if (Model.StatusId == 0)
     {
-        <input class="app-input" id="time" name="time" type="time" value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
+        <input class="app-input" id="time" name="time" type="time"
+            value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
     }
     else
     {
-        <input class="app-input" id="time" name="time" type="time" value="@Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm")">
+        <input class="app-input" id="time" name="time" type="time"
+            value="@Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm")">
     }
 </div>
 @{
@@ -52,23 +54,23 @@
                     </div>
                     <div class="app-collapse__contents app-radios" id="app-collapse-task-reminder">
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="ReminderValue" name="ReminderValue" type="radio"
-                                value="">
-                            <label class="app-label app-radios__label" for="ReminderValue">
+                            <input class="app-radios__input task-reminder" id="ReminderValueNone" name="ReminderValue"
+                                type="radio" value="">
+                            <label class="app-label app-radios__label" for="ReminderValueNone">
                                 None
                             </label>
                         </div>
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="ReminderValue" name="ReminderValue" type="radio"
-                                   value="0">
-                            <label class="app-label app-radios__label" for="ReminderValue">
+                            <input class="app-radios__input task-reminder" id="ReminderValueZero" name="ReminderValue"
+                                type="radio" value="0">
+                            <label class="app-label app-radios__label" for="ReminderValueZero">
                                 At the time of activity
                             </label>
                         </div>
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="ReminderValue" name="ReminderValue" type="radio"
-                                value="5">
-                            <label class="app-label app-radios__label" for="ReminderValue">
+                            <input class="app-radios__input task-reminder" id="ReminderValueFive" name="ReminderValue"
+                                type="radio" value="5">
+                            <label class="app-label app-radios__label" for="ReminderValueFive">
                                 5 minutes before
                             </label>
                         </div>
