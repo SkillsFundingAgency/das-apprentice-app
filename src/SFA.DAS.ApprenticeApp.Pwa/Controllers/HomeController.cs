@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
@@ -12,15 +13,18 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IOuterApiClient _client;
+    private readonly IConfiguration _config;
 
     public HomeController
         (
         ILogger<HomeController> logger,
-        IOuterApiClient client
+        IOuterApiClient client,
+        IConfiguration configuration
         )
     {
         _logger = logger;
         _client = client;
+        _config = configuration;
     }
 
     public async Task<IActionResult> Index()
@@ -31,10 +35,22 @@ public class HomeController : Controller
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
+                string whiteListEmailList = _config["WhiteListEmails"];
+                if (whiteListEmailList != null)
                 {
-                    return RedirectToAction("Index", "Tasks");
+                    WhiteListEmailUsers? users = JsonConvert.DeserializeObject<WhiteListEmailUsers>(whiteListEmailList);
+
+                    var apprenticeEmail = Claims.GetClaim(HttpContext, Constants.ApprenticeNameClaimKey);
+
+                    var match = users?.Emails?.Contains(apprenticeEmail);
+                    if (match == true)
+                    {
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
+                        {
+                            return RedirectToAction("Index", "Profile");
+                        }
+                    }
                 }
             }
         }

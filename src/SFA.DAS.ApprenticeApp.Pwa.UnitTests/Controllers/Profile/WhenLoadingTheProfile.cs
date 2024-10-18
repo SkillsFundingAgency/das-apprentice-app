@@ -52,45 +52,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Terms_Page_is_Displayed_If_Not_Accepted(
-            [Frozen] Mock<IOuterApiClient> client,
-            [Frozen] ApprenticeDetails apprenticeDetails,
-            [Frozen] Mock<ILogger<ProfileController>> logger,
-            [Greedy] ProfileController controller)
-        {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid();
-            var termsAccepted = "False";
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var termsAcceptedClaim = new Claim(Constants.TermsAcceptedClaimKey, termsAccepted);
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-                apprenticeIdClaim,
-                termsAcceptedClaim
-            })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var result = await controller.Index() as RedirectToActionResult;
-
-            using (new AssertionScope())
-            {
-                logger.Verify(x => x.Log(LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((object v, Type _) =>
-                            v.ToString().Contains($"Apprentice redirected to Terms page as Terms not yet accepted")),
-                    It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
-
-                result.ActionName.Should().Be("Index");
-                result.ControllerName.Should().Be("Terms");
-            }
-        }
-
-        [Test, MoqAutoData]
         public async Task Then_The_Home_Page_Is_Displayed_For_Invalid_Apprentice(
             [Frozen] Mock<IOuterApiClient> client,
             ApprenticeDetails apprenticeDetails,

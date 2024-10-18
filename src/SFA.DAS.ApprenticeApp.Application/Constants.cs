@@ -12,6 +12,7 @@
         public const string TermsAcceptedClaimKey = "TermsOfUseAccepted";
         public const string ApprenticeshipIdClaimKey = "ApprenticeshipId";
         public const string StandardUIdClaimKey = "StandardUId";
+        public const string ApprenticeNameClaimKey = "name";
 
         public const string ContentfulTopLevelPageTypeName = "apprenticeAppCategory";
         public const string ContentfulContentPageTypeName = "apprenticeAppArticle";
