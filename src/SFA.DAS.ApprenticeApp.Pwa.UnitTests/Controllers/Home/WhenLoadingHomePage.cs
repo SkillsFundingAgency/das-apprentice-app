@@ -6,6 +6,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
@@ -40,6 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
 
         [Test, MoqAutoData]
         public async Task Redirect_If_logged_in(
+             [Frozen] Mock<IConfiguration> configuration,
             [Frozen] Mock<IOuterApiClient> client,
             [Frozen] ApprenticeDetails apprenticeDetails,
             [Greedy] HomeController controller)
@@ -52,16 +54,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             };
             var identity = new ClaimsIdentity(new List<Claim>
             {
-                new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString(), ClaimValueTypes.String)
+                new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString(), ClaimValueTypes.String),
+                new Claim(Constants.ApprenticeNameClaimKey, "test1@test.com", ClaimValueTypes.String)
             }, "Custom");
 
             httpContext.User = new ClaimsPrincipal(identity);
+            configuration.Setup(x => x["WhiteListEmails"]).Returns("{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }");
             apprenticeDetails.MyApprenticeship = new MyApprenticeship();
             client.Setup(c => c.GetApprenticeDetails(apprenticeId)).ReturnsAsync(apprenticeDetails);
 
                 var result = await controller.Index() as RedirectToActionResult;
                 result.ActionName.Should().Be("Index");
-                result.ControllerName.Should().Be("Tasks");
+                result.ControllerName.Should().Be("Profile");
         }
 
         [Test, MoqAutoData]

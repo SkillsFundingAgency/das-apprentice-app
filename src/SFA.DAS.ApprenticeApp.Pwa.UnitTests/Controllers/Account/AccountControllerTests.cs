@@ -147,7 +147,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         [Test, MoqAutoData]
         public async Task Post_AccountDetails_HandlesError(
             [Frozen] Mock<IConfiguration> configuration,
-
             [Frozen] Mock<IStubAuthenticationService> authenticationService,
             [Frozen] StubAuthenticationViewModel model,
             [Greedy] AccountController controller)
