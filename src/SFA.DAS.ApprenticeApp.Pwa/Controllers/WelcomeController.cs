@@ -37,8 +37,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 if (match == null || match == false)
                 { 
                    _logger.LogInformation($"Invalid Private Beta Phase 2 user tried to log in. ApprenticeId: {apprenticeId}");
-
-                    // Deny entry
                     return RedirectToAction("Error", "Account");
                 }
                 else
@@ -49,6 +47,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             else
             {
                 // Deny entry
+                _logger.LogInformation($"Environment not configured for email whitelist");
                 return RedirectToAction("Error", "Account");
             }
            
