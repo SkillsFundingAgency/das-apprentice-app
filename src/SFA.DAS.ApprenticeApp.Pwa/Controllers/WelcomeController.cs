@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
-using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 
@@ -12,20 +12,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     public class WelcomeController : Controller
     {
         private readonly ILogger<WelcomeController> _logger;
-        private readonly IConfiguration _config;
+        private readonly ApplicationConfiguration _appConfig;
 
         public WelcomeController(ILogger<WelcomeController> logger,
-            IConfiguration configuration
+            ApplicationConfiguration appConfig
         )
         {
             _logger = logger;
-            _config = configuration;
+            _appConfig = appConfig;
         }
 
         public IActionResult Index()
         {
             // Feature for whitelist emails | "WhiteListEmails": "{ \"Emails\" : [\"user1@gmail.com\", \"user2@gmail.com\"] }"
-            string whiteListEmailList = _config["WhiteListEmails"];
+            string whiteListEmailList = _appConfig.WhiteListEmails;
             if (whiteListEmailList != null)
             {
                 WhiteListEmailUsers? users = JsonConvert.DeserializeObject<WhiteListEmailUsers>(whiteListEmailList);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
@@ -13,18 +14,18 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IOuterApiClient _client;
-    private readonly IConfiguration _config;
+    private readonly ApplicationConfiguration _appConfig;
 
     public HomeController
         (
         ILogger<HomeController> logger,
         IOuterApiClient client,
-        IConfiguration configuration
+        ApplicationConfiguration appConfig
         )
     {
         _logger = logger;
         _client = client;
-        _config = configuration;
+        _appConfig = appConfig;
     }
 
     public async Task<IActionResult> Index()
@@ -35,8 +36,8 @@ public class HomeController : Controller
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                string whiteListEmailList = _config["WhiteListEmails"];
-                if (whiteListEmailList != null)
+                string whiteListEmailList = _appConfig.WhiteListEmails;
+                if (!string.IsNullOrEmpty(whiteListEmailList))
                 {
                     WhiteListEmailUsers? users = JsonConvert.DeserializeObject<WhiteListEmailUsers>(whiteListEmailList);
 

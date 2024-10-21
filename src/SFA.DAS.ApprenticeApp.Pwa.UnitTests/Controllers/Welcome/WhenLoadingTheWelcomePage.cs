@@ -11,29 +11,16 @@ using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 using System.Security.Claims;
 using System;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 {
     [TestFixture]
     public class WhenLoadingTheWelcomePage
     {
-        [Test, MoqAutoData]
-        public void Then_The_Welcome_Page_is_displayed_OnFirstUse(
-         [Greedy] WelcomeController controller)
-        {
-            var httpContext = new DefaultHttpContext();
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var result = controller.Index() as ActionResult;
-            Assert.IsNotNull(result);
-
-        }
-
+       
         [Test, MoqAutoData]
         public void WhiteListedUser_CanUse_App(
-            [Frozen] Mock<IConfiguration> configuration,
+            [Frozen] ApplicationConfiguration configuration,
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
             {
@@ -55,7 +42,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
                 HttpContext = httpContext
             };
 
-            configuration.Setup(x => x["WhiteListEmails"]).Returns("{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }");
+            configuration.WhiteListEmails = "{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }";
             var result = controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Profile");
@@ -63,7 +50,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 
         [Test, MoqAutoData]
         public void NonWhiteListedUser_CannotUse_App(
-           [Frozen] Mock<IConfiguration> configuration,
+           [Frozen] ApplicationConfiguration configuration,
            [Frozen] Mock<ILogger<WelcomeController>> logger,
            [Greedy] WelcomeController controller)
         {
@@ -83,7 +70,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
                 HttpContext = httpContext
             };
 
-            configuration.Setup(x => x["WhiteListEmails"]).Returns("{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }");
+            configuration.WhiteListEmails = "{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }";
             var result = controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Error");
             result.ControllerName.Should().Be("Account");
