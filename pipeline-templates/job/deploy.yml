@@ -49,6 +49,7 @@ jobs:
             TableName: Configuration
             ConfigurationSecrets:
               ApprenticeAppApimSubscriptionKey: $(ApprenticeAppApimSubscriptionKey)
+              WhiteListEmails: $(WhiteListEmails)
         - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
