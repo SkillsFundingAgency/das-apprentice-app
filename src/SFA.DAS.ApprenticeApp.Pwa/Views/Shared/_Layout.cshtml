@@ -1,7 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics
+
+<!DOCTYPE html>
 <html lang="en" class="govuk-template">
 
 <head>
+    <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -15,6 +18,7 @@
 </head>
 
 <body class="govuk-template__body app-template__body" id="top">
+    <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
     <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
     <div class="app-container">
         <main class="app-main">

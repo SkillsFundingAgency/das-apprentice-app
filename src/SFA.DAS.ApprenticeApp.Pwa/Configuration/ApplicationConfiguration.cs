@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using SFA.DAS.Http.Configuration;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Configuration;
@@ -19,6 +20,7 @@ public class ApplicationConfiguration
     public string? StubAuth { get; set; }
     public string? PushNotificationPublicKey { get; set; }
     public bool UseGovSignIn { get; set; }
+    public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; }
 }
 
 [ExcludeFromCodeCoverage]

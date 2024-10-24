@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging.ApplicationInsights;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
@@ -42,6 +44,11 @@ builder.Services.AddApplicationInsightsTelemetry(new Microsoft.ApplicationInsigh
 {
     ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]
 });
+
+// configure google analytics
+builder.Services.Configure<MvcOptions>(options =>
+    options.Filters.Add(new EnableGoogleAnalyticsAttribute(
+        applicationConfiguration.GoogleAnalytics)));
 
 var app = builder.Build();
 
