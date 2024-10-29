@@ -8153,9 +8153,24 @@ html {
   margin-bottom: 1rem;
 }
 
+.app-card__link {
+  color: #00703c;
+}
+
 .app-card__header {
   display: flex;
   align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.app-card--highlight {
+  background-color: #e6f7e6;
+}
+
+.app-card__footer {
+  display: flex;
+  align-items: flex-end;
   flex-direction: row;
   justify-content: space-between;
 }

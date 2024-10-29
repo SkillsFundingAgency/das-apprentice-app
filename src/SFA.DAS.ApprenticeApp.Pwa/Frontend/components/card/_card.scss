@@ -9,9 +9,24 @@
   @extend .govuk-heading-s;
 }
 
+.app-card__link {
+  color: $app-brand-colour;
+}
+
 .app-card__header {
   display: flex;
   align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.app-card--highlight {
+  background-color: $app-card-highlight;
+}
+
+.app-card__footer {
+  display: flex;
+  align-items: flex-end;
   flex-direction: row;
   justify-content: space-between;
 }
