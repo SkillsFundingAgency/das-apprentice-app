@@ -1,0 +1,23 @@
+.notifications-container {
+    padding: 20px;
+}
+
+.notification-card {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    position: relative;
+}
+
+.bg-light-green {
+    background-color: #e6f7e6;
+}
+
+.delete-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #dc3545;
+}
