@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                             case "KSB":
                                 filteredTasks.AddRange(tasks.Where(x => x.TaskLinkedKsbs.Count > 0).ToList());
                                 break;
-                            case "NOTE-ATTACHED":
+                            case "NOTE-ADDED":
                                 filteredTasks.AddRange(tasks.Where(x => x.Note != null).ToList());
                                 break;
                             case "FILES-ATTACHED":
@@ -55,14 +55,64 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                 }
                 return new FilterTaskResults() { FilteredTasks = filteredTasks, HasFilterRun = true };
             }
-
             return new FilterTaskResults() { FilteredTasks = new List<ApprenticeTask>(), HasFilterRun = false };
         }
-    }
 
+        public static FilterKsbResults FilterKsbResults(List<ApprenticeKsb> ksbs, string ksbFiltersValue)
+        {
+            var filteredKsbs = new List<ApprenticeKsb>();
+
+            if (!string.IsNullOrEmpty(ksbFiltersValue))
+            {
+                foreach (string filter in ksbFiltersValue.Split("&"))
+                {
+                    string[] filterparts = filter.Split("=");
+                    var filterType = filterparts[0];
+                    var filterValue = filterparts[1];
+
+                    if (filterType == "filter")
+                    {
+                        switch (filterValue.ToUpper())
+                        {
+                            case "NOT-STARTED":
+                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.NotStarted).ToList());
+                                break;
+                            case "IN-PROGRESS":
+                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.InProgress).ToList());
+                                break;
+                            case "READY-FOR-REVIEW":
+                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.ReadyForReview).ToList());
+                                break;
+                            case "COMPLETED":
+                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.Completed).ToList());
+                                break;
+                        }
+                    }
+                    if (filterType == "other-filter")
+                    {
+                        switch (filterValue.ToUpper())
+                        {
+                            case "LINKED-TO-A-TASK":
+                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.Tasks?.Count > 0).ToList());
+                                break;
+                        }
+                    }
+                }
+                return new FilterKsbResults() { FilteredKsbs = filteredKsbs, HasFilterRun = true };
+            }
+            return new FilterKsbResults() { FilteredKsbs = new List<ApprenticeKsb>(), HasFilterRun = false };
+        }
+    }
+   
     public class FilterTaskResults
     {
         public List<ApprenticeTask>? FilteredTasks { get; set; }
+        public bool HasFilterRun { get; set; }
+    }
+
+    public class FilterKsbResults
+    {
+        public List<ApprenticeKsb>? FilteredKsbs { get; set; }
         public bool HasFilterRun { get; set; }
     }
 }

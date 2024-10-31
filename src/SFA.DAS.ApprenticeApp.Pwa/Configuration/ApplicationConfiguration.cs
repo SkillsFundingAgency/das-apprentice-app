@@ -18,6 +18,7 @@ public class ApplicationConfiguration
     public string? CookieName { get; set; }
     public string? StubAuth { get; set; }
     public string? PushNotificationPublicKey { get; set; }
+    public bool UseGovSignIn { get; set; }
 }
 
 [ExcludeFromCodeCoverage]

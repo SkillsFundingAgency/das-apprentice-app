@@ -1,0 +1,92 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TaskViewModelBase
+
+<div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150">
+
+    <label class="app-label" asp-for="@Model.Task.Title">
+        Name of the task
+    </label>
+    <div class="title-error-1 form-error govuk-hint"></div>
+    <div class="title-error-2 form-error govuk-hint"></div>
+    <input class="app-input govuk-js-character-count" name="title" type="text" asp-for="@Model.Task.Title"
+        aria-describedby="Task_Title-info">
+    <div id="Task_Title-info" class="govuk-hint govuk-character-count__message">
+        You can enter up to 150 characters
+    </div>
+</div>
+
+<div class="app-form-group">
+    <label class="app-label" for="date">
+        Select date the task @(Model.StatusId == 1 ? "was completed" : "is due")
+    </label>
+    <div class="date-error-1 form-error govuk-hint"></div>
+    <div class="date-error-2 form-error govuk-hint"></div>
+    <input class="app-input" id="date" name="duedate" type="date" asp-for="@Model.Task.DueDate">
+</div>
+<div class="app-form-group">
+    <label class="app-label" for="time">
+        @(Model.StatusId == 1 ? "Enter the time the task was completed" : "Select time the task is due")
+    </label>
+    <div class="time-error form-error govuk-hint"></div>
+
+    @if (Model.StatusId == 0)
+    {
+        <input class="app-input" id="time" name="time" type="time"
+            value="@Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm")">
+    }
+    else
+    {
+        <input class="app-input" id="time" name="time" type="time"
+            value="@Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm")">
+    }
+</div>
+@{
+    if (Model.StatusId != 1)
+    {
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend">Set a reminder</legend>
+            <div class="app-card">
+                <div class="app-collapse" data-module="app-collapse">
+                    <div class="app-collapse__header">
+                        <button class="app-collapse__button" aria-expanded="false" aria-controls="app-collapse-task-reminder">
+                            <span class="app-collapse__title">None</span>
+                            <span class="app-collapse__icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="app-collapse__contents app-radios" id="app-collapse-task-reminder">
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueNone" name="ReminderValue"
+                                type="radio" value="">
+                            <label class="app-label app-radios__label" for="ReminderValueNone">
+                                None
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueZero" name="ReminderValue"
+                                type="radio" value="0">
+                            <label class="app-label app-radios__label" for="ReminderValueZero">
+                                At the time of activity
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueFive" name="ReminderValue"
+                                type="radio" value="5">
+                            <label class="app-label app-radios__label" for="ReminderValueFive">
+                                5 minutes before
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
+}
+
+<div class="app-form-group">
+    <p class="app-label">
+        Link knowledge, skills and behaviours (KSBs)
+    </p>
+    <button class="app-button--field" id="ksb-popup-btn" data-id="@Model.Task.TaskId">
+        Select KSBs this task will help you gain
+        <span class="app-button--field-icon"></span>
+    </button>
+</div>

@@ -1,14 +1,13 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
-@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
-@inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Profile";
     ViewData["Section"] = "Account";
 }
 
 <div class="app-page-header">
-    <div class="app-page-header__back"><a asp-action="AccountLandingPage" asp-controller="Account"
+    <div class="app-page-header__back"><a asp-action="YourAccount" asp-controller="Account"
             class="app-back-link">Back</a>
     </div>
     <h1 class="app-page-header__heading">Your profile</h1>
@@ -29,7 +28,7 @@
         <dt class="app-dl-list__title">
             Date of birth:
         </dt>
-        <dd class="app-dl-list__content">@Model?.Apprentice?.DateOfBirth?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model?.Apprentice?.DateOfBirth?.ToGdsFormat()</dd>
     </dl>
 </div>
 
@@ -49,7 +48,8 @@
         <div class="app-progress__label" id="progressLabel"></div>
     </div>
     <p>Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
-    <a href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
+    <a class="govuk-link govuk-link--no-visited-state"
+        href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
         target="_blank">What is
         an end-point assessment (EPA)?</a>
 
@@ -114,11 +114,11 @@
         <dt class="app-dl-list__title">
             Planned training start date:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.StartDate?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.StartDate?.ToGdsFormat()</dd>
         <dt class="app-dl-list__title">
             Planned training end date:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EndDate?.ToString("dd/MM/yyyy")</dd>
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EndDate?.ToGdsFormat()</dd>
 
         <dt class="app-dl-list__title">
             Estimated duration:
@@ -126,21 +126,3 @@
         <dd class="app-dl-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
     </dl>
 </div>
-
-<!-- HTML for the popup box -->
-<div class="app-modal enable-notifications">
-    <div class="app-modal__content">
-        <h2 class="govuk-heading-m">Please turn on push notifications</h2>
-        <p class="govuk-body">These could include reminders you set in the app and useful guidance about your
-            apprenticeship.</p>
-        <div class="govuk-button-group">
-            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
-        </div>
-    </div>
-</div>
-<script>
-    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
-    window.pushNotificationKey = publicKey;
-</script>
-@await Html.PartialAsync("_ProfileJs.cshtml")
-@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")

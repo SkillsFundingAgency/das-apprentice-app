@@ -1,3 +1,5 @@
+@import "../../settings/all";
+
 .app-dropdown {
   color: $app-brand-colour;
   position: relative;
@@ -5,22 +7,90 @@
 
 .app-dropdown__toggle {
   text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0 20px 0 0;
+  color: $app-brand-colour;
+  position: relative;
   cursor: pointer;
-  @include govuk-font-size(19);
+  @include govuk-font(19);
+  &:hover,
+  &:focus {
+    text-underline-offset: 0.2em;
+    color: $app-brand-colour;
+    text-decoration: underline;
+  }
+  &:after {
+    @include app-arrow;
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: rotate(-45deg);
+    width: 9px;
+    height: 9px;
+    margin-top: -7px;
+    .app-dropdown--expanded & {
+      transform: rotate(135deg);
+      margin-top: -3px;
+    }
+  }
+}
+
+.app-dropdown--sort .app-dropdown__toggle:after {
+  top: auto;
+  bottom: 7px;
+}
+
+.app-dropdown--sort.app-dropdown--expanded .app-dropdown__toggle:after {
+  top: auto;
+  bottom: 1px;
+}
+
+.app-dropdown--year .app-dropdown__toggle {
+  font-weight: $govuk-font-weight-bold;
+  font-size: 1.5rem;
+}
+
+.app-dropdown__toggle-sort-label {
+  font-size: 14px;
+}
+
+.app-dropdown__toggle-sort-value {
+  font-weight: $govuk-font-weight-bold;
+  font-size: 1rem;
+  display: block;
 }
 
 .app-dropdown__menu {
   background: #fff;
   padding: $app-gap $app-gap 1px;
   border-radius: $app-border-radius;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   border: 1px solid #f7f7f7;
   position: absolute;
   display: none;
+  margin-top: 5px;
+  .app-dropdown--expanded & {
+    display: flex;
+  }
 }
 
-.app-dropdown__menu--visible {
-  display: flex;
+.app-dropdown--year .app-dropdown__menu {
+  right: 10px;
+}
+
+.app-dropdown--sort {
+  margin-left: auto;
+  margin-right: 1.125rem;
+}
+
+.app-dropdown--sort .app-dropdown__toggle {
+  text-align: left;
+}
+
+.app-dropdown--sort .app-dropdown__menu {
+  right: 10px;
 }
 
 .app-dropdown__menu-list {
@@ -28,24 +98,34 @@
   list-style: none;
   margin: 0 0 $app-gap;
   padding: 0;
+
   & > li {
     margin-bottom: $app-gap;
   }
+
   & > li:last-child {
     margin-bottom: 0;
   }
 }
 
 .app-dropdown__menu-link {
-  margin-bottom: $app-gap-half;
   display: flex;
   gap: $app-gap-half;
   flex-direction: row;
   align-items: flex-start;
   text-decoration: none;
   color: $govuk-text-colour;
+  min-width: 100px;
+  white-space: nowrap;
+  &:visited,
   &:link {
     color: $govuk-text-colour;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+  &:hover:focus {
+    text-decoration: none;
   }
 }
 
@@ -53,10 +133,12 @@
   max-width: 1rem;
   height: 1rem;
   color: $app-brand-colour;
+
   svg {
     @include app-svg-common;
     stroke: currentColor;
   }
+
   .app-dropdown__menu-link:focus &,
   .app-dropdown__menu-link:active & {
     color: inherit;

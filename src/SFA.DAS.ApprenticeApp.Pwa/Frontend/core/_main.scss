@@ -1,8 +1,28 @@
 .app-main {
-    padding: $app-gap;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding-bottom: 5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main__inner {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  padding: $app-gap;
+  overflow: auto;
+}
+
+.app-main--basic {
+  display: flex;
+  height: 100dvh;
+  flex-direction: column;
+}
+
+.app-template__body {
+  height: 100dvh;
 }

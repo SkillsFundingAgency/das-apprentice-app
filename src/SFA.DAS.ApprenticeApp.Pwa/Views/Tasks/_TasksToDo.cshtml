@@ -1,21 +1,34 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+@{
+    Layout = null;
+}
 
-@foreach (var task in Model.Tasks.OrderBy(x => x.DueDate))
+@foreach (var task in Model.Tasks)
 {
-    <div class="app-card">
-        <h2 class="app-card__heading">@task.Title</h2>
-        <ul class="app-icon-list app-icon-list--muted">
-            <li><span class="app-icon-list__icon"><svg>
-                        <use xlink:href="/assets/images/icons.svg#calendar"></use>
-                     </svg></span><span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span></li>
-            @if (task.TaskReminders.Any())
+    <div class="app-card" id="task-@task.TaskId">
+    <h2 class="app-card__heading">@task.Title</h2>
+    <ul class="app-icon-list app-icon-list--muted">
+        <li>
+            <span class="app-icon-list__icon">
+                <svg>
+                    <use xlink:href="/assets/images/icons.svg#calendar"></use>
+                </svg>
+            </span>
+            <span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}",
+                task.DueDate).ToLower()</span>
+        </li>
+        @if (task.TaskReminders.Any())
             {
                 <li>
-                    <span class="app-icon-list__icon"><svg>
+                    <span class="app-icon-list__icon">
+                        <svg>
                             <use xlink:href="/assets/images/icons.svg#notifications"></use>
-                         </svg></span><span>Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
-
-                        @switch (task.TaskReminders.First().ReminderValue){
+                        </svg>
+                    </span>
+                    <span>
+                        Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
+                        @switch (task.TaskReminders.First().ReminderValue)
+                        {
                             case 0:
                                 <text>minute</text>
                                 break;
@@ -26,30 +39,48 @@
                                 <text>day</text>
                                 break;
                             default:
-                            <text></text>
+                                <text></text>
                                 break;
                         }
-                        
-                        @if(task.TaskReminders.First().ReminderValue > 1)
+                        @if (task.TaskReminders.First().ReminderValue > 1)
                         {
                             <text>s</text>
-                        } before</span>
-                        
+                        } before
+                    </span>
+                </li>
+            }
+            @if (!String.IsNullOrEmpty(task.Note))
+            {
+                <li>
+                    <span class="app-icon-list__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#edit"></use>
+                        </svg>
+                    </span>
+                    <span>Note added</span>
                 </li>
             }
             @if (task.TaskFiles.Any())
             {
-                <li><span class="app-icon-list__icon"><svg>
+                <li>
+                    <span class="app-icon-list__icon">
+                        <svg>
                             <use xlink:href="/assets/images/icons.svg#attachment"></use>
-                         </svg></span>><span>@task.TaskFiles.Count.ToString() file(s) attached</span></li>
+                        </svg>
+                    </span>
+                    <span>@task.TaskFiles.Count.ToString() file(s) attached</span>
+                </li>
             }
             @if (task.TaskLinkedKsbs.Any())
             {
                 <li>
-                    <span class="app-icon-list__icon"><svg>
+                    <span class="app-icon-list__icon">
+                        <svg>
                             <use xlink:href="/assets/images/icons.svg#ksbs"></use>
-                         </svg></span><span>
-                        Linked to @task.TaskLinkedKsbs.Count.ToString()  
+                        </svg>
+                    </span>
+                    <span>
+                        Linked to @task.TaskLinkedKsbs.Count.ToString()
                         @if (task.TaskLinkedKsbs.Count > 1)
                         {
                             <text>KSBs</text>
@@ -61,23 +92,25 @@
                     </span>
                 </li>
             }
-            
         </ul>
-        <div class="app-tag app-category">@task.ApprenticeshipCategory.First().Title</div>
+        <div
+            class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "")">
+            @task.ApprenticeshipCategory.First().Title
+        </div>
         <hr class="app-separator" />
         <div class="app-dropdown" data-module="app-dropdown">
-            <a class="app-dropdown__toggle" role="button" aria-expanded="false" onkeypress="myFunction()">
-                View actions<span class="govuk-visually-hidden"> for TASK NAME</span>
-            </a>
+            <button class="app-dropdown__toggle" aria-expanded="false">
+                View actions<span class=" govuk-visually-hidden"> for @task.Title</span>
+            </button>
             <div class="app-dropdown__menu">
                 <ul class="app-dropdown__menu-list">
                     <li>
                         <a href="#" class="app-dropdown__menu-link move-done">
                             <span class="app-dropdown__menu-icon">
-                              <svg>
-                                 <use xlink:href="/assets/images/icons.svg#arrowRight"></use>
-                              </svg>
-                           </span>
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#arrowRight"></use>
+                                </svg>
+                            </span>
                             <span>Move to Done</span>
                         </a>
                         <input type="hidden" class="taskId" value="@task.TaskId" />
@@ -85,22 +118,21 @@
                     <li>
                         <a data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
                             <span class="app-dropdown__menu-icon">
-                              <svg>
-                                 <use xlink:href="/assets/images/icons.svg#edit"></use>
-                              </svg>
-                           </span>
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                </svg>
+                            </span>
                             <span>Edit</span>
                         </a>
                     </li>
                     <li class="share-link-container">
                         <a href="#" class="app-dropdown__menu-link share-link">
                             <span class="app-dropdown__menu-icon">
-                              <svg>
-                                 <use xlink:href="/assets/images/icons.svg#share"></use>
-                              </svg>
-                           </span>
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#share"></use>
+                                </svg>
+                            </span>
                             <span>Share</span>
-
                         </a>
                         <input type="hidden" class="share-title" value="@task.Title" />
                         <input type="hidden" class="share-note" value="@task.Note" />
@@ -108,30 +140,22 @@
                     <li>
                         <a class="app-dropdown__menu-link delete-task" href="#">
                             <span class="app-dropdown__menu-icon">
-                              <svg>
-                                 <use xlink:href="/assets/images/icons.svg#trash"></use>
-                              </svg>
-                           </span>
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#trash"></use>
+                                </svg>
+                            </span>
                             <span>Delete</span>
                         </a>
-                        <input type="hidden" class="taskId" value="@task.TaskId" />
+                        <input class="taskId" type="hidden" value="@task.TaskId" />
                     </li>
                 </ul>
             </div>
-        </div>
-    </div>
-    <input class="taskId" type="hidden" value="@task.TaskId" />
 
-    <div class="app-modal confirm_taskdelete" id="deleteTaskModal">
-        <div class="app-modal__content">
-            <h2 class="govuk-heading-m"></h2>
-            <p class="govuk-body">
-               Are you sure you want to delete this task?
-            </p>
-            <div class="govuk-button-group">
-                <button type="button" class="govuk-button confirm-taskdelete">Confirm</button>
-                <button type="button" class="govuk-button cancel-taskdelete">Cancel</button>
-            </div>
         </div>
     </div>
 }
+
+
+<script>
+    appInit();
+</script>

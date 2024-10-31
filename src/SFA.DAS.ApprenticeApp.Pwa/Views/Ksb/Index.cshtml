@@ -1,6 +1,6 @@
 @{
-    ViewData["Title"] = "KSB";
-    ViewData["Section"] = "KSB";
+    ViewData["Title"] = "Your knowledge, skills and behaviours (KSBs)";
+    ViewData["Section"] = "Ksbs";
     Layout = "_Layout";
 }
 
@@ -15,24 +15,42 @@
                 </a>
             </li>
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab tab-skills" href="#skills">
+                <a class="app-tabs__tab tab-skills" href="#skill">
                     Skills (@Model.SkillCount.ToString())
                 </a>
             </li>
             <li class="app-tabs__list-item">
-                <a class="app-tabs__tab tab-behaviours" href="#behaviours">
+                <a class="app-tabs__tab tab-behaviours" href="#behaviour">
                     Behaviours (@Model.BehaviourCount.ToString())
                 </a>
             </li>
         </ul>
     </div>
 
-    <a>Help with linking KSBs</a>
-    <br /><br />
+    <div id="filters-set" class="govuk-!-margin-bottom-4"></div>
 
-    <div class="app-tabs__panel">
-        <partial name="_KsbsAll.cshtml" />
+    <div class="app-page-header">
+        <details class="govuk-details govuk-!-margin-top-2">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Help with linking KSBs
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p>
+                    As part of your apprenticeship, you need to gain specific knowledge, skills and behaviours (KSBs).
+                    These
+                    are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
+                    assessment (EPA). Linking these KSBs to your completed tasks will help you gather evidence.
+                </p>
+                <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
+            </div>
+        </details>
+
+        <partial name="_Filter.cshtml" />
+
     </div>
+    <partial name="_KsbsAll.cshtml" />
 </div>
 
 @await Html.PartialAsync("_KsbJs.cshtml")

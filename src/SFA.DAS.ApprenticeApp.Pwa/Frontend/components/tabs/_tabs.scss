@@ -3,7 +3,7 @@
 }
 
 .app-tabs__list {
-  margin: 0 0 $app-gap calc($app-gap-half * -1);
+  margin: 0 0 0 calc($app-gap-half * -1);
   padding: 0;
   list-style: none;
   display: flex;
@@ -44,4 +44,8 @@
       background-color: $app-brand-colour;
     }
   }
+}
+
+.app-tabs__panel {
+  font-size: 1rem;
 }

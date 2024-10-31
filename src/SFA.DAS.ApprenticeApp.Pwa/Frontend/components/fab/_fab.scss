@@ -2,20 +2,27 @@
   @extend .govuk-button;
   font-weight: $govuk-font-weight-bold;
   position: fixed;
-  right: calc(2 * $app-gap);
-  bottom: 5rem;
+  right: calc(1.5 * $app-gap);
+  bottom: 6.5rem;
+  margin: 0;
   width: auto;
   line-height: 1;
   border-radius: 100px;
   padding: 0.7rem 1rem;
-  box-shadow: 0px -2px 0px 0px #002d18 inset,
+  box-shadow:
+    0px -2px 0px 0px #002d18 inset,
     0px 4px 4px 0px rgba($color: #000000, $alpha: 0.25);
   &:active {
     top: auto;
-    bottom: calc(5rem - 2px);
+    bottom: calc(6.5rem - 2px);
   }
   &:focus {
     box-shadow: 0 0 0 3px $govuk-focus-colour;
     border-color: transparent;
   }
+}
+
+.app-fab--highlight {
+  left: calc(1.5 * $app-gap);
+  border-radius: $app-border-radius;
 }

@@ -1,187 +1,222 @@
 ﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditKsbPageModel
 
+@{
+    ViewData["Title"] = "Manage a knowledge, skill or behaviour (KSB)";
+    ViewData["Section"] = "Ksbs";
+}
+
 <div class="app-page-header">
     <div class="app-overlay-header__cancel">
         <a asp-action="Index" asp-controller="Ksb" class="app-overlay-header__link">Cancel</a>
     </div>
-    <h2 class="app-overlay-header__heading">
+    <h1 class="app-overlay-header__heading">
         Manage a knowledge, skill or behaviour (KSB)
-    </h2>
+    </h1>
     <div class="app-overlay-header__save">
-        <a class="app-overlay-header__link save-ksb">Confirm</a>
+        <a class="app-overlay-header__link save-ksb" href="#">Confirm</a>
     </div>
 </div>
 
+<div class="add-edit-content-area">
+    <div class="ksb-item">
 
-
-<div class="ksb-item">
-    <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data" class="form">
-    <h2 class="app-card__heading ksb-key">@Model.KsbProgress.KsbKey</h2>
-    <div class="govuk-body">@Model.KsbDetail</div>
-        <div class="app-form-group">
-            <label class="app-label" for="note">
-                Note
-            </label>
-            <input class="app-input" id="note" name="Note" type="text" placeholder="Add a Note" asp-for="@Model.KsbProgress.Note">
+        <div class="app-card">
+            <h2 class="app-card__heading ksb-key">@Model.KsbProgress.KsbKey</h2>
+            <p class="govuk-body">@Model.KsbDetail</p>
         </div>
-        <div class="app-form-group">
-            <fieldset class="app-fieldset">
-                <legend class="app-fieldset__legend">
-                    Edit Status
+
+        <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
+            class="form submit-form">
+
+            <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+                <label class="app-label" asp-for="@Model.KsbProgress.Note">
+                    Add a note
+                </label>
+                <textarea class="app-textarea govuk-js-character-count" asp-for="@Model.KsbProgress.Note" rows="2"
+                        aria-describedby="KsbProgress_Note-info" value="@Model.KsbProgress.Note"></textarea>
+                <div id="KsbProgress_Note-info" class="govuk-hint govuk-character-count__message">
+                    You can enter up to 1000 characters
+                </div>
+            </div>
+         
+            <fieldset class="govuk-fieldset" id="CurrentStatus">
+                <legend class="govuk-fieldset__legend">
+                    Set status
                 </legend>
-                <div class="app-radios">
-                    <fieldset id="CurrentStatus">
-                         @foreach (var ksbStatus in Model.KsbStatuses)
-                        {
-                            <div class="app-radios__item">
-                                <input class="app-radios__input ksb-status" name="currentstatus" type="radio" value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)" asp-for="@Model.KsbProgress.CurrentStatus"/>
-                                <label class="app-label app-radios__label" for="CurrentStatus">
+                <div class="app-card">
+                    <div class="app-collapse" data-module="app-collapse">
+                        <div class="app-collapse__header">
+                            <button class="app-collapse__button" aria-expanded="false"
+                                aria-controls="app-collapse-contents-status">
+                                <span class="app-collapse__title" id="CurrentStatusTitle">
                                     @{
-                                        var statusItem = ksbStatus;
-                                        string statusItemDisplay = statusItem.GetEnumDescription();
-                                        <text>@statusItemDisplay</text>
+                                        var statusTitle = Model.KsbProgress.CurrentStatus;
+                                        string statusTitleDisplay = statusTitle.GetEnumDescription();
+                                        <text>@statusTitleDisplay</text>
                                     }
-                                </label>
-                            </div>
-                        }
-                    </fieldset>
+                                </span>
+                                <span class="app-collapse__icon" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="app-collapse__contents app-radios" id="app-collapse-contents-status">
+                            @foreach (var ksbStatus in Model.KsbStatuses)
+                            {
+                                <div class="app-radios__item">
+                                    <input class="app-radios__input" name="currentstatus" type="radio"
+                                        value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
+                                        asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
+                                    <label class="app-label app-radios__label" for="ksbStatus_@ksbStatus">
+                                        <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">
+                                            @{
+                                                var statusItem = ksbStatus;
+                                                string statusItemDisplay = statusItem.GetEnumDescription();
+                                                <text>@statusItemDisplay</text>
+                                            }
+                                        </span>
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             </fieldset>
-        </div>
 
-        <div class="app-form-group">
-            <fieldset class="app-fieldset app-fieldset--radios">
-                <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
-               @if(Model.KsbProgress.Tasks != null)
-                {
-                    @foreach (var task in Model.KsbProgress.Tasks)
-                    {
-                        <div class="linkedTask">
-                        <div class="app-card">
-                            <h2 class="app-card__heading">@task.Title</h2>
-                            <ul class="app-icon-list app-icon-list--muted">
-                                <li>
-                                    <span class="app-icon-list__icon">
-                                        <svg>
-                                            <use xlink:href="/assets/images/icons.svg#calendar"></use>
-                                        </svg>
-                                    </span><span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
-                                </li>
-                                @if (task.TaskReminders != null)
-                                {
-                                    <li>
-                                        <span class="app-icon-list__icon">
-                                            <svg>
-                                                <use xlink:href="/assets/images/icons.svg#notifications"></use>
-                                            </svg>
-                                        </span><span>
-                                            Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
-
-                                            @switch (task.TaskReminders.First().ReminderValue)
-                                            {
-                                                case 0:
-                                                    <text>minute</text>
-                                                    break;
-                                                case 1:
-                                                    <text>hour</text>
-                                                    break;
-                                                case 2:
-                                                    <text>day</text>
-                                                    break;
-                                                default:
-                                                    <text></text>
-                                                    break;
-                                            }
-
-                                            @if (task.TaskReminders.First().ReminderValue > 1)
-                                            {
-                                                <text>s</text>
-                                            } before
-                                        </span>
-
-                                    </li>
-                                }
-                                @if (task.TaskFiles != null)
-                                {
-                                    <li>
-                                        <span class="app-icon-list__icon">
-                                            <svg>
-                                                <use xlink:href="/assets/images/icons.svg#attachment"></use>
-                                            </svg>
-                                        </span>><span>@task.TaskFiles.Count.ToString() file(s) attached</span>
-                                    </li>
-                                }
-                                @if (task.TaskLinkedKsbs != null)
-                                {
-                                    <li>
-                                        <span class="app-icon-list__icon">
-                                            <svg>
-                                                <use xlink:href="/assets/images/icons.svg#ksbs"></use>
-                                            </svg>
-                                        </span><span>
-                                            Linked to @task.TaskLinkedKsbs.Count.ToString()
-                                            @if (task.TaskLinkedKsbs.Count > 1)
-                                            {
-                                                <text>KSBs</text>
-                                            }
-                                            else
-                                            {
-                                                <text>KSB</text>
-                                            }
-                                        </span>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-
-                        <div class="app-dropdown" data-module="app-dropdown">
-                            <a class="app-dropdown__toggle" role="button" aria-expanded="false" onkeypress="myFunction()">
-                                View actions<span class="govuk-visually-hidden" > for TASK NAME</span>
-                            </a>
-                            <div class="app-dropdown__menu">
-                                <ul class="app-dropdown__menu-list">
-                                    <li class="share-link-container">
-                                        <a href="#" class="app-dropdown__menu-link share-link">
-                                            <span class="app-dropdown__menu-icon">
+            @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
+            {
+            <div class="app-form-group">
+                <fieldset class="app-fieldset">
+                    <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
+                        @foreach (var task in Model.KsbProgress.Tasks)
+                        {
+                            <div class="linkedTask" id="ksb-task-@task.TaskId">
+                                <div class="app-card">
+                                    <h2 class="app-card__heading">@task.Title</h2>
+                                    <ul class="app-icon-list app-icon-list--muted">
+                                        <li>
+                                            <span class="app-icon-list__icon">
                                                 <svg>
-                                                    <use xlink:href="/assets/images/icons.svg#share"></use>
+                                                    <use xlink:href="/assets/images/icons.svg#calendar"></use>
                                                 </svg>
-                                            </span>
-                                            <span>Share</span>
+                                            </span><span>Due @string.Format("{0:d MMMM, h:mm}",
+                                            task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
+                                        </li>
+                                        @if (task.TaskReminders != null)
+                                        {
+                                            <li>
+                                                <span class="app-icon-list__icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#notifications"></use>
+                                                    </svg>
+                                                </span><span>
+                                                    Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
 
-                                        </a>
-                                        <input type="hidden" class="share-title" value="@task.Title" />
-                                        <input type="hidden" class="share-note" value="@task.Note" />
-                                    </li>
-                                    <li>
-                                        <a href="#" class="app-dropdown__menu-link remove-ksb-task">
-                                            <span class="app-dropdown__menu-icon">
-                                                <svg>
-                                                    <use xlink:href="/assets/images/icons.svg#arrowRight"></use>
-                                                </svg>
-                                            </span>
-                                            <span>Remove link to task</span>
-                                        </a>
-                                        <input type="hidden" class="progressId" value="@Model.KsbProgress.KsbProgressId" />
-                                        <input type="hidden" class="taskId" value="@task.TaskId" />
-                                    </li>
-                                </ul>
+                                                    @switch (task.TaskReminders.First().ReminderValue)
+                                                    {
+                                                        case 0:
+                                                            <text>minute</text>
+                                                            break;
+                                                        case 1:
+                                                            <text>hour</text>
+                                                            break;
+                                                        case 2:
+                                                            <text>day</text>
+                                                            break;
+                                                        default:
+                                                            <text></text>
+                                                            break;
+                                                    }
+
+                                                    @if (task.TaskReminders.First().ReminderValue > 1)
+                                                    {
+                                                        <text>s</text>
+                                                    } before
+                                                </span>
+
+                                            </li>
+                                        }
+                                        @if (task.TaskFiles != null)
+                                        {
+                                            <li>
+                                                <span class="app-icon-list__icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#attachment"></use>
+                                                    </svg>
+                                                </span>><span>@task.TaskFiles.Count.ToString() file(s) attached</span>
+                                            </li>
+                                        }
+                                        @if (task.TaskLinkedKsbs != null)
+                                        {
+                                            <li>
+                                                <span class="app-icon-list__icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#ksbs"></use>
+                                                    </svg>
+                                                </span><span>
+                                                    Linked to @task.TaskLinkedKsbs.Count.ToString()
+                                                    @if (task.TaskLinkedKsbs.Count > 1)
+                                                    {
+                                                        <text>KSBs</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>KSB</text>
+                                                    }
+                                                </span>
+                                            </li>
+                                        }
+                                    </ul>
+                             
+
+                                <hr class="app-separator" />
+
+                                <div class="app-dropdown" data-module="app-dropdown">
+                                    <button class="app-dropdown__toggle" aria-expanded="false">
+                                        View actions<span class="govuk-visually-hidden"> for @task.Title</span>
+                                    </button>
+                                    <div class="app-dropdown__menu">
+                                        <ul class="app-dropdown__menu-list">
+                                            <li class="share-link-container">
+                                                <a href="#" class="app-dropdown__menu-link share-link">
+                                                    <span class="app-dropdown__menu-icon">
+                                                        <svg>
+                                                            <use xlink:href="/assets/images/icons.svg#share"></use>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Share</span>
+                                                </a>
+                                                <input type="hidden" class="share-title" value="@task.Title" />
+                                                <input type="hidden" class="share-note" value="@task.Note" />
+                                            </li>
+                                            <li>
+                                                <a href="#" class="app-dropdown__menu-link remove-ksb-task" data-progressId="@Model.KsbProgress.KsbProgressId" data-taskId="@task.TaskId">
+                                                    <span class="app-dropdown__menu-icon">
+                                                        <svg>
+                                                            <use xlink:href="/assets/images/icons.svg#unlink"></use>
+                                                        </svg>
+                                                    </span>
+                                                    <span>Remove link to task</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                   </div>
+
+
                             </div>
-                        </div>
-                        <hr class="app-separator" />
-                        </div>
                     }
-                }
-            </fieldset>
-        </div>
-        <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
-        <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
-        <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />
-        <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
-        <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.KsbProgress.Tasks" />
-   
-    </form>
-</div>   
+                </fieldset>
+            </div>
+            }
+            <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
+            <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
+            <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />
+            <input type="hidden" id="KsbProgressType" name="KsbProgressType"
+                value="@Model.KsbProgress.KsbProgressType" />
+            <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.KsbProgress.Tasks" />
 
+        </form>
+    </div>
+</div>
 @await Html.PartialAsync("_KsbJs.cshtml", Model)

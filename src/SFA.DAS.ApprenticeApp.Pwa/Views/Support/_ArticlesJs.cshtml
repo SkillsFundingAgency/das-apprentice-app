@@ -11,7 +11,7 @@
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "true" },
+                data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "true" },
                 dataType: "json",
                 contentType: "application/json"
             });
@@ -25,64 +25,60 @@
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).siblings('.entryid').val(), likeStatus: "false" },
+                data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
                 dataType: "json",
                 contentType: "application/json"
             });
             return false;
         });
 
-        $('.save').on('click', function () {
-            $(this).removeClass('fa-regular').addClass('fa-solid');
+        $('body').on('click', '.save', function () {
+            $(this).removeClass('save').removeClass('fa-regular').addClass('unsave').addClass('fa-solid');
 
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).siblings('.entryid').val(), isSaved: "true" },
+                data: { entryId: $(this).parent().siblings('.entryid').val(), isSaved: "true" },
                 dataType: "json",
                 contentType: "application/json"
             });
             return false;
         });
 
-        $('.unsave').on('click', function () {
-            var accordionId = $(this).siblings('.entryid').val();
-            $(this).removeClass('fa-solid').addClass('fa-regular');
-
+        const removeBookmark = (id, button) => {
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).siblings('.entryid').val(), isSaved: "false" },
-                beforeSend: function () {
-                    return confirm("Are you sure you want to remove this from your saved articles?");
-                },
+                data: { entryId: id, isSaved: "false" },
                 complete: function () {
-                    $('#accordion-' + accordionId).hide();
+                    $('#accordion-' + id).hide();
+                    $(button).removeClass('unsave').removeClass('fa-solid').addClass('save').addClass('fa-regular')
                 },
                 dataType: "json",
                 contentType: "application/json"
             });
+        }
 
+        $('body').on('click', '.unsave', function () {
+            const id = $(this).parent().siblings('.entryid').val();
+            const modal = new Modal(this, removeBookmark, id).init();
             return false;
         });
 
         $('.share-btn').on('click', function () {
-            if (navigator.share)
-            {
+            if (navigator.share) {
                 navigator.share({
-                    title: $(this).siblings('.article-title').val(),
-                    text: $(this).siblings('.govuk-body').text()
+                    title: $(this).parent().siblings('.article-title').val(),
+                    text: $(this).parent().siblings('.govuk-body').text()
                 })
-                .then(() => console.log('Shared successfully'))
-                .catch((error) => console.error('Sharing failed:', error));
+                    .then(() => console.log('Shared successfully'))
+                    .catch((error) => console.error('Sharing failed:', error));
             }
         });
 
-        if (!navigator.share)
-        {
+        if (!navigator.share) {
             $('.share-btn').hide();
             $('.fa-arrow-up').hide();
         }
     });
 </script>
-

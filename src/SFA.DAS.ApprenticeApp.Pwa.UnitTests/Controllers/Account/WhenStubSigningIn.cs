@@ -10,6 +10,8 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
+using SFA.DAS.GovUK.Auth.Models;
+using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Security.Claims;

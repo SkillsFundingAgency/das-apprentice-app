@@ -1,0 +1,33 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.Models;
+
+@model StubAuthenticationViewModel
+@{
+    Layout = "_LayoutBasic";
+}
+
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header">
+            <div class="app-page-header__back">
+                <a asp-action="Index" asp-controller="Home" class="app-back-link">Back</a>
+            </div>
+            <h1 class="app-page-header__heading">Sign in (stub)</h1>
+            <div class="app-page-header__forward"></div>
+        </div>
+        <form method="POST" asp-route="@RouteNames.StubAccountDetailsPost">
+            <input asp-for="ReturnUrl" type="hidden" />
+            <div class="app-form-group">
+                <label asp-for="Id" class="app-label">ID</label>
+                <input asp-for="Id" required="required" class="app-input" />
+            </div>
+            <div class="app-form-group">
+                <label asp-for="Email" class="app-label">Email</label>
+                <input asp-for="Email" required="required" class="app-input" />
+            </div>
+            <div class="govuk-button-group">
+                <button class="app-button" type="submit">Sign in</button>
+            </div>
+        </form>
+    </div>
+</div>

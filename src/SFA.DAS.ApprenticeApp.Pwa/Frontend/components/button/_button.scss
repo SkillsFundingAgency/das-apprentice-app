@@ -6,10 +6,80 @@
 
 .app-button--secondary {
   @extend .govuk-button--secondary;
+  background-color: #e6e6e6;
   color: $govuk-text-colour;
   font-weight: $govuk-font-weight-regular;
+  &:hover,
+  &:active,
   &:link,
   &:visited {
     color: $govuk-text-colour;
   }
+}
+
+.app-button--warning {
+  @extend .govuk-button--warning;
+}
+
+.app-button--field {
+  @include govuk-font(19);
+  color: $govuk-secondary-text-colour;
+  background: #fff;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 1;
+  padding: $app-gap;
+  border-radius: $app-border-radius-inputs;
+  border: 1px solid #f7f7f7;
+}
+
+.app-button--field-icon {
+  display: block;
+  height: 18px;
+  width: 18px;
+  position: relative;
+  &:before,
+  &:after {
+    display: block;
+    content: "";
+    background-color: $app-brand-colour;
+    height: 18px;
+    width: 3px;
+    position: absolute;
+    border-radius: 2px;
+  }
+  &:before {
+    left: 50%;
+    margin-left: -2px;
+  }
+  &:after {
+    width: 18px;
+    height: 3px;
+    top: 50%;
+    margin-top: -1px;
+  }
+}
+
+.app-button-group {
+  display: flex;
+  flex-direction: row;
+  gap: $app-gap;
+  .app-button {
+    margin-bottom: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.app-button-group__wrap {
+  height: 5rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1em;
+  background: #fff;
 }

@@ -1,72 +1,38 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        let params = new URLSearchParams(window.location.search)
-        if (params.has('status')) {
-            var state = params.get('status');
-            if (state == 0) {
-
-                $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
-                $('.todo-element').addClass('app-tabs__list-item--selected');
-                $('.done-element').removeClass('app-tabs__list-item--selected');
-            }
-            if (state == 1) {
-                $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
-                $('.done-element').addClass('app-tabs__list-item--selected');
-                $('.todo-element').removeClass('app-tabs__list-item--selected');
-            }
-        }
-        else {
-            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
-            $('.todo-element').addClass('app-tabs__list-item--selected');
-            $('.done-element').removeClass('app-tabs__list-item--selected');
-        }
-
-
-        $('.todo').on('click', function () {
-            $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('@Url.Action("ToDoTasks", "Tasks")');
-
-            // change add url
-            $(".app-fab").attr("data-status-id", "0")
-
-        });
-
-        $('.done').on('click', function () {
-            $("#tasks-display").html('<div class="loader"></div>');
-            $('#tasks-display').load('@Url.Action("DoneTasks", "Tasks")');
-
-            // change add url
-            $(".app-fab").attr("data-status-id", "1")
-
+        $('#tasks-todo__tasks').load('@Url.Action("ToDoTasks", "Tasks")', function () {
+            $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
 
+        const deleteTask = (taskId) => {
+            console.log(taskId)
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
+                data: { taskId: taskId },
+                complete: function () {
+                    $('#task-' + taskId).slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
+                },
+                dataType: "json"
+            });
+        }
+
         $('body').on('click', '.delete-task', function (e) {
-
-            if (confirm('Are you sure you want to delete this task?')) {
-                var taskId = $(this).siblings('.taskId').val();
-                $(this).closest('.app-icon-list').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
-
-                var taskId = $('.taskId').val();
-                $.ajax({
-                    type: "DELETE",
-                    url: '@Url.Action("DeleteApprenticeTask", "Tasks")',
-                    data: { taskId: taskId },
-                    dataType: "json"
-                });
-
-                return false;
+            const modalContent = {
+                message: 'Are you sure you want to delete this task?',
+                confirmButton: 'Delete task'
             }
-        });
-
-        $('body').on('click', '.app-dropdown__toggle', function (e) {
-            $(this).siblings('.app-dropdown__menu').toggle();
+            const taskId = $(this).siblings('.taskId').val();
+            console.log(taskId)
+            const modal = new Modal(this, deleteTask, taskId, modalContent).init();
         });
 
         $('body').on('click', '.share-link', function (e) {
@@ -81,6 +47,7 @@
         });
 
         $('body').on('click', '.move-done', function (e) {
+            e.preventDefault();
             var taskId = $(this).siblings('.taskId').val();
             $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
@@ -88,13 +55,15 @@
                 type: "GET",
                 url: '@Url.Action("ChangeTaskStatus", "Tasks")',
                 data: { taskId: taskId, statusId: 1 },
-                dataType: "json"
+                dataType: "json",
+                complete: () => { $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")'); }
             });
 
             return false;
         });
 
         $('body').on('click', '.move-todo', function (e) {
+            e.preventDefault();
             var taskId = $(this).siblings('.taskId').val();
             $(this).closest('.app-card').slideUp("slow", function () { $(this).remove(); checkTaskCount(); });
 
@@ -102,8 +71,10 @@
                 type: "GET",
                 url: '@Url.Action("ChangeTaskStatus", "Tasks")',
                 data: { taskId: taskId, statusId: 0 },
-                dataType: "json"
+                dataType: "json",
+                complete: () => { $('#tasks-todo__tasks').load('@Url.Action("ToDoTasks", "Tasks")'); }
             });
+
             return false;
         });
 
@@ -113,38 +84,25 @@
             }
         }
 
-        // add / edit tasks popup
-        $("#add-btn").click(function (e)
-        {
+        $(".add-btn").click(function (e) {
             var status = $(this).attr("data-status-id");
-            var addUrl = '@Url.Action("Add","Tasks")?status=' + status;
+            var addUrl = '@Url.Action("Add", "Tasks")?status=' + status;
 
             $('#add-edit-wrapper').show();
-
-
             $('#add-edit-wrapper').load(addUrl, function () {
-
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-
-                // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });
-
-
         });
 
-        $('body').on('click', '.edit-btn', function (e)
-        {
+        $('body').on('click', '.edit-btn', function (e) {
             $('#add-edit-wrapper').show();
             var taskId = $(this).attr("data-id");
-            var editUrl = '@Url.Action("Edit","Tasks")/' + taskId;
-
+            var status = $(this).attr("data-status") || 0;
+            var editUrl = '@Url.Action("Edit", "Tasks")/' + taskId + '?status=' + status;
 
             $('#add-edit-wrapper').load(editUrl, function () {
-
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-
-                // make height to the window
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
             });
 
@@ -154,5 +112,80 @@
             $(".form").submit();
         });
 
+        $('body').on('click', '.todo', function (e) {
+            setQueryStringParameter("status", "0");
+            $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=0');
+            $('.due-date-menu-item').prop('href', '?sort=date_due&status=0');
+        });
+
+        $('body').on('click', '.done', function (e) {
+            setQueryStringParameter("status", "1");
+            $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=1');
+            $('.due-date-menu-item').prop('href', '?sort=date_due&status=1');
+        });
+
+        $(document).ready(function () {
+            var statusId = getUrlParameter('status');
+
+            if (statusId != false) {
+                $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=' + statusId + '');
+                $('.due-date-menu-item').prop('href', '?sort=date_due&status=' + statusId + '');
+            }
+        });
+
+        function setQueryStringParameter(name, value) {
+            const params = new URLSearchParams(window.location.search);
+            params.set(name, value);
+            window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`));
+        }
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
     });
+
+    //pushnotification setup
+    const checkUICompatibility = () => {
+    if (!("serviceWorker" in navigator)) {
+        console.log("Service worker not supported");
+        throw new Error("Service worker not supported");
+    }
+
+    if (!("Notification" in window)) {
+        console.log("Notification not supported");
+        throw new Error("Notification not supported");
+    }
+        };
+
+    const displayNotificationButtons = () => {
+        const enableNotificationsButtons = document.querySelectorAll(
+            ".enable-notifications"
+        );
+
+        for (const element of enableNotificationsButtons) {
+            if (Notification.permission === "default") {
+                element.classList.add("app-modal--visible");
+            } else {
+                element.classList.remove("app-modal--visible");
+            }
+        }
+    };
+
+    //step 1: check if the browser supports service workers and notifications
+    checkUICompatibility();
+
+    //step 2: manage ui elements based on existing permission status
+    displayNotificationButtons();
 </script>

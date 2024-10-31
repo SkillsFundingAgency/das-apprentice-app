@@ -1,9 +1,19 @@
 @using SFA.DAS.ApprenticeApp.Application
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 
-<a href="#filter" data-module="app-overlay" class="app-link">Filter</a>
+<a href="#filter" data-module="app-overlay" class="app-icon-action">
+    <span class="app-icon-action__icon">
+        <svg>
+            <use xlink:href="/assets/images/icons.svg#filter">
+            </use>
+        </svg>
+    </span>
+    <span class="app-icon-action__label">Filters</span>
+</a>
+
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
@@ -17,126 +27,123 @@
         </div>
     </div>
     <div class="app-overlay__content">
-        <fieldset class="app-fieldset">
-            <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
-            <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="Assignment" name="filter" type="checkbox" value="Assignment">
-                    <label class="app-label app-checkboxes__label" for="filter-assignment">
-                        <span class="app-tag">Assignment</span>
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="EPA" name="filter" type="checkbox" value="EPA">
-                    <label class="app-label app-checkboxes__label" for="filter-epa">
-                        <span class="app-tag app-tag--pink">End-point assessment</span>
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="Deadline" name="filter" type="checkbox" value="Deadline">
-                    <label class="app-label app-checkboxes__label" for="filter-deadline">
-                        <span class="app-tag app-tag--red">Deadline</span>
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="Milestone" name="filter" type="checkbox" value="Milestone">
-                    <label class="app-label app-checkboxes__label" for="filter-milestone">
-                        <span class="app-tag app-tag--red">Milestone</span>
-                    </label>
-                </div>
-            </div>
+        <div class="app-form-group">
+            <fieldset class="app-fieldset">
+                <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
+                <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
 
-        </fieldset>
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="none" name="filter" type="checkbox" value="none">
+                        <label class="app-label app-checkboxes__label" for="none">
+                            None
+                        </label>
+                    </div>
 
-        <fieldset class="app-fieldset">
-            <legend class="app-fieldset__legend app-fieldset__legend--s">Other filter options:</legend>
-            <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="KSB" name="other-filter" type="checkbox" value="KSB">
-                    <label class="app-label app-checkboxes__label" for="filter-ksb">
-                        <span class="app-tag">Knowledge, skills and behaviours (KSBs) added</span>
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="Reminder-set" name="other-filter" type="checkbox" value="Reminder-set">
-                    <label class="app-label app-checkboxes__label" for="filter-reminder">
-                        <span class="app-tag app-tag--pink">Reminder set</span>
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="Files-attached" name="other-filter" type="checkbox" value="Files-attached">
-                    <label class="app-label app-checkboxes__label" for="filter-reminder">
-                        <span class="app-tag app-tag--pink">Files attached</span>
-                    </label>
-                </div>
-                <div class="app-checkboxes__item">
-                    <input class="app-checkboxes__input" id="Note-attached" name="other-filter" type="checkbox" value="Note-attached">
-                    <label class="app-label app-checkboxes__label" for="filter-note">
-                        <span class="app-tag app-tag--red">Note attached</span>
-                    </label>
-                </div>
-            </div>
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="assignment" name="filter" type="checkbox"
+                            value="assignment">
+                        <label class="app-label app-checkboxes__label" for="assignment">
+                            <span class="app-tag app-tag--category-assignment">Assignment</span>
+                        </label>
+                    </div>
 
-        </fieldset>
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="epa" name="filter" type="checkbox" value="epa">
+                        <label class="app-label app-checkboxes__label" for="epa">
+                            <span class="app-tag app-tag--category-endpointassessment">End-point assessment</span>
+                        </label>
+                    </div>
 
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="deadline" name="filter" type="checkbox"
+                            value="deadline">
+                        <label class="app-label app-checkboxes__label" for="deadline">
+                            <span class="app-tag app-tag--category-deadline">Deadline</span>
+                        </label>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+        <div class="app-form-group govuk-!-margin-top-8">
+            <fieldset class="app-fieldset">
+                <legend class="app-fieldset__legend app-fieldset__legend--s">Other filter options:</legend>
+                <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
+
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="ksb" name="other-filter" type="checkbox" value="ksb">
+                        <label class="app-label app-checkboxes__label" for="ksb">
+                            Knowledge, skills and behaviours (KSBs) added
+                        </label>
+                    </div>
+
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="reminder" name="other-filter" type="checkbox"
+                            value="reminder">
+                        <label class="app-label app-checkboxes__label" for="reminder">
+                            Reminder set
+                        </label>
+                    </div>
+
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="files-attached" name="other-filter" type="checkbox"
+                            value="files-attached">
+                        <label class="app-label app-checkboxes__label" for="files-attached">
+                            Files attached
+                        </label>
+                    </div>
+
+                    <div class="app-checkboxes__item">
+                        <input class="app-checkboxes__input" id="note-added" name="other-filter" type="checkbox"
+                            value="note-added">
+                        <label class="app-label app-checkboxes__label" for="note-added">
+                            Note added
+                        </label>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
     </div>
 </div>
 
-
-
 <script type="text/javascript">
 
-    $(document).ready(function ()
-    {
-        // get cookie
+    $(document).ready(function () {
         var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
 
-        // if cookie is set
         if (cookieFilter != null && cookieFilter != "") {
             var filters = getCookie("@Constants.TaskFiltersCookieName");
 
             data = filters.split('&');
             for (var k in data) {
 
-                // check all the filter page checkboxes
                 var newData = data[k].split('=');
+
                 $("#" + newData[1]).prop('checked', true);
 
-
-                // show the main page lozenges inside the div
-                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace("-", " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
-
+                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
             }
-
         }
-        else
-        {
+        else {
             $("#filters-set").hide();
         }
 
 
         $(".remove-filter").click(function (e) {
-            // get the one in question
             var filterName = $(this).attr('data-id');
-            console.log(filterName);
 
-            // uncheck the hidden screen
             $("#" + filterName).prop('checked', false);
 
             applyAndSaveFilters()
         });
 
-
-        $(".apply").click(function (e)
-        {
+        $(".apply").click(function (e) {
             applyAndSaveFilters()
         });
-
     });
 
-
-    function applyAndSaveFilters()
-    {
+    function applyAndSaveFilters() {
         var sList = "";
 
         $('input[type=checkbox]').each(function () {
@@ -144,7 +151,6 @@
         });
 
         setCookie('SFA.ApprenticeApp.TaskFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
-
         location.reload();
     }
 
@@ -155,11 +161,9 @@
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-
     function setCookie(name, value, attributes = {}) {
         attributes = {
             path: '/',
-            // add other defaults here if necessary ...attributes
         };
 
         if (attributes.expires instanceof Date) {

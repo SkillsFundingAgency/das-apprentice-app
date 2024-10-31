@@ -38,16 +38,18 @@
   height: 2rem;
   svg {
     @include app-svg-common;
-    color: $app-brand-colour;
     stroke: $app-brand-colour;
+    width: 2rem;
+    max-width: unset;
   }
 }
 
 .app-icon-list--l .app-icon-list__icon-grad {
   svg {
-    fill: url(#grad) #832C91;
-    color: transparent;
-    stroke: url(#grad) #832C91;
+    color: rgb(166, 92, 46);
+    fill: url(#grad) #832c91;
+    stroke: url(#grad) #832c91;
+    stroke-width: 0;
   }
 }
 

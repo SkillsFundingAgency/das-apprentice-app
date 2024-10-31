@@ -1,5 +1,8 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
-
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
+@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using SFA.DAS.ApprenticeApp.Web.Extensions
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
@@ -10,35 +13,109 @@
     <div class="loader" style="margin-bottom: 40px"></div>
 </div>
 
-<h1 class="govuk-heading-xl">Your tasks</h1>
+<div class="app-page-header app-sticky">
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Your tasks</h1>
+    <div class="app-dropdown app-dropdown--year" data-module="app-dropdown">
+        <button class="app-dropdown__toggle" aria-expanded="false">
+            <span class="govuk-visually-hidden">Tasks for the year </span>@Model.Year
+        </button>
+        <div class="app-dropdown__menu">
+            <ul class="app-dropdown__menu-list">
+                <li>
+                    <a href="?year=@DateTime.Now.AddYears(-1).Year" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.AddYears(-1).Year
+                    </a>
+                </li>
+                <li>
+                    <a href="?year=@DateTime.Now.Year" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.Year
+                    </a>
+                </li>
+                <li>
+                    <a href="?year=@DateTime.Now.AddYears(1).Year" class="app-dropdown__menu-link">
+                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.AddYears(1).Year
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="app-tabs" data-module="app-tabs">
-    <div class="app-page-header app-sticky">
+    <div class="app-page-header app-page-header--align-bottom">
         <ul class="app-tabs__list">
-            <li class="app-tabs__list-item app-tabs__list-item--selected todo-element">
-                <a class="app-tabs__tab todo" href="#todo">
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab todo" href="#tasks-todo">
                     To do
                 </a>
             </li>
-            <li class="app-tabs__list-item done-element">
-                <a class="app-tabs__tab done" href="#done">
+            <li class="app-tabs__list-item">
+                <a class="app-tabs__tab done" href="#tasks-done">
                     Done
                 </a>
             </li>
         </ul>
+        <div class="app-dropdown app-dropdown--sort" data-module="app-dropdown">
+            <button class="app-dropdown__toggle" aria-expanded="false">
+                <span class="app-dropdown__toggle-sort-label">Sort by:</span>
+                <span class="app-dropdown__toggle-sort-value" id="sortby">@Model.Sort.Replace("_", " ")</span>
+            </button>
+            <div class="app-dropdown__menu">
+                <ul class="app-dropdown__menu-list">
+                    <li>
+                        <a href="?sort=date_due" class="app-dropdown__menu-link due-date-menu-item">
+                            Date due
+                        </a>
+                    </li>
+                    <li>
+                        <a href="?sort=recently_added" class="app-dropdown__menu-link recently-added-menu-item">
+                            Recently added
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <partial name="_Filter.cshtml" />
     </div>
+    <div id="filters-set" class="govuk-!-margin-bottom-4"></div>
 
-    <div id="filters-set" style="margin: 0 0 15px 0;"></div>
-
-
-    <div id="tasks-display">
-        <div class="loader"></div>
+    <div class="app-tabs__panel" id="tasks-todo">
+        <div id="tasks-todo__tasks">
+            <div class="loader"></div>
+        </div>
+        <a data-status-id="0" href="#top" class="app-fab add-btn">
+            <span>Add a task</span>
+        </a>
     </div>
+
+    <div class="app-tabs__panel" id="tasks-done">
+        <div id="tasks-done__tasks">
+            <div class="loader"></div>
+        </div>
+        <a data-status-id="1" href="#top" class="app-fab add-btn">
+            <span>Add a task</span>
+        </a>
+    </div>
+
+
 </div>
 
-<a id="add-btn" data-status-id="0" href="#top" class="app-fab">
-    <span>Add a task</span>
-</a>
-
+<!-- HTML for the popup box -->
+<div class="app-modal enable-notifications">
+    <div class="app-modal__content">
+        <h2 class="govuk-heading-m">Please turn on push notifications</h2>
+        <p class="govuk-body">
+            These could include reminders you set in the app and useful guidance about your
+            apprenticeship.
+        </p>
+        <div class="govuk-button-group">
+            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
+        </div>
+    </div>
+</div>
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
 @await Html.PartialAsync("_TasksJs.cshtml", Model)
+@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")

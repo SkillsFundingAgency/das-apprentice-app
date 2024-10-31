@@ -4,7 +4,7 @@ self.addEventListener('fetch', event => { return null; });
 self.addEventListener('push', event => {
     const payload = event.data.json();
     event.waitUntil(
-        self.registration.showNotification('Apprentice App', {
+        self.registration.showNotification('My Apprenticeship', {
             body: payload.message,
             icon: 'govuk-icon-512.png',
             vibrate: [100, 50, 100],
