@@ -1,10 +1,14 @@
 ﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
-<link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    ViewData["Title"] = "Notifications";
+    ViewData["Section"] = "Notifications";
+    Layout = "_Layout";
+}
+
 
 @model IEnumerable<NotificationViewModel>
 
 <div class="notifications-container">
-    
+    <h2>Notifications</h2>
     @foreach (var notification in Model)
     {
         <div class="notification-card @if(notification.IsNew) {
