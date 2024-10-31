@@ -5,14 +5,15 @@
     Layout = "_Layout";
 }
 
+
+
+<h1 class="govuk-heading-xl">Notifications</h1>
 @model IEnumerable<NotificationViewModel>
 
 <div class="container">
     @await Html.PartialAsync("_Notifications", Model)
 </div>
 
-
-<h1 class="govuk-heading-xl">Notifications</h1>
 <h2 class="govuk-heading-m">You have not received any notifications yet</h2>
 <p>If you set a reminder for a task in the ‘Your tasks’ tab, the notification will appear here. You will also
     receive useful guidance about your apprenticeship.</p>
