@@ -1,25 +1,24 @@
 ﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
-    ViewData["Title"] = "Notifications";
-    ViewData["Section"] = "Notifications";
-    Layout = "_Layout";
-}
-
-
 @model IEnumerable<NotificationViewModel>
 
-<div class="notifications-container">
-    <h2>Notifications</h2>
-    @foreach (var notification in Model)
-    {
-        <div class="notification-card @if(notification.IsNew) {
-    <text>bg-light-green</text>
- }">
-            <h5>
-                <a href="@notification.LinkUrl" class="text-success">@notification.Title</a>
-            </h5>
-            <p>@notification.Description</p>
-            <small class="text-muted">@notification.TimeAgo</small>
-            <button class="btn btn-link text-danger delete-button">Delete</button>
-        </div>
-    }
+@foreach (var notification in Model)
+{
+<div class="app-card @(notification.IsNew ? "app-card--highlight" : "")">
+    <h2 class="app-card__heading">
+        <a href="@notification.LinkUrl" class="app-link">@notification.Title</a>
+    </h2>
+    <p>@notification.Description</p>
+    <div class="app-card__footer">
+        <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0">@notification.TimeAgo</div>
+        <a href="#" class="app-icon-action">
+            <span class="app-icon-action__icon">
+                <svg>
+                    <use xlink:href="/assets/images/icons.svg#trash">
+                    </use>
+                </svg>
+            </span>
+            <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
+        </a>
+    </div>
 </div>
+}
