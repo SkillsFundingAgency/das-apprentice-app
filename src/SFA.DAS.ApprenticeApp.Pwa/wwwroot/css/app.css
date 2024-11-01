@@ -8135,6 +8135,8 @@ html {
   margin-bottom: 0;
   padding-left: 8px;
   padding-right: 8px;
+  flex-grow: 1;
+  flex-basis: max-content;
 }
 
 .app-button-group__wrap {

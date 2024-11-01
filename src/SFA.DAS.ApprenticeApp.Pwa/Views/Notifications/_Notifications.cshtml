@@ -3,22 +3,22 @@
 
 @foreach (var notification in Model)
 {
-<div class="app-card @(notification.IsNew ? "app-card--highlight" : "")">
-    <h2 class="app-card__heading">
-        <a href="@notification.LinkUrl" class="app-link">@notification.Title</a>
-    </h2>
-    <p>@notification.Description</p>
-    <div class="app-card__footer">
-        <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0">@notification.TimeAgo</div>
-        <a href="#" class="app-icon-action">
-            <span class="app-icon-action__icon">
-                <svg>
-                    <use xlink:href="/assets/images/icons.svg#trash">
-                    </use>
-                </svg>
-            </span>
-            <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
-        </a>
+    <div class="app-card @(notification.IsNew ? "app-card--highlight" : "")">
+        <h2 class="app-card__heading">
+            <a href="@notification.LinkUrl" class="app-link">@notification.Title</a>
+        </h2>
+        <p>@notification.Description</p>
+        <div class="app-card__footer">
+            <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0">@notification.TimeAgo</div>
+            <a href="#" class="app-icon-action remove-notification" data-notification-id="[ID_HERE]">
+                <span class="app-icon-action__icon">
+                    <svg>
+                        <use xlink:href="/assets/images/icons.svg#trash">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
+            </a>
+        </div>
     </div>
-</div>
 }

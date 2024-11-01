@@ -1,0 +1,30 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        const removeNotification = (id, button) => {
+                const notificationIdd = button.dataset.notificationId;
+                $.ajax({
+                    type: "DELETE",
+                    url: '@Url.Action("DeleteNotification", "Ksb")',
+                    data: { notificationIdd },
+                    complete: function () {
+                        $('#ksb-task-' + taskId).hide();
+                    },
+                    dataType: "json"
+                });
+
+            }
+
+            $('body').on('click', '.remove-notification', function (e) {
+                const modalContent = {
+                    message: 'Are you sure you want to delete this notification?',
+                    confirmButton: 'Delete notification'
+                }
+                const modal = new Modal(this, removeNotification, null, modalContent).init();
+            });
+
+    })
+</script>
