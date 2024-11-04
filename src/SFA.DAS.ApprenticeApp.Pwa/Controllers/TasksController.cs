@@ -279,7 +279,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     var vm = new AddTaskPageModel
                     {
-                        Task = new ApprenticeTask() { ApprenticeshipId = long.Parse(apprenticeshipId) },
+                        Task = new ApprenticeTask() { ApprenticeshipId = long.Parse(apprenticeshipId), ApprenticeAccountId = new Guid(apprenticeId) },
                         Categories = categories.TaskCategories,
                         StatusId = status
                     };
