@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "uk.gov.education.myapprenticeship",
+      "sha256_cert_fingerprints": [
+        "83:E3:C1:CD:B5:9E:97:7A:BF:B7:F8:DE:E8:68:FA:03:8C:87:FD:19:79:71:64:73:B8:BD:55:8A:E7:8D:6C:B3"
+      ]
+    }
+  }
+]
