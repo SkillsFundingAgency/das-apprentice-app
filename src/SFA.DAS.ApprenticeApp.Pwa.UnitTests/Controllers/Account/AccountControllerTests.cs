@@ -185,6 +185,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
         [Test, MoqAutoData]
         public void StubSignedIn_Redirects_To_Terms(
+            [Frozen] Mock<IConfiguration> configuration,
             [Greedy] AccountController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -201,6 +202,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             {
                 HttpContext = httpContext
             };
+
+            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
             var result = controller.StubSignedIn() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Terms");

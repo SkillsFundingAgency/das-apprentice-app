@@ -138,6 +138,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
         public IActionResult StubSignedIn()
         {
+            if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
+            {
+                return NotFound();
+            }
+
             var viewModel = new StubAuthenticationViewModel
             {
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
