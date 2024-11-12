@@ -1,8 +1,6 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
-@using SFA.DAS.ApprenticeApp.Pwa.Configuration
 @using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
-@inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Profile";
     ViewData["Section"] = "Account";
@@ -128,19 +126,3 @@
         <dd class="app-dl-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
     </dl>
 </div>
-
-<!-- HTML for the popup box -->
-<div class="app-modal enable-notifications">
-    <div class="app-modal__content">
-        <h2 class="govuk-heading-m">Please turn on push notifications</h2>
-        <p class="govuk-body">These could include reminders you set in the app and useful guidance about your
-            apprenticeship.</p>
-        <div class="govuk-button-group">
-            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
-        </div>
-    </div>
-</div>
-<script>
-    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
-    window.pushNotificationKey = publicKey;
-</script>
