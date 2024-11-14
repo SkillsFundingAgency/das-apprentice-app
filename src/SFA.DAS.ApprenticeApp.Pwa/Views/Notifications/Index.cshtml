@@ -1,22 +1,20 @@
-﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
+﻿﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
 @{
     ViewData["Title"] = "Notifications";
     ViewData["Section"] = "Notifications";
     Layout = "_Layout";
 }
 
-
-
 <h1 class="govuk-heading-xl">Notifications</h1>
-@model IEnumerable<NotificationViewModel>
-@await Html.PartialAsync("_Notifications", Model)
+@model NotificationPageModel
 
-@*
-<h1 class="govuk-heading-xl">Notifications</h1>
-<h2 class="govuk-heading-m">You have not received any notifications yet</h2>
-<p>If you set a reminder for a task in the ‘Your tasks’ tab, the notification will appear here. You will also
-receive useful guidance about your apprenticeship.</p>
-<p>To receive notifications directly to your device, you must turn on push notifications in your settings.</p>
-*@
+@if(Model.TaskReminders == null || Model.TaskReminders.Count == 0)
+{
+    @await Html.PartialAsync("_NoNotifications")
+}
+else
+{
+    @await Html.PartialAsync("_Notifications", Model)
+}
 
 @await Html.PartialAsync("_NotificationsJs.cshtml")
