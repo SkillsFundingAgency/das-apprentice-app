@@ -213,6 +213,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         LinkedKsbGuids = String.Join(",", guids),
                         StatusId = status
                     };
+
+                    if(taskdata.Task.TaskReminders != null && taskdata.Task.TaskReminders.Count == 1)
+                    {
+                        vm.Task.ReminderValue = taskdata.Task.TaskReminders.FirstOrDefault().ReminderValue;
+                    }
                     return View(vm);
             }
             return RedirectToAction("Index", "Tasks");

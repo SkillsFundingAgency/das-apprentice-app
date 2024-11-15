@@ -62,16 +62,58 @@
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderValueZero" name="ReminderValue"
-                                type="radio" value="0">
+                                   type="radio" value="0" checked="@(Model.Task.ReminderValue == 0)">
                             <label class="app-label app-radios__label" for="ReminderValueZero">
                                 At the time of activity
                             </label>
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderValueFive" name="ReminderValue"
-                                type="radio" value="5">
+                                   type="radio" value="5" checked="@(Model.Task.ReminderValue == 5)">
                             <label class="app-label app-radios__label" for="ReminderValueFive">
                                 5 minutes before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueTen" name="ReminderValue"
+                                   type="radio" value="10" checked="@(Model.Task.ReminderValue == 10)">
+                            <label class="app-label app-radios__label" for="ReminderValueTen">
+                                10 minutes before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueFifteen" name="ReminderValue"
+                                   type="radio" value="15" checked="@(Model.Task.ReminderValue == 15)">
+                            <label class="app-label app-radios__label" for="ReminderValueFifteen">
+                                15 minutes before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueThirty" name="ReminderValue"
+                                   type="radio" value="30" checked="@(Model.Task.ReminderValue == 30)">
+                            <label class="app-label app-radios__label" for="ReminderValueThirty">
+                                30 minutes before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueSixty" name="ReminderValue"
+                                   type="radio" value="60" checked="@(Model.Task.ReminderValue == 60)">
+                            <label class="app-label app-radios__label" for="ReminderValueSixty">
+                                1 hour before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueOneDay" name="ReminderValue"
+                                   type="radio" value="1440" checked="@(Model.Task.ReminderValue == 1440)">
+                            <label class="app-label app-radios__label" for="ReminderValueOneDay">
+                                1 day before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueOneWeek" name="ReminderValue"
+                                   type="radio" value="10080" checked="@(Model.Task.ReminderValue == 10080)">
+                            <label class="app-label app-radios__label" for="ReminderValueOneWeek">
+                                1 week before
                             </label>
                         </div>
                     </div>
