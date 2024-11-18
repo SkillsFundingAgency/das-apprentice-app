@@ -12,28 +12,88 @@
       "purpose": "any"
     },
     {
-      "src": "assets/images/govuk-icon-180.png",
+      "src": "assets/images/icon-48x48.png",
+      "sizes": "48x48",
       "type": "image/png",
-      "sizes": "180x180",
       "purpose": "maskable"
     },
     {
-      "src": "assets/images/govuk-icon-192.png",
+      "src": "assets/images/icon-72x72.png",
+      "sizes": "72x72",
       "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-192x192.png",
       "sizes": "192x192",
-      "purpose": "maskable"
-    },
-    {
-      "src": "assets/images/govuk-icon-512.png",
       "type": "image/png",
-      "sizes": "512x512",
       "purpose": "maskable"
     },
     {
-      "src": "assets/images/govuk-icon-mask.svg",
-      "type": "image/svg+xml",
+      "src": "assets/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-167x167.png",
+      "sizes": "167x167",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-120x120.png",
+      "sizes": "120x120",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-76x76.png",
+      "sizes": "76x76",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-70x70.png",
+      "sizes": "70x70",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-150x150.png",
       "sizes": "150x150",
-      "purpose": "monochrome"
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/icon-310x310.png",
+      "sizes": "310x310",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
