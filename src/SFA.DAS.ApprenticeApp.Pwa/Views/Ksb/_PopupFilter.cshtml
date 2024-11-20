@@ -130,7 +130,7 @@
                 $('.s-count').text($('#skill .wrapper:not([style*="display: none"])').length);
                 $('.b-count').text($('#behaviour .wrapper:not([style*="display: none"])').length);
 
-                $("#filters-set").append("<div class='app-tag filter-tag tag-" + line[1] + "'>" + line[1].replace(/\-/g, " ") + " <a href='#' class='remove-filter'><img src='/assets/images/icons/cross.png'/></a></div>");
+                $("#filters-set").append("<div style='margin: 10px 10px 0 0' class='app-tag filter-tag tag-" + line[1] + "'>" + line[1].replace(/\-/g, " ") + " <a href='#' class='remove-filter'><img src='/assets/images/icons/cross.png'/></a></div>");
             }
         }
         else {
@@ -187,7 +187,7 @@
 
     function addTag(tagname)
     {
-        $("#filters-set").append("<div class='app-tag filter-tag tag-" + tagname + "'>" + tagname.replace(/\-/g, " ") + " <a href='#' class='remove-filter'><img src='/assets/images/icons/cross.png'/></a></div>");
+        $("#filters-set").append("<div style='margin: 10px 10px 0 0' class='app-tag filter-tag tag-" + tagname + "'>" + tagname.replace(/\-/g, " ") + " <a href='#' class='remove-filter'><img src='/assets/images/icons/cross.png'/></a></div>");
     }
 
     function getCookieKsb(name) {
