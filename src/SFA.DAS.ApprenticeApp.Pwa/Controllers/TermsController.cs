@@ -28,6 +28,9 @@ public class TermsController : Controller
     {
         var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
+        // update apprentice log in time
+        await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
+
         if (!string.IsNullOrEmpty(apprenticeId))
         {
             var termsAccepted = Claims.GetClaim(HttpContext, Constants.TermsAcceptedClaimKey);

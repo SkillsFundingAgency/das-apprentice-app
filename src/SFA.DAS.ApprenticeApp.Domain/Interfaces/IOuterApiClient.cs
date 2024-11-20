@@ -60,6 +60,9 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Post("/apprentices/{id}/articles/{articleIdentifier}")]
         Task AddUpdateApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Body] ApprenticeArticleRequest request);
 
+        [Post("/apprentices/{id}/removearticle/{articleIdentifier}")]
+        Task RemoveApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Body] ApprenticeArticleRequest request);
+
         //Tasks
         [Get("/apprentices/{id}/progress/taskCategories")]
         Task<ApprenticeTaskCategoryCollection> GetTaskCategories([Path] Guid id);

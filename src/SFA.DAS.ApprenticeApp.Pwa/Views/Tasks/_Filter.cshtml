@@ -77,27 +77,19 @@
                         </label>
                     </div>
 
-                    <div class="app-checkboxes__item">
+                    <div class="app-checkboxes__item reminder-filter">
                         <input class="app-checkboxes__input" id="reminder" name="other-filter" type="checkbox"
                             value="reminder">
                         <label class="app-label app-checkboxes__label" for="reminder">
                             Reminder set
                         </label>
-                    </div>
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="files-attached" name="other-filter" type="checkbox"
-                            value="files-attached">
-                        <label class="app-label app-checkboxes__label" for="files-attached">
-                            Files attached
-                        </label>
-                    </div>
+                    </div>                   
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="note-added" name="other-filter" type="checkbox"
                             value="note-added">
                         <label class="app-label app-checkboxes__label" for="note-added">
-                            Note added
+                            Note attached
                         </label>
                     </div>
 
@@ -110,6 +102,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
         var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
 
         if (cookieFilter != null && cookieFilter != "") {
