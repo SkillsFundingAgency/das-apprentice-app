@@ -38,7 +38,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                     {
                         switch (filterValue.ToUpper())
                         {
-                            case "REMINDER-SET":
+                            case "REMINDER":
                                 filteredTasks.AddRange(tasks.Where(x => x.TaskReminders.Count > 0).ToList());
                                 break;
                             case "KSB":

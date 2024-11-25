@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Logging.ApplicationInsights;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,4 +67,3 @@ app.Run();
 
 [ExcludeFromCodeCoverage]
 public static partial class Program { }
-
