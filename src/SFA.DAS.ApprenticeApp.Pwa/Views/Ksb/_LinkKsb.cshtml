@@ -65,6 +65,22 @@
                     {
                         if (KSBType == ksb.Type.ToString())
                         {
+
+                                string statusTitleDisplay;
+                                   
+                                if (ksb.Progress != null)
+                                {
+                                        var statusTitle = ksb.Progress.CurrentStatus;
+                                        statusTitleDisplay = statusTitle.GetEnumDescription();
+                        
+                                }
+                                else
+                                {
+                                        var statusTitle = Model.KsbStatuses.FirstOrDefault();
+                                        statusTitleDisplay = statusTitle.GetEnumDescription();
+                                    
+                                }
+                                                
                                                             <div class="app-card ksb-item govuk-!-margin-bottom-0 govuk-!-padding-bottom-0">
                                                                 <div class="app-card__header">
                                                                     <h2 class="app-card__heading">@ksb.Key</h2>
@@ -73,7 +89,7 @@
                                                                 <div class="app-checkboxes app-checkboxes--small app-checkboxes--single" data-module="govuk-checkboxes">
                                                                     <div class="app-checkboxes__item">
                                                                         <input class="app-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
-                                                                            id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
+                                                                            id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" />
                                                                         <label class="app-label app-checkboxes__label" for="ksb-@ksb.Id">Link this KSB to the
                                                                             task</label>
                                                                     </div>
@@ -85,20 +101,8 @@
                                                                         <button class="app-collapse__button" aria-expanded="false"
                                                                             aria-controls="app-collapse-contents-status-@ksb.Id">
                                                                             <span class="app-collapse__title ksb-status-display">
-                                                @{
-                                                    if (ksb.Progress != null)
-                                                    {
-                                                        var statusTitle = ksb.Progress.CurrentStatus;
-                                                        string statusTitleDisplay = statusTitle.GetEnumDescription();
-                                                        <text>@statusTitleDisplay</text>
-                                                    }
-                                                    else
-                                                    {
-                                                        var statusTitle = Model.KsbStatuses.FirstOrDefault();
-                                                        string statusTitleDisplay = statusTitle.GetEnumDescription();
-                                                        <text>@statusTitleDisplay</text>
-                                                    }
-                                                }
+                                         
+                                                                        <text>@statusTitleDisplay</text>
                                                                             </span>
                                                                             <span class="app-collapse__icon" aria-hidden="true"></span>
                                                                         </button>
