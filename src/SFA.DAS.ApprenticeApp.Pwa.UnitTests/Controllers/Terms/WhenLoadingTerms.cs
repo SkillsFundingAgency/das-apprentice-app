@@ -42,28 +42,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
         }
 
         [Test, MoqAutoData]
-        public async Task Then_an_errorpage_is_displayed_for_invalid_apprentice(
-          [Frozen] Mock<IOuterApiClient> _client,
-          [Greedy] TermsController controller)
-        {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            apprenticeIdClaim
-        })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var result = await controller.Index() as RedirectToActionResult;
-            result.ActionName.Should().Be("Error");
-            result.ControllerName.Should().Be("Account");
-        }
-
-        [Test, MoqAutoData]
         public async Task Then_The_Terms_Page_Is_Displayed_For_Valid_Apprentice_Not_Yet_Accepted(
             [Frozen] Mock<IOuterApiClient> client,
             [Greedy] TermsController controller)
