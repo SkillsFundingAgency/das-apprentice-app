@@ -9,7 +9,7 @@
             {
                 if (text == "prd")
                 {
-                    return "apprentice-app.apprenticeships.education.gov.uk";
+                    return "my-apprenticeship.apprenticeships.education.gov.uk";
                 }
 
                 return environment.ToLower() + "-apprentice-app.apprenticeships.education.gov.uk";
