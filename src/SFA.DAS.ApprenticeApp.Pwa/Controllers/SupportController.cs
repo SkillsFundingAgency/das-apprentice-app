@@ -78,5 +78,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             return Unauthorized();
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> RemoveApprenticeArticle(string entryId, bool? likeStatus = null, bool? isSaved = null)
+        {
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                await _client.RemoveApprenticeArticle(new Guid(apprenticeId), entryId, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
+                return Ok();
+            }
+
+            return Unauthorized();
+        }
     }
 }

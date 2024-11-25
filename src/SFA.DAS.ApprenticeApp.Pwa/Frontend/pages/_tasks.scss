@@ -64,12 +64,6 @@
   left: 0;
 }
 
-.filter-tag {
-  margin: 5px;
-  background-color: #eeefef;
-  color: #383f43;
-}
-
 .remove-filter,
 .edit-btn {
   cursor: pointer;
@@ -94,5 +88,5 @@
 }
 
 #sortby:first-letter {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }

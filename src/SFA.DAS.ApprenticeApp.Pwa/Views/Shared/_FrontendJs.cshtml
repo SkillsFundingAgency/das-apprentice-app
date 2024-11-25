@@ -3,6 +3,7 @@
 
     function Tabs(container) {
         this.tabs = container.querySelectorAll(".app-tabs__tab");
+        this.showActiveTab = container.dataset.activetabstatus || false;
         this.tabPanels = container.querySelectorAll(".app-tabs__panel");
         delete container.dataset.module;
     }
@@ -20,8 +21,8 @@
         });
 
         const params = new URLSearchParams(window.location.search)
-        if (params.has('status')) {
-            this.tabs[params.get('status')].click()
+        if (this.showActiveTab && params.has(this.showActiveTab)) {
+            this.tabs[params.get(this.showActiveTab)].click()
         } else {
             this.tabs[0].click()
         }
