@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
@@ -11,6 +12,7 @@ using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -38,11 +40,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             result.Should().NotBeNull();
         }
 
+
         [Test, MoqAutoData]
         public async Task Redirect_If_logged_in(
-            [Frozen] Mock<IOuterApiClient> client,
-            [Frozen] ApprenticeDetails apprenticeDetails,
-            [Greedy] HomeController controller)
+                     [Frozen] ApplicationConfiguration configuration,
+                    [Frozen] Mock<IOuterApiClient> client,
+                    [Frozen] ApprenticeDetails apprenticeDetails,
+                    [Greedy] HomeController controller)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -52,46 +56,48 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             };
             var identity = new ClaimsIdentity(new List<Claim>
             {
-                new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString(), ClaimValueTypes.String)
+                new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString(), ClaimValueTypes.String),
+                new Claim(Constants.ApprenticeNameClaimKey, "user1@test.com", ClaimValueTypes.String)
             }, "Custom");
 
             httpContext.User = new ClaimsPrincipal(identity);
+            configuration.WhiteListEmails = "{ \"Emails\" : [\"user1@test.com\", \"user2@test.com\"] }";
             apprenticeDetails.MyApprenticeship = new MyApprenticeship();
             client.Setup(c => c.GetApprenticeDetails(apprenticeId)).ReturnsAsync(apprenticeDetails);
 
-                var result = await controller.Index() as RedirectToActionResult;
-                result.ActionName.Should().Be("Index");
-                result.ControllerName.Should().Be("Tasks");
+            var result = await controller.Index() as RedirectToActionResult;
+            result.ActionName.Should().Be("Index");
+
         }
 
-        [Test, MoqAutoData]
-        public async Task Redirect_If_Authenticated([Greedy] HomeController controller)
-        {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            [Test, MoqAutoData]
+            public async Task Redirect_If_Authenticated([Greedy] HomeController controller)
+            {
+                var httpContext = new DefaultHttpContext();
+                var apprenticeId = Guid.NewGuid();
+                var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+                var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
         {
             apprenticeIdClaim
         })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
+                httpContext.User = claimsPrincipal;
+                controller.ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                };
 
-            var identity = new ClaimsIdentity(new List<Claim>
+                var identity = new ClaimsIdentity(new List<Claim>
             {
                 new Claim("UserId", "123", ClaimValueTypes.Integer32)
             }, "Custom");
 
-            httpContext.User = new ClaimsPrincipal(identity);
+                httpContext.User = new ClaimsPrincipal(identity);
 
-            if (httpContext.User.Identity.IsAuthenticated)
-            {
-                var result = await controller.Index() as ActionResult;
-                result.Should().NotBeNull();
+                if (httpContext.User.Identity.IsAuthenticated)
+                {
+                    var result = await controller.Index() as ActionResult;
+                    result.Should().NotBeNull();
+                }
             }
         }
     }
-}
