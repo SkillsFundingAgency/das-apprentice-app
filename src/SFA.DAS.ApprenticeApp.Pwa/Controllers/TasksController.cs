@@ -105,9 +105,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
-                if (Request.Cookies[Constants.TaskFiltersCookieName] != null)
+                if (Request.Cookies[Constants.TaskFiltersTodoCookieName] != null)
                 {
-                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersCookieName]);
+                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersTodoCookieName]);
 
                     if (filterTasks.HasFilterRun.Equals(true))
                     {
@@ -161,9 +161,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
-                if (Request.Cookies[Constants.TaskFiltersCookieName] != null)
+                if (Request.Cookies[Constants.TaskFiltersDoneCookieName] != null)
                 {
-                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersCookieName]);
+                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersDoneCookieName]);
 
                     if (filterTasks.HasFilterRun.Equals(true))
                     {

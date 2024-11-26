@@ -9,11 +9,17 @@
         });
 
         $('body').on('click', '.todo', function (e) {
+
+            setFilterTags("todo");
+
             $('.reminder-filter').show();
         });
 
         $('body').on('click', '.done', function (e) {
-            $('.reminder-filter').hide();        
+
+            setFilterTags("done");
+
+            $('.reminder-filter').hide();
         });
 
 
@@ -91,6 +97,54 @@
             if ($('.app-card').length == 0) {
                 $('#tasks-display').hide().load('@Url.Action("TasksNotStarted", "Tasks")').fadeIn('500');
             }
+        }
+
+
+        function setFilterTags(tabName) {
+
+            if (tabName != null && tabName != "") {
+                
+                var filters = "";
+
+                if (tabName == "todo") {
+                    filters = getCookieContents("SFA.ApprenticeApp.TaskFiltersTodo");
+                }
+                else {
+                    filters = getCookieContents("SFA.ApprenticeApp.TaskFiltersDone");
+                }
+
+               
+                if (typeof filters !== "undefined") {
+
+                  data = filters.split('&');
+
+                    $("#filters-set").text("");
+                    $("input:checkbox").prop('checked', false);
+
+                    for (var k in data) {
+
+                        var line = data[k].split('=');
+
+                        $("#" + line[1]).prop('checked', true);
+
+                        if (line[1] != null) {
+                            $("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + line[1] + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + line[1] + "'><span class='govuk-visually-hidden'>Remove " + line[1] + " from your filters</span></a></div>");
+                        }
+                    }
+                }
+                else {
+                    $("#filters-set").text("");
+                    $("input:checkbox").prop('checked', false);
+                }
+            }
+
+        }
+
+        function getCookieContents(name) {
+            let matchess = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matchess ? decodeURIComponent(matchess[1]) : undefined;
         }
 
         $(".add-btn").click(function (e) {
