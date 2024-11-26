@@ -18,7 +18,7 @@
         </a>
     </li>
 
-    @foreach (var item in Model.Categories.OrderBy(x => x.Heading))
+    @foreach (var item in Model.Categories.OrderBy(x => x.ArticleOrder))
     {
         @if (item.Slug != null)
         {

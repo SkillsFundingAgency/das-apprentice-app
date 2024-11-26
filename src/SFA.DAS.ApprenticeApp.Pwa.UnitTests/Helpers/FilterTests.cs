@@ -44,7 +44,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             tasks[0].TaskReminders = [new TaskReminder() { ReminderId = 1, TaskId = 1, ReminderUnit = 0, ReminderValue = 1 }];
 
             // Act
-            var result = Filter.FilterTaskResults(tasks, "other-filter=REMINDER-SET");
+            var result = Filter.FilterTaskResults(tasks, "other-filter=REMINDER");
 
             // Assert
             result.FilteredTasks.Count.Should().Be(1);

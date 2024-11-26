@@ -1,0 +1,47 @@
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".save-ksb").click(function (e) {
+            e.preventDefault();
+            $(".form").submit();
+        });
+
+        const removeLink = (id, button) => {
+            const taskId = button.dataset.taskid;
+            const progressId = button.dataset.progressid;
+
+            $.ajax({
+                type: "DELETE",
+                url: '@Url.Action("RemoveTaskFromKsbProgress", "Ksb")',
+                data: { progressId, taskId },
+                complete: function () {
+                    $('#ksb-task-' + taskId).hide();
+                },
+                dataType: "json"
+            });
+
+        }
+
+        $('body').on('click', '.remove-ksb-task', function (e) {
+            const modalContent = {
+                message: 'Are you sure you want to remove the link between this task and the knowledge, skill or behaviour (KSB)?',
+                confirmButton: 'Remove link'
+            }
+            const modal = new Modal(this, removeLink, null, modalContent).init();
+        });
+        $('body').on('click', '.share-link', function (e) {
+            if (navigator.share) {
+                navigator.share({
+                    title: $(this).siblings('.share-title').val(),
+                    text: $(this).siblings('.share-note').val()
+                })
+                    .then(() => console.log('Shared successfully'))
+                    .catch((error) => console.error('Sharing failed:', error));
+            }
+        });
+
+    });
+</script>

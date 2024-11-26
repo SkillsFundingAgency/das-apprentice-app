@@ -5,31 +5,71 @@
     $(document).ready(function () {
 
         $('.thumbs-up').on('click', function () {
-            $(this).removeClass('fa-regular').addClass('fa-solid');
-            $(this).next('i').removeClass('fa-solid').addClass('fa-regular');
 
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "true" },
-                dataType: "json",
-                contentType: "application/json"
-            });
-            return false;
+            if ($(this).hasClass("fa-solid")) {
+
+                $(this).removeClass("fa-solid");
+                $(this).addClass("fa-regular");
+
+                // delete apim command
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("RemoveApprenticeArticle", "Support")',
+                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+                return false;
+            }
+            else
+            {
+                $(this).removeClass('fa-regular').addClass('fa-solid');
+                $(this).next('i').removeClass('fa-solid').addClass('fa-regular');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+                return false;
+            }
+
         });
 
         $('.thumbs-down').on('click', function () {
-            $(this).removeClass('fa-regular').addClass('fa-solid');
-            $(this).prev('i').removeClass('fa-solid').addClass('fa-regular');
 
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
-                dataType: "json",
-                contentType: "application/json"
-            });
-            return false;
+            if ($(this).hasClass("fa-solid")) {
+
+                $(this).removeClass("fa-solid");
+                $(this).addClass("fa-regular");
+
+                // delete apim command
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("RemoveApprenticeArticle", "Support")',
+                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+                return false;
+
+            }
+            else {
+
+                $(this).removeClass('fa-regular').addClass('fa-solid');
+                $(this).prev('i').removeClass('fa-solid').addClass('fa-regular');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
+                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    dataType: "json",
+                    contentType: "application/json"
+                });
+                return false;
+            }
         });
 
         $('body').on('click', '.save', function () {
@@ -80,5 +120,7 @@
             $('.share-btn').hide();
             $('.fa-arrow-up').hide();
         }
+
+
     });
 </script>

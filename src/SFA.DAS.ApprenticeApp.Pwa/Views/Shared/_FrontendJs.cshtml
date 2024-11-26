@@ -21,7 +21,6 @@
         });
 
         const params = new URLSearchParams(window.location.search)
-
         if (this.showActiveTab && params.has(this.showActiveTab)) {
             this.tabs[params.get(this.showActiveTab)].click()
         } else {
