@@ -8,6 +8,15 @@
             $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
+        $('body').on('click', '.todo', function (e) {
+            $('.reminder-filter').show();
+        });
+
+        $('body').on('click', '.done', function (e) {
+            $('.reminder-filter').hide();        
+        });
+
+
         $(".post-form").click(function (e) {
             $(".form").submit();
         });

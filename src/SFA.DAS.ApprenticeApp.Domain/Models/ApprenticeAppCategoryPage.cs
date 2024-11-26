@@ -6,5 +6,6 @@
         public string? Slug { get; set; }
         public string? Heading { get; set; }
         public object? Content { get; set; }
+        public int? ArticleOrder { get; set; }
     }
 }
