@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
@@ -45,10 +47,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
 
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails?.MyApprenticeship != null)
+                try
                 {
-                    return RedirectToAction("Index", "Terms");
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    if (apprenticeDetails?.MyApprenticeship != null)
+                    {
+                        return RedirectToAction("Index", "Terms");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return RedirectToAction("Error", "Account");
                 }
 
                 return RedirectToAction("Error", "Account");
@@ -138,12 +147,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
         public IActionResult StubSignedIn()
         {
+            if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
+            {
+                return NotFound();
+            }
+
             var viewModel = new StubAuthenticationViewModel
             {
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
-           
+
             return RedirectToAction("Index", "Terms");
         }
 

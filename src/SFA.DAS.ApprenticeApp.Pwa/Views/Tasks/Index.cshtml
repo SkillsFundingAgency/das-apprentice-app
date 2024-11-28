@@ -1,5 +1,8 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
-
+@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using SFA.DAS.ApprenticeApp.Web.Extensions
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
@@ -20,7 +23,8 @@
             <ul class="app-dropdown__menu-list">
                 <li>
                     <a href="?year=@DateTime.Now.AddYears(-1).Year" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.AddYears(-1).Year
+                        <span class="govuk-visually-hidden">Show tasks for the year
+                        </span>@DateTime.Now.AddYears(-1).Year
                     </a>
                 </li>
                 <li>
@@ -30,7 +34,8 @@
                 </li>
                 <li>
                     <a href="?year=@DateTime.Now.AddYears(1).Year" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.AddYears(1).Year
+                        <span class="govuk-visually-hidden">Show tasks for the year
+                        </span>@DateTime.Now.AddYears(1).Year
                     </a>
                 </li>
             </ul>
@@ -38,7 +43,7 @@
     </div>
 </div>
 
-<div class="app-tabs" data-module="app-tabs">
+<div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
     <div class="app-page-header app-page-header--align-bottom">
         <ul class="app-tabs__list">
             <li class="app-tabs__list-item">
@@ -74,7 +79,9 @@
         </div>
         <partial name="_Filter.cshtml" />
     </div>
-    <div id="filters-set" class="govuk-!-margin-bottom-4"></div>
+    <div class="app-tag-wrap">
+        <div id="filters-set" class="app-tag-scroll"></div>
+    </div>
 
     <div class="app-tabs__panel" id="tasks-todo">
         <div id="tasks-todo__tasks">
@@ -97,7 +104,22 @@
 
 </div>
 
-
-
-
+<!-- HTML for the popup box -->
+<div class="app-modal enable-notifications">
+    <div class="app-modal__content">
+        <h2 class="govuk-heading-m">Please turn on push notifications</h2>
+        <p class="govuk-body">
+            These could include reminders you set in the app and useful guidance about your
+            apprenticeship.
+        </p>
+        <div class="govuk-button-group">
+            <button type="button" class="govuk-button" onclick="requestNotificationPermission()">Continue</button>
+        </div>
+    </div>
+</div>
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
 @await Html.PartialAsync("_TasksJs.cshtml", Model)
+@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")

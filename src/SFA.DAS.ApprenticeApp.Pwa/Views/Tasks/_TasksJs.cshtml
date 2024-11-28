@@ -8,6 +8,15 @@
             $('#tasks-done__tasks').load('@Url.Action("DoneTasks", "Tasks")');
         });
 
+        $('body').on('click', '.todo', function (e) {
+            $('.reminder-filter').show();
+        });
+
+        $('body').on('click', '.done', function (e) {
+            $('.reminder-filter').hide();        
+        });
+
+
         $(".post-form").click(function (e) {
             $(".form").submit();
         });
@@ -155,4 +164,37 @@
             return false;
         };
     });
+
+    //pushnotification setup
+    const checkUICompatibility = () => {
+    if (!("serviceWorker" in navigator)) {
+        console.log("Service worker not supported");
+        throw new Error("Service worker not supported");
+    }
+
+    if (!("Notification" in window)) {
+        console.log("Notification not supported");
+        throw new Error("Notification not supported");
+    }
+        };
+
+    const displayNotificationButtons = () => {
+        const enableNotificationsButtons = document.querySelectorAll(
+            ".enable-notifications"
+        );
+
+        for (const element of enableNotificationsButtons) {
+            if (Notification.permission === "default") {
+                element.classList.add("app-modal--visible");
+            } else {
+                element.classList.remove("app-modal--visible");
+            }
+        }
+    };
+
+    //step 1: check if the browser supports service workers and notifications
+    checkUICompatibility();
+
+    //step 2: manage ui elements based on existing permission status
+    displayNotificationButtons();
 </script>
