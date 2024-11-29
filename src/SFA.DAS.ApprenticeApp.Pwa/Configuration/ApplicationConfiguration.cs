@@ -21,6 +21,7 @@ public class ApplicationConfiguration
     public string? PushNotificationPublicKey { get; set; }
     public bool UseGovSignIn { get; set; }
     public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; }
+    public string? WhiteListEmails { get; set; }
 }
 
 [ExcludeFromCodeCoverage]

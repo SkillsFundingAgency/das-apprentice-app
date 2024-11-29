@@ -13,9 +13,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
         public async Task InvokeAsync(HttpContext context)
         {
             const string dasCdn = "das-at-frnt-end.azureedge.net das-pp-frnt-end.azureedge.net das-mo-frnt-end.azureedge.net das-test-frnt-end.azureedge.net das-test2-frnt-end.azureedge.net das-prd-frnt-end.azureedge.net";
-
-            if (!context.Response.Headers.ContainsKey("Content-Security-Policy"))
-            {
                 context.Response.Headers.Add("Content-Security-Policy",
                     new StringValues(
                         $"script-src 'self' 'unsafe-inline' 'unsafe-eval' {dasCdn} https://www.googletagmanager.com https://tagmanager.google.com https://www.google-analytics.com https://ssl.google-analytics.com ; " +
@@ -24,7 +21,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                         $"font-src {dasCdn} https://fonts.gstatic.com ;" +
                         "connect-src https://www.google-analytics.com ;" +
                         "frame-src https://www.googletagmanager.com"));
-            }
+            
             await _next(context);
         }
     }
