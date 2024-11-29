@@ -19,6 +19,7 @@ public class ApplicationConfiguration
     public string? StubAuth { get; set; }
     public string? PushNotificationPublicKey { get; set; }
     public bool UseGovSignIn { get; set; }
+    public string? WhiteListEmails { get; set; }
 }
 
 [ExcludeFromCodeCoverage]

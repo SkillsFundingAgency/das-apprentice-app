@@ -47,10 +47,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
 
-                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                if (apprenticeDetails?.MyApprenticeship != null)
+                try
                 {
-                    return RedirectToAction("Index", "Terms");
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    if (apprenticeDetails?.MyApprenticeship != null)
+                    {
+                        return RedirectToAction("Index", "Terms");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return RedirectToAction("Error", "Account");
                 }
 
                 return RedirectToAction("Error", "Account");
@@ -140,6 +147,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
         public IActionResult StubSignedIn()
         {
+            if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
+            {
+                return NotFound();
+            }
+
             var viewModel = new StubAuthenticationViewModel
             {
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
