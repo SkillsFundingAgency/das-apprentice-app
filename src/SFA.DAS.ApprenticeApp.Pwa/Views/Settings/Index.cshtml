@@ -57,20 +57,4 @@
     </div>
 </div>
 
-
-<!-- HTML for the popup box -->
-<div class="app-modal change-notifications" aria-hidden="true">
-    <div class="app-modal__content">
-        <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
-        <div class="govuk-button-group">
-            <button type="button" class="govuk-button" onclick="toggleNotifications()" onkeydown="toggleNotifications()"
-                onkeypress="toggleNotifications()">OK</button>
-        </div>
-    </div>
-</div>
-<script>
-    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
-    window.pushNotificationKey = publicKey;
-</script>
-
 @await Html.PartialAsync("_SettingsJs.cshtml")
