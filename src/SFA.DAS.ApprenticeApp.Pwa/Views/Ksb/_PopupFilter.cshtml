@@ -128,8 +128,7 @@
                 $('.k-count').text($('#knowledge .wrapper:not([style*="display: none"])').length);
                 $('.s-count').text($('#skill .wrapper:not([style*="display: none"])').length);
                 $('.b-count').text($('#behaviour .wrapper:not([style*="display: none"])').length);
-                //$("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + line[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + line[1] + "'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a> " + "</div>");
-                 $("#filters-set").append("<div style='margin: 10px 10px 0 0' class='app-tag filter-tag tag-" + line[1] + "'>" + line[1].replace(/\-/g, " ") + " <a href='#' class='remove-filter'><img src='/assets/images/icons/cross.png'/></a></div>");
+                 $("#filters-set").append("<div class='app-tag app-tag--filter tag-" + line[1] + "'><span>" + line[1].replace(/\-/g, " ") + "</span> <a href='#' class='app-tag__action app-tag__action--remove remove-filter'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
             }
         }
         else {
@@ -188,7 +187,7 @@
     }
 
     function addTag(tagname) {
-        $("#filters-set").append("<div style='margin: 10px 10px 0 0' class='app-tag filter-tag tag-" + tagname + "'>" + tagname.replace(/\-/g, " ") + " <a href='#' class='remove-filter'><img src='/assets/images/icons/cross.png'/></a></div>");
+        $("#filters-set").append("<div class='app-tag app-tag--filter tag-" + tagname + "'><span>" + tagname.replace(/\-/g, " ") + "</span> <a href='#' class='app-tag__action app-tag__action--remove remove-filter'><span class='govuk-visually-hidden'>Remove " + tagname.replace(/\-/g, " ") + " from your filters</span></a></div>");
     }
 
     function getCookieKsb(name) {
