@@ -143,6 +143,16 @@
             });
         });
 
+        $('body').on('click', '.ksb-item-removeLink', function (e) {
+            e.preventDefault()
+            const currentKsbIds = $('#linked-ksb-ids').val().split(',');
+            const filteredKsbIds = currentKsbIds.filter(id => id !== $(this).data('id'));
+            $('#linked-ksb-ids').val(filteredKsbIds)
+            $(`#ksb-item-${$(this).data('id')}`).slideUp(function() {
+                $(this).remove();
+            });
+        });
+
         $('body').on('click', '.link-ksb-confirm', function (e) {
 
             var checkboxes = $(".link-ksb-checkbox:checked")
@@ -154,11 +164,47 @@
             $("#linked-ksb-ids").val(result);
 
             var text = checkboxes.map(function (i, e) {
-                return `<div class="app-card ksb-item"><div class="app-card__header"><h2 class="app-card__heading">${$(e).attr("data-title")}</h2><a href="#" class="govuk-link govuk-link--no-visited-state ksb-item-edit">Edit</a></div><p>${$(e).attr("data-desc")}</p><div class="ksb-status-display app-tag app-tag--status-${$(e).attr("data-status").replaceAll(" ", "").toLowerCase()}">${$(e).attr("data-status")}</div></div>`;
+                return `<div class="app-card ksb-item" id="ksb-item-${$(e).attr("value")}">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">${$(e).attr("data-title")}</h2>
+                            </div>
+                            <p>${$(e).attr("data-desc")}</p>
+                            <div class="ksb-status-display app-tag app-tag--status-${$(e).attr("data-status").replaceAll(" ", "").toLowerCase()}">${$(e).attr("data-status")}</div>
+                            <hr class="app-separator" />
+                            <div class="app-dropdown" data-module="app-dropdown">
+                                <button class="app-dropdown__toggle" aria-expanded="false">View actions<span class="govuk-visually-hidden"> for ${$(e).attr("data-title")}</span>
+                                </button>
+                                <div class="app-dropdown__menu">
+                                    <ul class="app-dropdown__menu-list">
+                                        <li>
+                                            <a class="app-dropdown__menu-link ksb-item-edit" href="#">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Edit</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="app-dropdown__menu-link ksb-item-removeLink" href="#" data-id="${$(e).attr("value")}">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#unlink"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Remove link to this KSB</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>`;
             }).get();
 
             $("#linked-ksb-details").html(text);
             $('#ksb-popup').hide();
+            appInit();
         });
 
         $('body').on('click', '.edit-linkedksb', function (e) {
