@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
@@ -7,6 +8,8 @@ using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
+using System.Diagnostics.CodeAnalysis;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,11 +42,8 @@ builder.Services.AddLogging(builder =>
     builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Warning);
 });
 
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddApplicationInsightsTelemetry(new Microsoft.ApplicationInsights.AspNetCore.Extensions.ApplicationInsightsServiceOptions
-{
-    ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]
-});
+// Add the OpenTelemetry telemetry service to the application.
+builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 // configure google analytics
 builder.Services.Configure<MvcOptions>(options =>
