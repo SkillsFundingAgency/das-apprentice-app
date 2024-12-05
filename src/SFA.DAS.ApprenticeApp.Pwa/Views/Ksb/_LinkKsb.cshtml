@@ -40,11 +40,11 @@
                 </li>
             </ul>
 
-            <partial name="_PopupFilter.cshtml" />
-
+            
         </div>
 
-        <details class="govuk-details">
+<div class="app-page-header">
+        <details class="govuk-details govuk-!-margin-top-2">
             <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
                     Help with linking KSBs
@@ -60,8 +60,13 @@
                 <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
             </div>
         </details>
+        <partial name="_PopupFilter.cshtml" />
 
-        <div id="filters-set" class="govuk-!-margin-bottom-4"></div>
+</div>
+
+        <div class="app-tag-wrap">
+            <div id="filters-set" class="app-tag-scroll"></div>
+        </div>
 
         @{
             string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
@@ -76,14 +81,18 @@
                         {
 
                             var statusTitleDisplayClass = "";
+                            var statusTitleDisplay = "";
+
                             if (ksb.Progress != null)
                             {
                                 var statusTitleClass = ksb.Progress.CurrentStatus;
                                 statusTitleDisplayClass = statusTitleClass.GetEnumDescription().Replace(" ", "-").ToLower();
+                                statusTitleDisplay = statusTitleClass.GetEnumDescription();
                             }
                             else
                             {
                                 statusTitleDisplayClass = "not-started";
+                                statusTitleDisplay = "Not started";
                             }
 
                             <div class="wrapper @statusTitleDisplayClass">
@@ -96,7 +105,7 @@
                                     <div class="app-checkboxes app-checkboxes--small app-checkboxes--single" data-module="govuk-checkboxes">
                                         <div class="app-checkboxes__item">
                                             <input class="app-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
-                                                   id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" />
+                                                   id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" />
                                             <label class="app-label app-checkboxes__label" for="ksb-@ksb.Id">
                                                 Link this KSB to the
                                                 task
@@ -110,20 +119,7 @@
                                             <button class="app-collapse__button" aria-expanded="false"
                                                     aria-controls="app-collapse-contents-status-@ksb.Id">
                                                 <span class="app-collapse__title ksb-status-display">
-                                                    @{
-                                                        if (ksb.Progress != null)
-                                                        {
-                                                            var statusTitle = ksb.Progress.CurrentStatus;
-                                                            string statusTitleDisplay = statusTitle.GetEnumDescription();
-                                                            <text>@statusTitleDisplay</text>
-                                                        }
-                                                        else
-                                                        {
-                                                            var statusTitle = Model.KsbStatuses.FirstOrDefault();
-                                                            string statusTitleDisplay = statusTitle.GetEnumDescription();
-                                                            <text>@statusTitleDisplay</text>
-                                                        }
-                                                    }
+                                                    <text>@statusTitleDisplay</text>
                                                 </span>
                                                 <span class="app-collapse__icon" aria-hidden="true"></span>
                                             </button>
