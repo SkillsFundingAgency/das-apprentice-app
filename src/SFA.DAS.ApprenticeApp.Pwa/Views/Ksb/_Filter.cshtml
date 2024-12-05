@@ -102,7 +102,7 @@
 
                 $("#" + line[1]).prop('checked', true);
 
-                $("#filters-set").append("<div class='app-tag filter-tag'>" + line[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + line[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
+                $("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + line[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + line[1] + "'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a> " + "</div>");
             }
         }
         else {
