@@ -1,7 +1,12 @@
 ﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
 using System.Diagnostics.CodeAnalysis;
 
@@ -40,6 +45,12 @@ builder.Services.AddLogging(builder =>
 // Add the OpenTelemetry telemetry service to the application.
 builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
+// configure google analytics
+builder.Services.Configure<MvcOptions>(options =>
+    options.Filters.Add(new EnableGoogleAnalyticsAttribute(
+        applicationConfiguration.GoogleAnalytics)
+    ));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,6 +61,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Add Security Headers Middleware
+app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHealthChecks("/ping");
