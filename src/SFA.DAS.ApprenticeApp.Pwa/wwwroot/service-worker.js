@@ -4,9 +4,9 @@ self.addEventListener('fetch', event => { return null; });
 self.addEventListener('push', event => {
     const payload = event.data.json();
     event.waitUntil(
-        self.registration.showNotification('My Apprenticeship', {
+        self.registration.showNotification(payload.title, {
             body: payload.message,
-            icon: 'icon-512x512.png',
+            icon: '/assets/images/my_apprenticeship_logo.svg',
             vibrate: [100, 50, 100],
             data: { url: payload.url }
         })

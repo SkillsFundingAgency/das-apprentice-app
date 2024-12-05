@@ -308,6 +308,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         return RedirectToAction("Index", "Tasks");
                     }
 
+                    task.ApprenticeAccountId = new Guid(apprenticeId);
                     task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
 
                     if (task.Status == Domain.Models.TaskStatus.Done)

@@ -5,6 +5,7 @@
         public int TaskId { get; set; }
         public long ApprenticeshipId { get; set; }
         public DateTime? DueDate { get; set; } = null!;
+        public Guid ApprenticeAccountId { get; set; }
         public string Title { get; set; } = null!;
         public int? ApprenticeshipCategoryId { get; set; } = null!;
         public string Note { get; set; } = null!;
