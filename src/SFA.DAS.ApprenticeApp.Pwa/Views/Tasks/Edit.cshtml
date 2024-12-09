@@ -42,19 +42,53 @@
                     ksb.KSBProgressId).FirstOrDefault();
                     if (ksbProgressData != null)
                     {
-                        <div class="app-card ksb-item">
-                            <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                        <div class="app-card ksb-item" id="ksb-item-@ksbProgressData.KsbId">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                            </div>
                             <p>@ksbProgressData.Detail</p>
                             <span>
-                                @{
-                                    var statusItem = @ksbProgressData.CurrentStatus;
-                                    string statusItemDisplay = statusItem.GetEnumDescription();
-                                    <div class="ksb-status-display app-tag">
-                                        <text>@statusItemDisplay</text>
-                                    </div>
-                                }
+                            @{
+                                var statusItem = @ksbProgressData.CurrentStatus;
+                                string statusItemDisplay = statusItem.GetEnumDescription();
+                                <div
+                                    class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ","").Replace("-", "")">
+                                    <text>@statusItemDisplay</text>
+                                </div>
+                            }
                             </span>
+                            <hr class="app-separator" />
+                            <div class="app-dropdown" data-module="app-dropdown">
+                                <button class="app-dropdown__toggle" aria-expanded="false">
+                                    View actions<span class=" govuk-visually-hidden"> for @ksbProgressData.KsbKey</span>
+                                </button>
+                                <div class="app-dropdown__menu">
+                                    <ul class="app-dropdown__menu-list">
+                                        <li>
+                                            <a class="app-dropdown__menu-link ksb-item-edit" href="#">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Edit</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="app-dropdown__menu-link ksb-item-removeLink" href="#" data-id="@ksbProgressData.KsbId">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#unlink"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Remove link to this KSB</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+
                     }
                 }
             </div>
@@ -73,15 +107,15 @@
                     <div class="app-collapse__contents app-radios" id="app-collapse-task-cat">
                         @foreach (var cat in Model.Categories)
                         {
-                            <div class="app-radios__item">
-                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
-                                    id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
-                                    checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
-                                <label class="app-label app-radios__label" for="category_@cat.CategoryId">
-                                    <span
-                                        class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
-                                </label>
-                            </div>
+                                <div class="app-radios__item">
+                                    <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                                        id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
+                                        checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                                    <label class="app-label app-radios__label" for="category_@cat.CategoryId">
+                                        <span
+                                            class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
+                                    </label>
+                                </div>
                         }
                     </div>
                 </div>
@@ -93,7 +127,7 @@
             </label>
             <div class="note-error form-error govuk-hint"></div>
             <textarea class="app-textarea govuk-js-character-count" id="note" name="note" rows="5"
-                      aria-describedby="note-info" value="@Model.Task.Note"></textarea>
+                      aria-describedby="note-info" value="@Model.Task.Note">@Model.Task.Note</textarea>
             <div id="note-info" class="govuk-hint govuk-character-count__message">
                 You can enter up to 1000 characters
             </div>

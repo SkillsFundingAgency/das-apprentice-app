@@ -30,7 +30,8 @@
         <div class="app-form-group">
             <fieldset class="app-fieldset">
                 <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
-                <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
+                <span style="float: right; margin-top: -37px;"><a class="app-overlay-header__link resetall">Reset all</a></span>
+                <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes" style="clear:both">
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="none" name="filter" type="checkbox" value="none">
@@ -41,7 +42,7 @@
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="assignment" name="filter" type="checkbox"
-                            value="assignment">
+                               value="assignment">
                         <label class="app-label app-checkboxes__label" for="assignment">
                             <span class="app-tag app-tag--category-assignment">Assignment</span>
                         </label>
@@ -56,7 +57,7 @@
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="deadline" name="filter" type="checkbox"
-                            value="deadline">
+                               value="deadline">
                         <label class="app-label app-checkboxes__label" for="deadline">
                             <span class="app-tag app-tag--category-deadline">Deadline</span>
                         </label>
@@ -77,27 +78,19 @@
                         </label>
                     </div>
 
-                    <div class="app-checkboxes__item">
+                    <div class="app-checkboxes__item reminder-filter">
                         <input class="app-checkboxes__input" id="reminder" name="other-filter" type="checkbox"
                             value="reminder">
                         <label class="app-label app-checkboxes__label" for="reminder">
                             Reminder set
                         </label>
-                    </div>
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="files-attached" name="other-filter" type="checkbox"
-                            value="files-attached">
-                        <label class="app-label app-checkboxes__label" for="files-attached">
-                            Files attached
-                        </label>
-                    </div>
+                    </div>                   
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="note-added" name="other-filter" type="checkbox"
                             value="note-added">
                         <label class="app-label app-checkboxes__label" for="note-added">
-                            Note added
+                            Note attached
                         </label>
                     </div>
 
@@ -110,27 +103,48 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
+
+        var tabname = "Todo";
+
+        if ($('.done').parents('.app-tabs__list-item--selected').length) {
+            tabname = "Done";
+        }
+
+        var cookieFilter = "";
+        if (tabname == "Todo") {
+            cookieFilter = getCookie("@Constants.TaskFiltersTodoCookieName");
+        }
+        else {
+            cookieFilter = getCookie("@Constants.TaskFiltersDoneCookieName");
+        }
+
 
         if (cookieFilter != null && cookieFilter != "") {
-            var filters = getCookie("@Constants.TaskFiltersCookieName");
+
+            var filters = "";
+            if (tabname == "Todo") {
+                filters = getCookie("@Constants.TaskFiltersTodoCookieName");
+            }
+            else {
+                filters = getCookie("@Constants.TaskFiltersDoneCookieName");
+            }
 
             data = filters.split('&');
+
             for (var k in data) {
 
                 var newData = data[k].split('=');
 
                 $("#" + newData[1]).prop('checked', true);
 
-                $("#filters-set").append("<div class='app-tag filter-tag'>" + newData[1].replace(/\-/g, " ") + " <a class='remove-filter' data-id='" + newData[1] + "'><img src='/assets/images/icons/cross.png'/></a> " + "</div>");
+                $("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + newData[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + newData[1] + "'><span class='govuk-visually-hidden'>Remove " + newData[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
             }
         }
         else {
             $("#filters-set").hide();
         }
 
-
-        $(".remove-filter").click(function (e) {
+        $('body').on('click', '.remove-filter', function (e) {
             var filterName = $(this).attr('data-id');
 
             $("#" + filterName).prop('checked', false);
@@ -141,6 +155,11 @@
         $(".apply").click(function (e) {
             applyAndSaveFilters()
         });
+
+        $(".resetall").click(function (e) {
+            $("input:checkbox").prop('checked', false);
+        });
+
     });
 
     function applyAndSaveFilters() {
@@ -150,7 +169,19 @@
             sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
         });
 
-        setCookie('SFA.ApprenticeApp.TaskFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        var tabname = "Todo";
+
+        if ($('.done').parents('.app-tabs__list-item--selected').length) {
+            tabname = "Done";
+        }
+
+        if (tabname == "Todo") {
+            setCookie('SFA.ApprenticeApp.TaskFiltersTodo', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        }
+        else {
+            setCookie('SFA.ApprenticeApp.TaskFiltersDone', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        }
+
         location.reload();
     }
 

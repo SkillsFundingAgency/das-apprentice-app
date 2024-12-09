@@ -16,12 +16,12 @@
 <div class="app-overlay" id="filter">
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
-            <a href="#" class="app-overlay-header__link">Cancel</a>
+            &nbsp;
         </div>
         <h2 class="app-overlay-header__heading">
             Ksb filters
         </h2>
-        <div class="app-overlay-header__save">
+        <div class="app-overlay-header__cancel" style="text-align: right;">
             <a href="#" class="app-overlay-header__link apply">Apply</a>
         </div>
     </div>
@@ -89,10 +89,25 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+
         var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
 
         if (cookieFilter != null && cookieFilter != "") {
             var filters = getCookieKsb("@Constants.KsbFiltersCookieName");
+
+            // hide them all to start with
+            $('.not-started').hide();
+            $('.in-progress').hide();
+            $('.ready-for-review').hide();
+            $('.done').hide();
+            $('.linked-to-a-task').hide();
+
+            // find all checked links boxes and append style to parent wrapper
+            $('input:checkbox.link-ksb-checkbox').each(function () {
+                if ($(this).is(":checked")) {
+                    $(this).closest('.wrapper').addClass("linked-to-a-task");
+                }
+            });
 
             data = filters.split('&');
 
@@ -102,18 +117,29 @@
 
                 $("#" + line[1]).prop('checked', true);
 
-                $("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + line[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + line[1] + "'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a> " + "</div>");
+                // show based on filters set
+                if (line[1] == "not-started") { $('.not-started').show(); }
+                if (line[1] == "in-progress") { $('.in-progress').show(); }
+                if (line[1] == "ready-for-review") { $('.ready-for-review').show(); }
+                if (line[1] == "done") { $('.done').show(); }
+                if (line[1] == "linked-to-a-task") { $('.linked-to-a-task').show(); }
+
+                // update counts for showing items
+                $('.k-count').text($('#knowledge .wrapper:not([style*="display: none"])').length);
+                $('.s-count').text($('#skill .wrapper:not([style*="display: none"])').length);
+                $('.b-count').text($('#behaviour .wrapper:not([style*="display: none"])').length);
+                 $("#filters-set").append("<div class='app-tag app-tag--filter tag-" + line[1] + "'><span>" + line[1].replace(/\-/g, " ") + "</span> <a href='#' class='app-tag__action app-tag__action--remove remove-filter'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
             }
         }
         else {
             $("#filters-set").hide();
         }
 
-        $(".remove-filter").click(function (e) {
-            var filterNames = $(this).attr('data-id');
-            $("#" + filterNames).prop('checked', false);
-            applyAndSaveFiltersKsb()
+
+        $('body').on('click', '.remove-filter', function () {
+            $('.ksb-filter-line-header').trigger('click');
         });
+
 
         $(".apply").click(function (e) {
             applyAndSaveFiltersKsb()
@@ -130,7 +156,38 @@
 
         setCookieKsb('SFA.ApprenticeApp.KsbFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
 
-        location.reload();
+        // hide all first
+        $('.not-started').hide();
+        $('.in-progress').hide();
+        $('.ready-for-review').hide();
+        $('.done').hide();
+        $('.linked-to-a-task').hide();
+
+        // hide all tags
+        $('.tag-not-started').hide();
+        $('.tag-in-progress').hide();
+        $('.tag-ready-for-review').hide();
+        $('.tag-done').hide();
+        $('.tag-linked-to-a-task').hide();
+
+        // show them based on checkboxes
+        if ($('#not-started').is(":checked")) { $('.not-started').show(); addTag('not-started'); }
+        if ($('#in-progress').is(":checked")) { $('.in-progress').show(); addTag('in-progress'); }
+        if ($('#ready-for-review').is(":checked")) { $('.ready-for-review').show(); addTag('ready-for-review'); }
+        if ($('#done').is(":checked")) { $('.done').show(); addTag('done'); }
+        if ($('#linked-to-a-task').is(":checked")) { $('.linked-to-a-task').show(); addTag('linked-to-a-task'); }
+
+        // update counts for showing items
+        $('.k-count').text($('#knowledge .wrapper:not([style*="display: none"])').length);
+        $('.s-count').text($('#skill .wrapper:not([style*="display: none"])').length);
+        $('.b-count').text($('#behaviour .wrapper:not([style*="display: none"])').length);
+
+        // show the filters set
+        $("#filters-set").show();
+    }
+
+    function addTag(tagname) {
+        $("#filters-set").append("<div class='app-tag app-tag--filter tag-" + tagname + "'><span>" + tagname.replace(/\-/g, " ") + "</span> <a href='#' class='app-tag__action app-tag__action--remove remove-filter'><span class='govuk-visually-hidden'>Remove " + tagname.replace(/\-/g, " ") + " from your filters</span></a></div>");
     }
 
     function getCookieKsb(name) {
@@ -139,7 +196,6 @@
         ));
         return matchess ? decodeURIComponent(matchess[1]) : undefined;
     }
-
 
     function setCookieKsb(name, value, attributes = {}) {
         attributes = {

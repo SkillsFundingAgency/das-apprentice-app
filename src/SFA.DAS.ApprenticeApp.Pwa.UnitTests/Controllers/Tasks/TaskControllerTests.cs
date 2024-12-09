@@ -92,7 +92,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             httpContext.User = claimsPrincipal;
 
             httpContext.Response.Cookies.Append(Constants.TaskFilterYearCookieName, "2024");
-            httpContext.Response.Cookies.Append(Constants.TaskFiltersCookieName, "TaskFiltersCookieName");
+            httpContext.Response.Cookies.Append(Constants.TaskFiltersDoneCookieName, "TaskFiltersDoneCookieName");
             httpContext.Response.Cookies.Append(Constants.TaskFilterSortCookieName, "sortorder");
 
             controller.ControllerContext = new ControllerContext

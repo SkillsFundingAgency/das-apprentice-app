@@ -1,3 +1,40 @@
+.app-tag-wrap {
+  position: relative;
+
+  &:after,
+  &:before {
+    content: "";
+    height: 3rem;
+    width: 1rem;
+    position: absolute;
+    background: rgb(247, 247, 247);
+    background: linear-gradient(
+                    90deg,
+                    $app-bg-colour 40%,
+                    rgba(247, 247, 247, 0) 100%
+    );
+    z-index: 1;
+    top: 0;
+  }
+
+  &::before {
+    left: -1rem;
+  }
+
+  &::after {
+    right: -1rem;
+    transform: rotate(180deg);
+  }
+}
+
+.app-tag-scroll {
+  margin: 0 -1rem 0.5rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 10px;
+  overflow: auto;
+}
+
 .app-tag {
   @extend .govuk-tag;
   border-radius: $app-border-radius;
@@ -5,6 +42,51 @@
   background-color: $app-brand-secondary;
   color: $app-brand-dark;
   max-width: none;
+}
+
+.app-tag__action {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+
+.app-tag__action--remove {
+  &::before,
+  &::after {
+    height: 2px;
+    width: 15px;
+    background: #333;
+    display: block;
+    content: "";
+    position: absolute;
+    transform: rotate(45deg);
+    border-radius: 2px;
+    top: 11px;
+    left: 4px;
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
+.app-tag--filter {
+  padding: 0 3px 0 0;
+  display: flex;
+  align-items: center;
+  background-color: #eeefef;
+  color: #292d30;
+  border-radius: 10px;
+
+  & > span {
+    padding: 5px 3px 5px 9px;
+    white-space: nowrap;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
 }
 
 .app-tag--pink {
