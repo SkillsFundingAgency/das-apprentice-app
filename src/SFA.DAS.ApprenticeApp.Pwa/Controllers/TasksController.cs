@@ -5,8 +5,7 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
-using System.Threading.Tasks;
-using System;
+using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -226,7 +225,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                
+                task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
+
                 if (task.KsbsLinked != null)
                 {
                     if (task.KsbsLinked[0] != null)
@@ -320,6 +321,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
 
                     task.ApprenticeshipCategoryId ??= 1;
+
+                    task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                    task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
 
                     if (task.KsbsLinked != null)
                     {
