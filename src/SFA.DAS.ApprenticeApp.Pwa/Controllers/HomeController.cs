@@ -45,6 +45,7 @@ public class HomeController : Controller
                     var apprenticeEmail = Claims.GetClaim(HttpContext, Constants.ApprenticeNameClaimKey);
 
                     var match = users?.Emails?.Contains(apprenticeEmail);
+                    match = true; //temp disable whitelist matching for AAD-821
                     if (match == true)
                     {
                         var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));

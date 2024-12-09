@@ -37,6 +37,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
                 var match = users?.Emails?.Contains(apprenticeEmail);
+                match = true;  //temp disable whitelist matching for AAD-821
                 if (match == null || match == false)
                 {
                     _logger.LogInformation($"Invalid Private Beta Phase 3 user tried to log in. ApprenticeId: {apprenticeId}");
