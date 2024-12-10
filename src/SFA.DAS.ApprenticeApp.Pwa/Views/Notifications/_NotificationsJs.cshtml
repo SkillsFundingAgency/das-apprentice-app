@@ -5,13 +5,13 @@
     $(document).ready(function () {
 
         const removeNotification = (id, button) => {
-                const notificationIdd = button.dataset.notificationId;
+                const taskId = button.dataset.taskId;
                 $.ajax({
-                    type: "DELETE",
-                    url: '@Url.Action("DeleteNotification", "Ksb")',
-                    data: { notificationIdd },
+                    type: "POST",
+                    url: '@Url.Action("DeleteNotification", "Notifications")',
+                    data: { taskId },
                     complete: function () {
-                        $('#ksb-task-' + taskId).hide();
+                    $('#notification-' + taskId).hide();
                     },
                     dataType: "json"
                 });

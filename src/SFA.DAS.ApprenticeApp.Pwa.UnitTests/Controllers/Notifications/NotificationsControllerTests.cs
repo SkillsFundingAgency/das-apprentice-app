@@ -130,5 +130,44 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                 result.ControllerName.Should().Be("Home");
             }
         }
+
+        [Test, MoqAutoData]
+        public async Task DeleteNotification_ReturnsRedirectToIndex(
+            int taskId,
+            [Frozen] Mock<ILogger<NotificationsController>> logger,
+            [Frozen] Mock<IOuterApiClient> client,
+            [Greedy] NotificationsController controller
+            )
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = new Guid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            //Act
+            var result = await controller.DeleteNotification(taskId) as RedirectToActionResult;
+
+            //Assert
+            using (new AssertionScope())
+            {
+               logger.Verify(logger => logger.Log(LogLevel.Information,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"Updating reminder notification for {taskId} to dismissed")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+            }
+        }
     }
 }

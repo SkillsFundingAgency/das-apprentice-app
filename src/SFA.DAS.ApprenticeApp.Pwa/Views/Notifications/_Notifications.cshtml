@@ -3,7 +3,7 @@
 
 @foreach (var notification in Model.TaskReminders)
 {
-    <div class="app-card @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")">
+    <div class="app-card" id="notification-@notification.TaskId" @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")>
         <h2 class="app-card__heading">
             <a asp-controller="Tasks" asp-action="Index" class="app-link">@notification.Title</a>
         </h2>
@@ -42,7 +42,7 @@
                     </li>
                 </ul>
            </div>
-           @*  <a href="#" class="app-icon-action remove-notification" data-notification-id="[ID_HERE]">
+            <a href="#" class="app-icon-action remove-notification" data-notification-id="[ID_HERE]">
                 <span class="app-icon-action__icon">
                     <svg>
                         <use xlink:href="/assets/images/icons.svg#trash">
@@ -50,7 +50,7 @@
                     </svg>
                 </span>
                 <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
-            </a> *@
+            </a>
         </div>
     </div>
 }
