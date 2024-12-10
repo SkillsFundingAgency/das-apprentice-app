@@ -87,5 +87,11 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Get("/apprentices/{id}/progress/taskCategories/tasks/{taskId}/ksbs")]
         Task<ApprenticeTaskData> GetTaskViewData([Path] Guid id, [Path] int taskId);
+
+        [Get("/apprentices/{id}/progress/tasks/taskReminders")]
+        Task<ApprenticeTaskRemindersCollection> GetTaskReminderNotifications([Path] Guid id);
+
+        [Post("/apprentices/{apprenticeId}/progress/tasks/taskReminders/{taskId}/{statusId}")]
+        Task UpdateTaskReminderStatus([Path] Guid apprenticeId, [Path] int taskId, [Path] int statusId);
     }
 }
