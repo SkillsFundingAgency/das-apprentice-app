@@ -312,7 +312,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
                     task.ApprenticeshipCategoryId ??= 1;
 
-
                     if (!string.IsNullOrEmpty(task.Title))
                     {
                         task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
