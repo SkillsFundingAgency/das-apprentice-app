@@ -311,8 +311,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     task.ApprenticeAccountId = new Guid(apprenticeId);
                     task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
                     task.ApprenticeshipCategoryId ??= 1;
-                    task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
-                    task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
+
+                    if (!string.IsNullOrEmpty(task.Title))
+                    {
+                        task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                    }
+
+                    if (!string.IsNullOrEmpty(task.Note))
+                    {
+                        task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
+                    }
 
                     if (task.Status == Domain.Models.TaskStatus.Done)
                     {
