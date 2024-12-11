@@ -3,12 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
-using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
-using System.Threading.Tasks;
-using System;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
