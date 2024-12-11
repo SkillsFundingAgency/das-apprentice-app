@@ -6,6 +6,9 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using System.Threading.Tasks;
+using System;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -227,7 +230,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
                 task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
-
+                
                 if (task.KsbsLinked != null)
                 {
                     if (task.KsbsLinked[0] != null)
@@ -309,7 +312,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         return RedirectToAction("Index", "Tasks");
                     }
 
+                    task.ApprenticeAccountId = new Guid(apprenticeId);
                     task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
+                    task.ApprenticeshipCategoryId ??= 1;
+                    task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                    task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
 
                     if (task.Status == Domain.Models.TaskStatus.Done)
                     {
@@ -319,11 +326,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         task.CompletionDateTime = task.DueDate;
                     }
-
-                    task.ApprenticeshipCategoryId ??= 1;
-
-                    task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
-                    task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
 
                     if (task.KsbsLinked != null)
                     {
