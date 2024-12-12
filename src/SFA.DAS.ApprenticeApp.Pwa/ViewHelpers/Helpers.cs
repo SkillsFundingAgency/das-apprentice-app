@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 {
@@ -24,6 +25,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
                 }
             }
             return null;
+        }
+
+        public static string StripHTML(string input)
+        {
+            return Regex.Replace(input, "<.*?>", String.Empty);
         }
     }
 }

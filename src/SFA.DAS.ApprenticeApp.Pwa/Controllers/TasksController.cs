@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
-using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
-using System.Threading.Tasks;
-using System;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -231,6 +229,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
+                task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
                 
                 if (task.KsbsLinked != null)
                 {
@@ -315,6 +315,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     task.ApprenticeAccountId = new Guid(apprenticeId);
                     task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
+                    task.ApprenticeshipCategoryId ??= 1;
+
+                    if (!string.IsNullOrEmpty(task.Title))
+                    {
+                        task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                    }
+
+                    if (!string.IsNullOrEmpty(task.Note))
+                    {
+                        task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
+                    }
 
                     if (task.Status == Domain.Models.TaskStatus.Done)
                     {
@@ -324,8 +335,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         task.CompletionDateTime = task.DueDate;
                     }
-
-                    task.ApprenticeshipCategoryId ??= 1;
 
                     if (task.KsbsLinked != null)
                     {
