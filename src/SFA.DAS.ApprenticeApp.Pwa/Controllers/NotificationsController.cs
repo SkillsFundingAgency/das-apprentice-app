@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -21,7 +22,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _client = client;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -50,6 +51,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> DeleteNotification(int taskId)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
