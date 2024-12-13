@@ -61,8 +61,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Add Security Headers Middleware
-app.UseMiddleware<SecurityHeadersMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHealthChecks("/ping");
@@ -70,6 +69,9 @@ app.UseHealthChecks("/ping");
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
+
+// Add Security Headers Middleware with environment
+app.UseMiddleware<SecurityHeadersMiddleware>(app.Environment);
 
 app.MapControllerRoute(
     name: "default",
