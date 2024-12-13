@@ -104,12 +104,33 @@
 
     $(document).ready(function () {
 
-        var cookieFilter = getCookie("@Constants.TaskFiltersCookieName");
+        var tabname = "Todo";
+
+        if ($('.done').parents('.app-tabs__list-item--selected').length) {
+            tabname = "Done";
+        }
+
+        var cookieFilter = "";
+        if (tabname == "Todo") {
+            cookieFilter = getCookie("@Constants.TaskFiltersTodoCookieName");
+        }
+        else {
+            cookieFilter = getCookie("@Constants.TaskFiltersDoneCookieName");
+        }
+
 
         if (cookieFilter != null && cookieFilter != "") {
-            var filters = getCookie("@Constants.TaskFiltersCookieName");
+
+            var filters = "";
+            if (tabname == "Todo") {
+                filters = getCookie("@Constants.TaskFiltersTodoCookieName");
+            }
+            else {
+                filters = getCookie("@Constants.TaskFiltersDoneCookieName");
+            }
 
             data = filters.split('&');
+
             for (var k in data) {
 
                 var newData = data[k].split('=');
@@ -123,8 +144,7 @@
             $("#filters-set").hide();
         }
 
-
-        $(".remove-filter").click(function (e) {
+        $('body').on('click', '.remove-filter', function (e) {
             var filterName = $(this).attr('data-id');
 
             $("#" + filterName).prop('checked', false);
@@ -149,7 +169,19 @@
             sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
         });
 
-        setCookie('SFA.ApprenticeApp.TaskFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        var tabname = "Todo";
+
+        if ($('.done').parents('.app-tabs__list-item--selected').length) {
+            tabname = "Done";
+        }
+
+        if (tabname == "Todo") {
+            setCookie('SFA.ApprenticeApp.TaskFiltersTodo', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        }
+        else {
+            setCookie('SFA.ApprenticeApp.TaskFiltersDone', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        }
+
         location.reload();
     }
 

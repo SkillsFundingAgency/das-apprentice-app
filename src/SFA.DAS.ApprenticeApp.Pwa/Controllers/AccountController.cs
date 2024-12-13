@@ -91,6 +91,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             try
             {
+                model.Email = model.Email.ToLower();
                 var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
                 var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
 
@@ -154,7 +155,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             var viewModel = new StubAuthenticationViewModel
             {
-                Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value,
+                Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value.ToLower(),
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
 

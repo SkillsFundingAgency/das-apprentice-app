@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
-using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
-using System.Threading.Tasks;
-using System;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -105,9 +103,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
-                if (Request.Cookies[Constants.TaskFiltersCookieName] != null)
+                if (Request.Cookies[Constants.TaskFiltersTodoCookieName] != null)
                 {
-                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersCookieName]);
+                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersTodoCookieName]);
 
                     if (filterTasks.HasFilterRun.Equals(true))
                     {
@@ -161,9 +159,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return PartialView("_TasksNotStarted");
                 }
 
-                if (Request.Cookies[Constants.TaskFiltersCookieName] != null)
+                if (Request.Cookies[Constants.TaskFiltersDoneCookieName] != null)
                 {
-                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersCookieName]);
+                    var filterTasks = Filter.FilterTaskResults(taskResult.Tasks, Request.Cookies[Constants.TaskFiltersDoneCookieName]);
 
                     if (filterTasks.HasFilterRun.Equals(true))
                     {
@@ -226,6 +224,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
+                task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
                 
                 if (task.KsbsLinked != null)
                 {
@@ -308,7 +308,19 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         return RedirectToAction("Index", "Tasks");
                     }
 
+                    task.ApprenticeAccountId = new Guid(apprenticeId);
                     task.DueDate += TimeSpan.Parse(HttpContext.Request.Form["time"]);
+                    task.ApprenticeshipCategoryId ??= 1;
+
+                    if (!string.IsNullOrEmpty(task.Title))
+                    {
+                        task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                    }
+
+                    if (!string.IsNullOrEmpty(task.Note))
+                    {
+                        task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
+                    }
 
                     if (task.Status == Domain.Models.TaskStatus.Done)
                     {
@@ -318,8 +330,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         task.CompletionDateTime = task.DueDate;
                     }
-
-                    task.ApprenticeshipCategoryId ??= 1;
 
                     if (task.KsbsLinked != null)
                     {
