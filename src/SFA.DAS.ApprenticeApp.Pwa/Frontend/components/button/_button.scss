@@ -9,6 +9,7 @@
   background-color: #e6e6e6;
   color: $govuk-text-colour;
   font-weight: $govuk-font-weight-regular;
+
   &:hover,
   &:active,
   &:link,
@@ -42,6 +43,7 @@
   height: 18px;
   width: 18px;
   position: relative;
+
   &:before,
   &:after {
     display: block;
@@ -52,10 +54,12 @@
     position: absolute;
     border-radius: 2px;
   }
+
   &:before {
     left: 50%;
     margin-left: -2px;
   }
+
   &:after {
     width: 18px;
     height: 3px;
@@ -68,10 +72,13 @@
   display: flex;
   flex-direction: row;
   gap: $app-gap;
+
   .app-button {
     margin-bottom: 0;
     padding-left: 8px;
     padding-right: 8px;
+    flex-grow: 1;
+    flex-basis: max-content;
   }
 }
 
