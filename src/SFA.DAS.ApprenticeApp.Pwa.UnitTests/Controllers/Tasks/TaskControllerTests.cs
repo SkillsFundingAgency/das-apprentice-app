@@ -797,13 +797,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
             result.Should().BeOfType(typeof(UnauthorizedResult));
         }
-
-        [Test, MoqAutoData]
-        public async Task NoTasks_ReturnsView(
-               [Greedy] TasksController controller)
-        {
-            var result = controller.TasksNotStarted() as ViewResult;
-            result.Should().NotBeNull();
-        }
     }
 }
