@@ -43,7 +43,7 @@ builder.Services.AddLogging(builder =>
 });
 
 // Add the OpenTelemetry telemetry service to the application.
-//builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 builder.Services.AddAntiforgery(
     options =>
