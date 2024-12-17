@@ -96,7 +96,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     year = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 12));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -152,7 +152,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     yearValue = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 12));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -265,7 +265,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         public IActionResult TasksNotStarted()
         {
-            return View();
+            return PartialView("_TasksNotStarted");
         }
 
         [Authorize]
