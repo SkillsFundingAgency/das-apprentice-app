@@ -70,9 +70,12 @@
             }
 
         </ul>
-        <div
-            class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "")">
-            @task.ApprenticeshipCategory.First().Title</div>
+        @if (task.ApprenticeshipCategory != null && task.ApprenticeshipCategory.Count > 0)
+        {
+            <div
+                class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "")">
+                @task.ApprenticeshipCategory.First().Title</div>
+        }
         <hr class="app-separator" />
         <div class="app-dropdown" data-module="app-dropdown">
             <button class="app-dropdown__toggle" aria-expanded="false">
