@@ -71,7 +71,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 // Add Security Headers Middleware with environment
-app.UseMiddleware<SecurityHeadersMiddleware>(app.Environment);
+//app.UseMiddleware<SecurityHeadersMiddleware>(app.Environment);
 
 app.MapControllerRoute(
     name: "default",
