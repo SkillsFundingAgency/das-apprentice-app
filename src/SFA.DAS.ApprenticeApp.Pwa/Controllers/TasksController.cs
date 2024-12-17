@@ -272,7 +272,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         public IActionResult TasksNotStarted()
         {
-            return View();
+            return PartialView("_TasksNotStarted");
         }
 
         [Authorize]

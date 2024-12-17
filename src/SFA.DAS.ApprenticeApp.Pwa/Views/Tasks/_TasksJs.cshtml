@@ -46,7 +46,6 @@
                 confirmButton: 'Delete task'
             }
             const taskId = $(this).siblings('.taskId').val();
-            console.log(taskId)
             const modal = new Modal(this, deleteTask, taskId, modalContent).init();
         });
 
@@ -94,8 +93,13 @@
         });
 
         function checkTaskCount() {
-            if ($('.app-card').length == 0) {
-                $('#tasks-display').hide().load('@Url.Action("TasksNotStarted", "Tasks")').fadeIn('500');
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeStatus = urlParams.get('status');
+            const tabName = activeStatus === '1' ? 'done' : 'todo';
+            const tab = $(`#tasks-${tabName}__tasks`);
+            const noOfCards = tab.find('.app-card').length;
+            if (noOfCards === 0) {
+                tab.load('@Url.Action("TasksNotStarted", "Tasks")')
             }
         }
 
@@ -141,10 +145,10 @@
         }
 
         function getCookieContents(name) {
-            let matchess = document.cookie.match(new RegExp(
+            let matches = document.cookie.match(new RegExp(
                 "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
             ));
-            return matchess ? decodeURIComponent(matchess[1]) : undefined;
+            return matches ? decodeURIComponent(matches[1]) : undefined;
         }
 
         $(".add-btn").click(function (e) {

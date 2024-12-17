@@ -36,6 +36,12 @@
                             </button>
                         </div>
                         <div class="app-collapse__contents app-radios" id="app-collapse-task-cat">
+                            <div class="app-radios__item">
+                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                                    id="category_0" type="radio" value="0" checked />
+                                <label class="app-label app-radios__label" for="category_0">None
+                                </label>
+                            </div>
                             @foreach (var cat in Model.Categories)
                             {
                                 <div class="app-radios__item">
@@ -57,7 +63,7 @@
                 </label>
                 <div class="note-error form-error govuk-hint"></div>
                 <textarea class="app-textarea govuk-js-character-count" id="note" name="note" rows="5"
-                          aria-describedby="note-info"></textarea>
+                    aria-describedby="note-info"></textarea>
                 <div id="note-info" class="govuk-hint govuk-character-count__message">
                     You can enter up to 1000 characters
                 </div>
