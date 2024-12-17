@@ -20,6 +20,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                     {
                         switch (filterValue.ToUpper())
                         {
+                            case "NONE":
+                                filteredTasks.AddRange(tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 0).ToList());
+                                break;
                             case "ASSIGNMENT":
                                 filteredTasks.AddRange(tasks.Where(x => x.ApprenticeshipCategoryId.GetValueOrDefault() == 1).ToList());
                                 break;

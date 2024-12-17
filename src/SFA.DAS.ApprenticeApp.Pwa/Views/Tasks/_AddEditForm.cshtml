@@ -62,16 +62,23 @@
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderValueZero" name="ReminderValue"
-                                type="radio" value="0">
+                                   type="radio" value="0" checked="@(Model.Task.ReminderValue == 0)">
                             <label class="app-label app-radios__label" for="ReminderValueZero">
                                 At the time of activity
                             </label>
                         </div>
                         <div class="app-radios__item">
-                            <input class="app-radios__input task-reminder" id="ReminderValueFive" name="ReminderValue"
-                                type="radio" value="5">
-                            <label class="app-label app-radios__label" for="ReminderValueFive">
-                                5 minutes before
+                            <input class="app-radios__input task-reminder" id="ReminderValueSixty" name="ReminderValue"
+                                   type="radio" value="60" checked="@(Model.Task.ReminderValue == 60)">
+                            <label class="app-label app-radios__label" for="ReminderValueSixty">
+                                1 hour before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderValueOneDay" name="ReminderValue"
+                                   type="radio" value="1440" checked="@(Model.Task.ReminderValue == 1440)">
+                            <label class="app-label app-radios__label" for="ReminderValueOneDay">
+                                1 day before
                             </label>
                         </div>
                     </div>
