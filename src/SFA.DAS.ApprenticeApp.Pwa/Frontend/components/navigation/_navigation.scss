@@ -72,3 +72,19 @@
     color: $govuk-text-colour;
   }
 }
+
+.app-navigation__link-count {
+  color: #fff;
+  background-color: #c00;
+  display: inline-block;
+  position: absolute;
+  border-radius: 1rem;
+  line-height: 1rem;
+  min-width: 1rem;
+  min-height: 1rem;
+  margin-left: 2px;
+  left: 50%;
+  top: 5px;
+  padding: 0 5px;
+  font-size: 0.75rem;
+}
