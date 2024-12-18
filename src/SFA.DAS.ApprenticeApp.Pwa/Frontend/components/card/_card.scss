@@ -6,6 +6,14 @@
   border: 1px solid #bfbfbf;
 }
 
+.app-card--follow-on {
+  padding-top: 1.5rem;
+  border-top: none;
+  margin-top: -10px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
 .app-card__heading {
   @extend .govuk-heading-s;
 }

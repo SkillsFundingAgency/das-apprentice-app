@@ -4,6 +4,10 @@
 
 .form-error {
   color: #d4351c;
+
+  &:empty {
+    display: none;
+  }
 }
 
 .app-form-group--flex-row {
