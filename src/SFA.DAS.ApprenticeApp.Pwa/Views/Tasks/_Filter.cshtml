@@ -30,7 +30,8 @@
         <div class="app-form-group">
             <fieldset class="app-fieldset">
                 <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
-                <span style="float: right; margin-top: -37px;"><a class="app-overlay-header__link resetall">Reset all</a></span>
+                <span style="float: right; margin-top: -37px;"><a class="app-overlay-header__link resetall">Reset
+                        all</a></span>
                 <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes" style="clear:both">
 
                     <div class="app-checkboxes__item">
@@ -42,7 +43,7 @@
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="assignment" name="filter" type="checkbox"
-                               value="assignment">
+                            value="assignment">
                         <label class="app-label app-checkboxes__label" for="assignment">
                             <span class="app-tag app-tag--category-assignment">Assignment</span>
                         </label>
@@ -57,7 +58,7 @@
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="deadline" name="filter" type="checkbox"
-                               value="deadline">
+                            value="deadline">
                         <label class="app-label app-checkboxes__label" for="deadline">
                             <span class="app-tag app-tag--category-deadline">Deadline</span>
                         </label>
@@ -84,7 +85,7 @@
                         <label class="app-label app-checkboxes__label" for="reminder">
                             Reminder set
                         </label>
-                    </div>                   
+                    </div>
 
                     <div class="app-checkboxes__item">
                         <input class="app-checkboxes__input" id="note-added" name="other-filter" type="checkbox"
@@ -137,14 +138,14 @@
 
                 $("#" + newData[1]).prop('checked', true);
 
-                $("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + newData[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + newData[1] + "'><span class='govuk-visually-hidden'>Remove " + newData[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
+                $("#filters-set-tasks").append("<div class='app-tag app-tag--filter'><span>" + newData[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + newData[1] + "'><span class='govuk-visually-hidden'>Remove " + newData[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
             }
         }
         else {
-            $("#filters-set").hide();
+            $("#filters-set-tasks").hide();
         }
 
-        $('body').on('click', '.remove-filter', function (e) {
+        $('body #filters-set-tasks').on('click', '.remove-filter', function (e) {
             var filterName = $(this).attr('data-id');
 
             $("#" + filterName).prop('checked', false);

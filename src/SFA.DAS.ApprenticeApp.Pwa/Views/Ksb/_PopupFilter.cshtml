@@ -3,7 +3,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<a href="#filter" data-module="app-overlay" class="app-icon-action">
+<a href="#filter-ksb-popup" data-module="app-overlay" class="app-icon-action">
     <span class="app-icon-action__icon ksb-filter-view">
         <svg>
             <use xlink:href="/assets/images/icons.svg#filter">
@@ -13,7 +13,7 @@
     <span class="app-icon-action__label ksb-filter-line-header">Filters</span>
 </a>
 
-<div class="app-overlay" id="filter">
+<div class="app-overlay" id="filter-ksb-popup">
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
             &nbsp;
@@ -103,7 +103,7 @@
             $('.linked-to-a-task').hide();
 
             // find all checked links boxes and append style to parent wrapper
-            $('input:checkbox.link-ksb-checkbox').each(function () {
+            $('#filter-ksb-popup input:checkbox.link-ksb-checkbox').each(function () {
                 if ($(this).is(":checked")) {
                     $(this).closest('.wrapper').addClass("linked-to-a-task");
                 }
@@ -128,7 +128,7 @@
                 $('.k-count').text($('#knowledge .wrapper:not([style*="display: none"])').length);
                 $('.s-count').text($('#skill .wrapper:not([style*="display: none"])').length);
                 $('.b-count').text($('#behaviour .wrapper:not([style*="display: none"])').length);
-                 $("#filters-set").append("<div class='app-tag app-tag--filter tag-" + line[1] + "'><span>" + line[1].replace(/\-/g, " ") + "</span> <a href='#' class='app-tag__action app-tag__action--remove remove-filter'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
+                $("#filters-set").append("<div class='app-tag app-tag--filter tag-" + line[1] + "'><span>" + line[1].replace(/\-/g, " ") + "</span> <a href='#' class='app-tag__action app-tag__action--remove remove-filter'><span class='govuk-visually-hidden'>Remove " + line[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
             }
         }
         else {
@@ -136,25 +136,20 @@
         }
 
 
-        $('body').on('click', '.remove-filter', function () {
+        $('body #filters-set').on('click', '.remove-filter', function () {
             $('.ksb-filter-line-header').trigger('click');
         });
 
 
-        $(".apply").click(function (e) {
+        $("#filter-ksb-popup").on('click', '.apply', function (e) {
             applyAndSaveFiltersKsb()
         });
 
     });
 
     function applyAndSaveFiltersKsb() {
-        var ssList = "";
 
-        $('input[type=checkbox]').each(function () {
-            ssList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
-        });
-
-        setCookieKsb('SFA.ApprenticeApp.KsbFilters', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
+        setCookieKsb('SFA.ApprenticeApp.KsbFilters', $('#filter-ksb-popup input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
 
         // hide all first
         $('.not-started').hide();
@@ -176,6 +171,14 @@
         if ($('#ready-for-review').is(":checked")) { $('.ready-for-review').show(); addTag('ready-for-review'); }
         if ($('#done').is(":checked")) { $('.done').show(); addTag('done'); }
         if ($('#linked-to-a-task').is(":checked")) { $('.linked-to-a-task').show(); addTag('linked-to-a-task'); }
+
+        if ($('#filter-ksb-popup input[type=checkbox]').serialize() === '') {
+            $('.not-started').show();
+            $('.in-progress').show();
+            $('.ready-for-review').show();
+            $('.done').show();
+            $('.linked-to-a-task').show();
+        }
 
         // update counts for showing items
         $('.k-count').text($('#knowledge .wrapper:not([style*="display: none"])').length);
