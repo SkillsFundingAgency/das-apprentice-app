@@ -80,7 +80,8 @@
                 <span class="app-navigation__link-text">Support</span>
             </a>
             <a asp-controller="Notifications" asp-action="Index"
-                class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
+               class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
+                <span>@await Component.InvokeAsync("NotificationCounter")</span>
                 <span class="app-navigation__icon">
                     <svg>
                         <use
