@@ -1,8 +1,9 @@
 .app-card {
   background: #fff;
-  border-radius: $app-border-radius;
+  border-radius: $app-border-radius-inputs;
   padding: $app-gap;
   margin-bottom: $app-gap;
+  border: 1px solid #bfbfbf;
 }
 
 .app-card__heading {

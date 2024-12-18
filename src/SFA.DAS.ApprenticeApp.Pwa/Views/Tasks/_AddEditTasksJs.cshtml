@@ -148,7 +148,7 @@
             const currentKsbIds = $('#linked-ksb-ids').val().split(',');
             const filteredKsbIds = currentKsbIds.filter(id => id !== $(this).data('id'));
             $('#linked-ksb-ids').val(filteredKsbIds)
-            $(`#ksb-item-${$(this).data('id')}`).slideUp(function() {
+            $(`#ksb-item-${$(this).data('id')}`).slideUp(function () {
                 $(this).remove();
             });
         });
@@ -233,5 +233,33 @@
             }
             $("html, body").animate({ scrollTop: 0 }, "slow");
         });
+
     });
+
+
+    const reminderChooseRadio = document.getElementById('ReminderChoose');
+    const reminderDateTime = document.getElementById('reminder-date-time');
+    const reminderCancel = document.getElementById('reminder-cancel');
+    const reminderSave = document.getElementById('reminder-save');
+
+    reminderChooseRadio.addEventListener('click', function () {
+        showReminderChoose();
+    });
+
+    reminderSave.addEventListener('click', function () {
+    });
+
+    reminderCancel.addEventListener('click', function () {
+        hideReminderChoose();
+    });
+
+    const showReminderChoose = function () {
+        reminderDateTime.classList.add('app-modal--visible');
+    };
+
+    const hideReminderChoose = function () {
+        reminderDateTime.classList.remove('app-modal--visible');
+    };
+
+
 </script>

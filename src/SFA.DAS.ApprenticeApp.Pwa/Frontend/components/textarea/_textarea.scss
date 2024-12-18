@@ -4,8 +4,9 @@
   line-height: 1;
   padding: $app-gap;
   border-radius: $app-border-radius-inputs;
-  border: 1px solid #f7f7f7;
+  border: 1px solid #bfbfbf;
   height: auto;
+
   &:focus {
     @include app-focused;
   }

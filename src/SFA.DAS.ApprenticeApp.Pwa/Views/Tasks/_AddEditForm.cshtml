@@ -62,31 +62,67 @@
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderValueZero" name="ReminderValue"
-                                   type="radio" value="0" checked="@(Model.Task.ReminderValue == 0)">
+                                type="radio" value="0" checked="@(Model.Task.ReminderValue == 0)">
                             <label class="app-label app-radios__label" for="ReminderValueZero">
                                 At the time of activity
                             </label>
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderValueSixty" name="ReminderValue"
-                                   type="radio" value="60" checked="@(Model.Task.ReminderValue == 60)">
+                                type="radio" value="60" checked="@(Model.Task.ReminderValue == 60)">
                             <label class="app-label app-radios__label" for="ReminderValueSixty">
                                 1 hour before
                             </label>
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderValueOneDay" name="ReminderValue"
-                                   type="radio" value="1440" checked="@(Model.Task.ReminderValue == 1440)">
+                                type="radio" value="1440" checked="@(Model.Task.ReminderValue == 1440)">
                             <label class="app-label app-radios__label" for="ReminderValueOneDay">
                                 1 day before
+                            </label>
+                        </div>
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-reminder" id="ReminderChoose" name="ReminderValue" type="radio"
+                                value="">
+                            <label class="app-label app-radios__label" for="ReminderChoose">
+                                Choose a day and time
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
         </fieldset>
+
     }
 }
+
+
+<div id="reminder-date-time" class="app-modal">
+    <div class="app-modal__content" tabindex="0">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend">Choose a day and time for the reminder</legend>
+            <p>How long before the task is due?</p>
+            <div class="app-form-group--flex-row">
+                <label class="govuk-visually-hidden" for="reminder-length">Select date for reminder</label>
+                <input class="app-input" id="reminder-length" name="reminder-length" type="number" />
+                <label class="govuk-visually-hidden" for="reminder-dayWeek">Day or week</label>
+                <select class="app-select" id="reminder-dayWeek" name="reminder-dayWeek">
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                </select>
+                <span class="govuk-body govuk-!-margin-bottom-0">before</span>
+            </div>
+            <div class="app-form-group">
+                <label class="app-label govuk-!-font-weight-regular" for="reminder-time">Select a time <span class="govuk-visually-hidden">for the reminder</span></label>
+                <input class="app-input" id="reminder-time" name="reminder-time" type="time" />
+            </div>
+        </fieldset>
+        <div class="app-button-group app-button-group--space-between">
+            <a class="app-link govuk-link--no-underline" id="reminder-cancel" role="button" href="#">Cancel</a>
+            <a class="app-link govuk-link--no-underline" id="reminder-save" role="button" href="#">Confirm</a>
+        </div>
+    </div>
+</div>
 
 <div class="app-form-group">
     <p class="app-label">
