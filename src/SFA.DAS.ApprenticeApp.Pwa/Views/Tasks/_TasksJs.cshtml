@@ -107,7 +107,7 @@
         function setFilterTags(tabName) {
 
             if (tabName != null && tabName != "") {
-                
+
                 var filters = "";
 
                 if (tabName == "todo") {
@@ -117,12 +117,12 @@
                     filters = getCookieContents("SFA.ApprenticeApp.TaskFiltersDone");
                 }
 
-               
+
                 if (typeof filters !== "undefined") {
 
                   data = filters.split('&');
 
-                    $("#filters-set").text("");
+                    $("#filters-set-tasks").text("");
                     $("input:checkbox").prop('checked', false);
 
                     for (var k in data) {
@@ -132,12 +132,12 @@
                         $("#" + line[1]).prop('checked', true);
 
                         if (line[1] != null) {
-                            $("#filters-set").append("<div class='app-tag app-tag--filter'><span>" + line[1] + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + line[1] + "'><span class='govuk-visually-hidden'>Remove " + line[1] + " from your filters</span></a></div>");
+                            $("#filters-set-tasks").append("<div class='app-tag app-tag--filter'><span>" + line[1] + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + line[1] + "'><span class='govuk-visually-hidden'>Remove " + line[1] + " from your filters</span></a></div>");
                         }
                     }
                 }
                 else {
-                    $("#filters-set").text("");
+                    $("#filters-set-tasks").text("");
                     $("input:checkbox").prop('checked', false);
                 }
             }
