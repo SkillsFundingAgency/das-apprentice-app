@@ -8680,11 +8680,10 @@ html {
 }
 
 .app-modal {
-  background-color: #fff;
   width: 80%;
   max-height: 300px;
   position: fixed;
-  top: 40%;
+  top: 50%;
   left: 50%;
   margin-left: -40%;
   z-index: 9999;
@@ -8712,6 +8711,7 @@ html {
   padding: 1rem;
   border-radius: 5px;
   background-color: #fff;
+  transform: translateY(-50%);
 }
 .app-modal__content:focus {
   outline: 4px solid rgba(0, 0, 0, 0.2);
