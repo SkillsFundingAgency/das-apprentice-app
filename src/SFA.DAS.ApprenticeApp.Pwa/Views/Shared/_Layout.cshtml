@@ -81,7 +81,6 @@
             </a>
             <a asp-controller="Notifications" asp-action="Index"
                class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
-                <span>@await Component.InvokeAsync("NotificationCounter")</span>
                 <span class="app-navigation__icon">
                     <svg>
                         <use
@@ -89,7 +88,7 @@
                         </use>
                     </svg>
                 </span>
-                <span class="app-navigation__link-count">8</span>
+                @await Component.InvokeAsync("NotificationCounter")
                 <span class="app-navigation__link-text">Notifications</span>
             </a>
             <a asp-controller="Account" asp-action="YourAccount"

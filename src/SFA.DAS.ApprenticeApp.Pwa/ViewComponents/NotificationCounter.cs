@@ -16,13 +16,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            var notificationsResult =  await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
-            if (notificationsResult != null && notificationsResult.TaskReminders.Count > 0)
+            if(!string.IsNullOrEmpty(apprenticeId))
             {
-                int notificationValue = notificationsResult.TaskReminders.Count;
-                return View("../_NotificationCount", notificationValue);
+                var notificationsResult = await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
+                if (notificationsResult != null && notificationsResult.TaskReminders.Count > 0)
+                {
+                    int notificationValue = notificationsResult.TaskReminders.Count;
+                    return View("../_NotificationCount", notificationValue);
+                }
             }
-            return null;
+            return Content(string.Empty);
         }
     }
 }

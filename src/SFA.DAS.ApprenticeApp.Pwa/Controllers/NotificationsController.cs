@@ -75,5 +75,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             return RedirectToAction("Index");
         }
+
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult NoNotifications()
+        {
+            return PartialView("_NoNotifications");
+        }
     }
 }
