@@ -8,6 +8,7 @@
 <h1 class="govuk-heading-xl">Notifications</h1>
 @model NotificationPageModel
 
+<div id="notification_content">
 @if(Model.TaskReminders == null || Model.TaskReminders.Count == 0)
 {
     @await Html.PartialAsync("_NoNotifications")
@@ -16,5 +17,5 @@ else
 {
     @await Html.PartialAsync("_Notifications", Model)
 }
-
+</div>
 @await Html.PartialAsync("_NotificationsJs.cshtml")

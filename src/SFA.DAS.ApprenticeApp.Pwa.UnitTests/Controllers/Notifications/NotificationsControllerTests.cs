@@ -169,5 +169,110 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                 result.ActionName.Should().Be("Index");
             }
         }
+
+        [Test, MoqAutoData]
+        public async Task DeleteNotification_ExceptionCaught(
+           int taskId,
+           [Frozen] Mock<ILogger<NotificationsController>> logger,
+           [Frozen] Mock<IOuterApiClient> client,
+           [Greedy] NotificationsController controller
+           )
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = new Guid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.UpdateTaskReminderStatus(apprenticeId, taskId, (int)ReminderStatus.Dismissed)).ThrowsAsync(new Exception());
+            
+            //Act
+            var result = await controller.DeleteNotification(taskId) as RedirectToActionResult;
+
+            //Assert
+            using (new AssertionScope())
+            {
+                logger.Verify(logger => logger.Log(LogLevel.Warning,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((object v, Type _) =>
+                            v.ToString().Contains("Error in Notifications: DeleteTaskReminderNotification")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task DeleteNotification_NoApprenticeId(
+          int taskId,
+          [Frozen] Mock<ILogger<NotificationsController>> logger,
+          [Frozen] Mock<IOuterApiClient> client,
+          [Greedy] NotificationsController controller
+          )
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            //Act
+            var result = await controller.DeleteNotification(taskId) as RedirectToActionResult;
+
+            //Assert
+            using (new AssertionScope())
+            {
+                logger.Verify(logger => logger.Log(LogLevel.Warning,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((object v, Type _) =>
+                            v.ToString().Contains("ApprenticeId not found in user claims for Notifications DeleteNotification.")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ActionName.Should().Be("Index");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public void NoNotifications_Returns_Partial(
+            [Greedy] NotificationsController controller)
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = new Guid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            //Act
+            var result = controller.NoNotifications() as PartialViewResult;
+
+            //Assert
+            result.Should().NotBeNull();
+            result.ViewName.Should().Be("_NoNotifications");
+        }
     }
 }
