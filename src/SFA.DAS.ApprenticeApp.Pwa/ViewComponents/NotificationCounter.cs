@@ -22,7 +22,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
                 if (notificationsResult != null && notificationsResult.TaskReminders.Count > 0)
                 {
                     int notificationValue = notificationsResult.TaskReminders.Count;
-                    return View("../_NotificationCount", notificationValue);
+                    return View("_NotificationCount", notificationValue);
                 }
             }
             return Content(string.Empty);

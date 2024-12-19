@@ -27,17 +27,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.ViewComponents
             [Frozen] Mock<IOuterApiClient> client,
             [Greedy] NotificationCounter viewComponent)
         {
+            //Arrange
             taskReminders.All(x => x.ApprenticeAccountId == apprenticeId);
             taskReminders[0].ReminderStatus = ReminderStatus.Sent;
 
             var httpContext = new DefaultHttpContext();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
+            {
                 apprenticeIdClaim
-        })});
+            })});
             httpContext.User = claimsPrincipal;
-            
 
             client.Setup(x => x.GetTaskReminderNotifications(apprenticeId))
                 .ReturnsAsync(new ApprenticeTaskRemindersCollection { TaskReminders = taskReminders });
@@ -50,8 +50,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.ViewComponents
                 }
             };
 
+            //Act
             var result = await viewComponent.InvokeAsync();
 
+            //Assert
             Assert.IsNotNull(result);
             Assert.That(result, Is.InstanceOf<ViewViewComponentResult>());
         }
@@ -62,7 +64,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.ViewComponents
             [Frozen] Mock<IOuterApiClient> client,
             [Greedy] NotificationCounter viewComponent)
         {
-            //Arrane
+            //Arrange
             var httpContext = new DefaultHttpContext();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
@@ -70,7 +72,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.ViewComponents
                 apprenticeIdClaim
         })});
             httpContext.User = claimsPrincipal;
-
             viewComponent.ViewComponentContext = new ViewComponentContext
             {
                 ViewContext = new Microsoft.AspNetCore.Mvc.Rendering.ViewContext
