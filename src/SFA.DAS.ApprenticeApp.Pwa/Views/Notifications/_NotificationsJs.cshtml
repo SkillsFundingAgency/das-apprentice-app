@@ -6,19 +6,19 @@
 
         const removeNotification = (taskId) => {
             console.log(taskId);
-                // const taskId = button.dataset.notification-id;
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("DeleteNotification", "Notifications")',
                     data: { taskId },
                     complete: function () {
                     $('#notification-' + taskId).hide();
+                    updateCounter();
                     },
                     dataType: "json"
                 });
             }
 
-            $('body').on('click', '.remove-notification', function (e) {
+        $('body').on('click', '.remove-notification', function (e) {
                 const modalContent = {
                     message: 'Are you sure you want to delete this notification?',
                     confirmButton: 'Delete notification'
@@ -27,5 +27,19 @@
                 const modal = new Modal(this, removeNotification, taskId, modalContent).init();
             });
 
+        function updateCounter() {
+        
+            const currentVal = parseInt($(".app-navigation__link-count").text());
+            const newVal = currentVal - 1;
+            if(newVal === 0)
+            {
+                $(".app-navigation__link-count").hide();
+                $("#notification_content").load('@Url.Action("NoNotifications", "Notifications")')
+            }
+            else
+            {
+            $(".app-navigation__link-count").text(newVal);
+            }
+        }
     })
 </script>
