@@ -169,5 +169,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                 result.ActionName.Should().Be("Index");
             }
         }
+
+
+        [Test, MoqAutoData]
+        public void NoNotifications_Returns_Partial(
+            [Greedy] NotificationsController controller)
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = new Guid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+        {
+                apprenticeIdClaim
+        })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            //Act
+            var result = controller.NoNotifications() as PartialViewResult;
+
+            //Assert
+            result.Should().NotBeNull();
+            result.ViewName.Should().Be("_NoNotifications");
+        }
     }
 }

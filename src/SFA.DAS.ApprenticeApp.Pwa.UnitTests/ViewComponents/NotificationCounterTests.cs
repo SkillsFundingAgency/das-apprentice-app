@@ -1,5 +1,6 @@
 ﻿using AutoFixture.NUnit3;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Moq;
 using NUnit.Framework;
@@ -61,7 +62,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.ViewComponents
             [Frozen] Mock<IOuterApiClient> client,
             [Greedy] NotificationCounter viewComponent)
         {
-            
+            //Arrane
             var httpContext = new DefaultHttpContext();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
@@ -77,9 +78,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.ViewComponents
                     HttpContext = httpContext
                 }
             };
-            var result = await viewComponent.InvokeAsync();
 
-            Assert.IsNull(result);
+            //Act
+            var result = await viewComponent.InvokeAsync() as ViewComponentResult;
+
+            //Assert
+            Assert.AreEqual(null, result);
         }
     }
 }
