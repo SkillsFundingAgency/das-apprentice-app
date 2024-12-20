@@ -241,12 +241,25 @@
     const reminderDateTime = document.getElementById('reminder-date-time');
     const reminderCancel = document.getElementById('reminder-cancel');
     const reminderSave = document.getElementById('reminder-save');
+    const dueDate = document.getElementById('date');
+    const dueTime = document.getElementById('time');
 
     reminderChooseRadio.addEventListener('click', function () {
         showReminderChoose();
     });
 
-    reminderSave.addEventListener('click', function () {
+    reminderSave.addEventListener('click', function (e) {
+        e.preventDefault();
+        const reminderDate = new Date(reminderDateTime.querySelector('#reminder-date').value);
+        const reminderTime = reminderDateTime.querySelector('#reminder-time').value;
+        const dueDateTime = new Date(`${dueDate.value}T${dueTime.value}`);
+        const reminderDateTime = new Date(`${reminderDate.toISOString().split('T')[0]}T${reminderTime}`);
+
+        const differenceInMinutes = calculateDifferenceInMinutes(dueDateTime, reminderDateTime);
+        console.log(differenceInMinutes);
+
+        //document.getElementById('reminder').value = reminderDateTime.toISOString();
+        hideReminderChoose();
     });
 
     reminderCancel.addEventListener('click', function () {
@@ -259,6 +272,11 @@
 
     const hideReminderChoose = function () {
         reminderDateTime.classList.remove('app-modal--visible');
+    };
+
+    const calculateDifferenceInMinutes = function (date1, date2) {
+        const diff = Math.abs(date1 - date2);
+        return Math.floor((diff / 1000) / 60);
     };
 
 
