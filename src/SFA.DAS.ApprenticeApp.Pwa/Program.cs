@@ -45,6 +45,16 @@ builder.Services.AddLogging(builder =>
 // Add the OpenTelemetry telemetry service to the application.
 builder.Services.AddOpenTelemetryRegistration(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
+builder.Services.AddAntiforgery(
+    options =>
+    {
+        options.Cookie.Name = "qa-x-csrf";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.HeaderName = "X-XSRF-TOKEN";
+    }
+);
+
 // configure google analytics
 builder.Services.Configure<MvcOptions>(options =>
     options.Filters.Add(new EnableGoogleAnalyticsAttribute(
@@ -61,7 +71,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHealthChecks("/ping");
@@ -70,12 +79,38 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
-// Add Security Headers Middleware with environment
-//app.UseMiddleware<SecurityHeadersMiddleware>(app.Environment);
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        if (context.Response.Headers.ContainsKey("X-Powered-By"))
+        {
+            context.Response.Headers.Remove("X-Powered-By");
+        }
+
+        if (context.Response.Headers.ContainsKey("Server"))
+        {
+            context.Response.Headers.Remove("Server");
+        }
+
+        return Task.CompletedTask;
+    });
+
+    if (context.Response.Headers.ContainsKey("X-Frame-Options"))
+    {
+        context.Response.Headers.Remove("X-Frame-Options");
+    }
+    context.Response.Headers!.Append("X-Frame-Options", "SAMEORIGIN");
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Add("X-Xss-Protection", "1");
+    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
+    context.Response.Headers.Add("Referrer-Policy", "strict-origin-when-cross-origin");
+    await next();
+});
 
 app.Run();
 

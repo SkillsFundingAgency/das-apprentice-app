@@ -229,9 +229,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
-                task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
-                
+                if (!string.IsNullOrEmpty(task.Title))
+                {
+                    task.Title = ViewHelpers.Helpers.StripHTML(task.Title);
+                }
+
+                if (!string.IsNullOrEmpty(task.Note))
+                {
+                    task.Note = ViewHelpers.Helpers.StripHTML(task.Note);
+                }
+
                 if (task.KsbsLinked != null)
                 {
                     if (task.KsbsLinked[0] != null)
