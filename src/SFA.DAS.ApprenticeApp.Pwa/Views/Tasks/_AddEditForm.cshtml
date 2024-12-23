@@ -40,6 +40,27 @@
     }
 </div>
 @{
+    var timeHours = Model.Task.DueDate.GetValueOrDefault().ToString("HH");
+    var timeMinutes = Model.Task.DueDate.GetValueOrDefault().ToString("mm");
+    var timeInMinutes = (Convert.ToInt32(timeHours) * 60) + Convert.ToInt32(timeMinutes);
+    var reminderValue = Model.Task.ReminderValue;
+    var isCustomReminder = reminderValue != 0 && reminderValue != 60 && reminderValue != 1440 && reminderValue != 0 && reminderValue > 0;
+    var customDays = reminderValue / 1440;
+    var customTime = reminderValue % 1440;
+    if (customTime > (1440/2))
+    {
+        customDays++;
+    }
+    customTime = timeInMinutes - customTime;
+    if (customTime < 0)
+    {
+        customTime = 1440 + customTime;
+    }
+    var customHours = customTime / 60;
+    var customMinutes = customTime % 60;
+    var customTimeFormatted = $"{customHours:00}:{customMinutes:00}";
+
+
     if (Model.StatusId != 1)
     {
         <fieldset class="govuk-fieldset">
@@ -83,7 +104,7 @@
                         </div>
                         <div class="app-radios__item">
                             <input class="app-radios__input task-reminder" id="ReminderChoose" name="ReminderValue" type="radio"
-                                value="">
+                                value="" checked="@isCustomReminder">
                             <label class="app-label app-radios__label" for="ReminderChoose">
                                 Choose a day and time
                             </label>
@@ -104,9 +125,9 @@
             <p>How long before the task is due?</p>
             <div class="app-form-group--flex-row">
                 <label class="govuk-visually-hidden" for="reminder-length">Select date for reminder</label>
-                <input class="app-input" id="reminder-length" name="reminder-length" type="number" />
-                <label class="govuk-visually-hidden" for="reminder-dayWeek">Day or week</label>
-                <select class="app-select" id="reminder-dayWeek" name="reminder-dayWeek">
+                <input class="app-input" id="reminder-length" name="reminder-length" type="number" value="@customDays" />
+                <label class="govuk-visually-hidden" for="reminder-unit">Day or week</label>
+                <select class="app-select" id="reminder-unit" name="reminder-unit">
                     <option value="day">Day</option>
                     <option value="week">Week</option>
                 </select>
@@ -114,7 +135,7 @@
             </div>
             <div class="app-form-group">
                 <label class="app-label govuk-!-font-weight-regular" for="reminder-time">Select a time <span class="govuk-visually-hidden">for the reminder</span></label>
-                <input class="app-input" id="reminder-time" name="reminder-time" type="time" />
+                <input class="app-input" id="reminder-time" name="reminder-time" type="time" value="@customTimeFormatted" />
             </div>
         </fieldset>
         <div class="app-button-group app-button-group--space-between">
