@@ -39,7 +39,7 @@
                                 <text>1 day before</text>
                                 break;
                             default:
-                                <text></text>
+                                <span class="app-js-convert-minutes-to-date" data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)" data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
                                 break;
                         }
                     </span>
@@ -156,5 +156,12 @@
 
 
 <script>
+      $('.app-js-convert-minutes-to-date').each(function () {
+            const dueDateTime = new Date($(this).data('due'));
+            const minutes = $(this).data('val');
+            const reminderDate = new Date(dueDateTime.getTime() - minutes * 60 * 1000);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+            $(this).text(reminderDate.toLocaleString("en-GB", options));
+        });
     appInit();
 </script>

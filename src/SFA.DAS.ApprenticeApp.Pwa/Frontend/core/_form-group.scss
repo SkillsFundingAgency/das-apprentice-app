@@ -3,5 +3,17 @@
 }
 
 .form-error {
-    color: #d4351c;
+  color: #d4351c;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.app-form-group--flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: $app-gap;
 }

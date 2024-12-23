@@ -4,14 +4,17 @@
   line-height: 1;
   padding: $app-gap;
   border-radius: $app-border-radius-inputs;
-  border: 1px solid #f7f7f7;
+  border: 1px solid #bfbfbf;
   height: auto;
+
   &:focus {
     @include app-focused;
   }
+
   &.govuk-js-character-count {
     margin-bottom: 5px;
   }
+
   &.app-input--error,
   &.govuk-textarea--error {
     border-color: $govuk-error-colour;
