@@ -27,5 +27,14 @@
                 const modal = new Modal(this, removeNotification, taskId, modalContent).init();
             });
 
+             $('.app-js-convert-minutes-to-date').each(function () {
+                const dueDateTime = new Date($(this).data('due'));
+                const minutes = $(this).data('val');
+                const reminderDate = new Date(dueDateTime.getTime() - minutes * 60 * 1000);
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+                $(this).text(reminderDate.toLocaleString("en-GB", options));
+            });
+        appInit();
+
     })
 </script>
