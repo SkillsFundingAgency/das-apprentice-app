@@ -1,0 +1,14 @@
+.app-select {
+  @extend .govuk-select;
+  border: 1px solid #bfbfbf;
+  border-radius: $app-border-radius-inputs;
+  min-width: 0;
+  line-height: 1;
+  padding: $app-gap;
+  flex: 1 0 40%;
+  height: auto;
+
+  &:focus {
+    @include app-focused;
+  }
+}

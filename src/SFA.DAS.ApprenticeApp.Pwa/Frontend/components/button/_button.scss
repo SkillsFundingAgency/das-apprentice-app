@@ -35,7 +35,7 @@
   line-height: 1;
   padding: $app-gap;
   border-radius: $app-border-radius-inputs;
-  border: 1px solid #f7f7f7;
+  border: 1px solid #bfbfbf;
 }
 
 .app-button--field-icon {
@@ -80,6 +80,10 @@
     flex-grow: 1;
     flex-basis: max-content;
   }
+}
+
+.app-button-group--space-between {
+  justify-content: space-between;
 }
 
 .app-button-group__wrap {
