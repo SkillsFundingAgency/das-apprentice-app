@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Contact your training provider";
+    Layout = "_Layout";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header govuk-!-margin-bottom-8">
+            <div class="app-page-header__back">
+                <a asp-action="Index" asp-controller="Home"
+                   class="app-back-link">Back</a>
+            </div>
+            <h1 class="app-page-header__heading">Contact your training provider</h1>
+            <div class="app-page-header__forward"></div>
+        </div>
+        @await Html.PartialAsync("_NoKsbsError.cshtml")
+    </div>
+</div>
