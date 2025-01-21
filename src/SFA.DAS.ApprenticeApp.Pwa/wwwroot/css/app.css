@@ -9453,6 +9453,7 @@ html {
   height: 24px;
   cursor: pointer;
   padding: 0;
+  border-radius: 3px;
 }
 .article-button:focus {
   outline: 3px solid #ffdd00;
@@ -9464,6 +9465,11 @@ html {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
+}
+.article-button i.fa-thumbs-down, .article-button i.fa-thumbs-up {
+  width: 20px;
+  height: 20px;
+  margin: 2px;
 }
 .article-button span {
   position: absolute !important;
