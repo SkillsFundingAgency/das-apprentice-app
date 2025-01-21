@@ -6,16 +6,24 @@
 
         $('.thumbs-up').on('click', function () {
 
-            if ($(this).hasClass("fa-solid")) {
+        const icon = $(this).find('i');
+        const title = $(this).data('title');
+        const span = $(this).find('span');
 
-                $(this).removeClass("fa-solid");
-                $(this).addClass("fa-regular");
+            if (icon.hasClass("fa-solid")) {
 
-                // delete apim command
+                // Remove Thumbs Up
+
+                const text = `Give "${title}" the thumbs up`;
+
+                icon.removeClass("fa-solid");
+                icon.addClass("fa-regular");
+                span.text(text);
+
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("RemoveApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "true" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -23,13 +31,21 @@
             }
             else
             {
-                $(this).removeClass('fa-regular').addClass('fa-solid');
-                $(this).next('i').removeClass('fa-solid').addClass('fa-regular');
+                // Add Thumbs Up and toggle Thumbs Down
+
+                const text = `Remove your thumbs up for "${title}"`;
+
+                icon.removeClass('fa-regular').addClass('fa-solid');
+                span.text(text);
+
+                const thumbsDown = $(this).next('button')
+                thumbsDown.find('i').removeClass('fa-solid').addClass('fa-regular');
+                thumbsDown.find('span').text(`Give "${title}" the thumbs down`);
 
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "true" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -40,16 +56,23 @@
 
         $('.thumbs-down').on('click', function () {
 
-            if ($(this).hasClass("fa-solid")) {
+            const icon = $(this).find('i');
+            const title = $(this).data('title');
+            const span = $(this).find('span');
 
-                $(this).removeClass("fa-solid");
-                $(this).addClass("fa-regular");
+            if (icon.hasClass("fa-solid")) {
 
-                // delete apim command
+                // Remove Thumbs Down
+
+                const text = `Give "${title}" the thumbs down`;
+
+                icon.removeClass("fa-solid").addClass("fa-regular");
+                span.text(text);
+
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("RemoveApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "false" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -58,13 +81,21 @@
             }
             else {
 
-                $(this).removeClass('fa-regular').addClass('fa-solid');
-                $(this).prev('i').removeClass('fa-solid').addClass('fa-regular');
+                // Add Thumbs Down and toggle Thumbs Up
+
+                const text = `Remove your thumbs down for "${title}"`;
+
+                icon.removeClass('fa-regular').addClass('fa-solid');
+                span.text(text);
+
+                const thumbsUp = $(this).prev('button')
+                thumbsUp.find('i').removeClass('fa-solid').addClass('fa-regular');
+                thumbsUp.find('span').text(`Give "${title}" the thumbs up`);
 
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().siblings('.entryid').val(), likeStatus: "false" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "false" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -73,7 +104,15 @@
         });
 
         $('body').on('click', '.save', function () {
-            $(this).removeClass('save').removeClass('fa-regular').addClass('unsave').addClass('fa-solid');
+            const button = $(this);
+            const icon = button.find('i');
+            const title = button.data('title');
+            const text = `Remove "${title}" from your saved articles`;
+            const span = button.find('span');
+
+            button.removeClass('save').addClass('unsave')
+            icon.removeClass('fa-regular').addClass('fa-solid');
+            span.text(text);
 
             $.ajax({
                 type: "GET",
@@ -86,13 +125,19 @@
         });
 
         const removeBookmark = (id, button) => {
+            const icon = $(button).find('i');
+            const title = $(button).data('title');
+            const text = `Add "${title}" to your saved articles`;
+            const span = $(button).find('span');
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
                 data: { entryId: id, isSaved: "false" },
                 complete: function () {
                     $('#accordion-' + id).hide();
-                    $(button).removeClass('unsave').removeClass('fa-solid').addClass('save').addClass('fa-regular')
+                    $(button).removeClass('unsave').addClass('save')
+                    icon.removeClass('fa-solid').addClass('fa-regular')
+                    span.text(text);
                 },
                 dataType: "json",
                 contentType: "application/json"

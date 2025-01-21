@@ -58,6 +58,7 @@
   border: none;
   width: 2rem;
   height: 2rem;
+
   &:after {
     width: 0.7rem;
     height: 0.7rem;
@@ -67,22 +68,22 @@
 }
 
 .govuk-frontend-supported
-  .govuk-accordion__section-button:focus
-  .govuk-accordion__section-toggle-focus {
+.govuk-accordion__section-button:focus
+.govuk-accordion__section-toggle-focus {
   background: none;
   outline: none;
   box-shadow: none;
 }
 
 .govuk-frontend-supported
-  .govuk-accordion__section-button:hover
-  .govuk-accordion-nav__chevron {
+.govuk-accordion__section-button:hover
+.govuk-accordion-nav__chevron {
   background: none;
 }
 
 .govuk-frontend-supported
-  .govuk-accordion__section-button:hover
-  .govuk-accordion-nav__chevron::after {
+.govuk-accordion__section-button:hover
+.govuk-accordion-nav__chevron::after {
   color: #0b0c0c;
 }
 
@@ -91,10 +92,9 @@
 }
 
 .app-accordion__icons {
-  overflow: hidden;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-  * {
-    cursor: pointer;
-  }
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
 }

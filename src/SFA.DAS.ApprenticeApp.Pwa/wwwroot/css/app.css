@@ -8046,12 +8046,11 @@ html {
 }
 
 .app-accordion__icons {
-  overflow: hidden;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-}
-.app-accordion__icons * {
-  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
 }
 
 .app-back-link {
@@ -9446,65 +9445,95 @@ html {
   align-content: center;
 }
 
-.fa-thumbs-up {
-  background-image: url("/assets/images/icons/like.svg") !important;
-  width: 19px !important;
-  height: 18px !important;
-  margin-right: 15px !important;
+.article-button {
+  background: none;
+  border: none;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  padding: 0;
+}
+.article-button:focus {
+  outline: 3px solid #ffdd00;
+}
+.article-button i {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.article-button span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.article-button span::before {
+  content: " ";
+}
+.article-button span::after {
+  content: " ";
 }
 
-.fa-thumbs-up:before {
-  content: " " !important;
+.fa-thumbs-up {
+  background-image: url("/assets/images/icons/like.svg");
 }
 
 .fa-thumbs-up.fa-regular {
-  background-image: url("/assets/images/icons/like.svg") !important;
+  background-image: url("/assets/images/icons/like.svg");
 }
 
 .fa-thumbs-up.fa-solid {
-  background-image: url("/assets/images/icons/liked.svg") !important;
+  background-image: url("/assets/images/icons/liked.svg");
 }
 
 .fa-thumbs-down {
-  background-image: url("/assets/images/icons/dislike.svg") !important;
-  width: 19px !important;
-  height: 18px !important;
-}
-
-.fa-thumbs-down:before {
-  content: " " !important;
+  background-image: url("/assets/images/icons/dislike.svg");
 }
 
 .fa-thumbs-down.fa-regular {
-  background-image: url("/assets/images/icons/dislike.svg") !important;
+  background-image: url("/assets/images/icons/dislike.svg");
 }
 
 .fa-thumbs-down.fa-solid {
-  background-image: url("/assets/images/icons/disliked.svg") !important;
+  background-image: url("/assets/images/icons/disliked.svg");
 }
 
 .fa-bookmark {
-  background-image: url("/assets/images/icons/pin.svg") !important;
-  width: 15px !important;
-  height: 24px !important;
-  float: right !important;
-}
-
-.fa-bookmark:before {
-  content: " " !important;
+  background-image: url("/assets/images/icons/pin.svg");
 }
 
 .fa-bookmark.fa-regular {
-  background-image: url("/assets/images/icons/pin.svg") !important;
+  background-image: url("/assets/images/icons/pin.svg");
 }
 
 .fa-bookmark.fa-solid {
-  background-image: url("/assets/images/icons/pinned.svg") !important;
+  background-image: url("/assets/images/icons/pinned.svg");
 }
 
-.share-btn {
-  float: right !important;
-  margin: 0 20px 0 0 !important;
+.fa-bookmark:before,
+.fa-thumbs-up:before,
+.fa-thumbs-down:before {
+  content: "" !important;
+}
+
+.article-thumbs {
+  margin-right: auto;
+  display: flex;
+  gap: 10px;
 }
 
 .loader {
