@@ -8092,7 +8092,7 @@ html {
   line-height: 1;
   padding: 1rem;
   border-radius: 10px;
-  border: 1px solid #bfbfbf;
+  border: 1px solid #949494;
 }
 @media print {
   .app-button--field {
@@ -8169,7 +8169,7 @@ html {
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 1rem;
-  border: 1px solid #bfbfbf;
+  border: 1px solid #949494;
 }
 
 .app-card--follow-on {
@@ -9306,7 +9306,7 @@ html {
   line-height: 1;
   padding: 1rem;
   border-radius: 10px;
-  border: 1px solid #bfbfbf;
+  border: 1px solid #949494;
   height: auto;
 }
 .app-textarea:focus {
@@ -9321,7 +9321,7 @@ html {
   line-height: 1;
   padding: 1rem;
   border-radius: 10px;
-  border: 1px solid #bfbfbf;
+  border: 1px solid #949494;
   height: auto;
 }
 .app-input:focus {
