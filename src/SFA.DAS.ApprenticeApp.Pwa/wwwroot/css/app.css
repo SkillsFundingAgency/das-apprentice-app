@@ -8111,6 +8111,12 @@ html {
     line-height: 1.15;
   }
 }
+.app-button--field:focus {
+  outline: 3px solid rgba(0, 112, 60, 0.2);
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: #00703c;
+}
 
 .app-button--field-icon {
   display: block;
@@ -8305,6 +8311,12 @@ html {
     font-size: 14pt;
     line-height: 1.15;
   }
+}
+.app-collapse__button:focus {
+  outline: 3px solid rgba(0, 112, 60, 0.2);
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: #00703c;
 }
 
 .app-collapse__icon {
@@ -9044,7 +9056,7 @@ html {
   height: auto;
 }
 .app-select:focus {
-  outline: none;
+  outline: 3px solid rgba(0, 112, 60, 0.2);
   outline-offset: 0;
   box-shadow: none;
   border-color: #00703c;
@@ -9310,7 +9322,7 @@ html {
   height: auto;
 }
 .app-textarea:focus {
-  outline: none;
+  outline: 3px solid rgba(0, 112, 60, 0.2);
   outline-offset: 0;
   box-shadow: none;
   border-color: #00703c;
@@ -9325,7 +9337,7 @@ html {
   height: auto;
 }
 .app-input:focus {
-  outline: none;
+  outline: 3px solid rgba(0, 112, 60, 0.2);
   outline-offset: 0;
   box-shadow: none;
   border-color: #00703c;

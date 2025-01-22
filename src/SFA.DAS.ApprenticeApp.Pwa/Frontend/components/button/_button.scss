@@ -36,6 +36,9 @@
   padding: $app-gap;
   border-radius: $app-border-radius-inputs;
   border: 1px solid #949494;
+  &:focus {
+    @include app-focused;
+  }
 }
 
 .app-button--field-icon {
