@@ -68,6 +68,8 @@
   text-decoration: none;
   display: block;
   color: $govuk-secondary-text-colour;
+  max-width: 100%;
+  word-break: break-all;
   .app-navigation__link--active & {
     color: $govuk-text-colour;
   }

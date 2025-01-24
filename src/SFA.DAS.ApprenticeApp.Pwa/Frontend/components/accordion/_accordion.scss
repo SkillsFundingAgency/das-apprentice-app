@@ -98,3 +98,25 @@
     cursor: pointer;
   }
 }
+
+.govuk-accordion__section-heading-text-focus {
+  font-family: $govuk-font-family;
+  font-weight: $govuk-font-weight-bold;
+}
+
+.govuk-accordion__section-content ul:not([class]) {
+  @extend .govuk-list;
+  @extend .govuk-list--bullet;
+  color: inherit;
+  & > li {
+    font-family: $govuk-font-family;
+    font-size: inherit;
+  }
+}
+
+.govuk-accordion__section-content {
+  a {
+    @extend .govuk-link;
+    font-size: inherit;
+  }
+}

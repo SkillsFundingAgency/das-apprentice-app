@@ -21,6 +21,10 @@
   gap: $app-gap-half;
   flex-direction: row;
   align-items: center;
+  span {
+    font-family: $govuk-font-family;
+    font-size: 1rem;
+  }
 }
 
 .app-icon-list--l {
@@ -31,6 +35,9 @@
 .app-icon-list--l > li {
   margin-bottom: $app-gap;
   gap: $app-gap;
+  span {
+    @include govuk-font-size(24);
+  }
 }
 
 .app-icon-list--l .app-icon-list__icon {

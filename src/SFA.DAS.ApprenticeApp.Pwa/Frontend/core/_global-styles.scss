@@ -9,6 +9,21 @@ html {
   }
 }
 
+span,
+div,
+p,
+li,
+text,
+input {
+  font-family: $govuk-font-family;
+  font-size: 1rem;
+}
+
 .app-template__body {
   background-color: $app-bg-colour;
+}
+
+.govuk-details__summary-text {
+  font-family: $govuk-font-family;
+  font-size: 1rem;
 }
