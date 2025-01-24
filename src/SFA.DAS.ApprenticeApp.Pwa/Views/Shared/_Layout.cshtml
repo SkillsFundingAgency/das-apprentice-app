@@ -6,23 +6,27 @@
 <head>
     <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
     <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f7f7f7" />
     <meta name="clarity-site-verification" content="ec87324f-d5ed-4a81-a723-dd5179c531eb" />
     <title>@(ViewData["Title"] == null ? "Apprentice App" : ViewData["Title"])</title>
     <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true"  />
 </head>
 
 <body class="govuk-template__body app-template__body" id="top">
+
     <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
     <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
     <div class="app-container">
         <main class="app-main">
             <div class="app-main__inner">
                 @RenderBody()
+                <p id="fontSizeHelper" style="visibility:hidden;" aria-hidden="true">
+                    Your apprenticeship - A platform for apprentices to manage tasks, track KSBs, and access helpful
+                    support articles.
+                </p>
             </div>
         </main>
         <nav class="app-navigation">
@@ -58,7 +62,7 @@
                 <span class="app-navigation__link-text">Support</span>
             </a>
             <a asp-controller="Notifications" asp-action="Index"
-               class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
+                class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon">
                     <svg>
                         <use
@@ -82,12 +86,40 @@
             </a>
         </nav>
     </div>
+
     <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
     <script type="module">import {
             initAll
         } from '/js/libs/govuk-frontend.min.js'
         initAll()</script>
     @await Html.PartialAsync("_FrontendJs.cshtml")
+
+    <script>
+        const getFontSizeClass = (fontSizePercentage) => {
+            if (fontSizePercentage < 125) {
+                return "app-font-size--regular";
+            } else if (fontSizePercentage <= 150) {
+                return "app-font-size--medium";
+            } else if (fontSizePercentage <= 175) {
+               return "app-font-size--large";
+            } else if (fontSizePercentage < 200) {
+                return "app-font-size--largest";
+            } else {
+                return "app-font-size--xl";
+            }
+        }
+        const calculateFontSize = () => {
+
+            const element = document.getElementById("fontSizeHelper")
+            const style = window.getComputedStyle(element, null).getPropertyValue('font-size');
+            const fontSizePercentage = parseFloat(style) / 16 * 100;
+            element.remove();
+            const root = document.getElementsByTagName( 'html' )[0];
+            root.classList.add(getFontSizeClass(fontSizePercentage));
+        };
+        window.onload = calculateFontSize;
+    </script>
+
 </body>
 
 </html>
