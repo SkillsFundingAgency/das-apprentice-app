@@ -38,49 +38,58 @@
                 <div class="app-accordion__icons">
                     @if (Model.ApprenticeArticles != null)
                     {
-                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true))
-                        {
-                            <i class="fa-solid fa-bookmark unsave"></i>
-                        }
 
-                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == false))
-                        {
-                            <i class="fa-regular fa-bookmark save"></i>
-                        }
-
-                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == null))
-                        {
-                            <i class="fa-regular fa-bookmark save"></i>
-                        }
 
                         @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == true))
                         {
-                            <i class="fa-solid fa-thumbs-up thumbs-up"></i>
-                            <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                            <div class="article-thumbs">
+                                <button class="article-button thumbs-up" data-title="@item.Heading"><i class="fa-solid fa-thumbs-up"></i><span>Remove your thumbs up for "@item.Heading"</span></button>
+                                <button class="article-button thumbs-down" data-title="@item.Heading"><i class="fa-regular fa-thumbs-down"></i><span>Give "@item.Heading" the thumbs down</span></button>
+                            </div>
                         }
 
                         @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == false))
                         {
-                            <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                            <i class="fa-solid fa-thumbs-down thumbs-down"></i>
+                            <div class="article-thumbs">
+                                <button class="article-button thumbs-up" data-title="@item.Heading"><i class="fa-regular fa-thumbs-up"></i><span>Give "@item.Heading" the thumbs up</span></button>
+                                <button class="article-button thumbs-down" data-title="@item.Heading"><i class="fa-solid fa-thumbs-down"></i><span>Remove your thumbs down for "@item.Heading"</span></button>
+                            </div>
                         }
 
                         @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.LikeStatus == null))
                         {
-                            <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                            <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                            <div class="article-thumbs">
+                                <button class="article-button thumbs-up" data-title="@item.Heading"><i class="fa-regular fa-thumbs-up"></i><span>Give "@item.Heading" the thumbs up</span></button>
+                                <button class="article-button thumbs-down" data-title="@item.Heading"><i class="fa-regular fa-thumbs-down"></i><span>Give "@item.Heading" the thumbs down</span></button>
+                            </div>
+                        }
+
+                       @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true))
+                        {
+                            <button class="article-button unsave" data-title="@item.Heading"><i class="fa-solid fa-bookmark"></i><span>Remove "@item.Heading" from your saved articles</span></button>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == false))
+                        {
+                            <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
+                        }
+
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == null))
+                        {
+                            <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
                         }
 
                         @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Id).Count() == 0)
                         {
-                            <i class="fa-regular fa-bookmark save"></i>
-
-                            <i class="fa-regular fa-thumbs-up thumbs-up"></i>
-                            <i class="fa-regular fa-thumbs-down thumbs-down"></i>
+                            <div class="article-thumbs">
+                                <button class="article-button thumbs-up" data-title="@item.Heading"><i class="fa-regular fa-thumbs-up"></i><span>Give "@item.Heading" the thumbs up</span></button>
+                                <button class="article-button thumbs-down" data-title="@item.Heading"><i class="fa-regular fa-thumbs-down"></i><span>Give "@item.Heading" the thumbs down</span></button>
+                            </div>
+                            <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
                         }
                     }
 
-                    <a class="share-btn"><img src="/assets/images/icons/share.svg" /></a>
+                    <button class="article-button share-btn"><img src="/assets/images/icons/share.svg" /><span>Share "@item.Heading"</span></button>
                 </div>
 
                 <input class="article-title" type="hidden" value="@item.Heading" />

@@ -76,14 +76,13 @@
         event.preventDefault();
         document.body.classList.add(this.bodyClassName);
         this.overlay.classList.add(this.showOverlayClassName);
-        const firstInput = this.overlay.querySelector("input");
-        if (firstInput) {
-            firstInput.focus();
-        }
+        document.addEventListener(`keydown`, (e) => initTrapFocus(e, this.overlay.id));
+
     };
 
     Overlay.prototype.hideOverlay = function (event) {
         event.preventDefault();
+        document.removeEventListener(`keydown`, (e) => initTrapFocus(e, this.overlay.id));
         document.body.classList.remove(this.bodyClassName);
         this.overlay.classList.remove(this.showOverlayClassName);
     };
@@ -244,9 +243,34 @@
     }
 
 
+    function trapFocusForOverlay(e, overlayId) {
+        const isTabPressed = e.key === `Tab` || e.keyCode === 9;
+        if (!isTabPressed) {
+            return;
+        }
+        const overlay = document.getElementById(overlayId);
+        const focusableElements = `button, [href], input:not([type="hidden"]), select, textarea, iframe, [tabindex]:not([tabindex="-1"])`;
+        const firstFocusableElement = overlay.querySelectorAll(focusableElements)[0];
+        const focusableContent = overlay.querySelectorAll(focusableElements);
+        const lastFocusableElement = focusableContent[focusableContent.length - 1];
 
+        console.log(firstFocusableElement)
+        console.log(lastFocusableElement)
 
+        if (e.shiftKey) {
+            if (document.activeElement === firstFocusableElement) {
+                lastFocusableElement.focus();
+                e.preventDefault();
+            }
+        } else if (document.activeElement === lastFocusableElement) {
+            firstFocusableElement.focus();
+            e.preventDefault();
+        }
+    }
 
+    function initTrapFocus(e, overlayId) {
+        return trapFocusForOverlay(e, overlayId);
+    }
 
     const appInit = () => {
 

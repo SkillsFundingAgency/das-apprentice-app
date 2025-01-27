@@ -29,9 +29,11 @@
     <div class="app-overlay__content">
         <div class="app-form-group">
             <fieldset class="app-fieldset">
-                <legend class="app-fieldset__legend app-fieldset__legend--s">Filter by category:</legend>
-                <span style="float: right; margin-top: -37px;"><a class="app-overlay-header__link resetall">Reset
-                        all</a></span>
+                <div class="app-page-header app-page-header--align-bottom">
+                    <legend class="app-fieldset__legend app-fieldset__legend--s govuk-!-margin-bottom-0">Filter by
+                        category:</legend>
+                    <a class="app-overlay-header__link resetall" href="#">Reset all</a>
+                </div>
                 <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes" style="clear:both">
 
                     <div class="app-checkboxes__item">
@@ -158,6 +160,7 @@
         });
 
         $(".resetall").click(function (e) {
+            e.preventDefault()
             $("input:checkbox").prop('checked', false);
         });
 
