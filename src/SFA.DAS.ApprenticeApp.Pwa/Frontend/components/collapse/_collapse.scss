@@ -20,6 +20,9 @@
   align-items: center;
   justify-content: space-between;
   @include govuk-font(19);
+  &:focus {
+    @include app-focused;
+  }
 }
 
 .app-collapse__icon {

@@ -120,7 +120,7 @@
 
                 if (typeof filters !== "undefined") {
 
-                  data = filters.split('&');
+                    data = filters.split('&');
 
                     $("#filters-set-tasks").text("");
                     $("input:checkbox").prop('checked', false);
@@ -159,6 +159,7 @@
             $('#add-edit-wrapper').load(addUrl, function () {
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
+                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'add-edit-wrapper'));
             });
         });
 
@@ -171,6 +172,8 @@
             $('#add-edit-wrapper').load(editUrl, function () {
                 $("html, body").animate({ scrollTop: 0 }, "slow");
                 $('.add-edit-content-area').height($('.app-container').height() - 100);
+                $('#add-edit-wrapper').focus()
+                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'add-edit-wrapper'));
             });
 
         });
@@ -227,16 +230,16 @@
 
     //pushnotification setup
     const checkUICompatibility = () => {
-    if (!("serviceWorker" in navigator)) {
-        console.log("Service worker not supported");
-        throw new Error("Service worker not supported");
-    }
+        if (!("serviceWorker" in navigator)) {
+            console.log("Service worker not supported");
+            throw new Error("Service worker not supported");
+        }
 
-    if (!("Notification" in window)) {
-        console.log("Notification not supported");
-        throw new Error("Notification not supported");
-    }
-        };
+        if (!("Notification" in window)) {
+            console.log("Notification not supported");
+            throw new Error("Notification not supported");
+        }
+    };
 
     const displayNotificationButtons = () => {
         const enableNotificationsButtons = document.querySelectorAll(
