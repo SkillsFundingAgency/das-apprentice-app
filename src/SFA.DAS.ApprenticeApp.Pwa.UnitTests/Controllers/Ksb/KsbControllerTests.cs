@@ -77,6 +77,48 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
         }
 
         [Test, MoqAutoData]
+        public async Task LoadIndex_NoKsbs(
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<ILogger<KsbController>> logger,
+            [Greedy] KsbController controller)
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(new List<ApprenticeKsb>());
+
+            //Act
+            var result = await controller.Index() as ViewResult;
+
+
+            //Assert
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"No KSBs found for {apprenticeId} in KsbController Index.")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ViewName.Should().Be("NoKsbs");
+            }
+        }
+
+        
+        [Test, MoqAutoData]
         public async Task LoadLinkKsbs([Greedy] KsbController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -127,6 +169,47 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                 result.Should().NotBeNull();
                 result.ActionName.Should().Be("Index");
                 result.ControllerName.Should().Be("Home");
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task LoadLinkKsbs_NoKsbs(
+           [Frozen] Mock<IOuterApiClient> client,
+           [Frozen] Mock<ILogger<KsbController>> logger,
+           [Greedy] KsbController controller)
+        {
+            //Arrange
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+                apprenticeIdClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(x => x.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(new List<ApprenticeKsb>());
+
+            //Act
+            var result = await controller.LinkKsbs() as ViewResult;
+
+
+            //Assert
+            using (new AssertionScope())
+            {
+                logger.Verify(x => x.Log(LogLevel.Warning,
+                   It.IsAny<EventId>(),
+                   It.Is<It.IsAnyType>((object v, Type _) =>
+                           v.ToString().Contains($"No KSBs found for {apprenticeId} in KsbController LinkKsbs.")),
+                   It.IsAny<Exception>(),
+                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                result.Should().NotBeNull();
+                result.ViewName.Should().Be("_LinkNoKsbs");
             }
         }
 

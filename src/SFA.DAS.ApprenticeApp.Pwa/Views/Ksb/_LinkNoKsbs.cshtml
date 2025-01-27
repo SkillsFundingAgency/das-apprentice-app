@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+        <a class="app-overlay-header__link ksb-popup-cancel">Close</a>
+    </div>
+    <h2 class="app-overlay-header__heading">
+        Sorry, there is a problem with the service
+    </h2>
+    <div class="app-overlay-header__save">
+        <a class="app-overlay-header__link"></a>
+    </div>
+</div>
+
+<div class="app-overlay__content">
+    @await Html.PartialAsync("_NoKsbsError.cshtml")
+</div>

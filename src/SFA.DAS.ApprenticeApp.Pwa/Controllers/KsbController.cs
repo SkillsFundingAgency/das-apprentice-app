@@ -32,6 +32,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+
+                if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0)
+                {
+                    string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController Index.";
+                    _logger.LogWarning(noKsbMessage);
+                    return View("NoKsbs");
+                }
                 if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
                     {
                         var filterKsbs = Filter.FilterKsbResults(apprenticeKsbResult, Request.Cookies[Constants.KsbFiltersCookieName]);
@@ -68,6 +75,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+
+                if (apprenticeKsbResult == null || apprenticeKsbResult.Count == 0)
+                {
+                    string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController LinkKsbs.";
+                    _logger.LogWarning(noKsbMessage);
+                    return View("_LinkNoKsbs");
+                }
+
                 ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
                     {
