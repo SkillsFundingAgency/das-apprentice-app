@@ -7,7 +7,7 @@
     foreach (var KSBType in KSBTypes)
     {
         <div class="app-tabs__panel" id="@KSBType.ToLower()">
-            @foreach (var ksb in Model.Ksbs)
+            @foreach (var ksb in Model.Ksbs.OrderBy(k => int.Parse(k.Key.Substring(1))))
             {
                 if (KSBType == ksb.Type.ToString())
                 {
