@@ -244,6 +244,7 @@
 
 
     function trapFocusForOverlay(e, overlayId) {
+        e.stopPropagation();
         const isTabPressed = e.key === `Tab` || e.keyCode === 9;
         if (!isTabPressed) {
             return;
