@@ -41,13 +41,11 @@ function toggleNotifications() {
     notificationsSwitch.checked = true;
   }
 
-  const toggleNotificationElements = document.querySelectorAll(
-    ".change-notifications"
-  );
+  const modal = document.querySelector(".change-notifications");
+    modal.ariaHidden = false;
+    modal.classList.toggle("app-modal--visible");
+    modal.querySelector('.app-modal__content').focus()
 
-  for (const element of toggleNotificationElements) {
-    element.classList.toggle("app-modal--visible");
-  }
   notificationDisplaySettings();
 }
 </script>

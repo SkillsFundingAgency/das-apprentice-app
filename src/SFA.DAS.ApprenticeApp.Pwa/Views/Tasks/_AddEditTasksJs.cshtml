@@ -79,6 +79,8 @@
                     var ksbId = $(this).val();
                     if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                 });
+                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
+                $ksbOverlay.focus()
             });
         });
 
@@ -92,7 +94,10 @@
                     var ksbId = $(this).val();
                     if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
                 });
+                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
+                $ksbOverlay.focus()
             });
+
         });
 
         $('body').on('click', '.edit-ksb', function (e) {
@@ -105,13 +110,15 @@
 
                     $('.add-edit-content-area').height($('.app-container').height() - 150);
                 });
+                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
+                $ksbOverlay.focus()
             }
             $("html, body").animate({ scrollTop: 0 }, "slow");
-
         });
 
         $('body').on('click', '.ksb-popup-cancel', function (e) {
             $('#ksb-popup').hide();
+            $('#ksb-popup-btn').focus();
         });
 
         $('body').on('click', '.link-ksb-checkbox', function (e) {
@@ -204,6 +211,7 @@
 
             $("#linked-ksb-details").html(text);
             $('#ksb-popup').hide();
+            $('#ksb-popup-btn').focus();
             appInit();
         });
 

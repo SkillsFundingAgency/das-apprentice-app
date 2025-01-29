@@ -2,7 +2,7 @@
     ViewData["Title"] = "Terms";
     Layout = "_LayoutBasic";
 }
-<div class="app-main">
+<div class="app-main app-main--terms">
     <div class="app-main__inner">
         <div class="app-page-header govuk-!-margin-bottom-8">
             <h1 class="app-page-header__heading">Terms &amp; conditions</h1>
@@ -30,15 +30,6 @@
             <li>notify us of a change to your email address</li>
         </ul>
 
-        <h2 class="govuk-heading-m">Cookies</h2>
-        <p>Cookies are files saved on your phone, tablet or computer when you visit an app or website. We use cookies to store information about how you use this app, such as the pages you visit.</p>
-        <p>We use Google Analytics and Microsoft Clarity to measure how you use the app so we can improve it based on user needs. We do not allow Google or Microsoft to use or share the data about how you use this app.</p>
-        <p>Google Analytics and Microsoft Clarity set cookies that store anonymised information about:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>how you got to the app</li>
-            <li>the pages you visit on GOV.UK and government digital services, and how long you spend on each page</li>
-            <li>what you click on while you're visiting the app</li>
-        </ul>
 
         <h2 class="govuk-heading-m">Responsibility for the service</h2>
         <p>
@@ -63,12 +54,40 @@
                 the content and availability of external websites that link to the service or which are linked from it
             </li>
         </ul>
+
+
+        <h2 class="govuk-heading-m">Cookies</h2>
+        <p>Cookies are files saved on your phone, tablet or computer when you visit an app or website. We use cookies to store information about how you use this app, such as the pages you visit.</p>
+        <p>We use Google Analytics and Microsoft Clarity to measure how you use the app so we can improve it based on user needs. We do not allow Google or Microsoft to use or share the data about how you use this app.</p>
+        <p>Google Analytics and Microsoft Clarity set cookies that store anonymised information about:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>how you got to the app</li>
+            <li>the pages you visit on GOV.UK and government digital services, and how long you spend on each page</li>
+            <li>what you click on while you're visiting the app</li>
+        </ul>
+
     </div>
 </div>
-<div class="app-button-group__wrap">
-    <div class="app-button-group">
-        <button class="app-button" onclick="location.href='@Url.Action("TermsAccept", "Terms")'">Accept</button>
-        <button class="app-button app-button--secondary"
-            onclick="location.href='@Url.Action("TermsDecline", "Terms")'">Decline</button>
-    </div>
+<div class="app-button-group__wrap app-button-group__wrap--terms">
+    <form method="get" action="@Url.Action("TermsAccept", "Terms")" id="terms-form">
+        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+              <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="accept" name="accept" type="checkbox" value="hmrc">
+                <label class="govuk-label govuk-checkboxes__label govuk-label--terms" for="accept">
+                  I accept the terms and conditions and consent to the use of cookies in this app.
+                </label>
+              </div>
+          </div>
+        <button class="app-button" disabled>Continue</button>
+    </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const acceptCheckbox = document.getElementById('accept');
+        const continueButton = document.querySelector('.app-button');
+        acceptCheckbox.addEventListener('change', function () {
+            continueButton.disabled = !acceptCheckbox.checked;
+        });
+    });
+</script>

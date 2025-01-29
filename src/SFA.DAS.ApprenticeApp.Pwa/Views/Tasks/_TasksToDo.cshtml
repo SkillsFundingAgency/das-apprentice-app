@@ -26,7 +26,7 @@
                         </svg>
                     </span>
                     <span>
-                        Reminder set: 
+                        Reminder set:
                         @switch (@task.TaskReminders.Select(r => r.ReminderValue).First())
                         {
                             case 0:
@@ -39,7 +39,9 @@
                                 <text>1 day before</text>
                                 break;
                             default:
-                                <span class="app-js-convert-minutes-to-date" data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)" data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
+                                <span class="app-js-convert-minutes-to-date"
+                                    data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)"
+                                    data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
                                 break;
                         }
                     </span>
@@ -115,7 +117,7 @@
                         <input type="hidden" class="taskId" value="@task.TaskId" />
                     </li>
                     <li>
-                        <a data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
+                        <a href="#" data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
                             <span class="app-dropdown__menu-icon">
                                 <svg>
                                     <use xlink:href="/assets/images/icons.svg#edit"></use>
@@ -156,12 +158,12 @@
 
 
 <script>
-      $('.app-js-convert-minutes-to-date').each(function () {
-            const dueDateTime = new Date($(this).data('due'));
-            const minutes = $(this).data('val');
-            const reminderDate = new Date(dueDateTime.getTime() - minutes * 60 * 1000);
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-            $(this).text(reminderDate.toLocaleString("en-GB", options));
-        });
+    $('.app-js-convert-minutes-to-date').each(function () {
+        const dueDateTime = new Date($(this).data('due'));
+        const minutes = $(this).data('val');
+        const reminderDate = new Date(dueDateTime.getTime() - minutes * 60 * 1000);
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        $(this).text(reminderDate.toLocaleString("en-GB", options));
+    });
     appInit();
 </script>

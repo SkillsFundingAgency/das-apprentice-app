@@ -6,7 +6,7 @@
 }
 <div>
     <div class="loader" style="display:none"></div>
-    <div id="ksb-popup" class="app-overlay"></div>
+    <div id="ksb-popup" class="app-overlay" tabindex="0"></div>
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
             <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
@@ -16,7 +16,7 @@
             Add a @(Model.StatusId == 1 ? "completed" : "new") task
         </h2>
         <div class="app-overlay-header__save">
-            <a class="app-overlay-header__link add-task">Add</a>
+            <a class="app-overlay-header__link add-task" href="#">Add</a>
         </div>
     </div>
     <div class="app-overlay__content add-edit-content-area">

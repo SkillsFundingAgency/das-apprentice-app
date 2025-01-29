@@ -49,8 +49,9 @@
         </div>
         <div class="app-settings-switch-wrap">
             <label class="toggle">
+                <span class="govuk-visually-hidden">Allow push notifications</span>
                 <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()"
-                    onkeydown="toggleNotifications()" onkeypress="toggleNotifications()">
+                    onkeydown="toggleNotifications()" onkeypress="toggleNotifications()"  tabindex="0">
                 <span class="slider"></span>
             </label>
         </div>
@@ -60,7 +61,7 @@
 
 <!-- HTML for the popup box -->
 <div class="app-modal change-notifications" aria-hidden="true">
-    <div class="app-modal__content">
+    <div class="app-modal__content" tabindex="0">
         <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
         <div class="govuk-button-group">
             <button type="button" class="govuk-button" onclick="toggleNotifications()" onkeydown="toggleNotifications()"
