@@ -5,11 +5,20 @@
     margin-bottom: $app-gap-half;
     color: $govuk-secondary-text-colour;
     @include govuk-font-size(16);
+    font-family: $govuk-font-family;
   }
   & > dd {
     margin: 0 0 $app-gap;
+    font-family: $govuk-font-family;
+    font-size: 1rem;
     &:last-child {
       margin: 0;
     }
+  }
+}
+
+.govuk-list {
+  & > li {
+    font-family: $govuk-font-family;
   }
 }
