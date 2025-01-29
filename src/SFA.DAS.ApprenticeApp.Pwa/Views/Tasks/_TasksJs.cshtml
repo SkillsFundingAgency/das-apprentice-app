@@ -196,7 +196,6 @@
 
         $(document).ready(function () {
             var statusId = getUrlParameter('status');
-
             if (statusId != false) {
                 $('.recently-added-menu-item').prop('href', '?sort=recently_added&status=' + statusId + '');
                 $('.due-date-menu-item').prop('href', '?sort=date_due&status=' + statusId + '');
