@@ -8288,6 +8288,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: #0b0c0c;
   font-family: "GDS Transport", arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -9330,11 +9331,14 @@ html {
 
 .app-input {
   background-color: #fff;
-  line-height: 1;
   padding: 1rem;
   border-radius: 10px;
   border: 1px solid #949494;
   height: auto;
+  min-height: 3.4rem;
+  display: block;
+  text-align: left;
+  color: #0b0c0c;
 }
 .app-input:focus {
   outline: 3px solid rgba(0, 112, 60, 0.2);
