@@ -20,6 +20,12 @@
   text-decoration: none;
   font-weight: $govuk-font-weight-bold;
   position: relative;
+  span {
+    @include govuk-link-style-text;
+    @include govuk-font-size(24);
+    font-family: inherit;
+    font-weight: $govuk-font-weight-bold;
+  }
 
   &:after {
     @include app-arrow;

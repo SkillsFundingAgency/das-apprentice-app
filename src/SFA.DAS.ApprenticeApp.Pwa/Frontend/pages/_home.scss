@@ -22,10 +22,15 @@
 .app-pages-home__middle {
   height: 40dvh;
   align-content: center;
+  padding: 0 1rem;
 }
 
 .app-pages-home__bottom {
   height: 30dvh;
   padding: $app-gap;
   align-content: end;
+}
+
+.app-pages-home__logo {
+  max-width: 100%;
 }

@@ -9,9 +9,9 @@
     position: absolute;
     background: rgb(247, 247, 247);
     background: linear-gradient(
-                    90deg,
-                    $app-bg-colour 40%,
-                    rgba(247, 247, 247, 0) 100%
+      90deg,
+      $app-bg-colour 40%,
+      rgba(247, 247, 247, 0) 100%
     );
     z-index: 1;
     top: 0;
@@ -37,11 +37,17 @@
 
 .app-tag {
   @extend .govuk-tag;
-  border-radius: $app-border-radius;
-  margin: 0;
-  background-color: $app-brand-secondary;
-  color: $app-brand-dark;
-  max-width: none;
+  & {
+    border-radius: $app-border-radius;
+    margin: 0;
+    background-color: $app-brand-secondary;
+    color: $app-brand-dark;
+    max-width: none;
+    font-family: $govuk-font-family;
+  }
+  * {
+    font-size: 1rem;
+  }
 }
 
 .app-tag__action {
