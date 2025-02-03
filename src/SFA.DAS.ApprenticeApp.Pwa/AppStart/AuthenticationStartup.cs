@@ -3,7 +3,6 @@ using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.GovUK.Auth.AppStart;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
@@ -21,18 +20,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             services.AddScoped<AuthenticatedUser>();
             services.AddHttpContextAccessor();
             services.AddTransient((_) => config);
-        }
-
-
-        private static IServiceCollection AddApplicationAuthorisation(
-            this IServiceCollection services)
-        {
-            services.AddAuthorization();
-            services.AddScoped<AuthenticatedUser>();
-            services.AddScoped(s => s
-                .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
-
-            return services;
         }
 
         public static void AddGovLoginAuthentication(this IServiceCollection services, IConfiguration configuration)

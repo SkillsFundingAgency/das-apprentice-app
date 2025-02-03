@@ -1,33 +1,21 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
-using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
+using System.Diagnostics;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IOuterApiClient _client;
-    private readonly ApplicationConfiguration _appConfig;
 
-    public HomeController
-        (
-        ILogger<HomeController> logger,
-        IOuterApiClient client,
-        ApplicationConfiguration appConfig
-        )
-    {
-        _logger = logger;
-        _client = client;
-        _appConfig = appConfig;
-    }
+    public HomeController(IOuterApiClient client)
+        {
+            _client = client;
+        }
 
     public async Task<IActionResult> Index()
     {
@@ -37,22 +25,11 @@ public class HomeController : Controller
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                string whiteListEmailList = _appConfig.WhiteListEmails;
-                if (!string.IsNullOrEmpty(whiteListEmailList))
+
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
                 {
-                    WhiteListEmailUsers? users = JsonConvert.DeserializeObject<WhiteListEmailUsers>(whiteListEmailList);
-
-                    var apprenticeEmail = Claims.GetClaim(HttpContext, Constants.ApprenticeNameClaimKey);
-
-                    var match = users?.Emails?.Contains(apprenticeEmail);
-                    if (match == true)
-                    {
-                        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                        if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
-                        {
-                            return RedirectToAction("Index", "Tasks");
-                        }
-                    }
+                    return RedirectToAction("Index", "Tasks");
                 }
             }
         }
@@ -68,7 +45,7 @@ public class HomeController : Controller
 
     public IActionResult Unauthorised()
     {
-        return View(new ErrorViewModel {  RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
 

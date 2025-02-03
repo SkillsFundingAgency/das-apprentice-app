@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +10,10 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
 {
@@ -61,7 +60,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
             }, "Custom");
 
             httpContext.User = new ClaimsPrincipal(identity);
-            configuration.WhiteListEmails = "{ \"Emails\" : [\"user1@test.com\", \"user2@test.com\"] }";
             apprenticeDetails.MyApprenticeship = new MyApprenticeship();
             client.Setup(c => c.GetApprenticeDetails(apprenticeId)).ReturnsAsync(apprenticeDetails);
 

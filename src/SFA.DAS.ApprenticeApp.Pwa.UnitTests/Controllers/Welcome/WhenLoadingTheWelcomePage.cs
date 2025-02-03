@@ -2,16 +2,14 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
 using System;
-using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using System.Security.Claims;
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 {
     [TestFixture]
@@ -43,32 +41,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
             var result = controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Tasks");
-        }
-
-        [Test, MoqAutoData]
-        public void NonWhiteListedUser_CannotUse_App(
-           [Frozen] ApplicationConfiguration configuration,
-           [Frozen] Mock<ILogger<WelcomeController>> logger,
-           [Greedy] WelcomeController controller)
-        {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var apprenticeNameClaim = new Claim(Constants.ApprenticeNameClaimKey, "test3@test.com");
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-               apprenticeIdClaim,
-               apprenticeNameClaim
-            })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-            configuration.WhiteListEmails = "{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }";
-            var result = controller.Index() as RedirectToActionResult;
-            result.ActionName.Should().Be("Error");
-            result.ControllerName.Should().Be("Account");
         }
     }
 }

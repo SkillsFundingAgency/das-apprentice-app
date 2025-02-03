@@ -113,8 +113,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             
         }
 
-
-        [Authorize]
         [HttpGet]
         [Route("apprentice-signed-out", Name = RouteNames.SignedOut)]
         public async Task<IActionResult> SigningOut()
@@ -136,7 +134,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             HttpContext.Response.Cookies.Delete(Constants.ApprenticeshipIdClaimKey);
             HttpContext.Response.Cookies.Delete(Constants.StandardUIdClaimKey);
-            
+            HttpContext.Response.Cookies.Delete(Constants.AuthCookieName);
 
             return RedirectToAction("Index", "Home");
         }
