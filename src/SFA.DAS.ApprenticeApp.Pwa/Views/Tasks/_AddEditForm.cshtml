@@ -3,7 +3,7 @@
 <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150">
 
     <label class="app-label" asp-for="@Model.Task.Title">
-        Name of the task
+        Describe your task
     </label>
     <div class="title-error-1 form-error govuk-hint"></div>
     <div class="title-error-2 form-error govuk-hint"></div>
@@ -18,9 +18,10 @@
     <label class="app-label" for="date">
         Select date the task @(Model.StatusId == 1 ? "was completed" : "is due")
     </label>
+    <div class="govuk-hint" id="duedate-hint">For example, 30/04/@DateTime.Now.Year</div>
     <div class="date-error-1 form-error govuk-hint"></div>
     <div class="date-error-2 form-error govuk-hint"></div>
-    <input class="app-input" id="date" name="duedate" type="date" asp-for="@Model.Task.DueDate">
+    <input class="app-input" id="date" name="duedate" type="date" asp-for="@Model.Task.DueDate" aria-describedby="duedate-hint">
 </div>
 <div class="app-form-group">
     <label class="app-label" for="time">
