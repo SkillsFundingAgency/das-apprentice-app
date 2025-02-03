@@ -3,7 +3,6 @@
     public static class Constants
     {
         public const string StubAuthCookieName = "SFA.ApprenticeApp.StubAuthCookie";
-
         public const string WelcomeSplashScreenCookieName = "SFA.ApprenticeApp.WelcomeSplashScreen";
         public const string TaskFiltersDoneCookieName = "SFA.ApprenticeApp.TaskFiltersDone";
         public const string TaskFiltersTodoCookieName = "SFA.ApprenticeApp.TaskFiltersTodo";
