@@ -40,7 +40,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
                 RequestServices = serviceProvider.Object
             };
 
-            var actual = controller.SigningOut();
+            var actual = controller.SignOut();
             actual.Should().NotBeNull();
         }
     }

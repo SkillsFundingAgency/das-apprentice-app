@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
-using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
@@ -115,7 +113,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         [Route("apprentice-signed-out", Name = RouteNames.SignedOut)]
-        public async Task<IActionResult> SigningOut()
+        public async Task<IActionResult> SignOut()
         {
             var idToken = await HttpContext.GetTokenAsync("id_token");
 
@@ -123,23 +121,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             authenticationProperties.Parameters.Clear();
             authenticationProperties.Parameters.Add("id_token", idToken);
 
+            var schemes = new List<string>
+        {
+            CookieAuthenticationDefaults.AuthenticationScheme
+        };
             _ = bool.TryParse(_appConfig.StubAuth, out var stubAuth);
-           
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            if(!stubAuth)
+            if (!stubAuth)
             {
-                await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+                schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
             }
 
-            HttpContext.Response.Cookies.Delete(Constants.ApprenticeshipIdClaimKey);
-            HttpContext.Response.Cookies.Delete(Constants.StandardUIdClaimKey);
-            HttpContext.Response.Cookies.Delete(Constants.AuthCookieName);
-
-            return RedirectToAction("Index", "Home");
+            return SignOut(
+                authenticationProperties,
+                schemes.ToArray());
         }
-
-        
 
         [HttpGet]
         [Authorize]
@@ -171,6 +166,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
-
     }
 }
