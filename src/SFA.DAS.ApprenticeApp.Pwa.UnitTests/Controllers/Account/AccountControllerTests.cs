@@ -208,5 +208,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ControllerName.Should().Be("Terms");
         }
 
+        [Test, MoqAutoData]
+        public void StubSignedIn_Fails_In_Prod(
+             [Frozen] Mock<IConfiguration> configuration,
+             [Greedy] AccountController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var emailClaim = new Claim(ClaimTypes.Email, "test@test.com");
+            var nameClaim = new Claim(ClaimTypes.NameIdentifier, "test");
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+     {
+         emailClaim,
+         nameClaim
+     })});
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("PRD");
+            var result = controller.StubSignedIn();
+            result.Should().BeOfType(typeof(NotFoundResult));
+        }
     }
 }
