@@ -51,24 +51,29 @@ Layout = null;
                </p>
                <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
             </div>
-         </details>
-         <partial name="_PopupFilter.cshtml" />
-      </div>
-      <div class="app-tag-wrap">
-         <div id="filters-set" class="app-tag-scroll"></div>
-      </div>
-      @{
-      string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
-      int ksbCount = 1;
-      foreach (var KSBType in KSBTypes)
-      {
-      <div class="app-tabs__panel" id="@KSBType.ToLower()">
-         @foreach (var ksb in Model.Ksbs)
-         {
-         if (KSBType == ksb.Type.ToString())
-         {
-             var statusTitleDisplayClass = "";
-             var statusTitleDisplay = "";
+        </details>
+        <partial name="_PopupFilter.cshtml" />
+
+</div>
+
+        <div class="app-tag-wrap">
+            <div id="filters-set" class="app-tag-scroll"></div>
+        </div>
+
+        @{
+            string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
+            int ksbCount = 1;
+
+            foreach (var KSBType in KSBTypes)
+            {
+                <div class="app-tabs__panel" id="@KSBType.ToLower()">
+                    @foreach (var ksb in Model.Ksbs.OrderBy(k => int.Parse(k.Key.Substring(1))))
+                    {
+                        if (KSBType == ksb.Type.ToString())
+                        {
+
+                            var statusTitleDisplayClass = "";
+                            var statusTitleDisplay = "";
 
              if (ksb.Progress != null)
              {

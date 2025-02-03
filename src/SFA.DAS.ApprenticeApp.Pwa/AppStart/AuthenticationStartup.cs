@@ -23,23 +23,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             services.AddTransient((_) => config);
         }
 
-
-        private static IServiceCollection AddApplicationAuthorisation(
-            this IServiceCollection services)
-        {
-            services.AddAuthorization();
-            services.AddScoped<AuthenticatedUser>();
-            services.AddScoped(s => s
-                .GetRequiredService<IHttpContextAccessor>().HttpContext.User);
-
-            return services;
-        }
-
         public static void AddGovLoginAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var cookieDomain = AppDomainExtensions.GetDomain(configuration["ResourceEnvironmentName"]);
             var stubLoginRedirect = string.IsNullOrEmpty(cookieDomain) ? "" : $"https://{cookieDomain}/account-details";
-            var signedOutRedirectUrl = string.IsNullOrEmpty(cookieDomain) ? "https://localhost:5003/apprentice-signed-out" : $"https://{cookieDomain}/apprentice-signed-out";
+            var signedOutRedirectUrl = string.IsNullOrEmpty(cookieDomain) ? "https://localhost:5003/home" : $"https://{cookieDomain}/home";
             services.AddAndConfigureGovUkAuthentication(configuration,
                 typeof(ApprenticeAccountPostAuthenticationClaimsHandler), signedOutRedirectUrl, "/account-details", cookieDomain, stubLoginRedirect);
 

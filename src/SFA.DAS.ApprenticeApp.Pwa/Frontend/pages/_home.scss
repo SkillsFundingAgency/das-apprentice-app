@@ -33,4 +33,10 @@
 
 .app-pages-home__logo {
   max-width: 100%;
+  @include govuk-media-query(tablet) {
+    max-width: 50%;
+  }
+  @include govuk-media-query(desktop) {
+    max-width: 33%;
+  }
 }

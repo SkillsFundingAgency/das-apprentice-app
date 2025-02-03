@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
 
-                if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0)
+                if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
                 {
                     string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController Index.";
                     _logger.LogWarning(noKsbMessage);
@@ -76,7 +76,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
 
-                if (apprenticeKsbResult == null || apprenticeKsbResult.Count == 0)
+                if (apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
                 {
                     string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController LinkKsbs.";
                     _logger.LogWarning(noKsbMessage);
