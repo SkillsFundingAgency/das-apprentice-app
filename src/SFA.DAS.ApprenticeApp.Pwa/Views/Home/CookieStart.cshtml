@@ -3,22 +3,30 @@
     ViewData["Title"] = "Home Page";
     Layout = "_LayoutNoTracking";
 }
-
 <div class="app-pages-home">
-    <p>IMAGE</p>
-    <h1>Cookies on Your Apprenticeship</h1>
-
-    <p>We use some essential cookies to make this service work.</p>
-    <p>We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
-
-    <form action="" method="post">
-        <input type="submit" value="Accept additional cookies" name="action:AcceptCookies" formaction="AcceptCookies"/>
-        <input type="submit" value="Reject additional cookies" name="action:DeclineCookies" formaction="DeclineCookies"/>
-    </form>
-
-    <p>-- View cookies</p>
-    <p>Cookies are files saved on your phone, tablet or computer when you visit an app or website. We use cookies to store information about how you use this app, such as the pages you visit.</p>
-    <p>We use Google Analytics and Microsoft Clarity to measure how you use the app so we can improve it based on user needs. We do not allow Google or Microsoft to use or share the data about how you use this app.</p>
+   <div class="app-cookie-banner">
+      <img src="/assets/images/YourApprenticeship.svg" alt="Your Apprenticeship"
+         class="app-cookie-banner__logo" />
+      <h1 class="govuk-heading-l">Cookies on Your Apprenticeship</h1>
+      <p>We use some essential cookies to make this service work.</p>
+      <p>We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
+      <form method="post" class="app-cookie-banner__form">
+         <div class="govuk-button-group">
+            <input type="submit" value="Accept additional cookies" name="action:AcceptCookies" formaction="AcceptCookies" class="govuk-button" />
+            <input type="submit" value="Reject additional cookies" name="action:DeclineCookies" formaction="DeclineCookies"  class="govuk-button" />
+         </div>
+      </form>
+      <details class="govuk-details app-cookie-banner__details">
+         <summary class="govuk-details__summary app-cookie-banner__details-summary">
+            <span class="govuk-details__summary-text app-cookie-banner__details-summary-text">
+            View cookies
+            </span>
+            <span class="app-cookie-banner__details-chevron"></span>
+         </summary>
+         <div class="govuk-details__text app-cookie-banner__details-text">
+            <p>Cookies are files saved on your phone, tablet or computer when you visit an app or website. We use cookies to store information about how you use this app, such as the pages you visit.</p>
+            <p>We use Google Analytics and Microsoft Clarity to measure how you use the app so we can improve it based on user needs. We do not allow Google or Microsoft to use or share the data about how you use this app.</p>
+         </div>
+      </details>
+   </div>
 </div>
-
-
