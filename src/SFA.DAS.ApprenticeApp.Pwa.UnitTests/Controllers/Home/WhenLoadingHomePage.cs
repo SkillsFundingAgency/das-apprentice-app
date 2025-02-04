@@ -46,7 +46,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
                      [Frozen] ApplicationConfiguration configuration,
                     [Frozen] Mock<IOuterApiClient> client,
                     [Frozen] ApprenticeDetails apprenticeDetails,
-                    [Greedy] HomeController controller)
+                    [Greedy] HomeController controller,
+                    [Frozen] Mock<IRequestCookieCollection> cookies)
         {
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
@@ -60,6 +61,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
                 new Claim(Constants.ApprenticeNameClaimKey, "user1@test.com", ClaimValueTypes.String)
             }, "Custom");
 
+            cookies.Setup(c => c[Constants.CookieTrackCookieName]).Returns("1");
+            httpContext.Request.Cookies = cookies.Object;            
             httpContext.User = new ClaimsPrincipal(identity);
             configuration.WhiteListEmails = "{ \"Emails\" : [\"user1@test.com\", \"user2@test.com\"] }";
             apprenticeDetails.MyApprenticeship = new MyApprenticeship();
@@ -67,7 +70,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
 
             var result = await controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
-
         }
 
             [Test, MoqAutoData]
@@ -99,5 +101,75 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
                     result.Should().NotBeNull();
                 }
             }
+            
+            [Test, MoqAutoData]
+            public async Task Then_cookie_start_screen_loads([Greedy] HomeController controller, [Frozen] Mock<IRequestCookieCollection> cookies)
+            {
+                
+                var httpContext = new DefaultHttpContext();
+                var apprenticeId = Guid.NewGuid();
+                var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+                var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+                {
+                    apprenticeIdClaim
+                })});
+                httpContext.User = claimsPrincipal;
+                controller.ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                };
+
+                cookies.Setup(c => c[Constants.CookieTrackCookieName]).Returns("1");
+                httpContext.Request.Cookies = cookies.Object;
+                httpContext.User = claimsPrincipal;
+                controller.ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                };
+
+                var result = await controller.CookieStart() as ActionResult;
+                result.Should().NotBeNull();
+            }
+            
+            [Test, MoqAutoData]
+            public async Task Then_cookie_AcceptCookies_redirect([Greedy] HomeController controller)
+            {
+                var httpContext = new DefaultHttpContext();
+                var apprenticeId = Guid.NewGuid();
+                var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+                var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+                {
+                    apprenticeIdClaim
+                })});
+                httpContext.User = claimsPrincipal;
+                controller.ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                };
+
+                var result = await controller.AcceptCookies() as ActionResult;
+                result.Should().NotBeNull();
+            }                 
+            
+            [Test, MoqAutoData]
+            public async Task Then_cookie_DeclineCookies_redirect([Greedy] HomeController controller)
+            {
+                var httpContext = new DefaultHttpContext();
+                var apprenticeId = Guid.NewGuid();
+                var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+                var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+                {
+                    apprenticeIdClaim
+                })});
+                httpContext.User = claimsPrincipal;
+                controller.ControllerContext = new ControllerContext
+                {
+                    HttpContext = httpContext
+                };
+
+                var result = await controller.DeclineCookies() as ActionResult;
+                result.Should().NotBeNull();
+            }             
+            
         }
     }

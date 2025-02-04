@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Access denied";
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header govuk-!-margin-bottom-8">
+            <div class="app-page-header__back">
+                <a asp-action="Index" asp-controller="Home" class="app-back-link">Close</a>
+            </div>
+            <h1 class="app-page-header__heading">Sorry, your account does not have sufficient privileges</h1>
+            <div class="app-page-header__forward"></div>
+        </div>
+
+        <p class="govuk-body">
+            If you typed the web address, check it is correct.
+        </p>
+        <p class="govuk-body">
+            If you pasted the web address, check you copied the entire address.
+        </p>
+        <p class="govuk-body">
+            If you need help, you can call 08000 150 600 or email <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk">helpdesk@manage-apprenticeships.service.gov.uk</a>. Our opening times are 8am to 8pm, Monday to Friday. During our opening times, we will reply to emails within 4 hours.
+        </p>        
+        
+    </div>
+</div>

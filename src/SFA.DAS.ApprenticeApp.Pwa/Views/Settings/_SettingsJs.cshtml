@@ -3,49 +3,118 @@
 
 <script type="text/javascript">
 
-const notificationDisplaySettings = () => {
-  const notificationsSwitch = document.getElementById("notificationSwitch");
-  if (Notification.permission === "granted") {
-    const notifyOn = document.getElementById("notificationsOn");
-    if (notifyOn) {
-      notifyOn.style.display = "block";
-    }
-    const notifyOff = document.getElementById("notificationsOff");
-    if (notifyOff) {
-      notifyOff.style.display = "none";
-    }
+  const notificationDisplaySettings = () => {
+    const notificationsSwitch = document.getElementById("notificationSwitch");
+    if (Notification.permission === "granted") {
+      const notifyOn = document.getElementById("notificationsOn");
+      if (notifyOn) {
+        notifyOn.style.display = "block";
+      }
+      const notifyOff = document.getElementById("notificationsOff");
+      if (notifyOff) {
+        notifyOff.style.display = "none";
+      }
 
-    notificationsSwitch.checked = true;
-  }
-
-  if (Notification.permission === "denied" || Notification.permission === "default") {
-    const notifyOn = document.getElementById("notificationsOn");
-    if (notifyOn) {
-      notifyOn.style.display = "none";
-    }
-    const notifyOff = document.getElementById("notificationsOff");
-    if (notifyOff) {
-      notifyOff.style.display = "block";
+      notificationsSwitch.checked = true;
     }
 
-    notificationsSwitch.checked = false;
-  }
-};
+    if (Notification.permission === "denied" || Notification.permission === "default") {
+      const notifyOn = document.getElementById("notificationsOn");
+      if (notifyOn) {
+        notifyOn.style.display = "none";
+      }
+      const notifyOff = document.getElementById("notificationsOff");
+      if (notifyOff) {
+        notifyOff.style.display = "block";
+      }
 
-notificationDisplaySettings();
-function toggleNotifications() {
-  const notificationsSwitch = document.getElementById("notificationSwitch");
-  if (notificationsSwitch.checked) {
-    notificationsSwitch.checked = false;
-  } else {
-    notificationsSwitch.checked = true;
-  }
+      notificationsSwitch.checked = false;
+    }
+  };
 
-  const modal = document.querySelector(".change-notifications");
+  const trackCookiesSettings = () => {
+    const trackcookiesSwitch = document.getElementById("trackcookiesSwitch");
+    if (getCookie("SFA.ApprenticeApp.CookieTrack") == "1") {
+      const trackcookiesOn = document.getElementById("trackcookiesOn");
+      if (trackcookiesOn) {
+        trackcookiesOn.style.display = "block";
+      }
+      const trackcookiesOff = document.getElementById("trackcookiesOff");
+      if (trackcookiesOff) {
+        trackcookiesOff.style.display = "none";
+      }
+
+      trackcookiesSwitch.checked = true;
+    }
+
+    if (getCookie("SFA.ApprenticeApp.CookieTrack") == "0") {
+      const trackcookiesOn = document.getElementById("trackcookiesOn");
+      if (trackcookiesOn) {
+        trackcookiesOn.style.display = "none";
+      }
+      const trackcookiesOff = document.getElementById("trackcookiesOff");
+      if (trackcookiesOff) {
+        trackcookiesOff.style.display = "block";
+      }
+
+      trackcookiesSwitch.checked = false;
+    }
+  };
+
+  notificationDisplaySettings();
+  trackCookiesSettings();
+
+  function toggleNotifications() {
+    const notificationsSwitch = document.getElementById("notificationSwitch");
+    if (notificationsSwitch.checked) {
+      notificationsSwitch.checked = false;
+    } else {
+      notificationsSwitch.checked = true;
+    }
+
+    const modal = document.querySelector(".change-notifications");
     modal.ariaHidden = false;
     modal.classList.toggle("app-modal--visible");
     modal.querySelector('.app-modal__content').focus()
 
-  notificationDisplaySettings();
-}
+    notificationDisplaySettings();
+  }
+
+  function toggleTrackCookies() {
+    const trackcookiesSwitch = document.getElementById("trackcookiesSwitch");
+    if (trackcookiesSwitch.checked) {
+      // update cookie with 1
+      setCookie("SFA.ApprenticeApp.CookieTrack","0","99")
+      trackcookiesSwitch.checked = false;
+    } else {
+      // update cookie with 1
+      setCookie("SFA.ApprenticeApp.CookieTrack","1","99")
+      trackcookiesSwitch.checked = true;
+    }
+    const modal = document.querySelector(".change-notifications");
+    modal.ariaHidden = false;
+    modal.querySelector('.app-modal__content').focus()
+
+  }
+
+  function eraseCookie(name) {
+    document.cookie = name+'=; Max-Age=-99999999;';
+  }
+  function setCookie(cName, cValue, expDays) {
+    let date = new Date();
+    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+  }
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+  }  
+  
 </script>
