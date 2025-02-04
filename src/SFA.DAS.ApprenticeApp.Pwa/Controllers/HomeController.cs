@@ -90,7 +90,7 @@ public class HomeController : Controller
             Expires = DateTime.Now.AddYears(99),
             Path = "/",
             Secure = true,
-            HttpOnly = true
+            HttpOnly = false
         };
         Response.Cookies.Append(Constants.CookieTrackCookieName, "0", cookieOptions);
         
@@ -105,7 +105,7 @@ public class HomeController : Controller
             Expires = DateTime.Now.AddYears(99),
             Path = "/",
             Secure = true,
-            HttpOnly = true
+            HttpOnly = false
         };
         Response.Cookies.Append(Constants.CookieTrackCookieName, "1", cookieOptions);
         

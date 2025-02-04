@@ -18,7 +18,10 @@
       notificationsSwitch.checked = true;
     }
 
-    if (Notification.permission === "denied" || Notification.permission === "default") {
+    if (
+      Notification.permission === "denied" ||
+      Notification.permission === "default"
+    ) {
       const notifyOn = document.getElementById("notificationsOn");
       if (notifyOn) {
         notifyOn.style.display = "none";
@@ -33,32 +36,32 @@
   };
 
   const trackCookiesSettings = () => {
-    const trackcookiesSwitch = document.getElementById("trackcookiesSwitch");
-    if (getCookie("SFA.ApprenticeApp.CookieTrack") == "1") {
-      const trackcookiesOn = document.getElementById("trackcookiesOn");
-      if (trackcookiesOn) {
-        trackcookiesOn.style.display = "block";
-      }
-      const trackcookiesOff = document.getElementById("trackcookiesOff");
-      if (trackcookiesOff) {
-        trackcookiesOff.style.display = "none";
-      }
+    const trackCookiesSwitch = document.getElementById("trackCookiesSwitch");
+    const trackCookiesContentOn = document.getElementById(
+      "trackCookiesContentOn",
+    );
+    const trackCookiesContentOff = document.getElementById(
+      "trackCookiesContentOff",
+    );
 
-      trackcookiesSwitch.checked = true;
+    if (
+      !trackCookiesSwitch ||
+      !trackCookiesContentOff ||
+      !trackCookiesContentOn
+    ) {
+      return;
     }
 
-    if (getCookie("SFA.ApprenticeApp.CookieTrack") == "0") {
-      const trackcookiesOn = document.getElementById("trackcookiesOn");
-      if (trackcookiesOn) {
-        trackcookiesOn.style.display = "none";
-      }
-      const trackcookiesOff = document.getElementById("trackcookiesOff");
-      if (trackcookiesOff) {
-        trackcookiesOff.style.display = "block";
-      }
-
-      trackcookiesSwitch.checked = false;
+    if (getCookie("SFA.ApprenticeApp.CookieTrack") === "1") {
+      trackCookiesContentOn.style.display = "block";
+      trackCookiesContentOff.style.display = "none";
+      trackCookiesSwitch.checked = true;
+    } else {
+      trackCookiesContentOn.style.display = "none";
+      trackCookiesContentOff.style.display = "block";
+      trackCookiesSwitch.checked = false;
     }
+    trackCookiesSwitch.addEventListener("change", toggleTrackCookies);
   };
 
   notificationDisplaySettings();
@@ -75,46 +78,68 @@
     const modal = document.querySelector(".change-notifications");
     modal.ariaHidden = false;
     modal.classList.toggle("app-modal--visible");
-    modal.querySelector('.app-modal__content').focus()
+    modal.querySelector(".app-modal__content").focus();
 
     notificationDisplaySettings();
   }
 
   function toggleTrackCookies() {
-    const trackcookiesSwitch = document.getElementById("trackcookiesSwitch");
-    if (trackcookiesSwitch.checked) {
-      // update cookie with 1
-      setCookie("SFA.ApprenticeApp.CookieTrack","0","99")
-      trackcookiesSwitch.checked = false;
+    const trackCookiesSwitch = document.getElementById("trackCookiesSwitch");
+    const trackCookiesContentOn = document.getElementById(
+      "trackCookiesContentOn",
+    );
+    const trackCookiesContentOff = document.getElementById(
+      "trackCookiesContentOff",
+    );
+    if (!trackCookiesSwitch.checked) {
+      setCookie("SFA.ApprenticeApp.CookieTrack", "0", "999");
+      trackCookiesContentOn.style.display = "none";
+      trackCookiesContentOff.style.display = "block";
     } else {
-      // update cookie with 1
-      setCookie("SFA.ApprenticeApp.CookieTrack","1","99")
-      trackcookiesSwitch.checked = true;
+      setCookie("SFA.ApprenticeApp.CookieTrack", "1", "999");
+      trackCookiesContentOn.style.display = "block";
+      trackCookiesContentOff.style.display = "none";
     }
-    const modal = document.querySelector(".change-notifications");
-    modal.ariaHidden = false;
-    modal.querySelector('.app-modal__content').focus()
-
   }
 
   function eraseCookie(name) {
-    document.cookie = name+'=; Max-Age=-99999999;';
+    document.cookie = name + "=; Max-Age=-99999999;";
   }
-  function setCookie(cName, cValue, expDays) {
-    let date = new Date();
-    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + date.toUTCString();
-    document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+
+  function setCookie(name, value, expDays) {
+    let cookieString = name + "=" + value + "; path=/;SameSite=None";
+    if (expDays) {
+      let date = new Date();
+      date.setTime(date.getTime() + expDays * 24 * 60 * 60 * 1000);
+      cookieString = cookieString + "; expires=" + date.toGMTString();
+    }
+    cookieString = cookieString + "; Secure";
+    cookieString + ";domain=" + getDomain();
+    document.cookie = cookieString;
   }
   function getCookie(name) {
     var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-      var c = ca[i];
-      while (c.charAt(0)==' ') c = c.substring(1,c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    var cookies = document.cookie.split(";");
+    for (var i = 0, len = cookies.length; i < len; i++) {
+      var cookie = cookies[i];
+      while (cookie.charAt(0) === " ") {
+        cookie = cookie.substring(1, cookie.length);
+      }
+      if (cookie.indexOf(nameEQ) === 0) {
+        return decodeURIComponent(cookie.substring(nameEQ.length));
+      }
     }
     return null;
-  }  
+  }
+
+  function getDomain() {
+    return window.location.hostname.indexOf(".") !== -1
+      ? "." +
+          window.location.hostname.slice(
+            window.location.hostname.indexOf(".") + 1,
+          )
+      : window.location.hostname;
+  }
+
   
 </script>
