@@ -21,6 +21,18 @@
     </div>
 </div>
 <div class="app-overlay__content add-edit-content-area">
+    <div class="govuk-error-summary govuk-visually-hidden app-error-summary" aria-hidden="true" id="errorSummary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+
+          </ul>
+        </div>
+      </div>
+    </div>
     <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
         <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
         <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />

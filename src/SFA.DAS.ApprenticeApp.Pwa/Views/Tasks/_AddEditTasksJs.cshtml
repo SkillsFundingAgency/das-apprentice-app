@@ -6,61 +6,96 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        const resetErrorMessages = () => {
+            const errorElements = document.querySelectorAll('.govuk-error-message');
+            errorElements.forEach((errorElement) => {
+                errorElement.innerHTML = '';
+            });
+            const inputElements = document.querySelectorAll('.app-input');
+            inputElements.forEach((inputElement) => {
+                inputElement.classList.remove('app-input--error');
+            });
+        }
+
+        const populateErrorMessages = (validationErrors) => {
+            validationErrors.forEach((error) => {
+                const errorElement = document.getElementById(`${error.elementId}-error`);
+                errorElement.innerHTML = error.text;
+                document.getElementById(`${error.elementId}`).classList.add('app-input--error');
+            });
+        }
+
+        const showErrorSummary = (validationErrors) => {
+            const errorSummary = document.getElementById('errorSummary');
+            const errorSummaryList = errorSummary.querySelector('.govuk-error-summary__list');
+            errorSummaryList.innerHTML = '';
+
+            validationErrors.forEach((error) => {
+                const errorSummaryItem = document.createElement('li');
+                errorSummaryItem.innerHTML = `<a href="#${error.elementId}">${error.text}</a>`;
+                errorSummaryList.appendChild(errorSummaryItem);
+            });
+
+            errorSummary.classList.remove('govuk-visually-hidden');
+            errorSummary.tabIndex = 0;
+            errorSummary.ariaHidden = false;
+            errorSummary.ariaLive = 'polite';
+            errorSummary.focus();
+        }
+
         $(".add-task").click(function (e) {
-            var titleValid1 = true, titleValid2 = true, noteValid = true, dateValid1 = true, dateValid2 = true, timeValid = true;
+
+            const validationErrors = [];
 
             if ($("#Task_Title").val().length > 150) {
-                $(".title-error-1").text("Name of the task must be 150 characters or less");
-                titleValid1 = false;
-            } else {
-                $(".title-error-1").text("");
+                validationErrors.push({
+                    elementId: "Task_Title",
+                    text: "Name of the task must be 150 characters or less"
+                });
             }
 
-            if ($("#Task_Title").val().length == 0) {
-                $(".title-error-2").text("Enter the name of the task");
-                titleValid2 = false;
-            } else {
-                $(".title-error-2").text("");
+            if ($("#Task_Title").val().length === 0) {
+                validationErrors.push({
+                    elementId: "Task_Title",
+                    text: "Enter the name of the task"
+                });
             }
 
             if ($("#note").val().length > 1000) {
-                $(".note-error").text("Note must be 1000 characters or less");
-                noteValid = false;
-            } else {
-                $(".note-error").text("");
-            }
-
-            if (!isValidDate($("#date").val())) {
-                $(".date-error-1").text("Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date");
-                dateValid1 = false;
-            }
-            else {
-                $(".date-error-1").text("");
+                validationErrors.push({
+                    elementId: "note",
+                    text: "Note must be 1000 characters or less"
+                });
             }
 
             if ($("#date").val() == "") {
-                $(".date-error-2").text("Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")");
-                dateValid2 = false;
+                validationErrors.push({
+                    elementId: "date",
+                    text: "Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")"
+                });
             }
-            else {
-                $(".date-error-2").text("");
+
+            if ($("#date").val() !== "" && !isValidDate($("#date").val())) {
+                validationErrors.push({
+                    elementId: "date",
+                    text: "Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date"
+                });
             }
 
             if ($("#time").val() == "") {
-                $(".time-error").text("Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")");
-                timeValid = false;
-            }
-            else {
-                $(".time-error").text("");
+                validationErrors.push({
+                    elementId: "time",
+                    text: "Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")"
+                });
             }
 
-            if (titleValid1 == true &&
-                titleValid2 == true &&
-                noteValid == true &&
-                dateValid1 == true &&
-                dateValid2 == true &&
-                timeValid == true) {
-                $(".form").submit();
+            if (validationErrors.length > 0) {
+                resetErrorMessages();
+                populateErrorMessages(validationErrors);
+                showErrorSummary(validationErrors)
+            } else {
+                hideErrorSummary()
+                $("form").submit()
             }
 
         });

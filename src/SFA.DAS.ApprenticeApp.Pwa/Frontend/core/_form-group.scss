@@ -1,13 +1,5 @@
 .app-form-group {
-  margin-bottom: $app-gap;
-}
-
-.form-error {
-  color: #d4351c;
-
-  &:empty {
-    display: none;
-  }
+  margin-bottom: 1.2rem;
 }
 
 .app-form-group--flex-row {

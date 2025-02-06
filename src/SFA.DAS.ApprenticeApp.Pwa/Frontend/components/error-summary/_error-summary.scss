@@ -1,0 +1,22 @@
+.app-error-summary {
+  border-radius: 1rem;
+  padding: 1rem;
+
+  .govuk-error-summary__list {
+    li {
+      margin-bottom: .5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      font-weight: 400;
+    }
+  }
+}
+
+.govuk-error-message {
+  font-weight: 400;
+}

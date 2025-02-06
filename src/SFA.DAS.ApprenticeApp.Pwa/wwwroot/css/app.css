@@ -7834,14 +7834,7 @@ p + .app-card__heading,
 }
 
 .app-form-group {
-  margin-bottom: 1rem;
-}
-
-.form-error {
-  color: #d4351c;
-}
-.form-error:empty {
-  display: none;
+  margin-bottom: 1.2rem;
 }
 
 .app-form-group--flex-row {
@@ -8601,6 +8594,24 @@ input {
   color: inherit;
 }
 
+.app-error-summary {
+  border-radius: 1rem;
+  padding: 1rem;
+}
+.app-error-summary .govuk-error-summary__list li {
+  margin-bottom: 0.5rem;
+}
+.app-error-summary .govuk-error-summary__list li:last-child {
+  margin-bottom: 0;
+}
+.app-error-summary .govuk-error-summary__list a {
+  font-weight: 400;
+}
+
+.govuk-error-message {
+  font-weight: 400;
+}
+
 .app-fab {
   font-weight: 700;
   position: fixed;
@@ -9183,7 +9194,7 @@ input {
   font-size: 1.125rem;
   line-height: 1.1111111111;
   border-radius: 5px;
-  padding: 1rem;
+  padding: 1rem 2rem 1rem 1rem;
   display: block;
   background: #fff;
   text-decoration: none;
@@ -9493,6 +9504,10 @@ input {
 }
 .app-input.app-input--error, .app-input.govuk-textarea--error {
   border-color: #d4351c;
+}
+.app-input.app-input--error {
+  border-color: #d4351c;
+  border-width: 2px;
 }
 
 .app-pages-home {
