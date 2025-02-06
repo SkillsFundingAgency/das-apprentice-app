@@ -1,28 +1,22 @@
 ﻿using AutoFixture.NUnit3;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.ApprenticeApp.Pwa.Controllers;
-using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Application;
-using SFA.DAS.Testing.AutoFixture;
-using System.Security.Claims;
-using System;
-using System.Threading.Tasks;
-using System.Net;
-using FluentAssertions.Execution;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
-using System.Linq;
+using SFA.DAS.ApprenticeApp.Pwa.Controllers;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Routing;
+using SFA.DAS.Testing.AutoFixture;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 {

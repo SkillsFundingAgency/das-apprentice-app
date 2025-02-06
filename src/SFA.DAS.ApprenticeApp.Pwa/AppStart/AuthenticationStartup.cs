@@ -3,7 +3,6 @@ using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.GovUK.Auth.AppStart;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
