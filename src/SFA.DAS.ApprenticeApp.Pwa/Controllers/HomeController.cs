@@ -19,6 +19,12 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
+        var cookie = Request.Cookies[Constants.CookieTrackCookieName];
+        if (cookie == null)
+        {
+            return RedirectToAction("CookieStart", "Home");
+        }
+        
         if (HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
@@ -36,7 +42,53 @@ public class HomeController : Controller
         var vm = new HomeViewModel();
         return View(vm);
     }
+    
+    public async Task<IActionResult> CookieStart()
+    {
+        // if cookie exists bypass page
+        var cookie = Request.Cookies[Constants.CookieTrackCookieName];
 
+        if (cookie == null)
+        {
+            var vm = new CookieStartViewModel();
+            return View(vm);
+        }
+        else
+        {
+            return RedirectToAction("Index", "Home");
+        }
+    }
+
+    [HttpPost("DeclineCookies")]
+    public async Task<IActionResult> DeclineCookies()
+    {
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTime.Now.AddYears(99),
+            Path = "/",
+            Secure = true,
+            HttpOnly = false
+        };
+        Response.Cookies.Append(Constants.CookieTrackCookieName, "0", cookieOptions);
+        
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost("AcceptCookies")]
+    public async Task<IActionResult> AcceptCookies()
+    {
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTime.Now.AddYears(99),
+            Path = "/",
+            Secure = true,
+            HttpOnly = false
+        };
+        Response.Cookies.Append(Constants.CookieTrackCookieName, "1", cookieOptions);
+        
+        return RedirectToAction("Index", "Home");
+    }
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
@@ -48,4 +100,3 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
-

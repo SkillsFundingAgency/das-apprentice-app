@@ -75,13 +75,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseHealthChecks("/ping");
 
+app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
+
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=CookieStart}/{id?}");
 
 app.Use(async (context, next) =>
 {
@@ -104,13 +106,17 @@ app.Use(async (context, next) =>
     {
         context.Response.Headers.Remove("X-Frame-Options");
     }
+    
     context.Response.Headers!.Append("X-Frame-Options", "SAMEORIGIN");
-    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-    context.Response.Headers.Add("X-Xss-Protection", "1");
-    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
-    context.Response.Headers.Add("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers!.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers!.Append("X-Xss-Protection", "1");
+    context.Response.Headers!.Append("X-Permitted-Cross-Domain-Policies", "none");
+    context.Response.Headers!.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    
     await next();
 });
+
+
 
 app.Run();
 
