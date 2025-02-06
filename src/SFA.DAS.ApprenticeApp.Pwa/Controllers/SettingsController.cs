@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
+    [Authorize]
     public class SettingsController : Controller
     {
         private readonly ILogger<SettingsController> _logger;
@@ -13,6 +15,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             _logger = logger;
         }
+        
         public IActionResult Index()
         {
             _logger.LogInformation("Settings page loaded.");

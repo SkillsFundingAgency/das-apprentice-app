@@ -8,7 +8,7 @@
 
 <div class="app-page-header">
     <div class="app-page-header__back"><a asp-action="YourAccount" asp-controller="Account"
-            class="app-back-link">Back</a>
+                                          class="app-back-link">Back</a>
     </div>
     <h1 class="app-page-header__heading">Settings</h1>
     <div class="app-page-header__forward"></div>
@@ -51,13 +51,43 @@
             <label class="toggle">
                 <span class="govuk-visually-hidden">Allow push notifications</span>
                 <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()"
-                    onkeydown="toggleNotifications()" onkeypress="toggleNotifications()"  tabindex="0">
+                       onkeydown="toggleNotifications()" onkeypress="toggleNotifications()"  tabindex="0">
                 <span class="slider"></span>
             </label>
         </div>
     </div>
 </div>
 
+<div class="app-card">
+    <div class="app-settings-wrap settings-grid-container">
+        <div class="app-settings-content-wrap" style="display:none" id="trackCookiesContentOn">
+            <h2 class="govuk-heading-m">
+                Tracking analytics
+            </h2>
+            <p class="govuk-body">
+                You have turned on additional cookies so we can remember your settings, understand how people use the service and make improvements.
+            </p>
+        </div>
+        <div class="app-settings-content-wrap" id="trackCookiesContentOff">
+            <h2 class="govuk-heading-m">
+                Tracking analytics
+            </h2>
+            <p class="govuk-body">
+                You have turned off additional cookies.
+            </p>
+        <p class="govuk-body">
+                We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.
+            </p>
+        </div>
+        <div class="app-settings-switch-wrap">
+            <label class="toggle">
+                <span class="govuk-visually-hidden">Allow tracking analytics</span>
+                <input type="checkbox" id="trackCookiesSwitch" tabindex="0">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
 
 <!-- HTML for the popup box -->
 <div class="app-modal change-notifications" aria-hidden="true">
@@ -65,7 +95,7 @@
         <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
         <div class="govuk-button-group">
             <button type="button" class="govuk-button" onclick="toggleNotifications()" onkeydown="toggleNotifications()"
-                onkeypress="toggleNotifications()">OK</button>
+                    onkeypress="toggleNotifications()">OK</button>
         </div>
     </div>
 </div>
