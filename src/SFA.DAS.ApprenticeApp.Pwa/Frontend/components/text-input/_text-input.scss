@@ -22,4 +22,9 @@
   &.govuk-textarea--error {
     border-color: $govuk-error-colour;
   }
+
+  &.app-input--error {
+    border-color: $govuk-error-colour;
+    border-width: 2px;
+  }
 }

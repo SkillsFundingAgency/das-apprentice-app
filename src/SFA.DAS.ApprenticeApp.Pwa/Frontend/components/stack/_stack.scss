@@ -5,6 +5,7 @@
 
 .app-stack > li.app-stack__list-item {
   margin-bottom: $app-gap;
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -14,12 +15,13 @@
   @include govuk-link-style-text;
   @include govuk-font-size(24);
   border-radius: $app-border-radius;
-  padding: $app-gap;
+  padding: 1rem 2rem 1rem 1rem;
   display: block;
   background: #fff;
   text-decoration: none;
   font-weight: $govuk-font-weight-bold;
   position: relative;
+
   span {
     @include govuk-link-style-text;
     @include govuk-font-size(24);
