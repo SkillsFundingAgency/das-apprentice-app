@@ -81,7 +81,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             };
 
             var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("Error");
+            result.ActionName.Should().Be("EmailMismatchError");
             result.ControllerName.Should().Be("Account");
         }
 
@@ -107,7 +107,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
             client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null });
             var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("Error");
+            result.ActionName.Should().Be("CmadError");
             result.ControllerName.Should().Be("Account");
         }
         //  
