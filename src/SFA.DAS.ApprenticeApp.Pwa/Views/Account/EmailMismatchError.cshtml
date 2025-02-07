@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Check your email address is correct";
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header govuk-!-margin-bottom-8">
+            <div class="app-page-header__back">
+            </div>
+            <h1 class="app-page-header__heading">Check your email address is correct</h1>
+            <div class="app-page-header__forward"></div>
+        </div>
+
+        <p class="govuk-body">We could not match your email address to our records.
+        </p>
+        
+        <p class="govuk-body">Please check you have:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>used the same email address you gave to your training provider; this may be your work email.</li>
+        </ul>
+        <p class="govuk-body">
+            <a href="@Url.Action("Authenticated", "Account")"
+               class="govuk-link">Sign in or create OneLogin with a different email address</a>
+        </p>
+        
+        <p class="govuk-body">
+            If you need more help, you can call <a href="tel:08000150600">08000 150 600</a> or email
+            <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
+               class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>. Our opening times are Monday to
+            Friday, 9am to 5pm. We will reply to emails within 4 hours during our opening times.
+        </p>
+        
+        <p class="govuk-body">
+            You can also visit <a href="https://www.apprenticeships.gov.uk"
+                                  class="govuk-link govuk-link--no-visited-state" target="_blank">apprenticeships.gov.uk</a> for guidance
+            about your apprenticeship.
+        </p>
+        
+    </div>
+</div>
