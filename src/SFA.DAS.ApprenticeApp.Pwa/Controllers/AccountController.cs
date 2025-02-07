@@ -52,15 +52,29 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         return RedirectToAction("Index", "Terms");
                     }
+                    else
+                    {
+                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
+                        _logger.LogInformation(cmaderrormsg);
+                        
+                        return RedirectToAction("CmadError", "Account");
+                    }
                 }
                 catch(Exception ex)
                 {
-                    return RedirectToAction("Error", "Account");
+                    string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
+                    _logger.LogInformation(cmaderrormsg);
+                    
+                    return RedirectToAction("CmadError", "Account");
                 }
 
-                return RedirectToAction("Error", "Account");
+                return RedirectToAction("EmailMismatchError", "Account");
             }
-            return RedirectToAction("Error", "Account");
+            else
+            {
+                return RedirectToAction("EmailMismatchError", "Account");
+            }
+            return RedirectToAction("EmailMismatchError", "Account");
         }
 
         [HttpGet]
@@ -160,6 +174,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
+        
+        [HttpGet]
+        public IActionResult CmadError()
+        {
+            return View();
+        }      
+        
+        [HttpGet]
+        public IActionResult EmailMismatchError()
+        {
+            return View();
+        }             
 
         [HttpGet]
         public IActionResult YourAccount()

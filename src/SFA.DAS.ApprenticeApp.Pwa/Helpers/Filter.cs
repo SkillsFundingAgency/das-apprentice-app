@@ -56,7 +56,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                         }
                     }
                 }
-                return new FilterTaskResults() { FilteredTasks = filteredTasks, HasFilterRun = true };
+                
+                // Tidy collection
+                List<ApprenticeTask> filteredTasksClean = filteredTasks.Distinct().ToList();
+                
+                return new FilterTaskResults() { FilteredTasks = filteredTasksClean, HasFilterRun = true };
             }
             return new FilterTaskResults() { FilteredTasks = new List<ApprenticeTask>(), HasFilterRun = false };
         }

@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "You need to confirm your details";
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header govuk-!-margin-bottom-8">
+            <div class="app-page-header__back">
+            </div>
+            <h1 class="app-page-header__heading">You need to confirm your details</h1>
+            <div class="app-page-header__forward"></div>
+        </div>
+
+        <p class="govuk-body">Our records show that you have not confirmed your details in the apprenticeship service.</p>
+        <p class="govuk-body">To use this app, you need to confirm your details first. You will only need to do this once.</p>
+
+        <p class="govuk-body">
+            <a href="https://my.apprenticeships.education.gov.uk/"
+               class="govuk-button"
+               role="button"
+               target="_blank">
+                Confirm my details
+            </a>
+        </p>
+        
+        <p class="govuk-body">
+            <a href="@Url.Action("Authenticated", "Account")"
+               class="govuk-link">I have confirmed my details</a>
+        </p>
+        
+        <p class="govuk-body">
+            If you need more help, you can call <a href="tel:08000150600">08000 150 600</a> or email
+            <a href="mailto:helpdesk@manage-apprenticeships.service.gov.uk"
+                class="govuk-link">helpdesk@manage-apprenticeships.service.gov.uk</a>. Our opening times are Monday to
+            Friday, 9am to 5pm. We will reply to emails within 4 hours during our opening times.
+        </p>
+        <p class="govuk-body">
+            You can also visit <a href="https://www.apprenticeships.gov.uk"
+                class="govuk-link govuk-link--no-visited-state" target="_blank">apprenticeships.gov.uk</a> for guidance
+            about your apprenticeship.
+        </p>
+    </div>
+</div>
