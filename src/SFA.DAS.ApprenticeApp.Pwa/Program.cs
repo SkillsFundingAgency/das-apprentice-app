@@ -83,7 +83,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=CookieStart}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Use(async (context, next) =>
 {
