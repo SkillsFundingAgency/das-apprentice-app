@@ -7,60 +7,75 @@
     foreach (var KSBType in KSBTypes)
     {
         <div class="app-tabs__panel" id="@KSBType.ToLower()">
-            @foreach (var ksb in Model.Ksbs.OrderBy(k => int.Parse(k.Key.Substring(1))))
-            {
-                if (KSBType == ksb.Type.ToString())
-                {
-                    <div class="app-card ksb-item">
-                        <div class="app-card__header">
-                            <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
-                            <p>
-                                <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" class="app-link">
-                                    <span>Edit</span>
-                                </a>
-                            </p>
-                        </div>
-                        <p>@ksb.Detail</p>
-                        @if (ksb.Progress != null && ksb.Progress.Tasks.Count > 0)
-                        {
-                            <ul class="app-icon-list app-icon-list--muted">
-                                <li>
-                                    <span class="app-icon-list__icon">
-                                        <svg>
-                                            <use xlink:href="/assets/images/icons.svg#tasks"></use>
-                                        </svg>
-                                    </span><span>
-                                        Linked to @ksb.Progress.Tasks.Count.ToString()
-                                        @if (@ksb.Progress.Tasks.Count > 1)
-                                        {
-                                            <text>tasks</text>
-                                        }
-                                        else
-                                        {
-                                            <text>task</text>
-                                        }
-                                    </span>
-                                </li>
-                            </ul>
-                        }
 
-                        @if (ksb.Progress == null)
-                        {
-                            <div class="app-tag app-tag--status-notstarted">
-                                <text>Not started</text>
+            @if (Model?.Ksbs != null)
+            {
+                var orderedKsbs = Model.Ksbs
+                    .Where(k => !string.IsNullOrEmpty(k.Key) && k.Key.Length > 1)
+                    .OrderBy(k =>
+                    {
+                        var numericPart = k.Key.Substring(1);
+                        return int.TryParse(numericPart, out var num) ? num : int.MaxValue;
+                    })
+                    .ToList();
+
+                @foreach (var ksb in orderedKsbs)
+                {
+                    if (KSBType == ksb.Type.ToString())
+                    {
+                        <div class="app-card ksb-item">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading ksb-key">@ksb.Key</h2>
+                                <p>
+                                    <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" class="app-link">
+                                        <span>Edit</span>
+                                    </a>
+                                </p>
                             </div>
-                        }
-                        else
-                        {
-                            var status = ksb.Progress.CurrentStatus;
-                            string statusDisplay = status.GetEnumDescription();
-                            <div class="app-tag app-tag--status-@status.ToString().ToLower()">
-                                <text>@statusDisplay</text>
-                            </div>
-                        }
-                    </div>
+                            <p>@ksb.Detail</p>
+                            @if (ksb.Progress != null && ksb.Progress?.Tasks?.Count > 0)
+                            {
+                                <ul class="app-icon-list app-icon-list--muted">
+                                    <li>
+                                        <span class="app-icon-list__icon">
+                                            <svg>
+                                                <use xlink:href="/assets/images/icons.svg#tasks"></use>
+                                            </svg>
+                                        </span>
+                                        <span>
+                                            Linked to @ksb.Progress.Tasks.Count.ToString()
+                                            @if (@ksb.Progress.Tasks.Count > 1)
+                                            {
+                                                <text>tasks</text>
+                                            }
+                                            else
+                                            {
+                                                <text>task</text>
+                                            }
+                                        </span>
+                                    </li>
+                                </ul>
+                            }
+
+                            @if (ksb.Progress == null)
+                            {
+                                <div class="app-tag app-tag--status-notstarted">
+                                    <text>Not started</text>
+                                </div>
+                            }
+                            else
+                            {
+                                var status = ksb.Progress.CurrentStatus;
+                                string statusDisplay = status.GetEnumDescription();
+                                <div class="app-tag app-tag--status-@status.ToString().ToLower()">
+                                    <text>@statusDisplay</text>
+                                </div>
+                            }
+                        </div>
+                    }
                 }
             }
+            
         </div>
     }
 }

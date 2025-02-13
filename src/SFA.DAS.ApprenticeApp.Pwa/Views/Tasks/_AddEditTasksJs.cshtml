@@ -43,169 +43,176 @@
             errorSummary.focus();
         }
 
-        $(".add-task").click(function (e) {
+        let submittedTaskForm = false
+        
+        $(".add-task").on("click", function (e) {
 
             const validationErrors = [];
 
-            if ($("#Task_Title").val().length > 150) {
-                validationErrors.push({
-                    elementId: "Task_Title",
-                    text: "Name of the task must be 150 characters or less"
-                });
-            }
-
-            if ($("#Task_Title").val().length === 0) {
-                validationErrors.push({
-                    elementId: "Task_Title",
-                    text: "Enter the name of the task"
-                });
-            }
-
-            if ($("#note").val().length > 1000) {
-                validationErrors.push({
-                    elementId: "note",
-                    text: "Note must be 1000 characters or less"
-                });
-            }
-
-            if ($("#date").val() == "") {
-                validationErrors.push({
-                    elementId: "date",
-                    text: "Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")"
-                });
-            }
-
-            if ($("#date").val() !== "" && !isValidDate($("#date").val())) {
-                validationErrors.push({
-                    elementId: "date",
-                    text: "Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date"
-                });
-            }
-
-            if ($("#time").val() == "") {
-                validationErrors.push({
-                    elementId: "time",
-                    text: "Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")"
-                });
-            }
-
-            if (validationErrors.length > 0) {
-                resetErrorMessages();
-                populateErrorMessages(validationErrors);
-                showErrorSummary(validationErrors)
-            } else {
-                $("form").submit()
-            }
-
-        });
-
-        function isValidDate(d) {
-            return !isNaN((new Date(d)).getTime());
+                if($("#Task_Title").val().length > 150) {
+                    validationErrors.push({
+                        elementId: "Task_Title",
+                        text: "Name of the task must be 150 characters or less"
+                    });
         }
 
-        $("#ksb-popup-btn").click(function (e) {
-            e.preventDefault();
-            const $ksbOverlay = $("#ksb-popup");
-            $ksbOverlay.load('@Url.Action("LinkKsbs", "Ksb")', function () {
-                $ksbOverlay.css({ top: "-10px", display: "flex" });
-                const ksbIdList = $('#linked-ksb-ids').val();
-                $('.link-ksb-checkbox').each(function () {
-                    var ksbId = $(this).val();
-                    if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
-                });
-                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
-                $ksbOverlay.focus()
+            if ($("#Task_Title").val().length === 0) {
+            validationErrors.push({
+                elementId: "Task_Title",
+                text: "Enter the name of the task"
             });
+        }
+
+        if ($("#note").val().length > 1000) {
+            validationErrors.push({
+                elementId: "note",
+                text: "Note must be 1000 characters or less"
+            });
+        }
+
+        if ($("#date").val() == "") {
+            validationErrors.push({
+                elementId: "date",
+                text: "Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")"
+            });
+        }
+
+        if ($("#date").val() !== "" && !isValidDate($("#date").val())) {
+            validationErrors.push({
+                elementId: "date",
+                text: "Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date"
+            });
+        }
+
+        if ($("#time").val() == "") {
+            validationErrors.push({
+                elementId: "time",
+                text: "Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")"
+            });
+        }
+
+        if (validationErrors.length > 0) {
+            resetErrorMessages();
+            populateErrorMessages(validationErrors);
+            showErrorSummary(validationErrors)
+
+        } else {
+            if (submittedTaskForm) {
+                return;
+            }
+           $("form").submit();
+           submittedTaskForm = true
+        }
+
+    });
+
+    function isValidDate(d) {
+        return !isNaN((new Date(d)).getTime());
+    }
+
+    $("#ksb-popup-btn").click(function (e) {
+        e.preventDefault();
+        const $ksbOverlay = $("#ksb-popup");
+        $ksbOverlay.load('@Url.Action("LinkKsbs", "Ksb")', function () {
+            $ksbOverlay.css({ top: "-10px", display: "flex" });
+            const ksbIdList = $('#linked-ksb-ids').val();
+            $('.link-ksb-checkbox').each(function () {
+                var ksbId = $(this).val();
+                if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
+            });
+            document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
+            $ksbOverlay.focus()
+        });
+    });
+
+    $('body').on('click', '.ksb-item-edit', function (e) {
+        e.preventDefault();
+        const $ksbOverlay = $("#ksb-popup");
+        $ksbOverlay.load('@Url.Action("LinkKsbs", "Ksb")', function () {
+            $ksbOverlay.css({ top: "-10px", display: "flex" });
+            const ksbIdList = $('#linked-ksb-ids').val();
+            $('.link-ksb-checkbox').each(function () {
+                var ksbId = $(this).val();
+                if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
+            });
+            document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
+            $ksbOverlay.focus()
         });
 
-        $('body').on('click', '.ksb-item-edit', function (e) {
-            e.preventDefault();
-            const $ksbOverlay = $("#ksb-popup");
-            $ksbOverlay.load('@Url.Action("LinkKsbs", "Ksb")', function () {
-                $ksbOverlay.css({ top: "-10px", display: "flex" });
-                const ksbIdList = $('#linked-ksb-ids').val();
-                $('.link-ksb-checkbox').each(function () {
-                    var ksbId = $(this).val();
-                    if (ksbIdList.includes(ksbId)) { $(this).prop('checked', true) }
-                });
-                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
-                $ksbOverlay.focus()
-            });
+    });
 
-        });
-
-        $('body').on('click', '.edit-ksb', function (e) {
-            if ($("#ksb-popup").html().length > 0) {
+    $('body').on('click', '.edit-ksb', function (e) {
+        if ($("#ksb-popup").html().length > 0) {
+            $('#ksb-popup').show();
+        }
+        else {
+            $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
                 $('#ksb-popup').show();
-            }
-            else {
-                $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
-                    $('#ksb-popup').show();
 
-                    $('.add-edit-content-area').height($('.app-container').height() - 150);
-                });
-                document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
-                $ksbOverlay.focus()
-            }
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-        });
-
-        $('body').on('click', '.ksb-popup-cancel', function (e) {
-            $('#ksb-popup').hide();
-            $('#ksb-popup-btn').focus();
-        });
-
-        $('body').on('click', '.link-ksb-checkbox', function (e) {
-            var value = $(this).attr("value");
-            var ksbKey = $(this).attr("data-title");
-            var ksbType = $(this).attr("data-type");
-            var status = $(`#app-collapse-contents-status-${value}`).find('.ksb-status-radio:checked').val();
-
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("EditKsbProgress", "Ksb")',
-                data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
-                dataType: "json"
+                $('.add-edit-content-area').height($('.app-container').height() - 150);
             });
+            document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
+            $ksbOverlay.focus()
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    });
+
+    $('body').on('click', '.ksb-popup-cancel', function (e) {
+        $('#ksb-popup').hide();
+        $('#ksb-popup-btn').focus();
+    });
+
+    $('body').on('click', '.link-ksb-checkbox', function (e) {
+        var value = $(this).attr("value");
+        var ksbKey = $(this).attr("data-title");
+        var ksbType = $(this).attr("data-type");
+        var status = $(`#app-collapse-contents-status-${value}`).find('.ksb-status-radio:checked').val();
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("EditKsbProgress", "Ksb")',
+            data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
+            dataType: "json"
         });
+    });
 
-        $('body').on('click', '.ksb-status', function (e) {
-            var value = $(this).attr("value");
-            var ksbId = $(this).attr("data-id");
-            var ksbKey = $(this).attr("data-key");
-            var ksbType = $(this).attr("data-type");
-            var note = $(this).attr("data-note");
+    $('body').on('click', '.ksb-status', function (e) {
+        var value = $(this).attr("value");
+        var ksbId = $(this).attr("data-id");
+        var ksbKey = $(this).attr("data-key");
+        var ksbType = $(this).attr("data-type");
+        var note = $(this).attr("data-note");
 
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("EditKsbProgress", "Ksb")',
-                data: { ksbId: ksbId, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: value, note: note },
-                dataType: "json"
-            });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("EditKsbProgress", "Ksb")',
+            data: { ksbId: ksbId, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: value, note: note },
+            dataType: "json"
         });
+    });
 
-        $('body').on('click', '.ksb-item-removeLink', function (e) {
-            e.preventDefault()
-            const currentKsbIds = $('#linked-ksb-ids').val().split(',');
-            const filteredKsbIds = currentKsbIds.filter(id => id !== $(this).data('id'));
-            $('#linked-ksb-ids').val(filteredKsbIds)
-            $(`#ksb-item-${$(this).data('id')}`).slideUp(function () {
-                $(this).remove();
-            });
+    $('body').on('click', '.ksb-item-removeLink', function (e) {
+        e.preventDefault()
+        const currentKsbIds = $('#linked-ksb-ids').val().split(',');
+        const filteredKsbIds = currentKsbIds.filter(id => id !== $(this).data('id'));
+        $('#linked-ksb-ids').val(filteredKsbIds)
+        $(`#ksb-item-${$(this).data('id')}`).slideUp(function () {
+            $(this).remove();
         });
+    });
 
-        $('body').on('click', '.link-ksb-confirm', function (e) {
+    $('body').on('click', '.link-ksb-confirm', function (e) {
 
-            var checkboxes = $(".link-ksb-checkbox:checked")
+        var checkboxes = $(".link-ksb-checkbox:checked")
 
-            var result = checkboxes.map(function (i, e) {
-                return $(e).attr("value");
-            }).get();
+        var result = checkboxes.map(function (i, e) {
+            return $(e).attr("value");
+        }).get();
 
-            $("#linked-ksb-ids").val(result);
+        $("#linked-ksb-ids").val(result);
 
-            var text = checkboxes.map(function (i, e) {
-                return `<div class="app-card ksb-item" id="ksb-item-${$(e).attr("value")}">
+        var text = checkboxes.map(function (i, e) {
+            return `<div class="app-card ksb-item" id="ksb-item-${$(e).attr("value")}">
                             <div class="app-card__header">
                                 <h2 class="app-card__heading">${$(e).attr("data-title")}</h2>
                             </div>
@@ -241,40 +248,40 @@
                                 </div>
                             </div>
                         </div>`;
-            }).get();
+        }).get();
 
-            $("#linked-ksb-details").html(text);
-            $('#ksb-popup').hide();
-            $('#ksb-popup-btn').focus();
-            appInit();
+        $("#linked-ksb-details").html(text);
+        $('#ksb-popup').hide();
+        $('#ksb-popup-btn').focus();
+        appInit();
+    });
+
+    $('body').on('click', '.edit-linkedksb', function (e) {
+        $('.app-dropdown__menu').hide();
+        var value = $(this).attr("value");
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("AddUpdateKsbProgress", "Ksb")',
+            data: { id: value },
+            dataType: "json"
         });
+    });
 
-        $('body').on('click', '.edit-linkedksb', function (e) {
-            $('.app-dropdown__menu').hide();
-            var value = $(this).attr("value");
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("AddUpdateKsbProgress", "Ksb")',
-                data: { id: value },
-                dataType: "json"
+    $(".edit-linkedksb").click(function (e) {
+        if ($("#ksb-edit-popup").html().length > 0) {
+            $('#ksb-edit-popup').html() = "";
+        }
+        else {
+            $("ksb-edit-popup")
+            $('#ksb-edit-popup').load('@Url.Action("AddUpdateKsbProgress", "Ksb")', function () {
+
+                $('#ksb-edit-popup').show();
+                $('.add-edit-content-area').height($('.app-container').height() - 150);
+
             });
-        });
-
-        $(".edit-linkedksb").click(function (e) {
-            if ($("#ksb-edit-popup").html().length > 0) {
-                $('#ksb-edit-popup').html() = "";
-            }
-            else {
-                $("ksb-edit-popup")
-                $('#ksb-edit-popup').load('@Url.Action("AddUpdateKsbProgress", "Ksb")', function () {
-
-                    $('#ksb-edit-popup').show();
-                    $('.add-edit-content-area').height($('.app-container').height() - 150);
-
-                });
-            }
-            $("html, body").animate({ scrollTop: 0 }, "slow");
-        });
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    });
 
     });
 
@@ -314,18 +321,18 @@
             hideReminderChoose();
         });
 
-        const isDueDateTimeValid = function() {
+        const isDueDateTimeValid = function () {
             const dueDateTime = new Date(`${dueDate.value}T${dueTime.value}`);
             return !isNaN(dueDateTime.getTime());
         }
 
-        const isValidReminderForm = function() {
+        const isValidReminderForm = function () {
             const isReminderLengthValid = isPositiveInteger(reminderLength.value * 1);
             const isTimeValid = /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(reminderTime.value);
             return isReminderLengthValid && isTimeValid;
         }
 
-        const isPositiveInteger = function(x) {
+        const isPositiveInteger = function (x) {
             return Number.isInteger(x) && x > 0
         }
 

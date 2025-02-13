@@ -101,7 +101,7 @@
                                             </span><span>Due @string.Format("{0:d MMMM, h:mm}",
                                             task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
                                         </li>
-                                        @if (task.TaskReminders != null)
+                                        @if (task.TaskReminders != null && task.TaskReminders.Count() > 0)
                                         {
                                             <li>
                                                 <span class="app-icon-list__icon">
@@ -212,9 +212,8 @@
             <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
             <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
             <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />
-            <input type="hidden" id="KsbProgressType" name="KsbProgressType"
-                value="@Model.KsbProgress.KsbProgressType" />
-            <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.KsbProgress.Tasks" />
+            <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
+            @*<input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.KsbProgress.Tasks" />*@
 
         </form>
     </div>
