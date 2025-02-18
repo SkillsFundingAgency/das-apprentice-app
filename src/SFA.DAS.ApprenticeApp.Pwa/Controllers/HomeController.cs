@@ -5,6 +5,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
@@ -88,7 +89,17 @@ public class HomeController : Controller
         
         return RedirectToAction("Index", "Home");
     }
-    
+        
+    /// <summary>
+    /// Necessary for the iOS holding screen for ATT
+    /// </summary>
+    /// <returns></returns>
+    [AllowAnonymous]
+    public async Task<IActionResult> Empty()
+    {
+        return new EmptyResult();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
