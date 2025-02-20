@@ -138,11 +138,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             CookieAuthenticationDefaults.AuthenticationScheme
         };
-            _ = bool.TryParse(_appConfig.StubAuth, out var stubAuth);
-            if (!stubAuth)
-            {
-                schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
-            }
+            //_ = bool.TryParse(_appConfig.StubAuth, out var stubAuth);
+            //if (!stubAuth)
+            //{
+            //    schemes.Add(OpenIdConnectDefaults.AuthenticationScheme);
+            //}
 
             return SignOut(
                 authenticationProperties,
