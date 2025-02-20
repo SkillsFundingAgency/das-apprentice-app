@@ -126,7 +126,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
-        [Route("apprentice-signed-out", Name = RouteNames.SignedOut)]
         public async Task<IActionResult> SigningOut()
         {
             var idToken = await HttpContext.GetTokenAsync("id_token");
