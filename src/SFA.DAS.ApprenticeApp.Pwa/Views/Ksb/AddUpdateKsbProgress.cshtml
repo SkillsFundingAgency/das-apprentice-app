@@ -30,11 +30,11 @@
             class="form submit-form">
 
             <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
-                <label class="app-label" asp-for="@Model.KsbProgress.Note">
+                <label class="app-label" for="note">
                     Add a note
                 </label>
-                <textarea class="app-textarea govuk-js-character-count" asp-for="@Model.KsbProgress.Note" rows="2"
-                        aria-describedby="KsbProgress_Note-info" value="@Model.KsbProgress.Note"></textarea>
+                <textarea class="app-textarea govuk-js-character-count" rows="2" id="note" name="note"
+                          aria-describedby="KsbProgress_Note-info" value="@Model.KsbProgress.Note">@Model.KsbProgress.Note</textarea>
                 <div id="KsbProgress_Note-info" class="govuk-hint govuk-character-count__message">
                     You can enter up to 1000 characters
                 </div>
@@ -135,7 +135,7 @@
 
                                             </li>
                                         }
-                                        @if (task.TaskFiles != null)
+                                        @* @if (task.TaskFiles != null)
                                         {
                                             <li>
                                                 <span class="app-icon-list__icon">
@@ -144,7 +144,7 @@
                                                     </svg>
                                                 </span>><span>@task.TaskFiles.Count.ToString() file(s) attached</span>
                                             </li>
-                                        }
+                                        } *@
                                         @if (task.TaskLinkedKsbs != null)
                                         {
                                             <li>
