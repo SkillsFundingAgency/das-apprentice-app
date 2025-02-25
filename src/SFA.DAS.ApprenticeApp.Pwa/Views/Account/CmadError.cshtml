@@ -1,4 +1,6 @@
-﻿@{
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.CmadErrorViewModel
+
+@{
     ViewData["Title"] = "You need to confirm your details";
     Layout = "_LayoutBasic";
 }
@@ -17,15 +19,21 @@
         <p class="govuk-body">Our records show that you have not confirmed your details in the apprenticeship service.</p>
         <p class="govuk-body">To use this app, you need to confirm your details first. You will only need to do this once.</p>
 
+        @{
+            string cmadLink = "https://my.apprenticeships.education.gov.uk/";
+            if(Model.RegistrationId != Guid.Empty)
+            {
+                cmadLink += "?Register=" + Model.RegistrationId;
+            }
         <p class="govuk-body">
-            <a href="https://my.apprenticeships.education.gov.uk/"
+            <a href=@cmadLink
                class="govuk-button"
                role="button"
                target="_blank">
                 Confirm my details
             </a>
         </p>
-        
+            }
         <p class="govuk-body">
             <a href="@Url.Action("Index", "Home")"
                class="govuk-link">I have confirmed my details</a>
