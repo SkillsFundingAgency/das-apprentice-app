@@ -167,16 +167,17 @@
         var ksbKey = $(this).attr("data-title");
         var ksbType = $(this).attr("data-type");
         var status = $(`#app-collapse-contents-status-${value}`).find('.ksb-status-radio:checked').val();
+        var note = $(this).attr("data-note");
 
         $.ajax({
             type: "POST",
             url: '@Url.Action("EditKsbProgress", "Ksb")',
-            data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status },
+            data: { ksbId: value, ksbKey: ksbKey, ksbType: ksbType, ksbStatus: status, note: note },
             dataType: "json"
         });
     });
 
-    $('body').on('click', '.ksb-status', function (e) {
+    $('body').on('click', '.ksb-status-radio', function (e) {
         var value = $(this).attr("value");
         var ksbId = $(this).attr("data-id");
         var ksbKey = $(this).attr("data-key");
@@ -210,14 +211,16 @@
         }).get();
 
         $("#linked-ksb-ids").val(result);
-
+                
         var text = checkboxes.map(function (i, e) {
+        var ksbstatus = $(`#ksb-status-${$(e).attr('value')}`).text().trim();
+            
             return `<div class="app-card ksb-item" id="ksb-item-${$(e).attr("value")}">
                             <div class="app-card__header">
                                 <h2 class="app-card__heading">${$(e).attr("data-title")}</h2>
                             </div>
                             <p>${$(e).attr("data-desc")}</p>
-                            <div class="ksb-status-display app-tag app-tag--status-${$(e).attr("data-status").replaceAll(" ", "").toLowerCase()}">${$(e).attr("data-status")}</div>
+                            <div class="ksb-status-display app-tag app-tag--status-${(ksbstatus).replaceAll(" ", "").toLowerCase()}">${(ksbstatus)}</div>
                             <hr class="app-separator" />
                             <div class="app-dropdown" data-module="app-dropdown">
                                 <button class="app-dropdown__toggle" aria-expanded="false">View actions<span class="govuk-visually-hidden"> for ${$(e).attr("data-title")}</span>
