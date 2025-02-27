@@ -129,12 +129,17 @@
             const title = $(button).data('title');
             const text = `Add "${title}" to your saved articles`;
             const span = $(button).find('span');
+            const accordion = $('#accordion-' + id);
+
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
                 data: { entryId: id, isSaved: "false" },
                 complete: function () {
-                    $('#accordion-' + id).hide();
+                    if (accordion) {
+                        accordion.hide()
+                        window.location.reload();
+                    }
                     $(button).removeClass('unsave').addClass('save')
                     icon.removeClass('fa-solid').addClass('fa-regular')
                     span.text(text);
