@@ -27,6 +27,9 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="Azure.Core" Version="1.44.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
+     
+     <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.127" />
+     
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\img\" />

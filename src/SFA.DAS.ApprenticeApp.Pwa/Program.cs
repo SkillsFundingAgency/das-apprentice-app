@@ -9,7 +9,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
 using System.Diagnostics.CodeAnalysis;
-
+using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.GovUK.Auth.Extensions;
+using SFA.DAS.GovUK.Auth.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,9 +83,20 @@ app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=CookieStart}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=CookieStart}/{id?}");
+    
+    endpoints.MapGet("/service/keepalive", async context =>
+    {
+        context.Response.StatusCode = context.User.Identity?.IsAuthenticated == true 
+            ? StatusCodes.Status204NoContent 
+            : StatusCodes.Status401Unauthorized;
+    });
+    
+});
 
 app.Use(async (context, next) =>
 {
