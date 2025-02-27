@@ -61,6 +61,11 @@ builder.Services.Configure<MvcOptions>(options =>
         applicationConfiguration.GoogleAnalytics)
     ));
 
+builder.Logging.AddConsole(); // Enable console logging
+builder.Logging.SetMinimumLevel(LogLevel.Debug); // Set log level to Debug
+builder.Services.AddHttpContextAccessor();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
