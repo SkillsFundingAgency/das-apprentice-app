@@ -13,36 +13,6 @@
                     <use xlink:href="/assets/images/icons.svg#calendar"></use>
                 </svg></span><span>Completed @string.Format("{0:d MMMM, h:mm}",
                 task.CompletionDateTime)@string.Format("{0:tt}", task.CompletionDateTime).ToLower()</span></li>
-        @if (task.TaskReminders.Any())
-            {
-                <li>
-                    <span class="app-icon-list__icon svg-placeholder"></span><span>
-                        Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
-
-                        @switch (task.TaskReminders.First().ReminderValue)
-                        {
-                            case 0:
-                                <text>minute</text>
-                                break;
-                            case 1:
-                                <text>hour</text>
-                                break;
-                            case 2:
-                                <text>day</text>
-                                break;
-                            default:
-                                <text></text>
-                                break;
-                        }
-
-                        @if (task.TaskReminders.First().ReminderValue > 1)
-                        {
-                            <text>s</text>
-                        } before
-                    </span>
-
-                </li>
-            }
             @if (!String.IsNullOrEmpty(task.Note))
             {
                 <li>
