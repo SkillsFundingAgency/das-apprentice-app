@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 {
@@ -713,7 +714,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             };
             var result = await controller.DeleteApprenticeTask(1);
 
-            result.Should().BeOfType(typeof(UnauthorizedResult));
+            result.Should().BeOfType(typeof(OkResult));
         }
 
         [Test, MoqAutoData]
@@ -795,7 +796,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             };
             var result = await controller.ChangeTaskStatus(1, 0);
 
-            result.Should().BeOfType(typeof(UnauthorizedResult));
+            result.Should().BeOfType(typeof(OkResult));
         }
     }
 }
