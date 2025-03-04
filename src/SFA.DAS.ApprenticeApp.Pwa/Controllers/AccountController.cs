@@ -63,7 +63,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         {
                             return RedirectToAction("CmadError", "Account", new { registrationId});
                         }
-                        return RedirectToAction("CmadError", "Account");
+                        return RedirectToAction("EmailMismatchError", "Account");
                     }
                 }
                 catch(Exception ex)
@@ -71,15 +71,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
                     _logger.LogInformation(cmaderrormsg);
 
-                    return RedirectToAction("CmadError", "Account");
+                    return RedirectToAction("EmailMismatchError", "Account");
                 }
-                return RedirectToAction("EmailMismatchError", "Account");
-            }
+                            }
             else
             {
                 return RedirectToAction("EmailMismatchError", "Account");
             }
-            return RedirectToAction("EmailMismatchError", "Account");
         }
 
         [HttpGet]

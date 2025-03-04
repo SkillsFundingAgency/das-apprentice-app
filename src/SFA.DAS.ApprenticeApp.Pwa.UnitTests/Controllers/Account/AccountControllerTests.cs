@@ -135,7 +135,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var registrationId = Guid.Empty;
             client.Setup(client => client.GetRegistrationId(It.IsAny<Guid>())).ReturnsAsync(registrationId);
             var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("CmadError");
+            result.ActionName.Should().Be("EmailMismatchError");
             result.ControllerName.Should().Be("Account");
         }
 
@@ -161,7 +161,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
             client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ThrowsAsync(new Exception());
             var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("CmadError");
+            result.ActionName.Should().Be("EmailMismatchError");
             result.ControllerName.Should().Be("Account");
         }
 
