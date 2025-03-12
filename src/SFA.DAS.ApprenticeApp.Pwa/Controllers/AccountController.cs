@@ -118,8 +118,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                string errorMessage = ex.Message;
+                _logger.LogWarning($"Failed to sign in with stub account details. {errorMessage}");
                 return RedirectToAction("Error", "Account");
             }
             
