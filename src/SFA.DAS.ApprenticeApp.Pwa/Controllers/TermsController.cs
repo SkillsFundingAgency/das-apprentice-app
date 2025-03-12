@@ -28,9 +28,21 @@ public class TermsController : Controller
     {
         var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
-        // update apprentice log in time
-        await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
+        try
+        {
+            if(!string.IsNullOrEmpty(apprenticeId))
+            {
+                await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
+            }
 
+        }
+        catch (Exception ex)
+        {
+            string errorMessage = ex.Message;
+            _logger.LogWarning($"Failed to update apprentice last logged in date. {errorMessage}");
+            return RedirectToAction("EmailMismatchError", "Account");
+        }
+       
         if (!string.IsNullOrEmpty(apprenticeId))
         {
             var termsAccepted = Claims.GetClaim(HttpContext, Constants.TermsAcceptedClaimKey);
