@@ -96,7 +96,7 @@ SessionTimeOutModal.prototype.hideModal = function () {
 };
 
 SessionTimeOutModal.prototype.logout = function () {
-  window.location.href = this.urls.logout;
+    window.location.href = this.urls.logout;
 };
 
 document.addEventListener("DOMContentLoaded", function () {

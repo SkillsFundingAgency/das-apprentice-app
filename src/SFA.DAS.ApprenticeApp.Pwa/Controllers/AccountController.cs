@@ -125,10 +125,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> SigningOut()
         {
-            var idToken = await HttpContext.GetTokenAsync("id_token");
+           var idToken = await HttpContext.GetTokenAsync("id_token");
 
             var authenticationProperties = new AuthenticationProperties();
             authenticationProperties.Parameters.Clear();
