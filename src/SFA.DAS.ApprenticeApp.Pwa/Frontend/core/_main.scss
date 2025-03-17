@@ -17,6 +17,10 @@
   overflow: auto;
 }
 
+.app-template__body--overlay-open .app-main__inner {
+  overflow: hidden;
+}
+
 .app-main--basic {
   display: flex;
   height: 100dvh;

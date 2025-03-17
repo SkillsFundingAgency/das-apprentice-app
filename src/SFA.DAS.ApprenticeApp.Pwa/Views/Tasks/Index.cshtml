@@ -9,8 +9,8 @@
     Layout = "_Layout";
 }
 
-<div id="add-edit-wrapper" tabindex="0">
-    <div class="loader" style="margin-bottom: 40px"></div>
+<div id="task-overlay" tabindex="0" class="app-overlay">
+    <div class="loader app-overlay__loader"></div>
 </div>
 
 <div class="app-page-header app-sticky">
@@ -87,7 +87,7 @@
         <div id="tasks-todo__tasks">
             <div class="loader"></div>
         </div>
-        <a data-status-id="0" href="#top" class="app-fab add-btn">
+        <a data-status-id="0" data-target="task-overlay" class="app-fab add-btn" asp-action="Add" asp-controller="Tasks" asp-route-status="0">
             <span>Add a task</span>
         </a>
     </div>
@@ -96,7 +96,7 @@
         <div id="tasks-done__tasks">
             <div class="loader"></div>
         </div>
-        <a data-status-id="1" href="#top" class="app-fab add-btn">
+        <a data-status-id="1" data-target="task-overlay" class="app-fab add-btn" asp-action="Add" asp-controller="Tasks" asp-route-status="1">
             <span>Add a task</span>
         </a>
     </div>
@@ -121,5 +121,6 @@
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
 </script>
+<script src="/js/tasks.js"></script>
 @await Html.PartialAsync("_TasksJs.cshtml", Model)
 @await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")

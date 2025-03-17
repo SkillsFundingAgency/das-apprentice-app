@@ -4,9 +4,8 @@
     ViewData["Section"] = "Tasks";
     Layout = null;
 }
-<div>
-    <div class="loader" style="display:none"></div>
-    <div id="ksb-popup" class="app-overlay" tabindex="0"></div>
+
+<div id="ksb-popup"></div>
     <div class="app-overlay-header">
         <div class="app-overlay-header__cancel">
             <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
@@ -87,7 +86,7 @@
             <input name="Status" type="hidden" asp-for="@Model.StatusId" />
         </form>
     </div>
-</div>
+
 @await Html.PartialAsync("_AddEditTasksJs.cshtml", Model)
 <script type="module">import {
         initAll

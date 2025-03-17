@@ -117,7 +117,7 @@
                         <input type="hidden" class="taskId" value="@task.TaskId" />
                     </li>
                     <li>
-                        <a href="#" data-id="@task.TaskId" class="app-dropdown__menu-link edit-btn">
+                        <a asp-action="Edit" asp-controller="Tasks" asp-route-id="@task.TaskId" asp-route-status="0" data-target="task-overlay" class="app-dropdown__menu-link edit-btn">
                             <span class="app-dropdown__menu-icon">
                                 <svg>
                                     <use xlink:href="/assets/images/icons.svg#edit"></use>

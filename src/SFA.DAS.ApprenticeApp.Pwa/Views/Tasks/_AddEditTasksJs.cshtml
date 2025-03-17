@@ -40,71 +40,80 @@
             errorSummary.tabIndex = 0;
             errorSummary.ariaHidden = false;
             errorSummary.ariaLive = 'polite';
+            Array.from(errorSummary.getElementsByTagName('a')).forEach((link) => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault()
+                    const field = document.getElementById(link.hash.substring(1))
+                    if (field) {
+                        field.focus()
+                    }
+                })
+            })
             errorSummary.focus();
         }
 
         let submittedTaskForm = false
-        
-        $(".add-task").on("click", function (e) {
 
+        $(".add-task").on("click", function (e) {
+            e.preventDefault()
             const validationErrors = [];
 
-                if($("#Task_Title").val().length > 150) {
-                    validationErrors.push({
-                        elementId: "Task_Title",
-                        text: "Name of the task must be 150 characters or less"
-                    });
-        }
+            if($("#Task_Title").val().length > 150) {
+                validationErrors.push({
+                    elementId: "Task_Title",
+                    text: "Name of the task must be 150 characters or less"
+                });
+            }
 
             if ($("#Task_Title").val().length === 0) {
-            validationErrors.push({
-                elementId: "Task_Title",
-                text: "Enter the name of the task"
-            });
-        }
-
-        if ($("#note").val().length > 1000) {
-            validationErrors.push({
-                elementId: "note",
-                text: "Note must be 1000 characters or less"
-            });
-        }
-
-        if ($("#date").val() == "") {
-            validationErrors.push({
-                elementId: "date",
-                text: "Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")"
-            });
-        }
-
-        if ($("#date").val() !== "" && !isValidDate($("#date").val())) {
-            validationErrors.push({
-                elementId: "date",
-                text: "Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date"
-            });
-        }
-
-        if ($("#time").val() == "") {
-            validationErrors.push({
-                elementId: "time",
-                text: "Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")"
-            });
-        }
-
-        if (validationErrors.length > 0) {
-            resetErrorMessages();
-            populateErrorMessages(validationErrors);
-            showErrorSummary(validationErrors)
-
-        } else {
-            if (submittedTaskForm) {
-                return;
+                validationErrors.push({
+                    elementId: "Task_Title",
+                    text: "Enter the name of the task"
+                });
             }
-           $("form").submit();
-           submittedTaskForm = true
-        }
 
-    });
+            if ($("#note").val().length > 1000) {
+                validationErrors.push({
+                    elementId: "note",
+                    text: "Note must be 1000 characters or less"
+                });
+            }
+    
+            if ($("#date").val() == "") {
+                validationErrors.push({
+                    elementId: "date",
+                    text: "Enter date the task @(Model.StatusId == 1 ? "was completed" : "is due")"
+                });
+            }
+    
+            if ($("#date").val() !== "" && !isValidDate($("#date").val())) {
+                validationErrors.push({
+                    elementId: "date",
+                    text: "Date the task @(Model.StatusId == 1 ? "was completed" : "is due") must be a real date"
+                });
+            }
+    
+            if ($("#time").val() == "") {
+                validationErrors.push({
+                    elementId: "time",
+                    text: "Enter time the task @(Model.StatusId == 1 ? "was completed" : "is due")"
+                });
+            }
+
+            if (validationErrors.length > 0) {
+                resetErrorMessages();
+                populateErrorMessages(validationErrors);
+                showErrorSummary(validationErrors)
+    
+            } else {
+                if (submittedTaskForm) {
+                    return;
+                }
+               $("form").submit();
+               submittedTaskForm = true
+            }
+
+        });
 
     function isValidDate(d) {
         return !isNaN((new Date(d)).getTime());
@@ -194,9 +203,10 @@
 
     $('body').on('click', '.ksb-item-removeLink', function (e) {
         e.preventDefault()
-        const currentKsbIds = $('#linked-ksb-ids').val().split(',');
+        const linkedKSBsField = $('#linked-ksb-ids')
+        const currentKsbIds = linkedKSBsField.val().split(',');
         const filteredKsbIds = currentKsbIds.filter(id => id !== $(this).data('id'));
-        $('#linked-ksb-ids').val(filteredKsbIds)
+        linkedKSBsField.val(filteredKsbIds)
         $(`#ksb-item-${$(this).data('id')}`).slideUp(function () {
             $(this).remove();
         });
@@ -211,16 +221,16 @@
         }).get();
 
         $("#linked-ksb-ids").val(result);
-                
+
         var text = checkboxes.map(function (i, e) {
-        var ksbstatus = $(`#ksb-status-${$(e).attr('value')}`).text().trim();
-            
+            const ksbStatus = $(`#ksb-status-${$(e).attr('value')}`).text().trim();
+
             return `<div class="app-card ksb-item" id="ksb-item-${$(e).attr("value")}">
                             <div class="app-card__header">
                                 <h2 class="app-card__heading">${$(e).attr("data-title")}</h2>
                             </div>
                             <p>${$(e).attr("data-desc")}</p>
-                            <div class="ksb-status-display app-tag app-tag--status-${(ksbstatus).replaceAll(" ", "").toLowerCase()}">${(ksbstatus)}</div>
+                            <div class="ksb-status-display app-tag app-tag--status-${(ksbStatus).replaceAll(" ", "").toLowerCase()}">${(ksbStatus)}</div>
                             <hr class="app-separator" />
                             <div class="app-dropdown" data-module="app-dropdown">
                                 <button class="app-dropdown__toggle" aria-expanded="false">View actions<span class="govuk-visually-hidden"> for ${$(e).attr("data-title")}</span>
@@ -271,8 +281,9 @@
     });
 
     $(".edit-linkedksb").click(function (e) {
+        e.preventDefault()
         if ($("#ksb-edit-popup").html().length > 0) {
-            $('#ksb-edit-popup').html() = "";
+            $('#ksb-edit-popup').html("");
         }
         else {
             $("ksb-edit-popup")

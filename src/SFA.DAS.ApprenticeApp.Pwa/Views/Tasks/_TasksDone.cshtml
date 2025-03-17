@@ -66,7 +66,7 @@
                     </li>
 
                     <li>
-                        <a data-id="@task.TaskId" data-status="1" class="app-dropdown__menu-link edit-btn">
+                        <a asp-action="Edit" asp-controller="Tasks" asp-route-id="@task.TaskId" asp-route-status="1" data-target="task-overlay" class="app-dropdown__menu-link edit-btn">
                             <span class="app-dropdown__menu-icon">
                                 <svg>
                                     <use xlink:href="/assets/images/icons.svg#edit"></use>

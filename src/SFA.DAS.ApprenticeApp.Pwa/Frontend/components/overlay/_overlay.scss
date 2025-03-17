@@ -11,11 +11,22 @@
   display: none;
   flex-direction: column;
   animation: slideUp ease 200ms;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  top: 20px;
+  width: auto;
+  overflow: hidden;
 }
 
 .app-overlay__content {
   padding: $app-gap;
   overflow: auto;
+}
+
+.app-overlay__loader {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
 }
 
 .app-template__body--overlay-open {

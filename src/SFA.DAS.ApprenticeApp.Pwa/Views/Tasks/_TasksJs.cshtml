@@ -151,6 +151,7 @@
             return matches ? decodeURIComponent(matches[1]) : undefined;
         }
 
+        /*
         $(".add-btn").click(function (e) {
             var status = $(this).attr("data-status-id");
             var addUrl = '@Url.Action("Add", "Tasks")?status=' + status;
@@ -177,6 +178,7 @@
             });
 
         });
+        */
 
         $('body').on('click', '.post-form', function (e) {
             $(".form").submit();
@@ -259,4 +261,77 @@
 
     //step 2: manage ui elements based on existing permission status
     displayNotificationButtons();
+
+
+
+
+
+
+
+
+
+    const handleAddTaskButtonClick = async (event) => {
+        const btn = event.target;
+        const url = btn.href;
+        const overlay = document.getElementById(btn.dataset.target);
+        console.log(btn)
+        if (overlay) {
+            showOverlay(overlay);
+            await loadContent(url, overlay);
+        }
+        event.preventDefault();
+    }
+
+    const showOverlay = (overlay) => {
+        overlay.classList.add('app-overlay--visible');
+        document.body.classList.add('app-template__body--overlay-open');
+    }
+
+    const loadContent = async (url, overlay) => {
+        $(overlay).load(url, () => {
+            trapFocusInit(overlay)
+        });
+    }
+
+    const trapFocusInit = (overlay) => {
+        overlay.focus();
+        document.addEventListener(`keydown`, trapFocus.bind(this, overlay));
+    }
+
+    const trapFocus = (overlay, event) => {
+        const isTabPressed = event.key === `Tab` || event.keyCode === 9;
+        if (!isTabPressed) {
+            return;
+        }
+        const focusableElements = `button, [href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])`;
+        const firstFocusableElement = overlay.querySelectorAll(focusableElements)[0];
+        const focusableContent = overlay.querySelectorAll(focusableElements);
+        const lastFocusableElement = focusableContent[focusableContent.length - 1];
+
+        if (event.shiftKey) {
+            if (document.activeElement === firstFocusableElement) {
+                lastFocusableElement.focus();
+                event.preventDefault();
+            }
+        } else if (document.activeElement === lastFocusableElement) {
+            firstFocusableElement.focus();
+            event.preventDefault();
+        }
+    }
+
+
+
+
+    const addButtons = document.getElementsByClassName('add-btn');
+
+    if (addButtons.length > 0) {
+        Array.from(addButtons).forEach((button) => {
+            button.addEventListener('click', handleAddTaskButtonClick.bind(this));
+        })
+    }
+
+    $('body').on('click', '.edit-btn', handleAddTaskButtonClick)
+   
+    
+    
 </script>
