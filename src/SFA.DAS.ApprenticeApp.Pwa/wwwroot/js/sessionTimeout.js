@@ -1,8 +1,8 @@
 function SessionTimeOutModal() {
   this.modal = null;
   this.modalId = "app-session-timeout-modal";
-  this.inactivityCountdownTime = document.body.dataset.timeout || 2; // minutes
-  this.modalCountdownTime = document.body.dataset.modalcount || 20; // seconds
+  this.inactivityCountdownTime = document.body.dataset.timeout || 18; // minutes
+  this.modalCountdownTime = document.body.dataset.modalcount || 120; // seconds
   this.modalTimeout = null;
   this.urls = {
     renew: "/service/keepalive",
@@ -96,7 +96,7 @@ SessionTimeOutModal.prototype.hideModal = function () {
 };
 
 SessionTimeOutModal.prototype.logout = function () {
-  window.location.href = this.urls.logout;
+    window.location.href = this.urls.logout;
 };
 
 document.addEventListener("DOMContentLoaded", function () {
