@@ -10,18 +10,11 @@ public class ApplicationConfiguration
     public ConnectionStringsConfiguration ConnectionStrings { get; set; } = new();
     public AuthenticationConfiguration Authentication { get; set; } = new();
     public OuterApiConfiguration? ApprenticeAppApimApi { get; set; }
-    public string? ClientId { get; set; }
-    public string? MetadataAddress { get; set; }
-    public string? KeyDir { get; set; }
-    public string? TokenUri { get; set; }
-    public string? UserInfoUri { get; set; }
     public string? ProductInfoHeaderValue { get; set; }
     public string? CookieName { get; set; }
     public string? StubAuth { get; set; }
     public string? PushNotificationPublicKey { get; set; }
-    public bool UseGovSignIn { get; set; }
     public GoogleAnalyticsConfiguration GoogleAnalytics { get; set; }
-    public string? WhiteListEmails { get; set; }
 }
 
 [ExcludeFromCodeCoverage]
