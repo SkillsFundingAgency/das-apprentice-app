@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using RestEase;
 using SFA.DAS.ApprenticeApp.Domain.Api;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -26,6 +27,9 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         //ApprenticeDetails
         [Get("/apprentices/{id}/details")]
         Task<ApprenticeDetails> GetApprenticeDetails([Path] Guid id);
+
+        [Get("/apprentices/{id}/apprenticeships")]
+        Task<Guid> GetRegistrationId([Path] Guid id);
 
         //KsbProgress
         [Post("/apprentices/{id}/ksbs")]

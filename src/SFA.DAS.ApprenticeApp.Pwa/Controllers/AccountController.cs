@@ -8,6 +8,7 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 
@@ -56,25 +57,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     {
                         string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
                         _logger.LogInformation(cmaderrormsg);
-                        
-                        return RedirectToAction("CmadError", "Account");
+
+                        var registrationId = await _client.GetRegistrationId(new Guid(apprenticeId));
+                        if(registrationId != Guid.Empty)
+                        {
+                            return RedirectToAction("CmadError", "Account", new { registrationId});
+                        }
+                        return RedirectToAction("EmailMismatchError", "Account");
                     }
                 }
                 catch(Exception ex)
                 {
                     string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
                     _logger.LogInformation(cmaderrormsg);
-                    
-                    return RedirectToAction("CmadError", "Account");
-                }
 
-                return RedirectToAction("EmailMismatchError", "Account");
-            }
+                    return RedirectToAction("EmailMismatchError", "Account");
+                }
+                            }
             else
             {
                 return RedirectToAction("EmailMismatchError", "Account");
             }
-            return RedirectToAction("EmailMismatchError", "Account");
         }
 
         [HttpGet]
@@ -176,9 +179,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
         
         [HttpGet]
-        public IActionResult CmadError()
+        public IActionResult CmadError(Guid? registrationId)
         {
-            return View();
+            CmadErrorViewModel vm = new()
+            {
+                RegistrationId = registrationId ?? Guid.Empty
+            };
+            return View(vm);
         }      
         
         [HttpGet]
