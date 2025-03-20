@@ -16,7 +16,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
     public class WhenLoadingTheWelcomePage
     {
         [Test, MoqAutoData]
-        public void WhiteListedUser_CanUse_App(
+        public void User_CanUse_App(
             [Frozen] ApplicationConfiguration configuration,
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
@@ -37,7 +37,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
             {
                 HttpContext = httpContext
             };
-            configuration.WhiteListEmails = "{ \"Emails\" : [\"test1@test.com\", \"test2@test.com\"] }";
             var result = controller.Index() as RedirectToActionResult;
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Tasks");

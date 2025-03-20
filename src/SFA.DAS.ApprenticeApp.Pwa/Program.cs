@@ -1,17 +1,10 @@
-﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing.Text;
 using WebEssentials.AspNetCore.Pwa;
-using System.Diagnostics.CodeAnalysis;
-using SFA.DAS.GovUK.Auth.AppStart;
-using SFA.DAS.GovUK.Auth.Extensions;
-using SFA.DAS.GovUK.Auth.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +22,7 @@ builder.Services.AddServiceRegistration(environment, rootConfiguration, applicat
 // Add outerapi
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
 
-builder.Services.AddDataProtection();
+builder.Services.AddDataProtection(applicationConfiguration);
 builder.Services.AddHealthChecks();
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 
