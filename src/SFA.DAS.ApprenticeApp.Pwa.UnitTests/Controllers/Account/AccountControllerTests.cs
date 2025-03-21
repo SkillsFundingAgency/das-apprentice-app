@@ -132,8 +132,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             };
 
             client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null });
-            var registrationId = Guid.Empty;
-            client.Setup(client => client.GetRegistrationId(It.IsAny<Guid>())).ReturnsAsync(registrationId);
+            client.Setup(client => client.GetRegistrationIdByEmail(It.IsAny<string>())).ReturnsAsync(Guid.Empty);
             var result = await controller.Authenticated() as RedirectToActionResult;
             result.ActionName.Should().Be("EmailMismatchError");
             result.ControllerName.Should().Be("Account");

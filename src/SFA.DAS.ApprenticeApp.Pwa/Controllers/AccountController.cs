@@ -58,7 +58,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
                         _logger.LogInformation(cmaderrormsg);
 
-                        var registrationId = await _client.GetRegistrationId(new Guid(apprenticeId));
+                        var email = Claims.GetClaim(HttpContext, ClaimTypes.Email);
+                        var registrationId = await _client.GetRegistrationIdByEmail(email);
                         if(registrationId != Guid.Empty)
                         {
                             return RedirectToAction("CmadError", "Account", new { registrationId});
@@ -73,7 +74,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     return RedirectToAction("EmailMismatchError", "Account");
                 }
-                            }
+            }
             else
             {
                 return RedirectToAction("EmailMismatchError", "Account");

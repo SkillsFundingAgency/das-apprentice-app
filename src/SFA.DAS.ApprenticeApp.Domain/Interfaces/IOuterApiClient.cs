@@ -31,6 +31,9 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Get("/apprentices/{id}/apprenticeships")]
         Task<Guid> GetRegistrationId([Path] Guid id);
 
+        [Get("/apprentices/{email}/registration")]
+        Task<Guid> GetRegistrationIdByEmail([Path] string email);
+
         //KsbProgress
         [Post("/apprentices/{id}/ksbs")]
         Task AddUpdateKsbProgress([Path] Guid id, [Body] ApprenticeKsbProgressData data);
