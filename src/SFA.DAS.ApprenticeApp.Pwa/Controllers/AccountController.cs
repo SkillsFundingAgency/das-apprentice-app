@@ -41,44 +41,52 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> Authenticated()
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+           
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
 
-                try
+                var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
+                if (!string.IsNullOrEmpty(lastName))
                 {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    if (apprenticeDetails?.MyApprenticeship != null)
+                    try
                     {
-                        return RedirectToAction("Index", "Terms");
-                    }
-                    else
-                    {
-                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                        _logger.LogInformation(cmaderrormsg);
-
-                        var email = Claims.GetClaim(HttpContext, ClaimTypes.Email);
-                        var registrationId = await _client.GetRegistrationIdByEmail(email);
-                        if(registrationId != Guid.Empty)
+                        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                        if (apprenticeDetails?.MyApprenticeship != null)
                         {
-                            return RedirectToAction("CmadError", "Account", new { registrationId});
+                            return RedirectToAction("Index", "Terms");
                         }
+                    }
+                    catch (Exception)
+                    {
+                        string myappmsg = $"MyApprenticeship data error or not found for {apprenticeId}";
+                        _logger.LogInformation(myappmsg);
                         return RedirectToAction("EmailMismatchError", "Account");
                     }
                 }
-                catch(Exception ex)
+                else
                 {
-                    string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
-                    _logger.LogInformation(cmaderrormsg);
-
-                    return RedirectToAction("EmailMismatchError", "Account");
+                    try
+                    {
+                        var email = Claims.GetClaim(HttpContext, Constants.ApprenticeNameClaimKey);
+                        var registrationId = await _client.GetRegistrationIdByEmail(email);
+                        if (registrationId != Guid.Empty)
+                        {
+                            string cmadmsg = $"Registration record found for {apprenticeId}";
+                            _logger.LogInformation(cmadmsg);
+                            return RedirectToAction("CmadError", "Account", new { registrationId });
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        string cmaderrormsg = $"Registration data error or not found for {apprenticeId}";
+                        _logger.LogInformation(cmaderrormsg);
+                        return RedirectToAction("EmailMismatchError", "Account");
+                    }  
                 }
             }
-            else
-            {
-                return RedirectToAction("EmailMismatchError", "Account");
-            }
+            return RedirectToAction("EmailMismatchError", "Account");
         }
 
         [HttpGet]
