@@ -57,8 +57,8 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Get("/supportguidance/savedarticles/{id}")]
         Task<ApprenticeAppContentPageCollection> GetSavedArticles([Path] Guid? id = null);
 
-        [Post("/apprentices/{id}/articles/{articleIdentifier}")]
-        Task AddUpdateApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Body] ApprenticeArticleRequest request);
+        [Post("/apprentices/{id}/articles/{articleIdentifier}/title/{entryTitle}")]
+        Task AddUpdateApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Path] string entryTitle, [Body] ApprenticeArticleRequest request);
 
         [Post("/apprentices/{id}/removearticle/{articleIdentifier}")]
         Task RemoveApprenticeArticle([Path] Guid id, [Path] string articleIdentifier, [Body] ApprenticeArticleRequest request);

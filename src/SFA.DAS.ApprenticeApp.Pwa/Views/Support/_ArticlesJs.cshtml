@@ -8,6 +8,7 @@
 
         const icon = $(this).find('i');
         const title = $(this).data('title');
+        const titleClean = title.replace(/\s+/g, '-').toLowerCase();
         const span = $(this).find('span');
 
             if (icon.hasClass("fa-solid")) {
@@ -23,7 +24,7 @@
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("RemoveApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "true" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), entryTitle: titleClean, likeStatus: "true" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -45,7 +46,7 @@
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "true" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), entryTitle: titleClean, likeStatus: "true" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -58,6 +59,7 @@
 
             const icon = $(this).find('i');
             const title = $(this).data('title');
+            const titleClean = title.replace(/\s+/g, '-').toLowerCase();
             const span = $(this).find('span');
 
             if (icon.hasClass("fa-solid")) {
@@ -72,7 +74,7 @@
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("RemoveApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "false" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), entryTitle: titleClean, likeStatus: "false" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -95,7 +97,7 @@
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), likeStatus: "false" },
+                    data: { entryId: $(this).parent().parent().siblings('.entryid').val(), entryTitle: titleClean, likeStatus: "false" },
                     dataType: "json",
                     contentType: "application/json"
                 });
@@ -107,6 +109,7 @@
             const button = $(this);
             const icon = button.find('i');
             const title = button.data('title');
+            const titleClean = title.replace(/\s+/g, '-').toLowerCase();
             const text = `Remove "${title}" from your saved articles`;
             const span = button.find('span');
 
@@ -117,7 +120,7 @@
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: $(this).parent().siblings('.entryid').val(), isSaved: "true" },
+                data: { entryId: $(this).parent().siblings('.entryid').val(), entryTitle: titleClean, isSaved: "true" },
                 dataType: "json",
                 contentType: "application/json"
             });
@@ -127,6 +130,7 @@
         const removeBookmark = (id, button) => {
             const icon = $(button).find('i');
             const title = $(button).data('title');
+            const titleClean = title.replace(/\s+/g, '-').toLowerCase();
             const text = `Add "${title}" to your saved articles`;
             const span = $(button).find('span');
             const accordion = $('#accordion-' + id);
@@ -134,7 +138,7 @@
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("AddOrUpdateApprenticeArticle", "Support")',
-                data: { entryId: id, isSaved: "false" },
+                data: { entryId: id, entryTitle: titleClean, isSaved: "false" },
                 complete: function () {
                     if (accordion) {
                         accordion.hide()

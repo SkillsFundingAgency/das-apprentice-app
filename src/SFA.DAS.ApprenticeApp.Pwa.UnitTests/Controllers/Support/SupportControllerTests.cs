@@ -84,6 +84,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         {
             var httpContext = new DefaultHttpContext();
             string entryId = "123";
+            string entryTitle = "title";
             bool likeStatus = true;
             bool isSaved = true;
 
@@ -100,7 +101,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
                 HttpContext = httpContext
             };
 
-            var result = await controller.AddOrUpdateApprenticeArticle(entryId, likeStatus, isSaved);
+            var result = await controller.AddOrUpdateApprenticeArticle(entryId, entryTitle, likeStatus, isSaved);
             result.Should().BeOfType(typeof(OkResult));
         }
     }
