@@ -6,7 +6,7 @@ self.addEventListener('push', event => {
     event.waitUntil(
         self.registration.showNotification(payload.title, {
             body: payload.message,
-            icon: '/assets/images/my_apprenticeship_logo.svg',
+            icon: '/assets/images/YourApprenticeship.svg',
             vibrate: [100, 50, 100],
             data: { url: payload.url }
         })
