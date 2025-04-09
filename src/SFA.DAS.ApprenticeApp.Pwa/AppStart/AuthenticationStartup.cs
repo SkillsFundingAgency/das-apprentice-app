@@ -3,6 +3,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.GovUK.Auth.AppStart;
+using SFA.DAS.GovUK.Auth.Models;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
 {
@@ -25,10 +26,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
         public static void AddGovLoginAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var cookieDomain = AppDomainExtensions.GetDomain(configuration["ResourceEnvironmentName"]);
-            var stubLoginRedirect = string.IsNullOrEmpty(cookieDomain) ? "" : $"https://{cookieDomain}/account-details";
+            var loginRedirect = string.IsNullOrEmpty(cookieDomain) ? "" : $"https://{cookieDomain}/account-details";
             var signedOutRedirectUrl = string.IsNullOrEmpty(cookieDomain) ? "https://localhost:5003/home" : $"https://{cookieDomain}/home";
+            var localStubLoginPath = "/account-details";
             services.AddAndConfigureGovUkAuthentication(configuration,
-                typeof(ApprenticeAccountPostAuthenticationClaimsHandler), signedOutRedirectUrl, "/account-details", cookieDomain, stubLoginRedirect);
+                new AuthRedirects
+                {
+                    CookieDomain = cookieDomain,
+                    LoginRedirect = loginRedirect,
+                    LocalStubLoginPath = localStubLoginPath,
+                    SignedOutRedirectUrl = signedOutRedirectUrl
+                },
+                typeof(ApprenticeAccountPostAuthenticationClaimsHandler));
 
             services.AddHttpContextAccessor();
         }

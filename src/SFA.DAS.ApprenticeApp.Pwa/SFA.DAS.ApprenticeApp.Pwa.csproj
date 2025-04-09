@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.14" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.13" />
-    <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.119" />
+    <PackageReference Include="SFA.DAS.GovUK.Auth" Version="17.1.139" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.22" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.85" />
     <PackageReference Include="SFA.DAS.Http" Version="3.2.69" />
