@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ApprenticeApp.Domain.Models
+﻿using System.ComponentModel;
+
+namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
     public class MyApprenticeship
     {
@@ -13,6 +15,7 @@
         public string StandardUId { get; set; }
         public string Title { get; set; }
         public int Level { get; set; }
+        public ApprenticeshipTypes? ApprenticeshipType { get; set; }
 
         public TimeSpan? ApprenticeshipLength
         {
@@ -25,6 +28,13 @@
                 return null;
             }
         }
+        public enum ApprenticeshipTypes
+        {
+            [Description("Standard")]
+            Standard = 1,
 
+            [Description("Foundation")]
+            Foundation = 2
+        }
     }
 }

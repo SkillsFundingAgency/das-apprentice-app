@@ -21,5 +21,17 @@ namespace SFA.DAS.ApprenticeApp.Domain.UnitTests.Models
             myApprenticeship.ApprenticeshipLength.Should().Be(length);
 
         }
+
+        [Test]
+        [TestCase(1, "Standard")]
+        [TestCase(2, "Foundation")]
+        public void IsApprenticeshipTypeValid(int type, string expectedType)
+        {
+            MyApprenticeship myApprenticeship = new();
+            myApprenticeship.ApprenticeshipType = (MyApprenticeship.ApprenticeshipTypes)type;
+            var result = myApprenticeship.ApprenticeshipType.ToString();
+            result.Should().NotBeNull();
+            result.Should().Be(expectedType);
+        }
     }
 }

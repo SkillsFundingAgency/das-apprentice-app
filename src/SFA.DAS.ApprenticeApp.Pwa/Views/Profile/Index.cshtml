@@ -108,6 +108,16 @@
             Apprenticeship:
         </dt>
         <dd class="app-dl-list__content">@Model.MyApprenticeship?.Title</dd>
+        @{
+            if (Model.MyApprenticeship != null && Model.MyApprenticeship?.ApprenticeshipType == SFA.DAS.ApprenticeApp.Domain.Models.MyApprenticeship.ApprenticeshipTypes.Foundation)
+            {
+                <dt class="app-dl-list__title">
+                    Type:
+                </dt>
+
+                <dd class="app-dl-list__content">@Model.MyApprenticeship.ApprenticeshipType.ToString()</dd>
+            }
+        }
         <dt class="app-dl-list__title">
             Level:
         </dt>
