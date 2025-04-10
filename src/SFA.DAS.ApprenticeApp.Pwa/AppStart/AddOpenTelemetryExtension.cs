@@ -8,7 +8,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart;
 
 public static class AddOpenTelemetryExtension
 {
-    public static void AddOpenTelemetryRegistration(this IServiceCollection services, string applicationInsightsConnectionString)
+    public static void AddOpenTelemetryRegistration(this IServiceCollection services, string APPLICATIONINSIGHTS_CONNECTION_STRING)
     {
         services.AddHttpContextAccessor(); // Required for HttpContext access
         services.AddSingleton<UserIdProcessor>(); // Register UserIdProcessor in DI
@@ -23,7 +23,7 @@ public static class AddOpenTelemetryExtension
             })
             .UseAzureMonitor(options =>
             {
-                options.ConnectionString = applicationInsightsConnectionString;
+                options.ConnectionString = APPLICATIONINSIGHTS_CONNECTION_STRING;
             });
     }
 }
