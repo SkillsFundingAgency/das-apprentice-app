@@ -39,7 +39,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                 HttpContext = httpContext
             };
 
-            var result = await controller.Index();
+            var result = await controller.Index(searchTerm:"");
             result.Should().BeOfType(typeof(ViewResult));
         }
 
@@ -61,7 +61,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                 HttpContext = httpContext
             };
 
-            var result = await controller.Index() as RedirectToActionResult;
+            var result = await controller.Index(searchTerm:"") as RedirectToActionResult;
             using (new AssertionScope())
             {
                 logger.Verify(x => x.Log(LogLevel.Warning,
@@ -100,7 +100,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             client.Setup(x => x.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(new List<ApprenticeKsb>());
 
             //Act
-            var result = await controller.Index() as ViewResult;
+            var result = await controller.Index(searchTerm:"") as ViewResult;
 
 
             //Assert
@@ -143,7 +143,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
             client.Setup(x => x.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(new List<ApprenticeKsb>() { apprenticeKsb });
 
             //Act
-            var result = await controller.Index() as ViewResult;
+            var result = await controller.Index(searchTerm:"") as ViewResult;
 
 
             //Assert

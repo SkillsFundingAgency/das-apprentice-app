@@ -25,14 +25,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
-
+                
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    apprenticeKsbResult = apprenticeKsbResult
+                        .Where(ksb => ksb.Detail.Contains(searchTerm) || ksb.Key.Contains(searchTerm))
+                        .ToList();
+                }
+                
                 if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
                 {
                     string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController Index.";
@@ -54,7 +61,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         Ksbs = apprenticeKsbResult,
                         KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
                         SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour)
+                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
+                        SearchTerm = searchTerm
                     };
 
                     return View(apprenticeKsbsPageModel);
