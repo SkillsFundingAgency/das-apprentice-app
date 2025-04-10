@@ -33,19 +33,26 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
                 
-                if (!string.IsNullOrEmpty(searchTerm))
-                {
-                    apprenticeKsbResult = apprenticeKsbResult
-                        .Where(ksb => ksb.Detail.Contains(searchTerm) || ksb.Key.Contains(searchTerm))
-                        .ToList();
-                }
-                
                 if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
                 {
                     string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController Index.";
                     _logger.LogWarning(noKsbMessage);
                     return View("NoKsbs");
                 }
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    apprenticeKsbResult = apprenticeKsbResult
+                        .Where(ksb => ksb.Detail.Contains(searchTerm) || ksb.Key.Contains(searchTerm))
+                        .ToList();
+
+                    foreach (ApprenticeKsb item in apprenticeKsbResult)
+                    {
+                        item.Key = item.Key.Replace(searchTerm, "<span style='background-color: yellow'>" + searchTerm + "</span>");
+                        item.Detail = item.Detail.Replace(searchTerm, "<span style='background-color: yellow'>" + searchTerm + "</span>");
+                    }
+                }
+                
                 if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
                     {
                         var filterKsbs = Filter.FilterKsbResults(apprenticeKsbResult, Request.Cookies[Constants.KsbFiltersCookieName]);
