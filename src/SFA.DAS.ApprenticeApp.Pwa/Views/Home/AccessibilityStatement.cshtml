@@ -1,0 +1,102 @@
+@{
+    ViewData["Title"] = "Accessibility statement ";
+    ViewData["Section"] = "Account";
+}
+
+<div class="app-page-header">
+    <div class="app-page-header__back"><a asp-action="YourAccount" asp-controller="Account"
+            class="app-back-link">Back</a>
+    </div>
+    <h1 class="app-page-header__heading">Accessibility statement </h1>
+    <div class="app-page-header__forward"></div>
+</div>
+
+<p>This accessibility statement explains how accessible Your Apprenticeship app is, what to do if you have difficulty
+    using it, and how to report accessibility problems with the app. </p>
+<p>This app is run by the Department for Education. We want as many people as possible to be able to use this app. For
+    example, that means you should be able to: </p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>invert colours and adjust contrast levels</li>
+    <li>increase the text size without the text truncating or overlapping</li>
+    <li>navigate the app using Switch Access</li>
+    <li>get around the app using Voice Access</li>
+    <li>listen to the app using TalkBack</li>
+    <li>We have also made the text in the app as simple as possible to understand</li>
+    <li><a href="https://mcmw.abilitynet.org.uk/" class="govuk-link" target="_blank" rel="nofollow">AbilityNet (opens in
+            a new tab)</a>
+        has advice on
+        making your device easier to use if you have a disability </li>
+</ul>
+<h2 class="govuk-heading-m">How accessible this app is </h2>
+<p>We know some parts of this app are not fully accessible: </p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>Some essential elements of the app may be unable to be interacted with using iOS VoiceOver</li>
+    <li>Some background content may be focused when navigating the application with a screen reader</li>
+    <li>The focus order of content may not always be logical when navigating with a keyboard</li>
+    <li>Changing font size in the Operating System settings is not reflected in the Android app </li>
+</ul>
+<h2 class="govuk-heading-m">Reporting accessibility problems with this app </h2>
+<p>We're always looking to improve the accessibility of this app. If you find any problems not listed on this page or
+    think we're not meeting accessibility requirements, contact: </p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>call 08000 150 600 </li>
+    <li>email <a
+            href="mailto:helpdesk@manage-apprenticeships.service.gov.uk">helpdesk@manage-apprenticeships.service.gov.uk</a>
+    </li>
+</ul>
+<p>Our opening times are Monday to Friday, 9am to 5pm. We will reply to emails within 4 hours during our opening times.
+</p>
+<h3 class="govuk-heading-s">If you are not happy with our response </h3>
+<p>The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and
+    Mobile Applications) (No. 2) Accessibility Regulations 2018 (the 'accessibility regulations'). If you're not happy
+    with how we respond to your complaint, contact the <a href="https://www.equalityadvisoryservice.com/"
+        target="_blank" rel="nofollow">Equality Advisory and Support Service (opens in a new
+        tab)</a>. </p>
+
+<h2 class="govuk-heading-m">Technical information about this app’s accessibility </h2>
+<p>The Department for Education is committed to making its apps accessible, in accordance with the Public Sector Bodies
+    (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. </p>
+
+<h2 class="govuk-heading-m">Compliance status </h2>
+<p>This app is partially compliant with the WCAG (Web Content Accessibility Guidelines) version 2.2 AA standard, due to
+    the
+    following non-compliances (and/or) the following exemptions.
+</p>
+
+<h3 class="govuk-heading-s">Non-accessible content</h3>
+<p>There is not a way to skip the repeated content in the page header, for example, a ‘skip to main content’ option. This fails <a href="https://www.w3.org/WAI/WCAG21/Understanding/bypass-blocks.html" target="_blank" rel="nofollow">WCAG 2.2 success criterion 2.4.1 (Bypass Blocks)</a>. We plan to fix this by September 2025.</p>
+<p>When navigating with a screen reader enabled, the background page behind overlays can be navigated through whilst visually not present on the screen. This fails <a href="https://www.w3.org/WAI/WCAG21/Understanding/meaningful-sequence.html" target="_blank" rel="nofollow">WCAG 2.2 success criterion 1.3.2 (Meaningful Sequence)</a>. We plan to fix this by September 2025. </p>
+<p>When tabbing with a keyboard on iOS, some background page content can be tabbed through while content displays over the top. This fails <a href="https://www.w3.org/WAI/WCAG21/Understanding/focus-order.html" target="_blank" rel="nofollow">WCAG 2.2 success criterion 2.4.3 (Focus Order)</a>. We plan to fix this by September 2025. </p>
+<p>The focus order of content may not be logical when navigating using iOS VoiceOver. This fails <a href="https://www.w3.org/WAI/WCAG21/Understanding/focus-order.html" target="_blank" rel="nofollow">WCAG 2.2 success criterion 2.4.3 (Focus Order)</a>. We plan to fix this by September 2025. </p>
+
+<h2 class="govuk-heading-m">Disproportionate burden   </h2>
+<h3 class="govuk-heading-s">Navigation and accessing information</h3>
+
+<p>It’s not always possible to change the device orientation from horizontal to vertical without making it more difficult to view the content.</p>
+
+<p>It’s not possible for users to change text size without some of the content overlapping.</p>
+
+<p>Changing the font size at an Operating System level on Android may not be reflected with a change in font size within the app.</p>
+
+<p>When interacting with some time and date fields using Android TalkBack, the focus is shifted and reset to the top of the page.</p>
+
+<p>When creating a new task, the date and time fields are unable to be interacted with when navigating with iOS VoiceOver.</p>
+
+<p>When using Android TalkBack on the Terms and Conditions screen, not all the bullet points are announced by the screen reader.</p>
+
+<p>When adding a new task using iOS VoiceOver, some users may be unable to navigate past the calendar feature on the page, preventing the task from being added.</p>
+
+<p>Multiple elements may be unable to be interacted with using Android and iOS Switch control which may prevent users from adding a task or using app features.</p>
+
+<h3 class="govuk-heading-s">Interactive tools and transactions</h3>
+
+<p>We’ve assessed the cost of fixing the issues with navigation and accessing information, and with interactive tools and transactions. We believe that doing so now would be a disproportionate burden within the meaning of the accessibility regulations. We will make another assessment when the supplier contract is up for renewal.</p>
+
+<h3 class="govuk-heading-s">Content that’s not within the scope of the accessibility regulations</h3>
+
+<p>Some accessibility features that can be applied within the operating system are not supported and reflected within the application. This may impact some user’s ability to use the application. This does not fail WCAG 2.2 but may be encountered by some users.</p>
+
+
+<h2 class="govuk-heading-m">Preparation of this accessibility statement </h2>
+<p>This statement was prepared on 26/03/2025. It was last reviewed on 26/03/2025. </p>
+<p>This application was last tested on 26/03/2025. The test was carried out by Zoonou. Zoonou used WCAG-EM to define the pages tested and test approach. </p>

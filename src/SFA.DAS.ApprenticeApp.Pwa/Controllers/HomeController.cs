@@ -43,6 +43,11 @@ public class HomeController : Controller
         var vm = new HomeViewModel();
         return View(vm);
     }
+
+    public async Task<IActionResult> AccessibilityStatement()
+    {
+        return View();
+    }
     
     public async Task<IActionResult> CookieStart()
     {
