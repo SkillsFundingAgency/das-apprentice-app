@@ -12,7 +12,7 @@
     <title>@(ViewData["Title"] == null ? "Apprentice App" : ViewData["Title"])</title>
     <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
-    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true"  />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
 </head>
 
 <body class="govuk-template__body app-template__body" id="top">
@@ -34,7 +34,7 @@
                 class="app-navigation__link  @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon">
                     <svg>
-                        <use xlink:href="/assets/images/icons.svg#tasks@(ViewBag.Section == "Tasks" ? "Active" :"")">
+                        <use xlink:href="/assets/images/icons.svg#tasks@(ViewBag.Section == "Tasks" ? "Active" : "")">
                         </use>
                     </svg>
                 </span>
@@ -44,7 +44,7 @@
                 class="app-navigation__link @(ViewBag.Section == "Ksbs" ? "app-navigation__link--active" :"")">
                 <span class="app-navigation__icon">
                     <svg>
-                        <use xlink:href="/assets/images/icons.svg#ksbs@(ViewBag.Section == "Ksbs" ? "Active" :"")">
+                        <use xlink:href="/assets/images/icons.svg#ksbs@(ViewBag.Section == "Ksbs" ? "Active" : "")">
                         </use>
                     </svg>
                 </span>
@@ -55,7 +55,7 @@
                 <span class="app-navigation__icon">
                     <svg>
                         <use
-                            xlink:href="/assets/images/icons.svg#support@(ViewBag.Section == "Support" ? "Active" :"")">
+                            xlink:href="/assets/images/icons.svg#support@(ViewBag.Section == "Support" ? "Active" : "")">
                         </use>
                     </svg>
                 </span>
@@ -66,7 +66,7 @@
                 <span class="app-navigation__icon">
                     <svg>
                         <use
-                            xlink:href="/assets/images/icons.svg#notifications@(ViewBag.Section == "Notifications" ? "Active" :"")">
+                            xlink:href="/assets/images/icons.svg#notifications@(ViewBag.Section == "Notifications" ? "Active" : "")">
                         </use>
                     </svg>
                 </span>
@@ -78,7 +78,7 @@
                 <span class="app-navigation__icon">
                     <svg>
                         <use
-                            xlink:href="/assets/images/icons.svg#account@(ViewBag.Section == "Account" ? "Active" :"")">
+                            xlink:href="/assets/images/icons.svg#account@(ViewBag.Section == "Account" ? "Active" : "")">
                         </use>
                     </svg>
                 </span>
@@ -93,7 +93,7 @@
         } from '/js/libs/govuk-frontend.min.js'
         initAll()</script>
     @await Html.PartialAsync("_FrontendJs.cshtml")
-
+    <script src="/js/sessionTimeout.js"></script>
     <script>
         const getFontSizeClass = (fontSizePercentage) => {
             if (fontSizePercentage < 125) {
@@ -101,7 +101,7 @@
             } else if (fontSizePercentage <= 150) {
                 return "app-font-size--medium";
             } else if (fontSizePercentage <= 175) {
-               return "app-font-size--large";
+                return "app-font-size--large";
             } else if (fontSizePercentage < 200) {
                 return "app-font-size--largest";
             } else {
@@ -114,7 +114,7 @@
             const style = window.getComputedStyle(element, null).getPropertyValue('font-size');
             const fontSizePercentage = parseFloat(style) / 16 * 100;
             element.remove();
-            const root = document.getElementsByTagName( 'html' )[0];
+            const root = document.getElementsByTagName('html')[0];
             root.classList.add(getFontSizeClass(fontSizePercentage));
         };
         window.onload = calculateFontSize;

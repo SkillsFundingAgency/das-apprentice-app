@@ -394,7 +394,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return Ok();
             }
-            return Unauthorized();
+            return Ok();
         }
 
         [HttpGet]
@@ -415,7 +415,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Index");
             }
 
-            return Unauthorized();
+            return Ok();
         }
     }
 }
