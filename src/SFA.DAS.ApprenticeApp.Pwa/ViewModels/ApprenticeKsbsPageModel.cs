@@ -10,6 +10,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
         public int? SkillCount { get; set; }
         public int? BehaviourCount { get; set; }
 
+        public string? SearchTerm { get; set; }
+
         public List<KSBStatus> KsbStatuses { get; set; }
     }
 }

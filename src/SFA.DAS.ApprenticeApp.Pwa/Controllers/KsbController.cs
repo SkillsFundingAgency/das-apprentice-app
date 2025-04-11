@@ -25,20 +25,34 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
-
+                
                 if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
                 {
                     string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController Index.";
                     _logger.LogWarning(noKsbMessage);
                     return View("NoKsbs");
                 }
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    apprenticeKsbResult = apprenticeKsbResult
+                        .Where(ksb => ksb.Detail.Contains(searchTerm) || ksb.Key.Contains(searchTerm))
+                        .ToList();
+
+                    foreach (ApprenticeKsb item in apprenticeKsbResult)
+                    {
+                        item.Key = item.Key.Replace(searchTerm, "<span style='background-color: yellow'>" + searchTerm + "</span>");
+                        item.Detail = item.Detail.Replace(searchTerm, "<span style='background-color: yellow'>" + searchTerm + "</span>");
+                    }
+                }
+                
                 if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
                     {
                         var filterKsbs = Filter.FilterKsbResults(apprenticeKsbResult, Request.Cookies[Constants.KsbFiltersCookieName]);
@@ -54,7 +68,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         Ksbs = apprenticeKsbResult,
                         KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
                         SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour)
+                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
+                        SearchTerm = searchTerm
                     };
 
                     return View(apprenticeKsbsPageModel);
