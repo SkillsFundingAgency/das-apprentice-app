@@ -14,16 +14,16 @@ public static class AddOpenTelemetryExtension
         services.AddSingleton<UserIdProcessor>(); // Register UserIdProcessor in DI
 
         services.AddOpenTelemetry()
+            .UseAzureMonitor(options =>
+            {
+                options.ConnectionString = APPLICATIONINSIGHTS_CONNECTION_STRING;
+            })
             .WithTracing(tracerProviderBuilder =>
             {
                 tracerProviderBuilder
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ApprenticeApp"))
                     .AddAspNetCoreInstrumentation()
                     .AddProcessor(sp => sp.GetRequiredService<UserIdProcessor>()); // Use DI to resolve UserIdProcessor
-            })
-            .UseAzureMonitor(options =>
-            {
-                options.ConnectionString = APPLICATIONINSIGHTS_CONNECTION_STRING;
             });
     }
 }
