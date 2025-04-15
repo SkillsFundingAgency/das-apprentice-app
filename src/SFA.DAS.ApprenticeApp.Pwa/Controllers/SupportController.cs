@@ -66,13 +66,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> AddOrUpdateApprenticeArticle(string entryId, bool? likeStatus = null, bool? isSaved = null)
+        public async Task<IActionResult> AddOrUpdateApprenticeArticle(string entryId, string entryTitle, bool? likeStatus = null, bool? isSaved = null)
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
+                await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, entryTitle, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
                 return Ok();
             }
 
