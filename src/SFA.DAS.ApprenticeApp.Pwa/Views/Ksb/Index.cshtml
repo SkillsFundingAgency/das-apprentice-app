@@ -61,4 +61,12 @@
     <partial name="_KsbsAll.cshtml" />
 </div>
 
+<script>
+    $( document ).ready(function() {
+        document.getElementById("searchTerm").addEventListener("search", function(event) {
+            $('#searchForm').submit();
+        });
+    });
+</script>
+
 @await Html.PartialAsync("_KsbJs.cshtml")
