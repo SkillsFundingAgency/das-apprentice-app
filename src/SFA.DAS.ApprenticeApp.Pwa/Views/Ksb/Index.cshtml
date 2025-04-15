@@ -6,19 +6,10 @@
 
 <h1 class="govuk-heading-xl">Your knowledge, skills and behaviours (KSBs)</h1>
 
-<script>
-    $( document ).ready(function() {
-        $('#searchTerm').keypress(function (e) {
-            if (e.which == 13) {
-                $('#searchForm').submit();
-                return false;   
-            }
-        });
-    });
-</script>
-
 <form id="searchForm">
-    <input class="app-input" type="text" id="searchTerm" name="searchTerm" value="@Model.SearchTerm" placeholder="Search KSBs" />
+    <label for="searchTerm" class="govuk-visually-hidden">Search for a KSB</label>
+    <input class="app-input app-input--search" type="search" id="searchTerm" name="searchTerm" placeholder="Search KSBs" value="@Model.SearchTerm"  />
+    <input type="submit" value="Search" class="govuk-visually-hidden" />
 </form>
 
 <div class="app-tabs" data-module="app-tabs">
