@@ -31,10 +31,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            
+            var lastnameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
+
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-               apprenticeIdClaim
+               apprenticeIdClaim, lastnameClaim
             })});
 
             cookies.Setup(c => c[Constants.ApprenticeshipIdClaimKey]).Returns("1");
@@ -93,10 +94,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var lastnameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
 
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-               apprenticeIdClaim
+               apprenticeIdClaim, lastnameClaim
             })});
             httpContext.User = claimsPrincipal;
 
