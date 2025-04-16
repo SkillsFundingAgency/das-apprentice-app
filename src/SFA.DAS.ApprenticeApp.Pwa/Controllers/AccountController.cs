@@ -47,8 +47,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 try
                 {
-                    var dob = Claims.GetClaim(HttpContext, ClaimTypes.DateOfBirth);
-                    if (!string.IsNullOrEmpty(dob))
+                    var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
+                    if (!string.IsNullOrEmpty(lastName))
                     {
                         var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                         if (apprenticeDetails?.MyApprenticeship != null)
