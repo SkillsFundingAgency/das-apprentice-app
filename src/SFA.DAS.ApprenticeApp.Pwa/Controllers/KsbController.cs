@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
@@ -43,13 +44,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
                     apprenticeKsbResult = apprenticeKsbResult
-                        .Where(ksb => ksb.Detail.Contains(searchTerm) || ksb.Key.Contains(searchTerm))
+                        .Where(ksb => ksb.Detail.ToLower().Contains(searchTerm.ToLower()) || ksb.Key.ToLower().Contains(searchTerm.ToLower()))
                         .ToList();
-
+                    
                     foreach (ApprenticeKsb item in apprenticeKsbResult)
                     {
-                        item.Key = item.Key.Replace(searchTerm, "<span style='background-color: yellow'>" + searchTerm + "</span>");
-                        item.Detail = item.Detail.Replace(searchTerm, "<span style='background-color: yellow'>" + searchTerm + "</span>");
+                        item.Key = Regex.Replace(item.Key, searchTerm, "<span style='background-color: yellow'>$0</span>", RegexOptions.IgnoreCase);
+                        item.Detail = Regex.Replace(item.Detail, searchTerm, "<span style='background-color: yellow'>$0</span>", RegexOptions.IgnoreCase);
                     }
                 }
                 
