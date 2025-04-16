@@ -28,3 +28,12 @@
     border-width: 2px;
   }
 }
+
+.app-input--search {
+  margin-bottom: $app-gap;
+  background-image: url("/assets/images/icons/search.svg");
+  background-repeat: no-repeat;
+  background-position: 1rem;
+  background-size: 1rem;
+  padding-left: 2.5rem;
+}

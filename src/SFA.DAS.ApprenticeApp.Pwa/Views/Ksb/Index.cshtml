@@ -6,6 +6,12 @@
 
 <h1 class="govuk-heading-xl">Your knowledge, skills and behaviours (KSBs)</h1>
 
+<form id="searchForm">
+    <label for="searchTerm" class="govuk-visually-hidden">Search for a KSB</label>
+    <input class="app-input app-input--search" type="search" id="searchTerm" name="searchTerm" placeholder="Search KSBs" value="@Model.SearchTerm"  />
+    <input type="submit" value="Search" class="govuk-visually-hidden" />
+</form>
+
 <div class="app-tabs" data-module="app-tabs">
     <div class="app-page-header app-sticky">
         <ul class="app-tabs__list">
@@ -54,5 +60,13 @@
     </div>
     <partial name="_KsbsAll.cshtml" />
 </div>
+
+<script>
+    $( document ).ready(function() {
+        document.getElementById("searchTerm").addEventListener("search", function(event) {
+            $('#searchForm').submit();
+        });
+    });
+</script>
 
 @await Html.PartialAsync("_KsbJs.cshtml")
