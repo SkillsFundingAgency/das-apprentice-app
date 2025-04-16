@@ -47,34 +47,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 try
                 {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    if (apprenticeDetails?.MyApprenticeship != null)
+                    var dob = Claims.GetClaim(HttpContext, ClaimTypes.DateOfBirth);
+                    if (!string.IsNullOrEmpty(dob))
                     {
-                        return RedirectToAction("Index", "Terms");
+                        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                        if (apprenticeDetails?.MyApprenticeship != null)
+                        {
+                            return RedirectToAction("Index", "Terms");
+                        }
+                        else
+                        {
+                            string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
+                            _logger.LogInformation(cmaderrormsg);
+                            return RedirectToAction("CmadError", "Account");
+                        }
                     }
                     else
                     {
-                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                        _logger.LogInformation(cmaderrormsg);
-                        
                         return RedirectToAction("CmadError", "Account");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
                     _logger.LogInformation(cmaderrormsg);
-                    
                     return RedirectToAction("CmadError", "Account");
                 }
-
-                return RedirectToAction("EmailMismatchError", "Account");
             }
             else
             {
                 return RedirectToAction("EmailMismatchError", "Account");
             }
-            return RedirectToAction("EmailMismatchError", "Account");
         }
 
         [HttpGet]
