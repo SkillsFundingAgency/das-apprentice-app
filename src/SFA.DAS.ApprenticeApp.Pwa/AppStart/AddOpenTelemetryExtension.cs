@@ -10,21 +10,19 @@ public static class AddOpenTelemetryExtension
 {
     public static void AddOpenTelemetryRegistration(this IServiceCollection services, string applicationInsightsConnectionString)
     {
-        services.AddHttpContextAccessor(); // Required for HttpContext access
-        services.AddSingleton<UserIdProcessor>(); // Register UserIdProcessor in DI
+        services.AddHttpContextAccessor();
 
         services.AddOpenTelemetry()
-            .UseAzureMonitor(options =>
-            {
-                options.ConnectionString = applicationInsightsConnectionString;
-            })
             .WithTracing(tracerProviderBuilder =>
             {
                 tracerProviderBuilder
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ApprenticeApp"))
-                    .AddAspNetCoreInstrumentation()
-                    .AddProcessor(sp => sp.GetRequiredService<UserIdProcessor>()); // Use DI to resolve UserIdProcessor
-
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("WEBSITE_SITE_NAME"))
+                    .AddAspNetCoreInstrumentation();
+            })
+            .UseAzureMonitor(options =>
+            {
+                options.ConnectionString = applicationInsightsConnectionString;
             });
     }
 }
+

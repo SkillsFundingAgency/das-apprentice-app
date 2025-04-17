@@ -9,6 +9,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Services;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
@@ -42,6 +43,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
             if (!string.IsNullOrEmpty(apprenticeId))
             {
+                Activity.Current?.SetTag("enduser.id", apprenticeId);
+                Activity.Current?.SetTag("ai.user.id", apprenticeId);
+                _logger.LogInformation($"UserIdProcessor: Set enduser.id and ai.user.id = {apprenticeId}");
+
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
 
@@ -165,6 +170,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value.ToLower(),
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
+
+            var apprenticeId = User.Claims.FirstOrDefault(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                Activity.Current?.SetTag("enduser.id", apprenticeId);
+                Activity.Current?.SetTag("ai.user.id", apprenticeId);
+                _logger.LogInformation($"UserIdProcessor: Set enduser.id and ai.user.id = {apprenticeId}");
+            }
 
             return RedirectToAction("Index", "Terms");
         }
