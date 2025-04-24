@@ -21,8 +21,9 @@
       }
     }
     async function requestNotificationPermission() {
+       var modal = document.getElementsByClassName("enable-notifications");
+       modal.length > 0 ? modal[0].classList.remove("app-modal--visible") : null;
        await Notification.requestPermission();
-        displayNotificationButtons();
     }
 
     function registerPush(registration) {
