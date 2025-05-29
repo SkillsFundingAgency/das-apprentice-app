@@ -240,6 +240,39 @@
         },
         {
             "apiVersion": "2021-04-01",
+            "name": "[concat(variables('resourceNamePrefix'), '-notification-hub-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'), 'notification-hub.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "namespaceLocation": {
+                        "value": "[parameters('resourceGroupLocation')]"
+                    },
+                    "namespaceName": {
+                        "value": "[concat(variables('resourceNamePrefix'), '-ns')]"
+                    },
+                    "notificationHubName": {
+                        "value": "[concat(variables('resourceNamePrefix'), '-hub')]"
+                    },
+                    "sku": {
+                        "value": "Free"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2021-04-01",
             "name": "[concat(variables('keyVaultName'), '-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
