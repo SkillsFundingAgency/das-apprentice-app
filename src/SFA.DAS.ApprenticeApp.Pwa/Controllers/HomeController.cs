@@ -104,6 +104,12 @@ public class HomeController : Controller
     {
         return new EmptyResult();
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> KeepAlive()
+    {
+        return NoContent();
+    }    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
