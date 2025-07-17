@@ -101,6 +101,10 @@
                 "description": "Enables alerting on app insights failed requests"
             }
         },
+        "vnetRouteAllEnabled": {
+            "type": "bool",
+            "defaultValue": false
+        },
         "enableResponseTimeAlert": {
             "type": "bool",
             "defaultValue": false,
@@ -258,6 +262,9 @@
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('frontEndAccessRestrictions')]"
+                    },
+                    "vnetRouteAllEnabled": {
+                        "value": "[parameters('vnetRouteAllEnabled')]"
                     }
                 }
             },
