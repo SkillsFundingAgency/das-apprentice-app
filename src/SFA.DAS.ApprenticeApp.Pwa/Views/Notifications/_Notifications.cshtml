@@ -1,6 +1,39 @@
 ﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 @model NotificationPageModel
 
+<!--todo surveys -->
+@if (Model.SurveyNotification)
+{
+    <div class="app-card" id="notification-8039">
+        <h2 class="app-card__heading">
+            <a class="app-link" href="/Tasks/Index">fill out survey</a>
+        </h2>
+        <div class="app-card__footer">
+            <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0">
+                <ul class="app-icon-list app-icon-list--muted">
+
+                    <li>
+                        <span>
+                            Due 10 February, 9:14pm
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <a href="#" class="app-icon-action remove-survey-notification" data-notification-id="999999">
+                <span class="app-icon-action__icon">
+                    <svg>
+                        <use xlink:href="/assets/images/icons.svg#trash">
+                        </use>
+                    </svg>
+                </span>
+                <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> Fill out survey</span></span>
+            </a>
+        </div>
+    </div>
+}
+
+
+
 @foreach (var notification in Model.TaskReminders)
 {
     <div class="app-card" id="notification-@notification.TaskId" @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")>

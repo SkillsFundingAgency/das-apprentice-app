@@ -18,12 +18,28 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
             if(!string.IsNullOrEmpty(apprenticeId))
             {
-                var notificationsResult = await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
-                if (notificationsResult != null && notificationsResult.TaskReminders.Count > 0)
+                var notificationValue = 0;
+                
+                var taskNotificationsResult = await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
+                if (taskNotificationsResult != null && taskNotificationsResult.TaskReminders.Count > 0)
                 {
-                    int notificationValue = notificationsResult.TaskReminders.Count;
-                    return View("_NotificationCount", notificationValue);
+                    notificationValue += taskNotificationsResult.TaskReminders.Count;
                 }
+                
+                // todo surveys
+                var surveryCookie = Request.Cookies["SurveyNotification"];
+                if (surveryCookie != null)
+                {
+                    var surveryCookieValue = int.Parse(Request.Cookies["SurveyNotification"]);
+
+                    if (surveryCookieValue == 1)
+                    {
+                        notificationValue++;
+                    }
+                }
+                    
+                return View("_NotificationCount", notificationValue);                
+                
             }
             return Content(string.Empty);
         }
