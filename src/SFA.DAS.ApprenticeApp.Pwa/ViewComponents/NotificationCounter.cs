@@ -27,18 +27,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
                 }
                 
                 // todo surveys
-                var surveryCookie = Request.Cookies["SurveyNotification"];
-                if (surveryCookie != null)
+                var surveryCookie = Request.Cookies["SFA.DAS.ApprenticeApp.SurveyNotificationSeen"];
+                if (surveryCookie == null)
                 {
-                    var surveryCookieValue = int.Parse(Request.Cookies["SurveyNotification"]);
-
-                    if (surveryCookieValue == 1)
-                    {
-                        notificationValue++;
-                    }
+                    notificationValue++;
                 }
                     
-                return View("_NotificationCount", notificationValue);                
+                return View("_NotificationCount", notificationValue);
                 
             }
             return Content(string.Empty);

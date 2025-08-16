@@ -28,14 +28,8 @@
         });
 
         $('body').on('click', '.remove-survey-notification', function (e) {
-            const modalContent = {
-                message: 'Are you sure you want to delete this notification?',
-                confirmButton: 'Delete notification'
-            }
-            
-            const modal = new Modal(this, removeNotification, 99999999999, modalContent).init();
             // todo surveys - update cookie value
-            setCookie("SurveyNotification", "0", "999");
+            setCookie("SFA.DAS.ApprenticeApp.SurveyNotificationSeen", "1", "999");
             location.reload();
         });        
 
