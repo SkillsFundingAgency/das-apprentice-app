@@ -25,6 +25,12 @@
                 return null;
             }
         }
+        public ApprenticeshipType ApprenticeshipType { get; set; }
+    }
 
+    public enum ApprenticeshipType
+    {
+        Apprenticeship = 0,
+        Foundation_apprenticeship = 1
     }
 }
