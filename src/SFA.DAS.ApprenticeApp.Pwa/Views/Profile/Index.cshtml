@@ -82,7 +82,11 @@
         // calculate days differences
         var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
         // calculate months difference
-        const remainingMonths = daysToMonths(daysDifference);
+        var remainingMonths = daysToMonths(daysDifference);
+        
+        if (remainingMonths < 0) {
+            remainingMonths = 0;
+        }
 
 
         // Set the progress bar width
