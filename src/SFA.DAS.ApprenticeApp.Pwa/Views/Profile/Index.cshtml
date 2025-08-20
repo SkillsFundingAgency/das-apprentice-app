@@ -1,4 +1,5 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
 @{
@@ -125,10 +126,16 @@
             Level:
         </dt>
         <dd class="app-dl-list__content">@Model.MyApprenticeship?.Level</dd>
-        <dt class="app-dl-list__title">
-            Apprenticeship Type:
-        </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.ApprenticeshipType.ToString().Replace("_", " ")</dd>
+        @{
+            if (Model.MyApprenticeship.ApprenticeshipType != null)
+            {
+                <dt class="app-dl-list__title">
+                    Apprenticeship Type:
+                </dt>
+                <dd class="app-dl-list__content">@Model.MyApprenticeship?.ApprenticeshipType.GetEnumDescription()</dd>
+            }
+        }
+       
         <dt class="app-dl-list__title">
             Planned training start date:
         </dt>
