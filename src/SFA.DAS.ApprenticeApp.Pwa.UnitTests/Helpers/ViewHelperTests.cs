@@ -50,5 +50,24 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             // Assert
             Assert.IsNull(result);
         }
+
+        [Test]
+        [TestCase(ApprenticeshipType.Apprenticeship, "Apprenticeship")]
+        [TestCase(ApprenticeshipType.FoundationApprenticeship, "Foundation Apprenticeship")]
+        public void ApprenticeshipType_HasExpectedDescription(ApprenticeshipType type, string expectedDescription)
+        {
+            var description = ViewHelpers.Helpers.GetEnumDescription(type);
+            Assert.AreEqual(expectedDescription, description);
+        }
+
+        [Test]        
+        public void ApprenticeshipType_Returns_Null()
+        {
+            ApprenticeshipType? type = null;
+
+            var description = ViewHelpers.Helpers.GetEnumDescription(type);
+
+            Assert.IsNull(description);
+        }
     }
 }

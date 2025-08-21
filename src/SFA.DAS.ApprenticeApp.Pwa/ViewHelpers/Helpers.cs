@@ -6,8 +6,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 {
     public static class Helpers 
     {
-        public static string GetEnumDescription(this Enum value)
+        public static string? GetEnumDescription(this Enum value)
         {
+            if (value is null)
+                return null;
+
             Type type = value.GetType();
             string name = Enum.GetName(type, value);
             if (name != null)
