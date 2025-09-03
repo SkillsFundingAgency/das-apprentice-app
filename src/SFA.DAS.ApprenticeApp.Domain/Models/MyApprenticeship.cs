@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ApprenticeApp.Domain.Models
+﻿using System.ComponentModel;
+
+namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
     public class MyApprenticeship
     {
@@ -25,6 +27,14 @@
                 return null;
             }
         }
+        public ApprenticeshipType? ApprenticeshipType { get; set; }
+    }
 
+    public enum ApprenticeshipType
+    {        
+        [Description("Apprenticeship")]
+        Apprenticeship = 0,
+        [Description("Foundation Apprenticeship")]
+        FoundationApprenticeship = 1
     }
 }

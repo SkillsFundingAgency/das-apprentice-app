@@ -1,4 +1,5 @@
 ﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
 @{
@@ -47,11 +48,20 @@
         </div>
         <div class="app-progress__label" id="progressLabel"></div>
     </div>
-    <p>Gateway is the time between completing your apprentice training and getting ready for your EPA. </p>
-    <p class="govuk-!-margin-bottom-0"><a class="govuk-link govuk-link--no-visited-state"
-            href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
-            target="_blank">What is
-            an end-point assessment (EPA)?</a></p>
+    @{
+        if (Model.MyApprenticeship.ApprenticeshipType == 0)
+        {
+             <p>Gateway is the time between completing your apprentice training and getting ready for your apprenticeship assessment. </p>
+            <p class="govuk-!-margin-bottom-0">
+                <a class="govuk-link govuk-link--no-visited-state"
+                   href="https://www.apprenticeships.gov.uk/apprentices/understanding-end-point-assessments" rel="noopener"
+                   target="_blank">
+                    What is an apprenticeship assessment?
+                </a>
+            </p>
+        }
+    }    
+    
 
     <script>
         // Assuming your apprenticeship length in days is calculated on the server and passed to the view
@@ -73,7 +83,11 @@
         // calculate days differences
         var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
         // calculate months difference
-        const remainingMonths = daysToMonths(daysDifference);
+        var remainingMonths = daysToMonths(daysDifference);
+        
+        if (remainingMonths < 0) {
+            remainingMonths = 0;
+        }
 
 
         // Set the progress bar width
@@ -107,11 +121,21 @@
         <dt class="app-dl-list__title">
             Apprenticeship:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.Title</dd>
+        <dd class="app-dl-list__content">@Model.MyApprenticeship?.Title</dd>        
         <dt class="app-dl-list__title">
             Level:
         </dt>
         <dd class="app-dl-list__content">@Model.MyApprenticeship?.Level</dd>
+        @{
+            if (Model.MyApprenticeship.ApprenticeshipType != null)
+            {
+                <dt class="app-dl-list__title">
+                    Apprenticeship Type:
+                </dt>
+                <dd class="app-dl-list__content">@Model.MyApprenticeship?.ApprenticeshipType.GetEnumDescription()</dd>
+            }
+        }
+       
         <dt class="app-dl-list__title">
             Planned training start date:
         </dt>
