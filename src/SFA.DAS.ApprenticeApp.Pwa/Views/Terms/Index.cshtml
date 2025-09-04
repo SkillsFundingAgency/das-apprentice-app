@@ -5,22 +5,31 @@
 <div class="app-main app-main--terms">
     <div class="app-main__inner">
         <div class="app-page-header govuk-!-margin-bottom-8">
-            <h1 class="app-page-header__heading">Terms &amp; conditions</h1>
+            <h1 class="app-page-header">Accept the terms and conditions</h1>
         </div>
+        <h2 class="govuk-heading-m">
+            To use this service
+        </h2>
         <p class="govuk-body">
-            To use this service you must be:
+            you must be:
         </p>
-        <ul class="govuk-list govuk-list--bullet">
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
             <li>a minimum of 15 years old</li>
             <li>on an apprenticeship</li>
         </ul>
-        <p>By using this service you agree to</p>
-        <ul class="govuk-list govuk-list--bullet">
+        <h2 class="govuk-heading-m">
+            By using this service
+        </h2>
+        <p class="govuk-body">
+            you must agree to:
+        </p>
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
             <li>use a legitimate email address that only you have access to</li>
-            <li>keep your sign in details secure and not share them with anyone</li>
+            <li>keep your log in details secure and not share them with anyone</li>
             <li>provide true and accurate information</li>
             <li>not allow anyone to confirm any data on your behalf</li>
             <li>not submit data on anyone else’s behalf</li>
+            <li>sign out at the end of each session</li>
             <li>
                 adhere to the <a href="https://www.legislation.gov.uk/ukpga/1990/18/contents">
                     Computer Misuse Act
@@ -28,22 +37,21 @@
                 </a>
             </li>
             <li>notify us of a change to your email address</li>
+            <li>be contacted by email to give feedback on your training provider</li>
         </ul>
-
 
         <h2 class="govuk-heading-m">Responsibility for the service</h2>
         <p>
-            This service is run by the Department for Education (DfE). We do our best to make sure it is:
+            This service is run by the Department for Education. We do our best to make sure this service:
         </p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>constantly available</li>
-            <li>virus free</li>
-            <li>providing information that is accurate and complete</li>
-            <li>alerting users to any changes to terms of use and updates to the service</li>
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
+            <li>is constantly available</li>
+            <li>is virus free</li>
+            <li>alerts users to any changes to terms of use and updates to the service</li>
         </ul>
 
-        <p>The DfE accepts no liability for:</p>
-        <ul class="govuk-list govuk-list--bullet">
+        <p>The Department for Education accepts no liability for:</p>
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
             <li>
                 you being unable to access the service (for example, because of excessive demand or because we've taken
                 the service down for maintenance)
@@ -60,7 +68,7 @@
         <p>Cookies are files saved on your phone, tablet or computer when you visit an app or website. We use cookies to store information about how you use this app, such as the pages you visit.</p>
         <p>We use Google Analytics and Microsoft Clarity to measure how you use the app so we can improve it based on user needs. We do not allow Google or Microsoft to use or share the data about how you use this app.</p>
         <p>Google Analytics and Microsoft Clarity set cookies that store anonymised information about:</p>
-        <ul class="govuk-list govuk-list--bullet">
+        <ul class="govuk-list govuk-list--bullet govuk-list--spaced">
             <li>how you got to the app</li>
             <li>the pages you visit on GOV.UK and government digital services, and how long you spend on each page</li>
             <li>what you click on while you're visiting the app</li>
@@ -70,7 +78,7 @@
 </div>
 <div class="app-button-group__wrap app-button-group__wrap--terms">
     <form method="get" action="@Url.Action("TermsAccept", "Terms")" id="terms-form">
-        <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+        <div class="govuk-checkboxes govuk-checkboxes--medium govuk-input__wrapper" data-module="govuk-checkboxes">
               <div class="govuk-checkboxes__item">
                 <input class="govuk-checkboxes__input" id="accept" name="accept" type="checkbox" value="hmrc">
                 <label class="govuk-label govuk-checkboxes__label govuk-label--terms" for="accept">
