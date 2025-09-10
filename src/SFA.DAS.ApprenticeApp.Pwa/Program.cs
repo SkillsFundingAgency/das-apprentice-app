@@ -24,7 +24,15 @@ builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
 
 builder.Services.AddDataProtection(applicationConfiguration);
 builder.Services.AddHealthChecks();
-builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
+//builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
+
+builder.Services.AddProgressiveWebApp(new PwaOptions
+{
+    RegisterServiceWorker = true,
+    RegisterWebmanifest = false,  // Disable automatic manifest registration
+    Strategy = ServiceWorkerStrategy.NetworkFirst,
+    OfflineRoute = "Offline.html"
+});
 
 builder.Services.AddSession(options =>
 {
