@@ -29,8 +29,7 @@ builder.Services.AddProgressiveWebApp(new PwaOptions
 {
     RegisterServiceWorker = true,
     RegisterWebmanifest = false,  // Disable automatic manifest registration
-    Strategy = ServiceWorkerStrategy.NetworkFirst,
-    OfflineRoute = "Offline.html"
+    Strategy = ServiceWorkerStrategy.NetworkFirst
 });
 
 builder.Services.AddSession(options =>
