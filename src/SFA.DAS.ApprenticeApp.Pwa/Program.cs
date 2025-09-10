@@ -24,7 +24,6 @@ builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);
 
 builder.Services.AddDataProtection(applicationConfiguration);
 builder.Services.AddHealthChecks();
-//builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 
 builder.Services.AddProgressiveWebApp(new PwaOptions
 {
