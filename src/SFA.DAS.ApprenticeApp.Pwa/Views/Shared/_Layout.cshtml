@@ -118,8 +118,105 @@
             root.classList.add(getFontSizeClass(fontSizePercentage));
         };
         window.onload = calculateFontSize;
+        
     </script>
 
-</body>
+
+
+
+    <script>
+        // Text size settings
+        const minSize = 0.8;   // 80% of original size
+        const maxSize = 1.5;   // 150% of original size
+        const step = 0.1;      // Size change per click
+        let textSize = 1.0;    // Default size (100%)
+
+        // DOM elements - may be null on some pages
+        const decreaseBtn = document.getElementById('textSizeDecrease');
+        const increaseBtn = document.getElementById('textSizeIncrease');
+        const sizeDisplay = document.getElementById('textSizeDisplay');
+        const htmlElement = document.documentElement;
+
+        // Function to set text size for the whole site
+        function setTextSize(size) {
+            // Clamp the size between min and max
+            size = Math.max(minSize, Math.min(size, maxSize));
+            textSize = size;
+
+            // Set the font size on the root element (affects all REM units)
+            htmlElement.style.fontSize = (size * 100) + '%';
+
+            // Update the display if element exists
+            if (sizeDisplay) {
+                sizeDisplay.textContent = Math.round(size * 100) + '%';
+            }
+
+            // Save the preference to a cookie
+            const expiryDate = new Date();
+            expiryDate.setFullYear(expiryDate.getFullYear() + 10); // 10 year expiry
+            document.cookie = `SFA.ApprenticeApp.TextSize=${size}; expires=${expiryDate.toUTCString()}; path=/`;
+
+            console.log(`Text size set to: ${Math.round(size * 100)}%`);
+        }
+
+        // Function to get saved text size from cookie
+        function getSavedTextSize() {
+            const name = 'SFA.ApprenticeApp.TextSize=';
+            const cookies = document.cookie.split(';');
+
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(name) === 0) {
+                    const sizeValue = parseFloat(cookie.substring(name.length));
+                    if (!isNaN(sizeValue)) {
+                        return Math.max(minSize, Math.min(maxSize, sizeValue));
+                    }
+                }
+            }
+            return textSize; // Return default if not found
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply saved size immediately
+            textSize = getSavedTextSize();
+            setTextSize(textSize);
+
+            console.log("DOM fully loaded and parsed");
+            console.log(`Decrease button: ${decreaseBtn ? "Found" : "Not found"}`);
+            console.log(`Increase button: ${increaseBtn ? "Found" : "Not found"}`);
+            console.log(`Size display: ${sizeDisplay ? "Found" : "Not found"}`);
+
+            // Only attach event listeners if elements exist
+            if (decreaseBtn) {
+                decreaseBtn.addEventListener('click', () => {
+                    setTextSize(textSize - step);
+                });
+
+                // Keyboard support for decrease button
+                decreaseBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        setTextSize(textSize - step);
+                    }
+                });
+            }
+
+            if (increaseBtn) {
+                increaseBtn.addEventListener('click', () => {
+                    setTextSize(textSize + step);
+                });
+
+                // Keyboard support for increase button
+                increaseBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        setTextSize(textSize + step);
+                    }
+                });
+            }
+        });
+    </script>
+    
+    
+    </body>
 
 </html>

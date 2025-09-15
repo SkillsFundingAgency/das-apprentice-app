@@ -116,8 +116,19 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
                     claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
                 }
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claims,
-                    new AuthenticationProperties());
+
+                // Set extended cookie expiration here
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true, // Persistent cookie survives browser restarts
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1), // 1 month expiration
+                    AllowRefresh = true // Allow refreshing the session
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    claims,
+                    authProperties); // Pass the modified properties
 
                 return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
             }
@@ -125,7 +136,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 return RedirectToAction("Error", "Account");
             }
-            
         }
 
         [Authorize]

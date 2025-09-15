@@ -75,7 +75,7 @@
             <p class="govuk-body">
                 You have turned off additional cookies.
             </p>
-        <p class="govuk-body">
+            <p class="govuk-body">
                 We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.
             </p>
         </div>
@@ -85,6 +85,38 @@
                 <input type="checkbox" id="trackCookiesSwitch" tabindex="0">
                 <span class="slider"></span>
             </label>
+        </div>
+    </div>
+</div>
+
+
+<div class="app-card">
+    <div class="settings-grid-container">
+        <div class="app-settings-content-wrap">
+            <h2 class="govuk-heading-m">
+                <i class="fas fa-text-height"></i> Text size
+            </h2>
+            <p class="govuk-body">
+                Changing font size in the Operating System settings is not reflected in this app.
+            </p>
+            <p class="govuk-body">
+                You can change text size here to improve your reading experience.
+            </p>
+        </div>
+      
+        <div class="text-size-controls">
+            <button id="textSizeDecrease" class="text-size-btn" aria-label="Decrease text size">
+                <span class="fas fa-minus changer">-</span>
+            </button>
+            <div id="textSizeDisplay" class="text-size-display">100%</div>
+            <button id="textSizeIncrease" class="text-size-btn" aria-label="Increase text size">
+                <span class="fas fa-plus changer">+</span>
+            </button>
+        </div>
+        
+        <div class="text-size-controls">
+                <span class="" style="margin: -70px 82px 25px 0px"> Make text smaller</span>
+                <span class="" style="margin: -70px 0px 25px 0px">Make text larger</span>
         </div>
     </div>
 </div>
@@ -103,6 +135,71 @@
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
 </script>
+
+
+<style>
+    .changer {font-size: 3rem;}
+    .text-size-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    .text-size-btn {
+        background: white;
+        color: #000;
+        border: #fff;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 2rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+     
+    }
+
+    .text-size-btn:hover {
+        background: #00703c;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .text-size-btn:active {
+        transform: translateY(0);
+    }
+
+    .text-size-display {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin: 0 25px;
+        min-width: 100px;
+        text-align: center;
+        color: #2c3e50;
+        background: white;
+        padding: 8px 20px;
+        border-radius: 30px;
+    
+    }
+
+    .instruction {
+        text-align: center;
+        margin-top: 25px;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .current-size {
+        font-weight: 500;
+        color: #3498db;
+    }
+</style>
 
 @await Html.PartialAsync("_SettingsJs.cshtml")
 @await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")
