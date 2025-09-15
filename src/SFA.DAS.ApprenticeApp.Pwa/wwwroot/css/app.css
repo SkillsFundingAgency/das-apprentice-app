@@ -2684,7 +2684,7 @@ p + .app-card__heading,
 
 .govuk-checkboxes__item, .app-checkboxes--small .app-checkboxes__item {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;  
   position: relative;
   margin-bottom: 10px;
 }
