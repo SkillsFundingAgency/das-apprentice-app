@@ -104,11 +104,5 @@
 
 </div>
 
-<!-- HTML for the popup box -->
 
-<script>
-    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
-    window.pushNotificationKey = publicKey;
-</script>
 @await Html.PartialAsync("_TasksJs.cshtml", Model)
-@await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")
