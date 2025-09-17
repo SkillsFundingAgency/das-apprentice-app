@@ -1,5 +1,7 @@
 ﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
+
+
     //step 3: register the service worker
     let registration = navigator.serviceWorker.register("../service-worker.js");
     let thisEndpoint = "";
@@ -18,8 +20,6 @@
             }
         }
     }
-
-    // FIXED: Improved notification permission handling with timeout
     async function requestNotificationPermission() {
 
         // Remove the notifications dialogue on continue click
@@ -28,51 +28,9 @@
             notificationDiv.remove();
             console.log('Notification dialogue removed successfully');
         }
-
-        try {
-            // Check current permission state first
-            if (Notification.permission === 'granted') {
-                displayNotificationButtons();
-                return;
-            }
-
-            // Add timeout to prevent hanging
-            const permissionPromise = Notification.requestPermission();
-            const timeoutPromise = new Promise((resolve) => {
-                setTimeout(() => resolve('timeout'), 5000); // 5-second timeout
-            });
-
-            const result = await Promise.race([permissionPromise, timeoutPromise]);
-
-            if (result === 'timeout') {
-                console.warn('Permission request timed out');
-
-                if (notificationDiv) {
-                    notificationDiv.remove();
-                    console.log('Notification dialogue removed successfully');
-                }                
-                
-            } else {
-                console.log('Notification permission:', result);
-
-                if (notificationDiv) {
-                    notificationDiv.remove();
-                    console.log('Notification dialogue removed successfully');
-                }
-                
-            }
-        } catch (error) {
-
-            if (notificationDiv) {
-                notificationDiv.remove();
-                console.log('Notification dialogue removed successfully');
-            }
-            
-            console.error('Error requesting notification permission:', error);
-        } finally {
-            // Always update UI regardless of outcome
-            displayNotificationButtons();
-        }
+        
+        await Notification.requestPermission();
+        displayNotificationButtons();
     }
 
     function registerPush(registration) {
@@ -94,14 +52,10 @@
     }
 
     function sendSubscriptionToServer(subscription, isSubscribed) {
-        // FIX: Handle null keys safely
-        const p256dhKey = subscription.getKey("p256dh");
-        const authKey = subscription.getKey("auth");
-
         const requestData = new SubscriptionRequest(
             subscription.endpoint,
-            p256dhKey ? arrayBufferToBase64(p256dhKey) : "",
-            authKey ? arrayBufferToBase64(authKey) : "",
+            arrayBufferToBase64(subscription.getKey("p256dh")),
+            arrayBufferToBase64(subscription.getKey("auth")),
             isSubscribed
         );
 
@@ -144,12 +98,6 @@
     }
 
     function urlB64ToUint8Array(base64String) {
-        // FIX: Add null/undefined check
-        if (!base64String) {
-            console.error("urlB64ToUint8Array: base64String is null or undefined");
-            return new Uint8Array();
-        }
-
         const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
         const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
 
@@ -163,12 +111,7 @@
     }
 
     function arrayBufferToBase64(buffer) {
-        // FIX: Handle null/undefined buffer
-        if (!buffer) {
-            console.error("arrayBufferToBase64: buffer is null or undefined");
-            return "";
-        }
-
+        // https://stackoverflow.com/a/9458996
         let binary = "";
         let bytes = new Uint8Array(buffer);
         let len = bytes.byteLength;
@@ -193,80 +136,29 @@
         }
     }
 
-    // FIXED: Enhanced permission change handler with safe checks
     async function handlePermissionChange(permission) {
-        try {
-            if (permission === "granted") {
-                console.log("Notifications enabled by user");
-                let worker = await navigator.serviceWorker.getRegistration();
-
-                // Added timeout for worker retrieval
-                if (!worker) {
-                    const workerTimeout = setTimeout(() => {
-                        console.warn("Service worker registration timed out");
-                        displayNotificationButtons();
-                    }, 3000);
-
-                    worker = await navigator.serviceWorker.getRegistration();
-                    clearTimeout(workerTimeout);
-                }
-
-                if (worker) {
-                    await registerPush(worker);
-                } else {
-                    console.warn("Service worker not available");
-                }
-            } else if (permission === "denied") {
-                console.log("Notifications disabled by user");
-                await unsubscribe();
+        if (permission === "granted") {
+            console.log("Notifications changed to enabled by the user.");
+            const worker = await navigator.serviceWorker.getRegistration();
+            if (!worker) {
+                requestNotificationPermission();
+            } else {
+                registerPush(worker);
             }
-        } catch (error) {
-            console.error("Error handling permission change:", error);
-        } finally {
-            // FIX: Add null check before display function
-            if (typeof displayNotificationButtons === 'function') {
-                displayNotificationButtons();
-            }
+        } else if (permission === "denied") {
+            console.log("Notifications changed to disabled by the user.");
+            unsubscribe();
         }
     }
 
-    // FIXED: Permission listener with fallback and safe checks
     document.addEventListener("DOMContentLoaded", (event) => {
-        // FIX: Ensure Notification API is available
-        if (!("Notification" in window)) {
-            console.warn("Notifications not supported");
-            return;
-        }
-
-        // Use modern Permissions API if available
-        if (navigator.permissions && navigator.permissions.query) {
-            navigator.permissions.query({ name: "notifications" })
-                .then((permissionStatus) => {
-                    if (permissionStatus) {
-                        permissionStatus.onchange = () => {
-                            handlePermissionChange(permissionStatus.state);
-                        };
-                    }
-                })
-                .catch(error => {
-                    console.warn('Permissions API error:', error);
-                    // Fallback to notification permission
-                    handlePermissionChange(Notification.permission);
-                });
-        } else {
-            // Fallback for browsers without Permissions API
-            handlePermissionChange(Notification.permission);
-        }
-
-        // Added permission state tracking for Android workaround
-        let permissionState = Notification.permission;
-        function trackPermissionChanges() {
-            if (Notification.permission !== permissionState) {
-                permissionState = Notification.permission;
-                handlePermissionChange(permissionState);
-            }
-        }
-        setInterval(trackPermissionChanges, 3000);
+        navigator.permissions
+            .query({ name: "notifications" })
+            .then((permissionStatus) => {
+                permissionStatus.onchange = () => {
+                    handlePermissionChange(permissionStatus.state);
+                };
+            });
     });
 
     function testNotification() {
@@ -277,13 +169,5 @@
             icon: icon,
         };
         new Notification("Test Notification", options);
-    }
-
-    // Added manual refresh function for Android workaround
-    function refreshNotificationState() {
-        // FIX: Add null check before display function
-        if (typeof displayNotificationButtons === 'function') {
-            displayNotificationButtons();
-        }
     }
 </script>
