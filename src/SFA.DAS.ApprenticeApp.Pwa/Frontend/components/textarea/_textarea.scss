@@ -11,3 +11,12 @@
     @include app-focused;
   }
 }
+
+@media all and (-webkit-device-pixel-ratio: 2) {
+  .app-textarea {
+    background-color: pink;
+    color: darkblue;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
