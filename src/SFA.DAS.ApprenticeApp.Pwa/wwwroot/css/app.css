@@ -9547,6 +9547,8 @@ input {
   border-radius: 10px;
   border: 1px solid #949494;
   height: auto;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .app-textarea:focus {
   outline: 3px solid rgba(0, 112, 60, 0.2);
@@ -9555,14 +9557,6 @@ input {
   border-color: #00703c;
 }
 
-@media all and (-webkit-device-pixel-ratio: 2) {
-  .app-textarea {
-    background-color: pink;
-    color: darkblue;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
 .app-input {
   background-color: #fff;
   padding: 1rem;

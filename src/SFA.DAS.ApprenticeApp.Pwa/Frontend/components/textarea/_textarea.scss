@@ -6,17 +6,9 @@
   border-radius: $app-border-radius-inputs;
   border: 1px solid #949494;
   height: auto;
-
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   &:focus {
     @include app-focused;
-  }
-}
-
-@media all and (-webkit-device-pixel-ratio: 2) {
-  .app-textarea {
-    background-color: pink;
-    color: darkblue;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
   }
 }
