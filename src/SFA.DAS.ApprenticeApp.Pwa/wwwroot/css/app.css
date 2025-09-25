@@ -9060,6 +9060,7 @@ input {
   padding: 1rem;
   border-bottom: 1px solid #d9d9d9;
   align-items: center;
+  background: #eee;
 }
 
 .app-overlay-header__heading {
@@ -9854,6 +9855,9 @@ input {
   width: 100%;
   animation: slideUp ease 200ms;
   left: 0;
+  top: 13px;
+  bottom: 0;
+  right: 0;
 }
 
 .remove-filter,
