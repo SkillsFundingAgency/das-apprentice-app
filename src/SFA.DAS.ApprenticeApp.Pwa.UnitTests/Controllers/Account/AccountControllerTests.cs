@@ -31,11 +31,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var lastnameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
-
+            var lastNameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-               apprenticeIdClaim, lastnameClaim
+               apprenticeIdClaim,
+               lastNameClaim
             })});
 
             cookies.Setup(c => c[Constants.ApprenticeshipIdClaimKey]).Returns("1");
@@ -94,11 +94,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var lastnameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
+            var lastNameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
 
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
-               apprenticeIdClaim, lastnameClaim
+               apprenticeIdClaim, 
+               lastNameClaim
             })});
             httpContext.User = claimsPrincipal;
 
@@ -109,16 +110,141 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
             client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null });
             var result = await controller.Authenticated() as RedirectToActionResult;
+            result.ActionName.Should().Be("EmailMismatchError");
+            result.ControllerName.Should().Be("Account");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Loading_Authenticated_Page_Redirects_OnNoRegistrationFound(
+         [Frozen] Mock<IOuterApiClient> client,
+         [Greedy] AccountController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var lastNameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "");
+            
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+               apprenticeIdClaim,
+               lastNameClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(client => client.GetRegistrationIdByEmail(It.IsAny<string>())).ReturnsAsync(Guid.Empty);
+            var result = await controller.Authenticated() as RedirectToActionResult;
+            result.ActionName.Should().Be("EmailMismatchError");
+            result.ControllerName.Should().Be("Account");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Loading_Authenticated_Page_Redirects_OnRegistrationFound(
+        [Frozen] Mock<IOuterApiClient> client,
+        [Greedy] AccountController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var lastNameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "");
+
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+               apprenticeIdClaim,
+               lastNameClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(client => client.GetRegistrationIdByEmail(It.IsAny<string>())).ReturnsAsync(Guid.NewGuid());
+            var result = await controller.Authenticated() as RedirectToActionResult;
             result.ActionName.Should().Be("CmadError");
             result.ControllerName.Should().Be("Account");
         }
-        //  
 
+        [Test, MoqAutoData]
+        public async Task Loading_Authenticated_Page_Redirects_OnRegistrationException(
+       [Frozen] Mock<IOuterApiClient> client,
+       [Greedy] AccountController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var lastNameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "");
+
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+               apprenticeIdClaim,
+               lastNameClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(client => client.GetRegistrationIdByEmail(It.IsAny<string>())).ThrowsAsync(new Exception());
+            var result = await controller.Authenticated() as RedirectToActionResult;
+            result.ActionName.Should().Be("EmailMismatchError");
+            result.ControllerName.Should().Be("Account");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Loading_Authenticated_Page_Redirects_OnException(
+          [Frozen] Mock<IOuterApiClient> client,
+          [Greedy] AccountController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var lastNameClaim = new Claim(Constants.ApprenticeLastNameClaimKey, "test");
+
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            {
+               apprenticeIdClaim,
+               lastNameClaim
+            })});
+            httpContext.User = claimsPrincipal;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ThrowsAsync(new Exception());
+            var result = await controller.Authenticated() as RedirectToActionResult;
+            result.ActionName.Should().Be("EmailMismatchError");
+            result.ControllerName.Should().Be("Account");
+        }
 
         [Test, MoqAutoData]
         public void Loading_YourAccount_Page([Greedy] AccountController controller)
         {
             var result = controller.YourAccount() as ActionResult;
+            result.Should().NotBeNull();
+        }
+
+        [Test, MoqAutoData]
+        public void Loading_EmailMismatchError_Page([Greedy] AccountController controller)
+        {
+            var result = controller.EmailMismatchError() as ActionResult;
+            result.Should().NotBeNull();
+        }
+
+        [Test, MoqAutoData]
+        public void Loading_CmadError_Page([Greedy] AccountController controller)
+        {
+            var registrationId = Guid.NewGuid();
+            var result = controller.CmadError(registrationId) as ActionResult;
             result.Should().NotBeNull();
         }
 
