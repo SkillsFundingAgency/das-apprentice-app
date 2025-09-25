@@ -83,6 +83,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                         {
                             case "NOT-STARTED":
                                 filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.NotStarted).ToList());
+                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress == null));
                                 break;
                             case "IN-PROGRESS":
                                 filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.InProgress).ToList());

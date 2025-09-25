@@ -43,6 +43,11 @@ public class HomeController : Controller
         var vm = new HomeViewModel();
         return View(vm);
     }
+
+    public async Task<IActionResult> AccessibilityStatement()
+    {
+        return View();
+    }
     
     public async Task<IActionResult> CookieStart()
     {
@@ -99,6 +104,12 @@ public class HomeController : Controller
     {
         return new EmptyResult();
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> KeepAlive()
+    {
+        return NoContent();
+    }    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

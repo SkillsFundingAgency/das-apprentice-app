@@ -250,13 +250,10 @@
             return;
         }
         const overlay = document.getElementById(overlayId);
-        const focusableElements = `button, [href], input:not([type="hidden"]), select, textarea, iframe, [tabindex]:not([tabindex="-1"])`;
+        const focusableElements = `button, [href], input:not([type="hidden"]), select, textarea`;
         const firstFocusableElement = overlay.querySelectorAll(focusableElements)[0];
         const focusableContent = overlay.querySelectorAll(focusableElements);
         const lastFocusableElement = focusableContent[focusableContent.length - 1];
-
-        console.log(firstFocusableElement)
-        console.log(lastFocusableElement)
 
         if (e.shiftKey) {
             if (document.activeElement === firstFocusableElement) {

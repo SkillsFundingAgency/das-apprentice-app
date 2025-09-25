@@ -1,9 +1,9 @@
-﻿﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-   
+
 
     //step 3: register the service worker
-    let registration = navigator.serviceWorker.register("service-worker.js");
+    let registration = navigator.serviceWorker.register("../service-worker.js");
     let thisEndpoint = "";
 
     //step 4: get subscription if exists
@@ -11,17 +11,25 @@
 
     async function requestSubscription() {
         if (document.referrer === '' || document.referrer.includes('account-details') || document.referrer.includes('Terms') || document.referrer.includes('Welcome')) {
-        const worker = await navigator.serviceWorker.getRegistration();
-        const existingSubscription = await worker.pushManager.getSubscription();
+            const worker = await navigator.serviceWorker.getRegistration();
+            const existingSubscription = await worker.pushManager.getSubscription();
 
-        if (existingSubscription) {
-            thisEndpoint = existingSubscription.endpoint;
-            sendSubscriptionToServer(existingSubscription, true);
+            if (existingSubscription) {
+                thisEndpoint = existingSubscription.endpoint;
+                sendSubscriptionToServer(existingSubscription, true);
+            }
         }
-      }
     }
     async function requestNotificationPermission() {
-       await Notification.requestPermission();
+
+        // Remove the notifications dialogue on continue click
+        const notificationDiv = document.querySelector('.enable-notifications');
+        if (notificationDiv) {
+            notificationDiv.remove();
+            console.log('Notification dialogue removed successfully');
+        }
+        
+        await Notification.requestPermission();
         displayNotificationButtons();
     }
 

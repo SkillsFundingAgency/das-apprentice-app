@@ -86,7 +86,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }  
                 }
             }
-            return RedirectToAction("EmailMismatchError", "Account");
         }
 
         [HttpGet]

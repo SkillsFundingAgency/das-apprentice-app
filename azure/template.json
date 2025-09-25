@@ -69,6 +69,62 @@
         "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow()]"
+        },
+        "applicationInsightsConnectionString": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Shared application insights connection string retrieved from the get-product-app-insights step"
+            }
+        },
+        "applicationInsightsResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Shared application insights resource ID retrieved from the get-product-app-insights step"
+            }
+        },
+        "alertActionGroupResourceIdFailedRequests": {
+            "type": "string",
+            "metadata": {
+                "description": "Failed requests alert group resource ID found in the management resources variable groups"
+            }
+        },
+        "alertActionGroupResourceIdResponseTime": {
+            "type": "string",
+            "metadata": {
+                "description": "Response time alert group resource ID found in the management resources variable groups"
+            }
+        },
+        "enableFailedRequestAlert": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Enables alerting on app insights failed requests"
+            }
+        },
+        "vnetRouteAllEnabled": {
+            "type": "bool",
+            "defaultValue": false
+        },
+        "enableResponseTimeAlert": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Enables alerting on app insights response times"
+            }
+        },
+        "disableResponseTimeAlertNotifications": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Deploys alerting on app insights response times"
+            }
+        },
+        "disableFailedRequestAlertNotifications": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Deploys alerting on app insights response times"
+            }
         }
     },
     "variables": {
@@ -111,33 +167,6 @@
                     }
                 }
             }
-        },
-        {
-            "apiVersion": "2021-04-01",
-            "name": "[concat(variables('appServiceName'), '-app-insights-', parameters('utcValue'))]",
-            "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[variables('resourceGroupName')]",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "appInsightsName": {
-                        "value": "[variables('appServiceName')]"
-                    },
-                    "attachedService": {
-                        "value": "[variables('appServiceName')]"
-                    },
-                    "logAnalyticsWorkspaceId": {
-                        "value": "[resourceId(parameters('logAnalyticsSubscriptionId'),parameters('sharedManagementResourceGroup'),'Microsoft.OperationalInsights/workspaces',parameters('logAnalyticsWorkspaceName'))]"
-                    }
-                }
-            },
-            "dependsOn": [
-                "[variables('resourceGroupName')]"
-            ]
         },
         {
             "apiVersion": "2021-04-01",
@@ -208,7 +237,7 @@
                                 },
                                 {
                                     "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-                                    "value": "[reference(concat(variables('appServiceName'), '-app-insights-', parameters('utcValue'))).outputs.ConnectionString.value]"
+                                    "value": "[parameters('applicationInsightsConnectionString')]"
                                 },
                                 {
                                     "name": "ResourceEnvironmentName",
@@ -233,6 +262,42 @@
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('frontEndAccessRestrictions')]"
+                    },
+                    "vnetRouteAllEnabled": {
+                        "value": "[parameters('vnetRouteAllEnabled')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[variables('resourceGroupName')]"
+            ]
+        },
+        {
+            "apiVersion": "2021-04-01",
+            "name": "[concat(variables('resourceNamePrefix'), '-notification-hub-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'), 'notification-hub.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "namespaceLocation": {
+                        "value": "[parameters('resourceGroupLocation')]"
+                    },
+                    "namespaceName": {
+                        "value": "[concat(variables('resourceNamePrefix'), '-ns')]"
+                    },
+                    "notificationHubName": {
+                        "value": "[concat(variables('resourceNamePrefix'), '-hub')]"
+                    },
+                    "sku": {
+                        "value": "Free"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
                     }
                 }
             },
@@ -281,6 +346,62 @@
             "dependsOn": [
                 "[variables('resourceGroupName')]"
             ]
+        },
+        {
+            "condition": "[equals(parameters('enableFailedRequestAlert'), true())]",
+            "apiVersion": "2021-04-01",
+            "name": "[concat('application-insights-', variables('appServiceName'), '-alert-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights-failed-requests-alert.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "serviceName": {
+                        "value": "[variables('appServiceName')]"
+                    },
+                    "applicationInsightsResourceId": {
+                        "value": "[parameters('applicationInsightsResourceId')]"
+                    },
+                    "alertActionGroupResourceId": {
+                        "value": "[parameters('alertActionGroupResourceIdFailedRequests')]"
+                    },
+                    "enabled": {
+                        "value": "[if(parameters('disableFailedRequestAlertNotifications'), false(), true())]"
+                    }
+                }
+            }
+        },
+        {
+            "condition": "[equals(parameters('enableResponseTimeAlert'), true())]",
+            "apiVersion": "2021-04-01",
+            "name": "[concat('ai-', variables('appServiceName'), '-response-time-alert-', parameters('utcValue'))]",
+            "type": "Microsoft.Resources/deployments",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights-response-time-alert.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "serviceName": {
+                        "value": "[variables('appServiceName')]"
+                    },
+                    "applicationInsightsResourceId": {
+                        "value": "[parameters('applicationInsightsResourceId')]"
+                    },
+                    "alertActionGroupResourceId": {
+                        "value": "[parameters('alertActionGroupResourceIdResponseTime')]"
+                    },
+                    "enabled": {
+                        "value": "[if(parameters('disableResponseTimeAlertNotifications'), false(), true())]"
+                    }
+                }
+            }
         }
     ],
     "outputs": {

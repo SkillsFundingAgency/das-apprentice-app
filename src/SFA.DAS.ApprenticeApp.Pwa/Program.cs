@@ -82,7 +82,7 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=CookieStart}/{id?}");
     
-    endpoints.MapGet("/service/keepalive", async context =>
+    endpoints.MapGet("/home/keepalive", async context =>
     {
         context.Response.StatusCode = context.User.Identity?.IsAuthenticated == true 
             ? StatusCodes.Status204NoContent 
