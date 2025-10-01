@@ -28,7 +28,6 @@
         });
 
         $('body').on('click', '.remove-survey-notification', function (e) {
-            // todo surveys - update cookie value
             setCookie("SFA.DAS.ApprenticeApp.SurveyNotificationSeen", "1", "999");
             location.reload();
         });        

@@ -26,7 +26,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
                     notificationValue += taskNotificationsResult.TaskReminders.Count;
                 }
                 
-                // todo surveys
                 var surveryCookie = Request.Cookies["SFA.DAS.ApprenticeApp.SurveyNotificationSeen"];
                 if (surveryCookie == null)
                 {

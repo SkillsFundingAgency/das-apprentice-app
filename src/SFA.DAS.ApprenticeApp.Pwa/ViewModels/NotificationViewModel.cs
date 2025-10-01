@@ -5,8 +5,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
     public class NotificationPageModel
     { 
         public List<ApprenticeTaskReminder> TaskReminders { get; set; }
-        
-        // todo surveys
         public bool SurveyNotificationSeen { get; set; }
     }  
 }

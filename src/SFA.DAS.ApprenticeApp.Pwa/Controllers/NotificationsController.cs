@@ -32,7 +32,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 try
                 {
-                    // todo surveys
                     var surveryCookie = Request.Cookies["SFA.DAS.ApprenticeApp.SurveyNotificationSeen"];
                     var surveryCookieValue = 0;
                     if (surveryCookie != null)
