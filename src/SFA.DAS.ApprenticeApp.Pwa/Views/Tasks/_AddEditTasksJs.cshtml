@@ -149,7 +149,7 @@
             $('#ksb-popup').load('@Url.Action("LinkKsbs", "Ksb")', function () {
                 $('#ksb-popup').show();
 
-                $('.add-edit-content-area').height($('.app-container').height() - 150);
+               // $('.add-edit-content-area').height($('.app-container').height() - 150);
             });
             document.addEventListener(`keydown`, (e) => initTrapFocus(e, 'ksb-popup'));
             $ksbOverlay.focus()
@@ -279,7 +279,7 @@
             $('#ksb-edit-popup').load('@Url.Action("AddUpdateKsbProgress", "Ksb")', function () {
 
                 $('#ksb-edit-popup').show();
-                $('.add-edit-content-area').height($('.app-container').height() - 150);
+                //$('.add-edit-content-area').height($('.app-container').height() - 150);
 
             });
         }

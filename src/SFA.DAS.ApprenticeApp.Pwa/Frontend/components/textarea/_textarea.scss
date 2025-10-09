@@ -6,7 +6,8 @@
   border-radius: $app-border-radius-inputs;
   border: 1px solid #949494;
   height: auto;
-
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   &:focus {
     @include app-focused;
   }

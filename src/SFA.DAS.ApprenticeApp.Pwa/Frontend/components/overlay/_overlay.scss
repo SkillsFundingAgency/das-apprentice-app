@@ -16,6 +16,7 @@
 .app-overlay__content {
   padding: $app-gap;
   overflow: auto;
+  height: calc(100dvh - 70px);
 }
 
 .app-template__body--overlay-open {
