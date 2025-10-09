@@ -32,10 +32,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 try
                 {
+                    var surveryCookie = Request.Cookies["SFA.DAS.ApprenticeApp.SurveyNotificationSeen"];
+                    var surveryCookieValue = 0;
+                    if (surveryCookie != null)
+                    {
+                        surveryCookieValue = int.Parse(Request.Cookies["SFA.DAS.ApprenticeApp.SurveyNotificationSeen"]);
+                    }                    
+                    
                     var notificationsResult = await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
                     var vm = new NotificationPageModel
                     {
-                        TaskReminders = notificationsResult.TaskReminders
+                        TaskReminders = notificationsResult.TaskReminders,
+                        SurveyNotificationSeen = Convert.ToBoolean(surveryCookieValue)
                     };
                     return View(vm);
                 }

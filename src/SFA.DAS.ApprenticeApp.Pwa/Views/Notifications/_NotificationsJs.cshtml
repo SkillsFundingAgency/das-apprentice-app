@@ -27,6 +27,11 @@
             const modal = new Modal(this, removeNotification, taskId, modalContent).init();
         });
 
+        $('body').on('click', '.remove-survey-notification', function (e) {
+            setCookie("SFA.DAS.ApprenticeApp.SurveyNotificationSeen", "1", "999");
+            location.reload();
+        });        
+
         $('.app-js-convert-minutes-to-date').each(function () {
             const dueDateTime = new Date($(this).data('due'));
             const minutes = $(this).data('val');
@@ -48,6 +53,43 @@
                 $(".app-navigation__link-count").text(newVal);
             }
         }
+
+        function setCookie(name, value, expDays) {
+            let cookieString = name + "=" + value + "; path=/;SameSite=None";
+            if (expDays) {
+                let date = new Date();
+                date.setTime(date.getTime() + expDays * 24 * 60 * 60 * 1000);
+                cookieString = cookieString + "; expires=" + date.toGMTString();
+            }
+            cookieString = cookieString + "; Secure";
+            cookieString + ";domain=" + getDomain();
+            document.cookie = cookieString;
+        }
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var cookies = document.cookie.split(";");
+            for (var i = 0, len = cookies.length; i < len; i++) {
+                var cookie = cookies[i];
+                while (cookie.charAt(0) === " ") {
+                    cookie = cookie.substring(1, cookie.length);
+                }
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length));
+                }
+            }
+            return null;
+        }
+
+        function getDomain() {
+            return window.location.hostname.indexOf(".") !== -1
+                ? "." +
+                window.location.hostname.slice(
+                    window.location.hostname.indexOf(".") + 1,
+                )
+                : window.location.hostname;
+        }
+
+
 
         appInit();
     })
