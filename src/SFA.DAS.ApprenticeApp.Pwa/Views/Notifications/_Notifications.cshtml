@@ -34,57 +34,59 @@
 }
 
 
-
-@foreach (var notification in Model.TaskReminders)
+@if (Model.TaskReminders != null)
 {
-    <div class="app-card" id="notification-@notification.TaskId" @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")>
-        <h2 class="app-card__heading">
-            <a asp-controller="Tasks" asp-action="Index" class="app-link">@notification.Title</a>
-        </h2>
-        <div class="app-card__footer">
-            <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0">
-            <ul class="app-icon-list app-icon-list--muted">
-            <li>
-                <span class="app-icon-list__icon">
-                    <svg>
-                        <use xlink:href="/assets/images/icons.svg#notifications"></use>
-                    </svg>
-                </span>
-                <span>
-                            Reminder set: 
-                            @switch (notification.ReminderValue)
-                            {
-                                case 0:
-                                    <text>0 minutes before</text>
-                                    break;
-                                case 60:
-                                    <text>1 hour before</text>
-                                    break;
-                                case 1440:
-                                    <text>1 day before</text>
-                                    break;
-                                default:
-                                    <span class="app-js-convert-minutes-to-date" data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", notification.DueDate)" data-val="@notification.ReminderValue"></span>
-                                    break;
-                            }
-                </span>
-            </li>
-           <li>
-            <span>
-                    Due @string.Format("{0:d MMMM, h:mm}", @notification.DueDate)@string.Format("{0:tt}",@notification.DueDate).ToLower()
-                </span>
-                    </li>
-                </ul>
-           </div>
-            <a href="#" class="app-icon-action remove-notification" data-notification-id="@notification.TaskId">
-                <span class="app-icon-action__icon">
-                    <svg>
-                        <use xlink:href="/assets/images/icons.svg#trash">
-                        </use>
-                    </svg>
-                </span>
-                <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
-            </a>
+    @foreach (var notification in Model.TaskReminders)
+    {
+        <div class="app-card" id="notification-@notification.TaskId" @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")>
+            <h2 class="app-card__heading">
+                <a asp-controller="Tasks" asp-action="Index" class="app-link">@notification.Title</a>
+            </h2>
+            <div class="app-card__footer">
+                <div class="govuk-hint govuk-!-font-size-16 govuk-!-margin-bottom-0">
+                    <ul class="app-icon-list app-icon-list--muted">
+                        <li>
+                            <span class="app-icon-list__icon">
+                                <svg>
+                                    <use xlink:href="/assets/images/icons.svg#notifications"></use>
+                                </svg>
+                            </span>
+                            <span>
+                                Reminder set:
+                                @switch (notification.ReminderValue)
+                                {
+                                    case 0:
+                                        <text>0 minutes before</text>
+                                        break;
+                                    case 60:
+                                        <text>1 hour before</text>
+                                        break;
+                                    case 1440:
+                                        <text>1 day before</text>
+                                        break;
+                                    default:
+                                        <span class="app-js-convert-minutes-to-date" data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", notification.DueDate)" data-val="@notification.ReminderValue"></span>
+                                        break;
+                                }
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                Due @string.Format("{0:d MMMM, h:mm}", @notification.DueDate)@string.Format("{0:tt}", @notification.DueDate).ToLower()
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <a href="#" class="app-icon-action remove-notification" data-notification-id="@notification.TaskId">
+                    <span class="app-icon-action__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#trash">
+                            </use>
+                        </svg>
+                    </span>
+                    <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
+                </a>
+            </div>
         </div>
-    </div>
+    }
 }

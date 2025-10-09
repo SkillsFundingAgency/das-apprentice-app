@@ -13,7 +13,11 @@
 @model NotificationPageModel
 
 <div id="notification_content">
-    @if(Model.TaskReminders == null || Model.TaskReminders.Count == 0)
+    @if(Model.SurveyNotificationSeen == false)
+    {
+        @await Html.PartialAsync("_Notifications", Model)
+    }
+    else if(Model.TaskReminders == null || Model.TaskReminders.Count == 0)
     {
         @await Html.PartialAsync("_NoNotifications")
     }
