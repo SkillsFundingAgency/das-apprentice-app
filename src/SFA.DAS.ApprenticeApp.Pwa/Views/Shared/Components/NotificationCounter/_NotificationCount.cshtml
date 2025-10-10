@@ -1,2 +1,5 @@
 ﻿@model int
-<span class="app-navigation__link-count">@Model</span>
+@if (Model > 0)
+{
+    <span class="app-navigation__link-count">@Model</span>
+}
