@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "We could not find your apprenticeship";
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header govuk-!-margin-bottom-8">
+            <div class="app-page-header__back">
+                <a asp-action="SigningOut" asp-controller="Account" class="app-back-link">
+                    Close
+                </a>
+            </div>
+            <h1 class="app-page-header__heading">We could not find your apprenticeship</h1>
+            <div class="app-page-header__forward"></div>
+        </div>
+
+        <p class="govuk-body">
+            Check the name of your course and your training provider - this 
+            this information is in the first email we sent to you about your
+            apprenticeship
+        </p>
+        <p class="govuk-body">
+            If this is right, contact your training provider and make sure they
+            have your correct name and date of birth. If anything is wrong your 
+            provider will need to correct this before you can access Your Apprenticeship.
+        </p>
+        <p class="govuk-body">
+            If you need your unique learner number, your training provider will know
+            it. It might also be printed on your certificates or exam results.
+        </p>          
+    </div>
+</div>
