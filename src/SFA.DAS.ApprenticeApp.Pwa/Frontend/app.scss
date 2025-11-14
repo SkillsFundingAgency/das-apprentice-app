@@ -1,1 +1,120 @@
-@import 'govuk/index';
+$govuk-include-default-font-face: false;
+@use 'govuk/index' as gds;
+
+.govuk-service-navigation__container {
+  flex-direction: column;
+}
+
+.card {
+  border-bottom: 1px solid gds.$govuk-border-colour;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  background: gds.$govuk-brand-colour;
+  min-height: 100px;
+  padding: 1rem;
+  border-radius: 1rem;
+  h2 {
+    color: #fff  !important;
+  }
+}
+
+@media #{gds.govuk-until-breakpoint(tablet)} and (orientation: portrait) {
+
+  .govuk-template--rebranded {
+    background: #fff;
+  }
+
+  .govuk-header {
+    display: none;
+  }
+
+  .govuk-service-navigation__service-name {
+    display: none;
+  }
+
+  .govuk-template--rebranded .govuk-service-navigation {
+    border: none;
+  }
+
+  .govuk-service-navigation__wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    background: #f4f8fb;
+    border-top: 1px solid gds.$govuk-border-colour;
+  }
+
+  .govuk-service-navigation__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+    margin: 0 10px;
+    padding: 0;
+    list-style: none;
+    gap: 1px;
+  }
+
+  .govuk-service-navigation__item {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    text-align: center;
+    border-top: 4px solid transparent;
+    &--active {
+      font-weight: gds.$govuk-font-weight-bold;
+      border-top-color: gds.$govuk-brand-colour;
+      span.icon {
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  .govuk-service-navigation__link {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    font-size: 0;
+    align-items: center;
+    span.text {
+      font-size: 14px;
+      &:first-letter {
+        text-transform: uppercase;
+      }
+    }
+    span.icon {
+      width: 1.6rem;
+      height: 1.6rem;
+      display: block;
+      margin: .7rem 0 .4rem;
+      border-radius: 40%;
+      opacity: .2;
+      background: gds.$govuk-brand-colour;
+
+    }
+  }
+
+  .govuk-footer,
+  .govuk-template--rebranded .govuk-footer {
+    background: none;
+    border: none;
+    text-align: center;
+  }
+  .govuk-footer__meta {
+    display: none;
+  }
+
+  .govuk-footer__crown {
+    color: #ccc;
+  }
+}

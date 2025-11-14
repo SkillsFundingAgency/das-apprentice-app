@@ -8592,6 +8592,25 @@
 
 
 
+.govuk-service-navigation__container {
+  flex-direction: column;
+}
+
+.card {
+  border-bottom: 1px solid #b1b4b6;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  background: #1d70b8;
+  min-height: 100px;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.progress h2 {
+  color: #fff !important;
+}
+
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-template--rebranded {
     background: #fff;
