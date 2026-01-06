@@ -96,8 +96,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     year = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 31));
-
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(2000, 1, 1), new DateTime(2100, 12, 12));
+                
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
                     return PartialView("_TasksNotStarted");
@@ -152,7 +152,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     yearValue = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 31));
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(2000, 1, 1), new DateTime(2100, 12, 1));
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -202,13 +202,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                     var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
 
-                    var guids = taskdata.KsbProgress.Select(k => k.KsbId).ToList();
+                    var guids = taskdata.KsbProgress?.Select(k => k.KsbId).ToList() ?? new List<Guid>();
                     var vm = new EditTaskPageModel
                     {
                         Task = taskdata.Task,
-                        Categories = taskdata.TaskCategories.TaskCategories,
+                        Categories = taskdata.TaskCategories?.TaskCategories,
                         KsbProgressData = taskdata.KsbProgress,
-                        LinkedKsbGuids = String.Join(",", guids),
+                        LinkedKsbGuids = guids.Any() ? string.Join(",", guids) : string.Empty,
                         StatusId = status
                     };
 
