@@ -17,28 +17,23 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
             {
                 if (string.IsNullOrWhiteSpace(Content?.ToString()))
                     return "";
-        
+    
                 var html = Markdig.Markdown.ToHtml(Content.ToString());
-        
-                // Regex to find <a> tags and add target="_blank"
+    
+                // Regex to find <a> tags and add target="_blank" and rel="noreferrer noopener"
                 var pattern = @"<a\s+(?![^>]*\btarget\s*=)[^>]*>";
                 html = Regex.Replace(html, pattern, match =>
                 {
                     string tag = match.Value;
             
-                    // Check if tag already has target attribute
-                    if (!Regex.IsMatch(tag, @"\btarget\s*="))
+                    int insertPosition = tag.IndexOf('>');
+                    if (insertPosition > 0)
                     {
-                        // Insert target="_blank" after the opening <a
-                        int insertPosition = tag.IndexOf('>');
-                        if (insertPosition > 0)
-                        {
-                            tag = tag.Insert(insertPosition, " target=\"_blank\"");
-                        }
+                        tag = tag.Insert(insertPosition, " target=\"_blank\" rel=\"noreferrer noopener\"");
                     }
                     return tag;
                 }, RegexOptions.IgnoreCase);
-        
+    
                 return html;
             }
         }
