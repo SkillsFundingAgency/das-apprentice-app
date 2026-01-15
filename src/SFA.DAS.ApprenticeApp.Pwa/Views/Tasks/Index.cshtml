@@ -15,32 +15,6 @@
 
 <div class="app-page-header app-sticky">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Your tasks</h1>
-    <div class="app-dropdown app-dropdown--year" data-module="app-dropdown">
-        <button class="app-dropdown__toggle" aria-expanded="false">
-            <span class="govuk-visually-hidden">Tasks for the year </span>@Model.Year
-        </button>
-        <div class="app-dropdown__menu">
-            <ul class="app-dropdown__menu-list">
-                <li>
-                    <a href="?year=@DateTime.Now.AddYears(-1).Year" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year
-                        </span>@DateTime.Now.AddYears(-1).Year
-                    </a>
-                </li>
-                <li>
-                    <a href="?year=@DateTime.Now.Year" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year </span>@DateTime.Now.Year
-                    </a>
-                </li>
-                <li>
-                    <a href="?year=@DateTime.Now.AddYears(1).Year" class="app-dropdown__menu-link">
-                        <span class="govuk-visually-hidden">Show tasks for the year
-                        </span>@DateTime.Now.AddYears(1).Year
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
