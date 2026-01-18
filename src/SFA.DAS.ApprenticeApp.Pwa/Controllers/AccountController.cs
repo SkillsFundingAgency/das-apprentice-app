@@ -8,6 +8,7 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 
@@ -40,43 +41,50 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> Authenticated()
         {
             var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+           
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
 
-                try
+                var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
+                if (!string.IsNullOrEmpty(lastName))
                 {
-                    var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
-                    if (!string.IsNullOrEmpty(lastName))
+                    try
                     {
                         var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                         if (apprenticeDetails?.MyApprenticeship != null)
                         {
                             return RedirectToAction("Index", "Terms");
                         }
-                        else
+                    }
+                    catch (Exception)
+                    {
+                        string myappmsg = $"MyApprenticeship data error or not found for {apprenticeId}";
+                        _logger.LogInformation(myappmsg);
+                        return RedirectToAction("EmailMismatchError", "Account");
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        var email = Claims.GetClaim(HttpContext, Constants.ApprenticeNameClaimKey);
+                        var registrationId = await _client.GetRegistrationIdByEmail(email);
+                        if (registrationId != Guid.Empty)
                         {
-                            string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                            _logger.LogInformation(cmaderrormsg);
-                            return RedirectToAction("CmadError", "Account");
+                            string cmadmsg = $"Registration record found for {apprenticeId}";
+                            _logger.LogInformation(cmadmsg);
+                            return RedirectToAction("CmadError", "Account", new { registrationId });
                         }
                     }
-                    else
+                    catch (Exception)
                     {
-                        return RedirectToAction("CmadError", "Account");
-                    }
+                        string cmaderrormsg = $"Registration data error or not found for {apprenticeId}";
+                        _logger.LogInformation(cmaderrormsg);
+                        return RedirectToAction("EmailMismatchError", "Account");
+                    }  
                 }
-                catch (Exception ex)
-                {
-                    string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
-                    _logger.LogInformation(cmaderrormsg);
-                    return RedirectToAction("CmadError", "Account");
-                }
-            }
-            else
-            {
-                return RedirectToAction("EmailMismatchError", "Account");
             }
         }
 
@@ -189,9 +197,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
         
         [HttpGet]
-        public IActionResult CmadError()
+        public IActionResult CmadError(Guid? registrationId)
         {
-            return View();
+            CmadErrorViewModel vm = new()
+            {
+                RegistrationId = registrationId ?? Guid.Empty
+            };
+            return View(vm);
         }      
         
         [HttpGet]
