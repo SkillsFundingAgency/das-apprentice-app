@@ -78,7 +78,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 actual!.ActionName.Should().Be("Index");
