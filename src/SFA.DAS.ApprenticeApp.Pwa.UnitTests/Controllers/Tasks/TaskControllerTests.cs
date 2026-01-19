@@ -4,6 +4,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,13 +17,13 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 {
@@ -324,22 +325,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
         }
 
         [Test, MoqAutoData]
-        public async Task Edit_Returns_View_NoApprenticeId([Greedy] TasksController controller)
+        public async Task Edit_Returns_View_NoApprenticeId(
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Greedy] TasksController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-                apprenticeIdClaim
-            })});
-            httpContext.User = claimsPrincipal;
+            // Arrange
+            apprenticeContext
+                .Setup(x => x.ApprenticeId)
+                .Returns((string?)null); // ← no apprentice ID
 
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
+            // Act
             var result = await controller.Edit(1) as RedirectToActionResult;
-            result.ActionName.Should().Be("Index");
+
+            // Assert
+            result!.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Tasks");
         }
 
@@ -620,25 +619,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
         [Test, MoqAutoData]
         public async Task AddTask_MustHave_ValidApprenticeId(
-          [Frozen] ApprenticeTask task,
-          [Greedy] TasksController controller)
+    [Frozen] ApprenticeTask task,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Greedy] TasksController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-                apprenticeIdClaim
-            })});
-            httpContext.User = claimsPrincipal;
+            // Arrange
+            apprenticeContext
+                .Setup(x => x.ApprenticeId)
+                .Returns((string?)null); // ← invalid apprentice
 
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
+            // Act
             var result = await controller.Add(task);
-           
-            result.Should().BeOfType(typeof(UnauthorizedResult));           
+
+            // Assert
+            result.Should().BeOfType<UnauthorizedResult>();
         }
 
 
@@ -778,25 +772,22 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
         [Test, MoqAutoData]
         public async Task ChangeTaskStatus_Must_Have_ApprenticeId(
-            [Frozen] Mock<IOuterApiClient> client,
-            ApprenticeDetails apprenticeDetails,
-            [Frozen] Mock<ILogger<TasksController>> logger, [Greedy] TasksController controller)
+    [Frozen] Mock<IOuterApiClient> client,
+    ApprenticeDetails apprenticeDetails,
+    [Frozen] Mock<ILogger<TasksController>> logger,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Greedy] TasksController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-                apprenticeIdClaim
-            })});
-            httpContext.User = claimsPrincipal;
+            // Arrange
+            apprenticeContext
+                .Setup(x => x.ApprenticeId)
+                .Returns((string?)null); // ← no apprentice ID
 
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
+            // Act
             var result = await controller.ChangeTaskStatus(1, 0);
 
-            result.Should().BeOfType(typeof(OkResult));
+            // Assert
+            result.Should().BeOfType<OkResult>();
         }
     }
 }

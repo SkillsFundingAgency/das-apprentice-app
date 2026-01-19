@@ -8,6 +8,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Security.Claims;
@@ -55,32 +56,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
 
         [Test, MoqAutoData]
         public async Task Then_The_Home_Page_Is_Displayed_For_Invalid_Apprentice(
-          [Frozen] Mock<ILogger<TermsController>> logger,
-          [Greedy] TermsController controller)
+    [Frozen] Mock<ILogger<TermsController>> logger,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Greedy] TermsController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            apprenticeIdClaim
-        })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
+            // Arrange
+            apprenticeContext
+                .Setup(x => x.ApprenticeId)
+                .Returns((string?)null); // ← invalid apprentice
 
+            // Act
             var actual = await controller.TermsAccept() as RedirectToActionResult;
 
+            // Assert
             using (new AssertionScope())
             {
-                logger.Verify(x => x.Log(LogLevel.Warning,
-                   It.IsAny<EventId>(),
-                   It.Is<It.IsAnyType>((object v, Type _) =>
-                           v.ToString().Contains($"ApprenticeId not found in user claims")),
-                   It.IsAny<Exception>(),
-                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
-                actual.ActionName.Should().Be("Index");
+                logger.Verify(x => x.Log(
+                    LogLevel.Warning,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((object v, Type _) =>
+                        v.ToString()!.Contains(
+                            "ApprenticeId not found in user claims")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                ));
+
+                actual!.ActionName.Should().Be("Index");
                 actual.ControllerName.Should().Be("Login");
             }
         }
