@@ -8,15 +8,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
     public class NotificationCounter : ViewComponent
     {
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
-        public NotificationCounter(IOuterApiClient client)
+        public NotificationCounter(IOuterApiClient client, IApprenticeContext apprenticeContext)
         {
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            if(!string.IsNullOrEmpty(apprenticeId))
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+            if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var notificationValue = 0;
                 
