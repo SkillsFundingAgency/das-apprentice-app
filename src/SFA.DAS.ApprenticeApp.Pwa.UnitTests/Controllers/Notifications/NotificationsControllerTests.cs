@@ -47,7 +47,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims for Notifications Index.")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -120,7 +120,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                         v.ToString()!.Contains(
                             "Error in Notifications: GetTaskReminderNotifications")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -203,7 +203,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                         v.ToString()!.Contains(
                             "Error in Notifications: DeleteTaskReminderNotification")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -237,7 +237,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims for Notifications DeleteNotification.")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();

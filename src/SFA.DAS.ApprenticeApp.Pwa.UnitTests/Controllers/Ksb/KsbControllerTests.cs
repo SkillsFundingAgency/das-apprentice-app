@@ -109,7 +109,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             $"No KSBs found for {apprenticeId} in KsbController Index.")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -151,7 +151,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             $"No KSBs found for {apprenticeId} in KsbController Index.")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -205,7 +205,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims for Ksbs LinkKsbs")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -245,7 +245,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             $"No KSBs found for {apprenticeId} in KsbController LinkKsbs.")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -287,7 +287,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             $"No KSBs found for {apprenticeId} in KsbController LinkKsbs.")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -449,7 +449,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             "Invalid apprenticeId for AddUpdateKsbProgress in KsbController")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().BeOfType<UnauthorizedResult>();
@@ -492,7 +492,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             "Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().BeOfType<UnauthorizedResult>();
@@ -765,7 +765,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
                         v.ToString()!.Contains(
                             "Invalid apprentice id for method EditKsbProgress in KsbController")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().BeOfType<UnauthorizedResult>();

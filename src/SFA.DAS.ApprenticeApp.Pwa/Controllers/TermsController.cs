@@ -31,6 +31,12 @@ public class TermsController : Controller
     {        
         var apprenticeId = _apprenticeContext.ApprenticeId;
 
+        if (!Guid.TryParse(apprenticeId, out var apprenticeGuid))
+        {
+            _logger.LogWarning("ApprenticeId claim is missing or invalid in Terms Index.");
+            return RedirectToAction("Error", "Account");
+        }
+
         // update apprentice log in time
         await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
 

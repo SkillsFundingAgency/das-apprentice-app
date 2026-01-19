@@ -78,7 +78,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims for Profile Index")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();
@@ -111,7 +111,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims for Profile Index")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 actual.Should().NotBeNull();
@@ -210,7 +210,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Profile
                         v.ToString()!.Contains(
                             "ApprenticeId not found in user claims for Profile Index")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()
                 ));
 
                 result.Should().NotBeNull();

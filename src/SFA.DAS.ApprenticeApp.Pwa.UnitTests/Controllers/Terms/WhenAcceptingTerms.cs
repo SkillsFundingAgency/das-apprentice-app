@@ -46,7 +46,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
                     It.Is<It.IsAnyType>((object v, Type _) =>
                             v.ToString().Contains($"Apprentice accepted the Terms")),
                     It.IsAny<Exception>(),
-                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()));
                 result.ActionName.Should().Be("Index");
                 result.ControllerName.Should().Be("Welcome");
             }
