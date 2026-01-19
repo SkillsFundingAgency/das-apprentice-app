@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 
@@ -17,13 +19,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
-        private readonly IConfiguration _config;        
+        private readonly ICommitmentsService _commitmentsService;
+        private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
         private readonly IApprenticeContext _apprenticeContext;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
+            ICommitmentsService commitmentsService,
             ApplicationConfiguration appConfig,
             IConfiguration configuration,
             IOuterApiClient client,
@@ -32,6 +36,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             _logger = logger;
             _stubAuthenticationService = stubAuthenticationService;
+            _commitmentsService = commitmentsService;
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
@@ -42,38 +47,65 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> Authenticated()
         {
-            var apprenticeId = _apprenticeContext.ApprenticeId;
-            if (!string.IsNullOrEmpty(apprenticeId))
-            {
-                string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
-                _logger.LogInformation(message);
+            var authenticatedApprenticeId = _apprenticeContext.ApprenticeId;
+            if (string.IsNullOrWhiteSpace(authenticatedApprenticeId)) return RedirectToAction("AccountNotFound", "Account");
 
-                try
-                {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    if (apprenticeDetails?.MyApprenticeship != null)
-                    {
-                        return RedirectToAction("Index", "Terms");
-                    }
-                    else
-                    {
-                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                        _logger.LogInformation(cmaderrormsg);
-                        return RedirectToAction("CmadError", "Account");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
-                    _logger.LogInformation(cmaderrormsg);
-                    return RedirectToAction("CmadError", "Account");
-                }
-            }
-            else
+            if (!Guid.TryParse(authenticatedApprenticeId, out var apprenticeId))
             {
-                return RedirectToAction("EmailMismatchError", "Account");
+                return RedirectToAction("AccountNotFound", "Account");
+            }
+
+            try
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
+
+                if (apprenticeDetails == null)
+                {
+                    return RedirectToAction("AccountNotFound", "Account");
+                }
+
+                // Check terms
+                if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
+
+                // Check if cmad completed
+                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
+
+                if (registrationByEmail.Count == 1)
+                {
+                    var registration = registrationByEmail.FirstOrDefault();
+                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                        registration.RegistrationId,
+                        apprenticeId,
+                        commitment.Uln,
+                        registration.LastName,
+                        registration.DateOfBirth.ToIsoDate());
+
+                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                }
+
+                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+                if (cmadComplete == null)
+                {
+                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+                }
+
+                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
+
+                // Send to CMAD
+                return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,"MyApprenticeship data error or not found for {ApprenticeId}",apprenticeId);
+                return RedirectToAction("AccountNotFound", "Account");
             }
         }
+
 
         [HttpGet]
         [Route("account-details", Name = RouteNames.StubAccountDetailsGet)]
@@ -174,7 +206,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
 
-            return RedirectToAction("Index", "Terms");
+            return RedirectToAction("ConfirmDetails", "Cmad");
         }
 
         [HttpGet]

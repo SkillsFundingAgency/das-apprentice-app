@@ -52,13 +52,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var result = controller.Authenticated();
 
             using (new AssertionScope())
-            {
-                logger.Verify(x => x.Log(LogLevel.Information,
-                   It.IsAny<EventId>(),
-                   It.Is<It.IsAnyType>((object v, Type _) =>
-                           v.ToString().Contains($"Apprentice authenticated and cookies added for")),
-                   It.IsAny<Exception>(),
-                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
+            {                
                 result.Should().NotBeNull();
             }
         }
@@ -85,7 +79,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var result = await controller.Authenticated() as RedirectToActionResult;
 
             // Assert
-            result!.ActionName.Should().Be("EmailMismatchError");
+            result!.ActionName.Should().Be("AccountNotFound");
             result.ControllerName.Should().Be("Account");
         }
 
@@ -111,12 +105,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             };
 
             client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null });
-            var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("CmadError");
-            result.ControllerName.Should().Be("Account");
-        }
-        //  
+            var result = await controller.Authenticated();
 
+            var redirect = result.Should().BeOfType<RedirectToActionResult>().Subject;
+
+            redirect.ActionName.Should().Be("AccountNotFound");
+            redirect.ControllerName.Should().Be("Account");
+        }        
 
         [Test, MoqAutoData]
         public void Loading_YourAccount_Page([Greedy] AccountController controller)
@@ -184,7 +179,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         }
 
         [Test, MoqAutoData]
-        public void StubSignedIn_Redirects_To_Terms(
+        public void StubSignedIn_Redirects_To_ConfirmDetails(
              [Frozen] Mock<IConfiguration> configuration,
              [Greedy] AccountController controller)
         {
@@ -202,9 +197,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
                 HttpContext = httpContext
             };
             configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
-            var result = controller.StubSignedIn() as RedirectToActionResult;
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Terms");
+            var result = controller.StubSignedIn();
+
+            var redirect = result.Should().BeOfType<RedirectToActionResult>().Subject;
+
+            redirect.ActionName.Should().Be("ConfirmDetails");
+            redirect.ControllerName.Should().Be("Cmad");
         }
 
         [Test, MoqAutoData]
