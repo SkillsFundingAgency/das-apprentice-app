@@ -6,13 +6,19 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 {
     public interface IOuterApiClient
-    {
+    {        
         //Apprentice
         [Get("/apprentices/{id}")]
         Task<Apprentice> GetApprentice([Path] Guid id);
 
+        [Get("apprentices")]
+        Task<List<Apprentice>> GetApprenticeAccountByName([Query] string firstName, [Query] string lastName, [Query] DateTime dateOfBirth);
+
         [Patch("/apprentices/{id}")]
         Task UpdateApprentice([Path] Guid id, [Body] JsonPatchDocument<Apprentice> patch);
+
+        [Delete("/apprentice/{id}")]
+        Task DeleteApprenticeAccount([Path] Guid id);
 
         [Post("/apprentices/{id}/subscriptions")]
         Task ApprenticeAddSubscription([Path] Guid id, [Body] ApprenticeAddSubscriptionRequest request);
@@ -26,6 +32,16 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         //ApprenticeDetails
         [Get("/apprentices/{id}/details")]
         Task<ApprenticeDetails> GetApprenticeDetails([Path] Guid id);
+
+        [Get("/apprentice/{uln}")]
+        Task<MyApprenticeship> GetApprenticeshipByUln([Path] int uln);
+
+        //Commitments
+        [Get("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}")]
+        Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeId, [Path] long apprenticeshipId);
+
+        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/revisions/{revisionId}/confirmations")]
+        Task ConfirmApprenticeshipDetails([Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long revisionId, [Body] Confirmations patch);
 
         //KsbProgress
         [Post("/apprentices/{id}/ksbs")]
@@ -45,6 +61,13 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Get("/apprentices/{id}/ksbs/{ksbId}")]
         Task<ApprenticeKsb> GetApprenticeshipKsb([Path] Guid id, [Path] Guid ksbId);
+
+        // Providers
+        [Get("/providers/registeredProviders")]
+        Task<List<RegisteredProviders>> GetRegisteredProviders();
+
+        [Get("/providers/activeStandards")]
+        Task<List<Courses>> GetActiveStandards();
 
         //Support&Guidance
 

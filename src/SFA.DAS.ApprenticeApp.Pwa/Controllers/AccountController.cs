@@ -44,41 +44,40 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
                 _logger.LogInformation(message);
-
                 try
-                {
+                {                    
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
                     if (!string.IsNullOrEmpty(lastName))
-                    {
-                        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                        if (apprenticeDetails?.MyApprenticeship != null)
-                        {
-                            return RedirectToAction("Index", "Terms");
-                        }
-                        else
-                        {
-                            string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                            _logger.LogInformation(cmaderrormsg);
-                            return RedirectToAction("CmadError", "Account");
-                        }
+                    {                                                
+                        // Check terms
+                        if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
+
+                        // Check if cmad completed                                  
+                        var cmadComplete = apprenticeDetails.Apprenticeship.Apprenticeships.FirstOrDefault();
+                        if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
+
+                        // Send to CMAD
+                        return RedirectToAction("ConfirmDetails", "Cmad");                                                                        
                     }
                     else
                     {
-                        return RedirectToAction("CmadError", "Account");
+                        // If no account found then assign new account created for anon user to the apprenticeship they find in checks
+                        return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId = apprenticeDetails.Apprentice.ApprenticeId });                 
                     }
                 }
                 catch (Exception ex)
                 {
                     string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
                     _logger.LogInformation(cmaderrormsg);
-                    return RedirectToAction("CmadError", "Account");
+                    return RedirectToAction("CmadError", "Cmad");
                 }
             }
             else
-            {
+            {                
                 return RedirectToAction("EmailMismatchError", "Account");
             }
-        }
+        }        
 
         [HttpGet]
         [Route("account-details", Name = RouteNames.StubAccountDetailsGet)]
@@ -133,9 +132,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
             }
             catch (Exception)
-            {
+            {                
                 return RedirectToAction("Error", "Account");
-            }
+            }            
         }
 
         [Authorize]
@@ -179,8 +178,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
 
-            return RedirectToAction("Index", "Terms");
-        }
+            return RedirectToAction("ConfirmDetails", "Cmad");
+        }                
 
         [HttpGet]
         public IActionResult Error()

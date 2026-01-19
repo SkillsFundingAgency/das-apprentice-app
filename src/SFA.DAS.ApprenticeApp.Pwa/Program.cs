@@ -75,6 +75,7 @@ app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
 app.UseAuthentication();
 app.UseRouting();
 app.UseAuthorization();
+app.UseSession();
 
 app.UseEndpoints(endpoints =>
 {

@@ -1,0 +1,61 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
+@model ConfirmApprenticeshipDetailsViewModel
+
+@{
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header">
+            <h2>Confirm Your Apprenticeship Details</h2>
+        </div>        
+
+        <form method="post" asp-action="ConfirmApprenticeshipDetails" asp-controller="Cmad">
+            <input asp-for="ApprenticeId" type="hidden" />
+            <input asp-for="ApprenticeshipId" type="hidden" />
+            <input asp-for="RevisionId" type="hidden" />
+
+            <table class="govuk-table data-table">
+                <caption class="govuk-table__caption govuk-table__caption--m"></caption>
+                <tbody class="govuk-table__body">
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Name</th>
+                        <td class="govuk-table__cell">@Model.FullName</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Employer</th>
+                        <td class="govuk-table__cell">@Model.Employer</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Provider</th>
+                        <td class="govuk-table__cell">@Model.Provider</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Apprenticeship</th>
+                        <td class="govuk-table__cell">@Model.Apprenticeship</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Level</th>
+                        <td class="govuk-table__cell">@Model.Level</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Type</th>
+                        <td class="govuk-table__cell">@Model.Type</td>
+                    </tr>                    
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Planned Start Date</th>
+                        <td class="govuk-table__cell">@Model.StartDate</td>
+                    </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">Estimated Duration</th>
+                        <td class="govuk-table__cell">@Model.StartDate - @Model.EndDate</td>
+                    </tr>
+                </tbody>
+            </table>           
+            <div class="govuk-button-group">
+                <button class="app-button" type="submit">Continue</button>
+            </div>
+        </form>
+    </div>
+</div>

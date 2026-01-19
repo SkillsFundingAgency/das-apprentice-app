@@ -6,5 +6,6 @@
         public const string StubAccountDetailsPost = "account-details-post";
         public const string StubSignedIn = "stub-signedin-get";
         public const string SignedOut = "signedout-get";
+        public const string RegisteredProviders = "registeredproviders";
     }
 }
