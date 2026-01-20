@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.ApprenticeApp.Domain.Models
+﻿using System.Text.RegularExpressions;
+
+namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
     public class ApprenticeAppArticlePage
     {
@@ -8,17 +10,31 @@
         public object? Content { get; set; }
         public string? Id { get; set; }
         public int? ArticleOrder { get; set; }
-
+        
         public string? ArticleText
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace((string?)Content))
+                if (string.IsNullOrWhiteSpace(Content?.ToString()))
+                    return "";
+    
+                var html = Markdig.Markdown.ToHtml(Content.ToString());
+    
+                // Regex to find <a> tags and add target="_blank" and rel="noreferrer noopener"
+                var pattern = @"<a\s+(?![^>]*\btarget\s*=)[^>]*>";
+                html = Regex.Replace(html, pattern, match =>
                 {
-                    return Markdig.Markdown.ToHtml(Content.ToString());
-                }
-                    
-                return "";
+                    string tag = match.Value;
+            
+                    int insertPosition = tag.IndexOf('>');
+                    if (insertPosition > 0)
+                    {
+                        tag = tag.Insert(insertPosition, " target=\"_blank\" rel=\"noreferrer noopener\"");
+                    }
+                    return tag;
+                }, RegexOptions.IgnoreCase);
+    
+                return html;
             }
         }
     }

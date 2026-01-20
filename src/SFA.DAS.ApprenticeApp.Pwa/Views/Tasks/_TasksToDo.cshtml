@@ -14,7 +14,7 @@
                     <use xlink:href="/assets/images/icons.svg#calendar"></use>
                 </svg>
             </span>
-            <span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}",
+            <span>Due @string.Format("{0:d MMMM yyyy, h:mm}", task.DueDate)@string.Format("{0:tt}",
                 task.DueDate).ToLower()</span>
         </li>
         @if (task.TaskReminders.Any())

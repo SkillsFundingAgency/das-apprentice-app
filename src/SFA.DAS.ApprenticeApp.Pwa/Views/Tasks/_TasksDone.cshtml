@@ -11,7 +11,7 @@
     <ul class="app-icon-list app-icon-list--muted">
         <li><span class="app-icon-list__icon"><svg>
                     <use xlink:href="/assets/images/icons.svg#calendar"></use>
-                </svg></span><span>Completed @string.Format("{0:d MMMM, h:mm}",
+                </svg></span><span>Completed @string.Format("{0:d MMMM yyyy, h:mm}",
                 task.CompletionDateTime)@string.Format("{0:tt}", task.CompletionDateTime).ToLower()</span></li>
             @if (!String.IsNullOrEmpty(task.Note))
             {
