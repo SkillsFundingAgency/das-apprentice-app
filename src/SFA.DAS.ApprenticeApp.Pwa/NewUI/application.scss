@@ -7,3 +7,16 @@ $govuk-new-link-styles: true;
 @use "govuk/index" as govuk;
 @use "core/layout";
 @use "components";
+
+* {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.app-dropdown__menu-icon,
+.app-icon-list__icon,
+.app-icon-action {
+  display: none;
+}

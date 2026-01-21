@@ -1,3 +1,7 @@
+.govuk-service-navigation__link span.icon {
+  display: none;
+}
+
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-template--rebranded {
     background: #fff;
@@ -35,7 +39,6 @@
     justify-content: space-around;
   }
   .govuk-service-navigation__item {
-   // flex: 1;
     margin: 0;
     padding: 0;
     border: none;
@@ -43,6 +46,7 @@
     background: none;
     text-align: center;
     border-top: 4px solid transparent;
+    min-width: 15%;
   }
   .govuk-service-navigation__item--active {
     font-weight: 700;

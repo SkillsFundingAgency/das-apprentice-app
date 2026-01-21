@@ -8632,6 +8632,10 @@
 
 
 
+.govuk-service-navigation__link span.icon {
+  display: none;
+}
+
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-template--rebranded {
     background: #fff;
@@ -8676,6 +8680,7 @@
     background: none;
     text-align: center;
     border-top: 4px solid transparent;
+    min-width: 15%;
   }
   .govuk-service-navigation__item--active {
     font-weight: 700;
@@ -8727,6 +8732,18 @@
   .govuk-footer {
     margin-bottom: 5.5rem;
   }
+}
+* {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.app-dropdown__menu-icon,
+.app-icon-list__icon,
+.app-icon-action {
+  display: none;
 }
 
 /*# sourceMappingURL=application.css.map */
