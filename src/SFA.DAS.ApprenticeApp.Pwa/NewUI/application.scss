@@ -1,13 +1,9 @@
-@use "govuk/settings/index" as settings;
+@use "govuk/settings/index";
 
-settings.$govuk-font-family: Arial, Helvetica, sans-serif;
-settings.$govuk-global-styles: true;
-settings.$govuk-new-link-styles: true;
+$govuk-font-family: Arial, Helvetica, sans-serif;
+$govuk-global-styles: true;
+$govuk-new-link-styles: true;
 
-@use "govuk/index";
+@use "govuk/index" as govuk;
 @use "core/layout";
 @use "components";
-
-body {
-  background-color: orange !important;
-}

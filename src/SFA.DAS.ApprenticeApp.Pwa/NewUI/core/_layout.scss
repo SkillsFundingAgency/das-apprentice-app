@@ -32,9 +32,10 @@
     padding: 0;
     list-style: none;
     gap: 1px;
+    justify-content: space-around;
   }
   .govuk-service-navigation__item {
-    flex: 1;
+   // flex: 1;
     margin: 0;
     padding: 0;
     border: none;
@@ -60,17 +61,15 @@
   .govuk-service-navigation__link span.text {
     font-size: 14px;
   }
-  .govuk-service-navigation__link span.text:first-letter {
-    text-transform: uppercase;
-  }
   .govuk-service-navigation__link span.icon {
-    width: 1.6rem;
-    height: 1.6rem;
     display: block;
-    margin: 0.7rem 0 0.4rem;
-    border-radius: 40%;
-    opacity: 0.2;
-    background: #1d70b8;
+    svg {
+      fill: currentColor;
+      width: 2rem;
+      height: 2rem;
+      margin-top: 5px;
+      margin-bottom: 2px;
+    }
   }
   .govuk-footer,
   .govuk-template--rebranded .govuk-footer {
