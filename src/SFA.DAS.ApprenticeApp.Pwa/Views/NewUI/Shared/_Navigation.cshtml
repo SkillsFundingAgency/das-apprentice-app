@@ -3,32 +3,32 @@
                         Menu
                     </button>
                     <ul class="govuk-service-navigation__list" id="navigation">
-                        <li class="govuk-service-navigation__item govuk-service-navigation__item--active">
-                            <a class="govuk-service-navigation__link" href="#">
+                        <li class="govuk-service-navigation__item @(ViewBag.Section == "Ksbs" ? "govuk-service-navigation__item--active" :"")">
+                            <a class="govuk-service-navigation__link" asp-controller="Ksb" asp-action="Index">
                                 <span class="icon"></span>
                                 <span class="text">KSBs</span>
                             </a>
                         </li>
-                        <li class="govuk-service-navigation__item">
+                        <li class="govuk-service-navigation__item @(ViewBag.Section == "Portfolio" ? "govuk-service-navigation__item--active" :"")">
                             <a class="govuk-service-navigation__link" href="#">
                                 <span class="icon"></span>
                                 <span class="text">Portfolio</span>
                             </a>
                         </li>
-                        <li class="govuk-service-navigation__item">
+                        <li class="govuk-service-navigation__item @(ViewBag.Section == "Track" ? "govuk-service-navigation__item--active" :"")">
                             <a class="govuk-service-navigation__link" href="#">
                                 <span class="icon"></span>
                                 <span class="text">Track</span>
                             </a>
                         </li>
-                        <li class="govuk-service-navigation__item">
-                            <a class="govuk-service-navigation__link" href="#">
+                        <li class="govuk-service-navigation__item @(ViewBag.Section == "Support" ? "govuk-service-navigation__item--active" :"")">
+                            <a class="govuk-service-navigation__link" asp-controller="Support" asp-action="Index">
                                 <span class="icon"></span>
                                 <span class="text">Help</span>
                             </a>
                         </li>
-                        <li class="govuk-service-navigation__item">
-                            <a class="govuk-service-navigation__link" href="#">
+                        <li class="govuk-service-navigation__item @(ViewBag.Section == "Account" ? "govuk-service-navigation__item--active" :"")">
+                            <a class="govuk-service-navigation__link" asp-controller="Account" asp-action="YourAccount">
                                 <span class="icon"></span>
                                 <span class="text">Account</span>
                             </a>

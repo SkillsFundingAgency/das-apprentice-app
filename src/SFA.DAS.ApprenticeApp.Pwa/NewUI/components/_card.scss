@@ -1,0 +1,7 @@
+@use "govuk/settings/index" as v;
+
+.app-card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid v.$govuk-border-colour;
+}

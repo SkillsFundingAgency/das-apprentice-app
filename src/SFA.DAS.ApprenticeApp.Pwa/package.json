@@ -9,7 +9,8 @@
     "develop": "sass --update --quiet-deps --style=expanded --load-path=node_modules/govuk-frontend/dist Frontend/:wwwroot/css",
     "watch": "watch 'npm run develop' Frontend/",
     "build": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist Frontend/:wwwroot/css",
-    "watch-new-ui": "watch 'npm run develop' NewUI/",
+    "develop-new-ui": "sass --update --quiet-deps --style=expanded --load-path=node_modules/govuk-frontend/dist NewUI/:wwwroot/css",
+    "watch-new-ui": "watch 'npm run develop-new-ui' NewUI/",
     "build-new-ui": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist NewUI/:wwwroot/css"
   },
   "dependencies": {
