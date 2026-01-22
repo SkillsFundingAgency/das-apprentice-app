@@ -1,0 +1,65 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+
+@{
+    string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
+    foreach (var KSBType in KSBTypes)
+    {
+        <div class="app-tabs__panel" id="@KSBType.ToLower()">
+            @if (Model?.Ksbs != null)
+            {
+                var orderedKsbs = Model.Ksbs
+                    .Where(k => !string.IsNullOrEmpty(k.Key) && k.Key.Length > 1)
+                    .OrderBy(k =>
+                    {
+                        var numericPart = k.Key.Substring(1);
+                        return int.TryParse(numericPart, out var num) ? num : int.MaxValue;
+                    })
+                    .ToList();
+
+                @foreach (var ksb in orderedKsbs)
+                {
+                    if (KSBType == ksb.Type.ToString())
+                    {
+                        <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksb.Id" class="app-card">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">@Html.Raw(ksb.Key)</h2>
+                            </div>
+                            <div class="app-card__content">
+                                @if (ksb.Progress == null)
+                                {
+                                    <div class="app-tag app-tag--status-notstarted govuk-!-margin-bottom-3">
+                                        <text>Not started</text>
+                                    </div>
+                                }
+                                else
+                                {
+                                    var status = ksb.Progress.CurrentStatus;
+                                    string statusDisplay = status.GetEnumDescription();
+                                    <div class="app-tag app-tag--status-@status.ToString().ToLower() govuk-!-margin-bottom-3">
+                                        <text>@statusDisplay</text>
+                                    </div>
+                                }
+                                <p>@Html.Raw(ksb.Detail)</p>
+                                @if (ksb.Progress != null && ksb.Progress?.Tasks?.Count > 0)
+                                {
+                                    <p>
+                                        Linked to @ksb.Progress.Tasks.Count.ToString()
+                                        @if (@ksb.Progress.Tasks.Count > 1)
+                                        {
+                                            <text>tasks</text>
+                                        }
+                                        else
+                                        {
+                                            <text>task</text>
+                                        }
+                                    </p>
+                                }
+                            </div>
+                        </a>
+                    }
+                }
+            }
+        </div>
+    }
+}

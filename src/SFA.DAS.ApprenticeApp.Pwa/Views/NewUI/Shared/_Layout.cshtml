@@ -12,6 +12,10 @@
     <link rel="apple-touch-icon" href="/assets/rebrand/images/govuk-icon-180.png">
     <link rel="manifest" href="/assets/rebrand/manifest.json">
     <link rel="stylesheet" href="~/css/application.css" asp-append-version="true">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body class="govuk-template__body">
@@ -125,10 +129,11 @@
         </div>
     </footer>
 
-    <script type="module" src="/javascripts/govuk-frontend.min.js"></script>
+    <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
     <script type="module">
-        import { initAll } from '/javascripts/govuk-frontend.min.js'
+        import { initAll } from '/js/libs/govuk-frontend.min.js'
         initAll()
     </script>
+    <script src="~/js/application.js" asp-append-version="true"></script>
 </body>
 </html>

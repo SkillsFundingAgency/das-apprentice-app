@@ -1,0 +1,70 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+
+@foreach (var task in Model.Tasks)
+{
+    <a class="app-card" id="task-@task.TaskId" href="#">
+        <div class="app-card__header">
+            <h2 class="app-card__heading">@task.Title</h2>
+        </div>
+        <div class="app-card__content">
+            @if (task.ApprenticeshipCategory != null && task.ApprenticeshipCategory.Count > 0)
+            {
+                <div class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "") govuk-!-margin-bottom-3">
+                    @task.ApprenticeshipCategory.First().Title
+                </div>
+            }
+            <p>Due @string.Format("{0:d MMMM yyyy, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</p>
+            @if (task.TaskReminders.Any())
+            {
+                <p>
+                    Reminder set:
+                    @switch (@task.TaskReminders.Select(r => r.ReminderValue).First())
+                    {
+                        case 0:
+                            <text>0 minutes before</text>
+                            break;
+                        case 60:
+                            <text>1 hour before</text>
+                            break;
+                        case 1440:
+                            <text>1 day before</text>
+                            break;
+                        default:
+                            <span class="app-js-convert-minutes-to-date"
+                                  data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)"
+                                  data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
+                            break;
+                    }
+                </p>
+            }
+            @if (!String.IsNullOrEmpty(task.Note))
+            {
+                <p>
+                    <span>Note added</span>
+                </p>
+            }
+            @if (task.TaskFiles.Any())
+            {
+                <p>
+                    <span>@task.TaskFiles.Count.ToString() file(s) attached</span>
+                </p>
+            }
+            @if (task.TaskLinkedKsbs.Any())
+            {
+                <p>
+                    <span>
+                        Linked to @task.TaskLinkedKsbs.Count.ToString()
+                        @if (task.TaskLinkedKsbs.Count > 1)
+                        {
+                            <text>KSBs</text>
+                        }
+                        else
+                        {
+                            <text>KSB</text>
+                        }
+                    </span>
+                </p>
+            }
+        </div>
+    </a>
+}

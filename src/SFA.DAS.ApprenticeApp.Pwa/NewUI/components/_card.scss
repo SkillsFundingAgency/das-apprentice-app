@@ -1,7 +1,38 @@
-@use "govuk/settings/index" as v;
+@use "govuk/settings/index" as settings;
+@use "govuk/helpers/index" as helpers;
 
 .app-card {
   padding: 1rem;
   margin-bottom: 1rem;
-  border: 1px solid v.$govuk-border-colour;
+  border: 1px solid settings.$govuk-border-colour;
+  @include helpers.govuk-media-query(tablet) {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.app-card__heading {
+  margin-top: 0;
+  color: settings.$govuk-brand-colour;
+}
+
+.app-card__content {
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+a.app-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+    &:hover {
+      background-color: settings.$govuk-brand-colour;
+      border-color: settings.$govuk-brand-colour;
+      color: white;
+      .app-card__heading, p {
+        color: inherit;
+      }
+    }
 }

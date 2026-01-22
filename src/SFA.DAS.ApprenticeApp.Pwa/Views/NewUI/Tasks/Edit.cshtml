@@ -1,0 +1,156 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    Layout = null;
+}
+<div class="loader" style="display:none"></div>
+<div id="ksb-popup" class="app-overlay"></div>
+<div id="ksb-edit-popup" style=""></div>
+<div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+        <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+            class="app-overlay-header__link">Cancel</a>
+    </div>
+    <h2 class="app-overlay-header__heading">
+        View or edit a task
+    </h2>
+    <div class="app-overlay-header__save">
+        <a href="#" class="app-overlay-header__link add-task">Save</a>
+    </div>
+</div>
+<div class="app-overlay__content add-edit-content-area">
+    <div class="govuk-error-summary govuk-visually-hidden app-error-summary" aria-hidden="true" id="errorSummary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
+        <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
+        <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
+        <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
+        <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
+        <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
+        <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
+        <partial name="_AddEditForm" model="@Model" />
+        <div class="app-form-group">
+            <p class="app-label">
+                Knowledge, skills and behaviours (KSBs) added to this task
+            </p>
+            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids"
+                asp-for="@Model.Task.KsbsLinked" />
+            <div id="linked-ksb-details">
+                @foreach (var ksb in Model.Task.TaskLinkedKsbs)
+                {
+                    var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId ==
+                    ksb.KSBProgressId).FirstOrDefault();
+                    if (ksbProgressData != null)
+                    {
+                        <div class="app-card ksb-item" id="ksb-item-@ksbProgressData.KsbId">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                            </div>
+                            <p>@ksbProgressData.Detail</p>
+                            <span>
+                                @{
+                                    var statusItem = @ksbProgressData.CurrentStatus;
+                                    string statusItemDisplay = statusItem.GetEnumDescription();
+                                    <div
+                                        class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ","").Replace("-", "")">
+                                        <text>@statusItemDisplay</text>
+                                    </div>
+                                }
+                            </span>
+                            <hr class="app-separator" />
+                            <div class="app-dropdown" data-module="app-dropdown">
+                                <button class="app-dropdown__toggle" aria-expanded="false">
+                                    View actions<span class=" govuk-visually-hidden"> for @ksbProgressData.KsbKey</span>
+                                </button>
+                                <div class="app-dropdown__menu">
+                                    <ul class="app-dropdown__menu-list">
+                                        <li>
+                                            <a class="app-dropdown__menu-link ksb-item-edit" href="#">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Edit</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="app-dropdown__menu-link ksb-item-removeLink" href="#"
+                                                data-id="@ksbProgressData.KsbId">
+                                                <span class="app-dropdown__menu-icon">
+                                                    <svg>
+                                                        <use xlink:href="/assets/images/icons.svg#unlink"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Remove link to this KSB</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+            </div>
+        </div>
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend">Assign a category</legend>
+            <div class="app-card">
+                <div class="app-collapse" data-module="app-collapse">
+                    <div class="app-collapse__header">
+                        <button class="app-collapse__button" aria-expanded="false"
+                            aria-controls="app-collapse-task-cat">
+                            <span class="app-collapse__title">None</span>
+                            <span class="app-collapse__icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="app-collapse__contents app-radios" id="app-collapse-task-cat">
+                        <div class="app-radios__item">
+                            <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                                id="category_0" type="radio" value="0"
+                                checked="@(Model.Task.ApprenticeshipCategoryId == 0)" />
+                            <label class="app-label app-radios__label" for="category_0">None
+                            </label>
+                        </div>
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <div class="app-radios__item">
+                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                                    id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
+                                    checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                                <label class="app-label app-radios__label" for="category_@cat.CategoryId">
+                                    <span
+                                        class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+            <label class="app-label" for="note">
+                Add a note
+            </label>
+            <div class="note-error form-error govuk-hint"></div>
+            <textarea class="app-textarea govuk-js-character-count" id="note" name="note" rows="5"
+                aria-describedby="note-info" value="@Model.Task.Note">@Model.Task.Note</textarea>
+            <div id="note-info" class="govuk-hint govuk-character-count__message">
+                You can enter up to 1000 characters
+            </div>
+        </div>
+    </form>
+</div>

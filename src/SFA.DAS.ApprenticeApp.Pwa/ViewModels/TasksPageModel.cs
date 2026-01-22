@@ -2,9 +2,8 @@
 
 namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
 {
-    public class TasksPageModel
+    public class TasksPageModel : TasksBaseModel
     {
-        public int Year { get; set; }
         public List<ApprenticeTask> Tasks { get; set; }
     }
 }

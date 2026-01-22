@@ -26,7 +26,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Index(string sort, int year)
+        public async Task<IActionResult> Index(string sort, int year)
         {
             int yearSet = DateTime.Now.Year;
             string sortSet = "date_due";
@@ -69,13 +69,43 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     Secure = true,
                     HttpOnly = true
                 };
-                Response.Cookies.Append(Constants.TaskFilterYearCookieName, year.ToString(), cookieOptions); 
+                Response.Cookies.Append(Constants.TaskFilterYearCookieName, year.ToString(), cookieOptions);
             }
 
-            TasksBaseModel vm = new()
+            var tasks = new List<ApprenticeTask>();
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(2010, 1, 1), new DateTime(2030, 1, 1));
+
+                if (taskResult?.Tasks != null)
+                {
+                    tasks = taskResult.Tasks;
+
+                    if (Request.Cookies[Constants.TaskFiltersTodoCookieName] != null)
+                    {
+                        var filterTasks = Filter.FilterTaskResults(tasks, Request.Cookies[Constants.TaskFiltersTodoCookieName]);
+                        if (filterTasks.HasFilterRun)
+                        {
+                            tasks = filterTasks.FilteredTasks;
+                        }
+                    }
+
+                    tasks = sortSet switch
+                    {
+                        "due_date" => tasks.OrderBy(x => x.DueDate).ToList(),
+                        "recently_added" => tasks.OrderByDescending(x => x.TaskId).ToList(),
+                        _ => tasks.OrderBy(x => x.DueDate).ToList(),
+                    };
+                }
+            }
+
+            var vm = new TasksPageModel
             {
                 Year = yearSet,
-                Sort = sortSet
+                Sort = sortSet,
+                Tasks = tasks
             };
 
             return View(vm);

@@ -1,0 +1,10 @@
+@use "govuk/index";
+
+.app-tag {
+  @extend .govuk-tag;
+  padding: .5rem;
+}
+
+.app-tag--status-notstarted {
+  @extend .govuk-tag--grey;
+}

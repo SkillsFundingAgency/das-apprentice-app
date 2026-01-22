@@ -1,0 +1,42 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using SFA.DAS.ApprenticeApp.Web.Extensions
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
+
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    Layout = "_Layout";
+}
+<h1 class="govuk-heading-xl">Tasks</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
+            <ul class="app-tabs__list">
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab todo" href="#tasks-todo">
+                        To do
+                    </a>
+                </li>
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab done" href="#tasks-done">
+                        Done
+                    </a>
+                </li>
+            </ul>
+            <div class="app-tabs__panel" id="tasks-todo">
+                <partial name="_TasksToDo.cshtml" />
+            </div>
+            <div class="app-tabs__panel" id="tasks-done">
+                <partial name="_TasksDone.cshtml" />
+            </div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        <a href="#top" class="govuk-button">
+            <span>Add a task</span>
+        </a>
+    </div>
+</div>
