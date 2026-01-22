@@ -1,5 +1,6 @@
 ﻿using SFA.DAS.ApprenticeApp.Pwa.Authentication;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticePortal.Authentication;
 using SFA.DAS.GovUK.Auth.AppStart;
@@ -20,6 +21,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
             services.AddAuthorization();
             services.AddScoped<AuthenticatedUser>();
             services.AddHttpContextAccessor();
+            services.AddScoped<IApprenticeContext, ApprenticeContext>();
             services.AddTransient((_) => config);
         }
 
