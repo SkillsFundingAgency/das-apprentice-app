@@ -1,4 +1,4 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
 @using SFA.DAS.ApprenticeApp.Pwa.Configuration
 @using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
@@ -26,10 +26,12 @@
                 </li>
             </ul>
             <div class="app-tabs__panel" id="tasks-todo">
-                <partial name="_TasksToDo.cshtml" />
+                <div data-fetch="true" data-url="@Url.Action("ToDoTasks", "Tasks")">
+                    <p class="govuk-hint">Loading</p>
+                </div>
             </div>
             <div class="app-tabs__panel" id="tasks-done">
-                <partial name="_TasksDone.cshtml" />
+                <div data-fetch="true" data-url="@Url.Action("DoneTasks", "Tasks")"><p class="govuk-hint">Loading</p></div>
             </div>
         </div>
     </div>

@@ -44,6 +44,33 @@ Tabs.prototype.handleTabClick = function (event) {
   }
 };
 
+function initDataFetch() {
+  const elements = document.querySelectorAll('[data-fetch="true"][data-url]');
+
+  elements.forEach(function (element) {
+    const url = element.dataset.url;
+
+    if (!url) {
+      return;
+    }
+
+    fetch(url)
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      })
+      .then(function (html) {
+        element.innerHTML = html;
+      })
+      .catch(function (error) {
+        element.innerHTML = "Failed to load content";
+        console.error("Data fetch error:", error);
+      });
+  });
+}
+
 const appInit = () => {
   const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
 
@@ -52,6 +79,8 @@ const appInit = () => {
       new Tabs(tabs).init();
     });
   }
+
+  initDataFetch();
 };
 
 appInit();
