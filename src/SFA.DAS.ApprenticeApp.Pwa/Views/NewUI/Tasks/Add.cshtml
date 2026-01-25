@@ -1,11 +1,11 @@
-﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.AddTaskPageModel
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.AddTaskPageModel
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
 }
 @section BackLink {
     <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-    class="govuk-back-link">Back without saving</a>
+       class="govuk-back-link">Back without saving</a>
 }
 
 <h1 class="govuk-heading-xl">
@@ -14,60 +14,55 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-
-    <div class="app-overlay__content add-edit-content-area">
-        <div class="govuk-error-summary govuk-visually-hidden app-error-summary" aria-hidden="true" id="errorSummary">
-          <div role="alert">
-            <h2 class="govuk-error-summary__title">
-              There is a problem
-            </h2>
-            <div class="govuk-error-summary__body">
-              <ul class="govuk-list govuk-error-summary__list">
-
-              </ul>
+        <div class="app-overlay__content add-edit-content-area">
+            <div class="govuk-error-summary govuk-visually-hidden app-error-summary" aria-hidden="true" id="errorSummary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">
+                        There is a problem
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form">
-            <partial name="_AddEditForm" model="@Model" />
+            <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form">
+                <partial name="_AddEditForm" model="@Model" />
 
-            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
-            <div id="linked-ksb-details"></div>
-           <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Assign a category</legend>
-                    <div class="govuk-radios govuk-radios--small">
-                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
-                                        id="category_0" type="radio" value="0" checked />
-                                    <label class="govuk-label govuk-radios__label" for="category_0">None
+                <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
+                <div id="linked-ksb-details"></div>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Assign a category</legend>
+                        <div class="govuk-radios govuk-radios--small">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
+                                       id="category_0" type="radio" value="0" checked />
+                                <label class="govuk-label govuk-radios__label" for="category_0">None</label>
+                            </div>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" name="ApprenticeshipCategoryId"
+                                           id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId" />
+                                    <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
+                                        @cat.Title
                                     </label>
                                 </div>
-                                @foreach (var cat in Model.Categories)
-                                {
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" name="ApprenticeshipCategoryId"
-                                            id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId" />
-                                        <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
-                                            @cat.Title
-                                        </label>
-                                    </div>
-                                }
-</div>
-                </fieldset>
-            </div>
+                            }
+                        </div>
+                    </fieldset>
+                </div>
 
-            <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden"
-                asp-for="@Model.Task.ApprenticeshipCategoryId" />
-            <input class="apprenticeshipid" name="apprenticeshipid" type="hidden"
-                asp-for="@Model.Task.ApprenticeshipId" />
-            <input name="Status" type="hidden" asp-for="@Model.StatusId" />
-        </form>
+                <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden"
+                       asp-for="@Model.Task.ApprenticeshipCategoryId" />
+                <input class="apprenticeshipid" name="apprenticeshipid" type="hidden"
+                       asp-for="@Model.Task.ApprenticeshipId" />
+                <input name="Status" type="hidden" asp-for="@Model.StatusId" />
+            </form>
+        </div>
     </div>
-
-
-        </div>
     <div class="govuk-grid-column-one-third">
-        </div>
+    </div>
 </div>

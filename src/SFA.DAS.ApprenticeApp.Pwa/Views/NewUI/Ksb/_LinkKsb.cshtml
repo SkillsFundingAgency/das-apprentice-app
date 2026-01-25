@@ -1,4 +1,4 @@
-﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 @{
     Layout = null;
@@ -45,15 +45,13 @@
                 <div class="govuk-details__text">
                     <p>
                         As part of your apprenticeship, you need to gain specific knowledge, skills and behaviours (KSBs).
-                        These
-                        are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
+                        These are taught in your off-the-job (OTJ) training, and you will be tested on them in your end-point
                         assessment (EPA). Linking these KSBs to your completed tasks will help you gather evidence.
                     </p>
                     <p>Which of these KSBs will the task help you gain? Select all that apply.</p>
                 </div>
             </details>
             <partial name="_PopupFilter.cshtml" />
-
         </div>
 
         <div class="app-tag-wrap">
@@ -88,69 +86,68 @@
                                 statusTitleDisplay = "Not started";
                             }
                             <div class="wrapper @statusTitleDisplayClass">
-            <div class="app-card ksb-item govuk-!-margin-bottom-0 govuk-!-padding-bottom-0">
-               <div class="app-card__header">
-                  <h2 class="app-card__heading">@ksb.Key</h2>
-               </div>
-               <p>@ksb.Detail</p>
-               <div class="app-checkboxes app-checkboxes--small app-checkboxes--single" data-module="govuk-checkboxes">
-                  <div class="app-checkboxes__item">
-                     <input class="app-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
-                        id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText"/>
-                     <label class="govuk-label app-checkboxes__label" for="ksb-@ksb.Id">
-                     Link this KSB to the
-                     task
-                     </label>
-                  </div>
-               </div>
-            </div>
-            <div class="app-card app-card--follow-on">
-               <div class="app-collapse" data-module="app-collapse">
-                  <div class="app-collapse__header">
-                     <button class="app-collapse__button" aria-expanded="false"
-                        aria-controls="app-collapse-contents-status-@ksb.Id">
-                        <span class="app-collapse__title ksb-status-display" id="ksb-status-@ksb.Id">
-                           <text>@statusTitleDisplay</text>
-                        </span>
-                        <span class="app-collapse__icon" aria-hidden="true"></span>
-                     </button>
-                  </div>
-                  <div class="app-collapse__contents app-radios" id="app-collapse-contents-status-@ksb.Id">
-                     @foreach (var ksbStatus in Model.KsbStatuses)
-                     {
-                         var isChecked = false;
-                         if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
-                         {
-                            isChecked = true;
-                         }
-                         if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
-                         {
-                            isChecked = true;
-                         }
-                         <div class="govuk-radios__item">
-                            <input class="govuk-radios__input ksb-status-radio" name="ksbstatus_@(ksb.Id)" type="radio"
-                            value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" id="ksb_@(ksb.Id)_status_@ksbStatus" data-note="@noteText"
-                            data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
-                            <label class="govuk-label" for="ksb_@(ksb.Id)_status_@ksbStatus">
-                              @{
-                                  var statusItem = ksbStatus;
-                                  string statusItemDisplay = statusItem.GetEnumDescription();
-                                  <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">@statusItemDisplay</span>
-                              }
-                            </label>
-                         </div>
-                     }
-                  </div>
-               </div>
-            </div>
-         </div>
-         }
-         ksbCount++;
-         }
-      </div>
-      }
-      }
-   </div>
+                                <div class="app-card ksb-item govuk-!-margin-bottom-0 govuk-!-padding-bottom-0">
+                                    <div class="app-card__header">
+                                        <h2 class="app-card__heading">@ksb.Key</h2>
+                                    </div>
+                                    <p>@ksb.Detail</p>
+                                    <div class="app-checkboxes app-checkboxes--small app-checkboxes--single" data-module="govuk-checkboxes">
+                                        <div class="app-checkboxes__item">
+                                            <input class="app-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
+                                                   id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText" />
+                                            <label class="govuk-label app-checkboxes__label" for="ksb-@ksb.Id">
+                                                Link this KSB to the task
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="app-card app-card--follow-on">
+                                    <div class="app-collapse" data-module="app-collapse">
+                                        <div class="app-collapse__header">
+                                            <button class="app-collapse__button" aria-expanded="false"
+                                                    aria-controls="app-collapse-contents-status-@ksb.Id">
+                                                <span class="app-collapse__title ksb-status-display" id="ksb-status-@ksb.Id">
+                                                    <text>@statusTitleDisplay</text>
+                                                </span>
+                                                <span class="app-collapse__icon" aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                        <div class="app-collapse__contents app-radios" id="app-collapse-contents-status-@ksb.Id">
+                                            @foreach (var ksbStatus in Model.KsbStatuses)
+                                            {
+                                                var isChecked = false;
+                                                if (ksb.Progress != null && ksb.Progress.CurrentStatus == ksbStatus)
+                                                {
+                                                    isChecked = true;
+                                                }
+                                                if (ksb.Progress == null && ksbStatus == Model.KsbStatuses.First())
+                                                {
+                                                    isChecked = true;
+                                                }
+                                                <div class="govuk-radios__item">
+                                                    <input class="govuk-radios__input ksb-status-radio" name="ksbstatus_@(ksb.Id)" type="radio"
+                                                           value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" id="ksb_@(ksb.Id)_status_@ksbStatus" data-note="@noteText"
+                                                           data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
+                                                    <label class="govuk-label" for="ksb_@(ksb.Id)_status_@ksbStatus">
+                                                        @{
+                                                            var statusItem = ksbStatus;
+                                                            string statusItemDisplay = statusItem.GetEnumDescription();
+                                                            <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">@statusItemDisplay</span>
+                                                        }
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        ksbCount++;
+                    }
+                </div>
+            }
+        }
+    </div>
 </div>
 @await Html.PartialAsync("_PopupKsbJs.cshtml", Model)
 <script>appInit();</script>
