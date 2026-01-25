@@ -16,6 +16,32 @@
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
               class="form submit-form">
 
+               <div class="govuk-form-group">
+                              <fieldset class="govuk-fieldset" id="CurrentStatus">
+                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                      Status
+                                  </legend>
+
+                                  <div class="govuk-radios govuk-radios--small">
+                                      @foreach (var ksbStatus in Model.KsbStatuses)
+                                      {
+                                          <div class="govuk-radios__item">
+                                              <input class="govuk-radios__input" name="currentstatus" type="radio"
+                                                     value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
+                                                     asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
+                                              <label class="govuk-label govuk-radios__label" for="ksbStatus_@ksbStatus">
+                                                  @{
+                                                      var statusItem = ksbStatus;
+                                                      string statusItemDisplay = statusItem.GetEnumDescription();
+                                                      <text>@statusItemDisplay</text>
+                                                  }
+                                              </label>
+                                          </div>
+                                      }
+                                  </div>
+                              </fieldset>
+                          </div>
+
             <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
                 <label class="govuk-label" for="note">
                     Note
@@ -28,41 +54,16 @@
                 </div>
             </div>
 
-            <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset" id="CurrentStatus">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                        StatusIn
-                    </legend>
 
-                    <div class="govuk-radios govuk-radios--small">
-                        @foreach (var ksbStatus in Model.KsbStatuses)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" name="currentstatus" type="radio"
-                                       value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
-                                       asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
-                                <label class="govuk-label govuk-radios__label" for="ksbStatus_@ksbStatus">
-                                    @{
-                                        var statusItem = ksbStatus;
-                                        string statusItemDisplay = statusItem.GetEnumDescription();
-                                        <text>@statusItemDisplay</text>
-                                    }
-                                </label>
-                            </div>
-                        }
-                    </div>
-                </fieldset>
-            </div>
 
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
                 <div class="govuk-form-group">
-                    <fieldset class="app-fieldset">
-                        <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Linked tasks</legend>
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
-                            <div class="linkedTask" id="ksb-task-@task.TaskId">
-                                <div class="app-card">
+
                                     <h2 class="app-card__heading">@task.Title</h2>
                                     <ul class="app-icon-list app-icon-list--muted">
                                         <li>
@@ -107,16 +108,7 @@
                                                 </span>
                                             </li>
                                         }
-                                        @* @if (task.TaskFiles != null)
-                                        {
-                                            <li>
-                                                <span class="app-icon-list__icon">
-                                                    <svg>
-                                                        <use xlink:href="/assets/images/icons.svg#attachment"></use>
-                                                    </svg>
-                                                </span>><span>@task.TaskFiles.Count.ToString() file(s) attached</span>
-                                            </li>
-                                        } *@
+
                                         @if (task.TaskLinkedKsbs != null)
                                         {
                                             <li>
@@ -140,12 +132,6 @@
                                         }
                                     </ul>
 
-                                    <hr class="app-separator" />
-
-                                    <div class="app-dropdown" data-module="app-dropdown">
-                                        <button class="app-dropdown__toggle" aria-expanded="false">
-                                            View actions<span class="govuk-visually-hidden"> for @task.Title</span>
-                                        </button>
                                         <div class="app-dropdown__menu">
                                             <ul class="app-dropdown__menu-list">
                                                 <li class="share-link-container">
@@ -172,9 +158,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         }
                     </fieldset>
                 </div>
@@ -184,6 +168,9 @@
             <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
             <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />
             <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
         </form>
     </div>
 </div>
