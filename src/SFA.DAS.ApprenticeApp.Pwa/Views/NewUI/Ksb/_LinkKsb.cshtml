@@ -97,7 +97,7 @@
                   <div class="app-checkboxes__item">
                      <input class="app-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
                         id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText"/>
-                     <label class="app-label app-checkboxes__label" for="ksb-@ksb.Id">
+                     <label class="govuk-label app-checkboxes__label" for="ksb-@ksb.Id">
                      Link this KSB to the
                      task
                      </label>
@@ -127,11 +127,11 @@
                          {
                             isChecked = true;
                          }
-                         <div class="app-radios__item">
-                            <input class="app-radios__input ksb-status-radio" name="ksbstatus_@(ksb.Id)" type="radio"
+                         <div class="govuk-radios__item">
+                            <input class="govuk-radios__input ksb-status-radio" name="ksbstatus_@(ksb.Id)" type="radio"
                             value="@ksbStatus.ToString()" data-id="@ksb.Id" data-type="@ksb.Type" id="ksb_@(ksb.Id)_status_@ksbStatus" data-note="@noteText"
                             data-key="@ksb.Key" @(@isChecked ? "checked" : "") />
-                            <label class="app-label app-radios__label" for="ksb_@(ksb.Id)_status_@ksbStatus">
+                            <label class="govuk-label" for="ksb_@(ksb.Id)_status_@ksbStatus">
                               @{
                                   var statusItem = ksbStatus;
                                   string statusItemDisplay = statusItem.GetEnumDescription();

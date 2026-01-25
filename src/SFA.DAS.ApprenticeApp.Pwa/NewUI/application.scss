@@ -3,7 +3,7 @@
   $govuk-global-styles: true,
 
 );
-@use "core/layout";
+@use "core";
 @use "components";
 
 .app-dropdown__menu-icon,

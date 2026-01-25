@@ -29,8 +29,8 @@
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
             class="form submit-form">
 
-            <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
-                <label class="app-label" for="note">
+            <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+                <label class="govuk-label" for="note">
                     Add a note
                 </label>
                 <textarea class="app-textarea govuk-js-character-count" rows="2" id="note" name="note"
@@ -62,11 +62,11 @@
                         <div class="app-collapse__contents app-radios" id="app-collapse-contents-status">
                             @foreach (var ksbStatus in Model.KsbStatuses)
                             {
-                                <div class="app-radios__item">
+                                <div class="govuk-radios__item">
                                     <input class="app-radios__input" name="currentstatus" type="radio"
                                         value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
                                         asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
-                                    <label class="app-label app-radios__label" for="ksbStatus_@ksbStatus">
+                                    <label class="govuk-label" for="ksbStatus_@ksbStatus">
                                         <span class="app-tag app-tag--status-@ksbStatus.ToString().ToLower()">
                                             @{
                                                 var statusItem = ksbStatus;
@@ -84,7 +84,7 @@
 
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
-            <div class="app-form-group">
+            <div class="govuk-form-group">
                 <fieldset class="app-fieldset">
                     <legend class="app-fieldset__legend">Tasks linked to this KSB:</legend>
                         @foreach (var task in Model.KsbProgress.Tasks)

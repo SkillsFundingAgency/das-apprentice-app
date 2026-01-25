@@ -16,6 +16,10 @@
   color: settings.$govuk-brand-colour;
 }
 
+.app-card:focus .app-card__heading {
+  color: inherit;
+}
+
 .app-card__content {
   & > :last-child {
     margin-bottom: 0;

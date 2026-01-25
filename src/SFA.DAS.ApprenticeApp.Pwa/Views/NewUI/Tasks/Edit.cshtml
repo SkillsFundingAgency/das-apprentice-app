@@ -41,8 +41,8 @@
         <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
         <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
         <partial name="_AddEditForm" model="@Model" />
-        <div class="app-form-group">
-            <p class="app-label">
+        <div class="govuk-form-group">
+            <p class="govuk-label">
                 Knowledge, skills and behaviours (KSBs) added to this task
             </p>
             <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids"
@@ -118,20 +118,20 @@
                         </button>
                     </div>
                     <div class="app-collapse__contents app-radios" id="app-collapse-task-cat">
-                        <div class="app-radios__item">
-                            <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
                                 id="category_0" type="radio" value="0"
                                 checked="@(Model.Task.ApprenticeshipCategoryId == 0)" />
-                            <label class="app-label app-radios__label" for="category_0">None
+                            <label class="govuk-label" for="category_0">None
                             </label>
                         </div>
                         @foreach (var cat in Model.Categories)
                         {
-                            <div class="app-radios__item">
-                                <input class="app-radios__input task-category" name="ApprenticeshipCategoryId"
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
                                     id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
                                     checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
-                                <label class="app-label app-radios__label" for="category_@cat.CategoryId">
+                                <label class="govuk-label" for="category_@cat.CategoryId">
                                     <span
                                         class="app-tag app-tag--category-@cat.Title.ToLower().Replace(" ","").Replace("-", "")">@cat.Title</span>
                                 </label>
@@ -141,8 +141,8 @@
                 </div>
             </div>
         </fieldset>
-        <div class="app-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
-            <label class="app-label" for="note">
+        <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+            <label class="govuk-label" for="note">
                 Add a note
             </label>
             <div class="note-error form-error govuk-hint"></div>
