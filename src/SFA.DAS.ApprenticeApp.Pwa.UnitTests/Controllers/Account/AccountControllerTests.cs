@@ -11,6 +11,7 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Testing.AutoFixture;
@@ -64,25 +65,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
         [Test, MoqAutoData]
         public async Task Loading_Authenticated_Page_LoadsError_ForNoApprentice(
-           [Frozen] Mock<IOuterApiClient> client,
-           [Greedy] AccountController controller)
+    [Frozen] Mock<IOuterApiClient> client,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Greedy] AccountController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            // Arrange
+            apprenticeContext
+                .Setup(x => x.ApprenticeId)
+                .Returns((string?)null);   // ← no apprentice
 
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-               apprenticeIdClaim
-            })});
-            httpContext.User = claimsPrincipal;
+            var httpContext = new DefaultHttpContext();
 
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
 
+            // Act
             var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("EmailMismatchError");
+
+            // Assert
+            result!.ActionName.Should().Be("EmailMismatchError");
             result.ControllerName.Should().Be("Account");
         }
 
@@ -156,7 +159,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ControllerName.Should().Be("Account");
         }
 
-        
+
         [Test, MoqAutoData]
         public void Get_AccountDetails_StubFails_InProd(
            [Frozen] Mock<IConfiguration> configuration,

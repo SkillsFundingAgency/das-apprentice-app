@@ -12,21 +12,24 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<NotificationsController> _logger;
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
         public NotificationsController(
                     ILogger<NotificationsController> logger,
-                    IOuterApiClient client
+                    IOuterApiClient client,
+                    IApprenticeContext apprenticeContext
                     )
         {
             _logger = logger;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -63,8 +66,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteNotification(int taskId)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 try
