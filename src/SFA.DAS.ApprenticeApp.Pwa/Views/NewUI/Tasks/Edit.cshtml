@@ -3,23 +3,17 @@
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
-    Layout = null;
 }
-<div class="loader" style="display:none"></div>
-<div id="ksb-popup" class="app-overlay"></div>
-<div id="ksb-edit-popup" style=""></div>
-<div class="app-overlay-header">
-    <div class="app-overlay-header__cancel">
-        <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-            class="app-overlay-header__link">Cancel</a>
-    </div>
-    <h2 class="app-overlay-header__heading">
-        View or edit a task
-    </h2>
-    <div class="app-overlay-header__save">
-        <a href="#" class="app-overlay-header__link add-task">Save</a>
-    </div>
-</div>
+@section BackLink {
+    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+    class="govuk-back-link">Back without saving</a>
+}
+<h1 class="govuk-heading-xl">
+    View or edit a task
+</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
 <div class="app-overlay__content add-edit-content-area">
     <div class="govuk-error-summary govuk-visually-hidden app-error-summary" aria-hidden="true" id="errorSummary">
       <div role="alert">
@@ -153,4 +147,7 @@
             </div>
         </div>
     </form>
+</div>
+
+</div>
 </div>

@@ -14,6 +14,18 @@
     </div>
 </div>
 
+<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+            <label class="govuk-label" for="note">
+                Note <span class="govuk-!-font-weight-regular">(optional)</span>
+            </label>
+            <div class="note-error form-error govuk-hint"></div>
+            <textarea class="govuk-textarea govuk-js-character-count" id="note" name="note" rows="5"
+                aria-describedby="note-info" value="@Model.Task.Note">@Model.Task.Note</textarea>
+            <div id="note-info" class="govuk-hint govuk-character-count__message">
+                You can enter up to 1000 characters
+            </div>
+        </div>
+
 <div class="govuk-form-group">
     <label class="govuk-label" for="date">
         Select date the task @(Model.StatusId == 1 ? "was completed" : "is due")

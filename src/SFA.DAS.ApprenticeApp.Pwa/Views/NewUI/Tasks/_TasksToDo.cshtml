@@ -2,7 +2,7 @@
 
 @foreach (var task in Model.Tasks)
 {
-    <a class="app-card" id="task-@task.TaskId" href="#">
+    <a class="app-card" id="task-@task.TaskId" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId })">
         <div class="app-card__header">
             <h2 class="app-card__heading">@task.Title</h2>
         </div>

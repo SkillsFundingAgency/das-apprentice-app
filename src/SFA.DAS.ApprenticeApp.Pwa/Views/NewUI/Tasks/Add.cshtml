@@ -31,17 +31,7 @@
         </div>
         <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form">
             <partial name="_AddEditForm" model="@Model" />
-            <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
-                <label class="govuk-label" for="note">
-                    Add a note
-                </label>
-                <div class="note-error form-error govuk-hint"></div>
-                <textarea class="govuk-textarea govuk-js-character-count" id="note" name="note" rows="5"
-                    aria-describedby="note-info"></textarea>
-                <div id="note-info" class="govuk-hint govuk-character-count__message">
-                    You can enter up to 1000 characters
-                </div>
-            </div>
+
             <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
             <div id="linked-ksb-details"></div>
            <div class="govuk-form-group">
