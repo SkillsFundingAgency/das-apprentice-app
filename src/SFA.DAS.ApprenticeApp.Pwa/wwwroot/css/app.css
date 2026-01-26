@@ -9957,6 +9957,7 @@ input:checked + .slider:before {
 }
 
 @media (min-width: 48.0625em) {
+  .app-fab--highlight,
   .app-navigation,
   .app-container {
     max-width: 1024px;
@@ -9966,6 +9967,11 @@ input:checked + .slider:before {
     max-width: 1024px;
     left: 50%;
     transform: translateX(-50%);
+  }
+  .app-modal {
+    margin-left: auto;
+    transform: translateX(-50%);
+    margin-top: 800px;
   }
 }
 
