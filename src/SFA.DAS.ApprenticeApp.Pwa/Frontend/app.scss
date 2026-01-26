@@ -14,3 +14,17 @@ $govuk-canvas-background-colour: $app-bg-colour;
 @import "components/all";
 @import "pages/all";
 @import "utilities/all";
+
+// Width overrides
+@include govuk-media-query($from: desktop) {
+  .app-navigation,
+  .app-container {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .app-overlay {
+    max-width: 1024px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}

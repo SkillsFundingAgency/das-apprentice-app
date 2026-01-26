@@ -9956,4 +9956,17 @@ input:checked + .slider:before {
   margin-top: auto;
 }
 
+@media (min-width: 48.0625em) {
+  .app-navigation,
+  .app-container {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .app-overlay {
+    max-width: 1024px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 /*# sourceMappingURL=app.css.map */
