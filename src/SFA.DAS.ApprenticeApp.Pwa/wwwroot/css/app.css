@@ -9962,6 +9962,7 @@ input:checked + .slider:before {
     max-width: 1024px;
     margin: 0 auto;
   }
+  #add-edit-wrapper,
   .app-overlay {
     max-width: 1024px;
     left: 50%;
@@ -9970,6 +9971,12 @@ input:checked + .slider:before {
   .app-modal__content {
     max-width: 600px;
     margin: 0 auto;
+  }
+  .app-fab {
+    right: auto;
+  }
+  .app-fab--highlight {
+    right: 1.5rem;
   }
 }
 
