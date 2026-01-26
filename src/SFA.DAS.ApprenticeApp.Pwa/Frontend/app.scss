@@ -28,9 +28,8 @@ $govuk-canvas-background-colour: $app-bg-colour;
     left: 50%;
     transform: translateX(-50%);
   }
-  .app-modal {
-    margin-left: auto;
-    transform: translateX(-50%);
-    margin-top: 800px;
+  .app-modal__content {
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
