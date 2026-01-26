@@ -39,4 +39,8 @@ $govuk-canvas-background-colour: $app-bg-colour;
   .app-fab--highlight {
     right: 1.5rem;
   }
+  .app-pages-welcome {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
 }

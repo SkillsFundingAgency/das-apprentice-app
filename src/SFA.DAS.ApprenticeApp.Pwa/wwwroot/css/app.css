@@ -9978,6 +9978,10 @@ input:checked + .slider:before {
   .app-fab--highlight {
     right: 1.5rem;
   }
+  .app-pages-welcome {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
 }
 
 /*# sourceMappingURL=app.css.map */
