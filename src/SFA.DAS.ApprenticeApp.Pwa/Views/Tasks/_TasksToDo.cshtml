@@ -139,15 +139,10 @@
                         <input type="hidden" class="share-note" value="@task.Note" />
                     </li>
                     <li>
-                        <a class="app-dropdown__menu-link delete-task" href="#">
-                            <span class="app-dropdown__menu-icon">
-                                <svg>
-                                    <use xlink:href="/assets/images/icons.svg#trash"></use>
-                                </svg>
-                            </span>
-                            <span>Delete</span>
-                        </a>
-                        <input class="taskId" type="hidden" value="@task.TaskId" />
+                        <a class="app-dropdown__menu-link"
+                           href="@Url.Action("Delete", "Tasks", new { id = task.TaskId, status = (int)task.Status })">
+                            Delete
+                        </a>       
                     </li>
                 </ul>
             </div>

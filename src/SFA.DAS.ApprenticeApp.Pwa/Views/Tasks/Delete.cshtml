@@ -1,0 +1,89 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.DeleteTaskViewModel
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    Layout = "_Layout";
+}
+
+<div class="loader" style="display:none"></div>
+<div id="ksb-popup" class="app-overlay"></div>
+<div id="ksb-edit-popup" style=""></div>
+
+<div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+        <a asp-action="Index"
+           asp-controller="Tasks"
+           asp-route-status="@Model.StatusId"
+           class="app-overlay-header__link">
+            Back without deleting
+        </a>
+    </div>
+
+    <h2 class="app-overlay-header__heading">
+        Delete task
+    </h2>
+
+    <div class="app-overlay-header__save"></div>
+</div>
+
+<div class="app-overlay__content add-edit-content-area">
+    <h2 class="govuk-heading-l">
+        Are you sure you want to delete this task?
+    </h2>
+
+    <div class="app-card">
+        <h3 class="govuk-heading-m govuk-!-margin-bottom-2">
+            @Model.Title
+        </h3>
+
+        @if (Model.DueDate.HasValue)
+        {
+            <p class="govuk-body">
+                Due @Model.DueDate.Value.ToString("d MMMM yyyy, h:mmtt")
+            </p>
+        }
+    </div>
+
+    <div class="govuk-button-group govuk-!-margin-top-4">
+        <a asp-action="Index"
+           asp-controller="Tasks"
+           asp-route-status="@Model.StatusId"
+           class="govuk-link">
+            Back without deleting
+        </a>
+
+        <button type="button"
+                class="govuk-button govuk-button--warning"
+                id="delete-task-btn"
+                data-task-id="@Model.TaskId"
+                data-status-id="@Model.StatusId">
+            Delete this task
+        </button>
+    </div>
+</div>
+
+<script type="module">
+    import { initAll } from '/js/libs/govuk-frontend.min.js'
+    initAll();
+
+    const btn = document.getElementById('delete-task-btn');
+
+    btn?.addEventListener('click', async () => {
+        const taskId = btn.dataset.taskId;
+        const statusId = btn.dataset.statusId;
+
+        try {
+            const res = await fetch(`/Tasks/DeleteApprenticeTask?taskId=${encodeURIComponent(taskId)}`, {
+                method: 'DELETE',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+
+            if (res.ok) {
+                window.location.href = `/Tasks/Index?status=${encodeURIComponent(statusId)}`;
+                return;
+            }
+        } catch {}
+
+        window.location.href = `/Tasks/Index?status=${encodeURIComponent(statusId)}`;
+    });
+</script>

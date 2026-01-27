@@ -14,11 +14,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly ILogger<TasksController> _logger;
         private readonly IOuterApiClient _client;
 
-        public TasksController
-            (
-            ILogger<TasksController> logger,
-            IOuterApiClient client
-            )
+        public TasksController(ILogger<TasksController> logger, IOuterApiClient client)
         {
             _logger = logger;
             _client = client;
@@ -69,7 +65,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     Secure = true,
                     HttpOnly = true
                 };
-                Response.Cookies.Append(Constants.TaskFilterYearCookieName, year.ToString(), cookieOptions); 
+                Response.Cookies.Append(Constants.TaskFilterYearCookieName, year.ToString(), cookieOptions);
             }
 
             TasksBaseModel vm = new()
@@ -113,7 +109,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
                 }
 
-                // sorting
                 var sortingValue = Request.Cookies[Constants.TaskFilterSortCookieName];
                 if (sortingValue != null)
                 {
@@ -129,7 +124,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     Year = DateTime.Now.Year,
                     Tasks = taskResult.Tasks
-
                 };
 
                 return PartialView("_TasksToDo", vm);
@@ -169,7 +163,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
                 }
 
-                // sorting
                 var sortCookie = Request.Cookies[Constants.TaskFilterSortCookieName];
                 if (sortCookie != null)
                 {
@@ -200,23 +193,23 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
-                    var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
+                var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
 
-                    var guids = taskdata.KsbProgress?.Select(k => k.KsbId).ToList() ?? new List<Guid>();
-                    var vm = new EditTaskPageModel
-                    {
-                        Task = taskdata.Task,
-                        Categories = taskdata.TaskCategories?.TaskCategories,
-                        KsbProgressData = taskdata.KsbProgress,
-                        LinkedKsbGuids = guids.Any() ? string.Join(",", guids) : string.Empty,
-                        StatusId = status
-                    };
+                var guids = taskdata.KsbProgress?.Select(k => k.KsbId).ToList() ?? new List<Guid>();
+                var vm = new EditTaskPageModel
+                {
+                    Task = taskdata.Task,
+                    Categories = taskdata.TaskCategories?.TaskCategories,
+                    KsbProgressData = taskdata.KsbProgress,
+                    LinkedKsbGuids = guids.Any() ? string.Join(",", guids) : string.Empty,
+                    StatusId = status
+                };
 
-                    if(taskdata.Task.TaskReminders != null && taskdata.Task.TaskReminders.Count == 1)
-                    {
-                        vm.Task.ReminderValue = taskdata.Task.TaskReminders.FirstOrDefault().ReminderValue;
-                    }
-                    return View(vm);
+                if (taskdata.Task.TaskReminders != null && taskdata.Task.TaskReminders.Count == 1)
+                {
+                    vm.Task.ReminderValue = taskdata.Task.TaskReminders.FirstOrDefault().ReminderValue;
+                }
+                return View(vm);
             }
             return RedirectToAction("Index", "Tasks");
         }
@@ -261,7 +254,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
                 catch
                 {
-                    //temporarily handle 500 errors;
                 }
 
                 return RedirectToAction("Index", new { status = (int)task.Status });
@@ -361,7 +353,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }
                     catch
                     {
-                        //temporarily handle 500 errors
                     }
 
                     string postMessage = $"Task added successfully for apprentice with id {apprenticeId}";
@@ -417,5 +408,52 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             return Ok();
         }
-    }
-}
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, int status = 0)
+        {
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+
+            if (string.IsNullOrEmpty(apprenticeId))
+            {
+                return RedirectToAction("Index", "Tasks");
+            }
+
+            var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
+
+            if (taskdata?.Task == null)
+            {
+                return RedirectToAction("Index", "Tasks");
+            }
+
+            var vm = new DeleteTaskViewModel
+            {
+                TaskId = taskdata.Task.TaskId,
+                Title = taskdata.Task.Title,
+                DueDate = taskdata.Task.DueDate,
+                StatusId = status
+            };
+
+            return View("Delete", vm);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(DeleteTaskViewModel model)
+        {
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+
+            if (string.IsNullOrEmpty(apprenticeId) || model == null || model.TaskId == 0)
+            {
+                return RedirectToAction("Index", "Tasks");
+            }
+
+            await _client.DeleteApprenticeTask(new Guid(apprenticeId), model.TaskId);
+
+            return RedirectToAction("Index", new { status = model.StatusId });
+        }
+
+            }
+        }
