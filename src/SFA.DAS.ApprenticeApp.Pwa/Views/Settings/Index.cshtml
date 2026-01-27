@@ -116,7 +116,7 @@
 </div>
 
 <!-- HTML for the popup box -->
-<div class="app-modal change-notifications" aria-hidden="true">
+@* <div class="app-modal change-notifications" aria-hidden="true">
     <div class="app-modal__content" tabindex="0">
         <p class="govuk-heading-m">To change the notifications option for this app open your device settings.</p>
         <div class="govuk-button-group">
@@ -128,7 +128,7 @@
 <script>
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
-</script>
+</script> *@
 
 
 <style>
