@@ -29,7 +29,7 @@
 
 
 <!-- HTML for the popup box -->
-<div class="app-modal enable-notifications">
+@* <div class="app-modal enable-notifications">
     <div class="app-modal__content">
         <h2 class="govuk-heading-m">Please turn on push notifications</h2>
         <p class="govuk-body">
@@ -44,7 +44,7 @@
 <script>
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
-</script>
+</script> *@
 
 @await Html.PartialAsync("../Shared/_PushNotificationsJs.cshtml")
 @await Html.PartialAsync("_NotificationsJs.cshtml")
