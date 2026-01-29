@@ -13,19 +13,22 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     public class SupportController : Controller
     {
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
         public SupportController
             (
-            IOuterApiClient client
+            IOuterApiClient client,
+            IApprenticeContext apprenticeContext
             )
         {
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -40,7 +43,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Route("~/Support/Category/{slug?}")]
         public async Task<IActionResult> ArticlesPage(string slug)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             { 
@@ -53,7 +56,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> SavedArticles()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -68,7 +71,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> AddOrUpdateApprenticeArticle(string entryId, string entryTitle, bool? likeStatus = null, bool? isSaved = null)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -83,7 +86,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveApprenticeArticle(string entryId, bool? likeStatus = null, bool? isSaved = null)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {

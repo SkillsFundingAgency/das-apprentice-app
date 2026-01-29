@@ -26,6 +26,7 @@ builder.Services.AddDataProtection(applicationConfiguration);
 builder.Services.AddHealthChecks();
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -74,6 +75,7 @@ app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
 
 app.UseAuthentication();
 app.UseRouting();
+app.UseSession();
 app.UseAuthorization();
 app.UseSession();
 

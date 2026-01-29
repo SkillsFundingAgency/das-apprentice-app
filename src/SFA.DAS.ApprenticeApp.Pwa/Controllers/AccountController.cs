@@ -17,15 +17,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
-        private readonly IConfiguration _config;
+        private readonly IConfiguration _config;        
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
-            ApplicationConfiguration appConfig, 
+            ApplicationConfiguration appConfig,
             IConfiguration configuration,
-            IOuterApiClient client
+            IOuterApiClient client,
+            IApprenticeContext apprenticeContext
         )
         {
             _logger = logger;
@@ -33,13 +35,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Authenticated()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
@@ -141,7 +144,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> SigningOut()
         {
-           var idToken = await HttpContext.GetTokenAsync("id_token");
+            var idToken = await HttpContext.GetTokenAsync("id_token");
 
             var authenticationProperties = new AuthenticationProperties();
             authenticationProperties.Parameters.Clear();
@@ -186,18 +189,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult CmadError()
         {
             return View();
-        }      
-        
+        }
+
         [HttpGet]
         public IActionResult EmailMismatchError()
         {
             return View();
-        }             
+        }
 
         [HttpGet]
         public IActionResult YourAccount()
