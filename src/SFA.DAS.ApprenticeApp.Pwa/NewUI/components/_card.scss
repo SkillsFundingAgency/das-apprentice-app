@@ -11,6 +11,11 @@
   }
 }
 
+.app-card--highlight {
+  background-color: #F4F8FB;
+  border-color: #D2E2F1;
+}
+
 .app-card__heading {
   margin-top: 0;
   color: settings.$govuk-brand-colour;

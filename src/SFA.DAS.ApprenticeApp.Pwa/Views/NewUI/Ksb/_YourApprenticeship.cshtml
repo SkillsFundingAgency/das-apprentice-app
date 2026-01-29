@@ -1,0 +1,27 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@using SFA.DAS.ApprenticeApp.Domain.Models
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+@{
+    // Progress bar calculations
+    var apprenticeship = Model?.MyApprenticeship;
+    var totalDays = apprenticeship?.ApprenticeshipLength?.Days ?? 0;
+    var endDate = apprenticeship?.EndDate;
+    var daysRemaining = endDate.HasValue ? Math.Max(0, (endDate.Value - DateTime.Today).Days) : 0;
+    var progressPercent = totalDays > 0 ? Math.Min(100, Math.Max(0, (int)Math.Round(((double)(totalDays - daysRemaining) / totalDays) * 100))) : 0;
+    var monthsRemaining = (int)Math.Round(daysRemaining / 30.417);
+}
+<div class="app-card app-card--highlight">
+    <div class="app-card__header">
+        <h2 class="govuk-heading-m">Your apprenticeship</h2>
+        @if (apprenticeship != null && totalDays > 0)
+        {
+            <div class="app-card__content">
+                <label class="govuk-label govuk-!-font-size-16 app-progress__label" for="apprenticeship-progress">
+                    @monthsRemaining month@(monthsRemaining != 1 ? "s" : "") left (@progressPercent% complete)
+                </label>
+                <progress value="@progressPercent" max="100" class="app-progress" id="apprenticeship-progress">@progressPercent%</progress>
+            </div>
+        }
+    </div>
+
+</div>

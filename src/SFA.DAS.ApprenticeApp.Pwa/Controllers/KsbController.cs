@@ -67,13 +67,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         }
                     }
 
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new()
                     {
                         Ksbs = apprenticeKsbResult,
                         KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
                         SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
                         BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
-                        SearchTerm = searchTerm
+                        SearchTerm = searchTerm,
+                        MyApprenticeship = apprenticeDetails?.MyApprenticeship
                     };
 
                     return View(apprenticeKsbsPageModel);
