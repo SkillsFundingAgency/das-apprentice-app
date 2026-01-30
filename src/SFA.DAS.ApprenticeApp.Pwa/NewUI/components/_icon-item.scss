@@ -1,10 +1,18 @@
 @use "govuk/settings/index" as settings;
 
+.app-icon-list__link-wrap {
+  display: inline-block;
+}
+
 .app-icon-item {
   display: flex;
   align-items: center;
   gap: .5rem;
   color: settings.$govuk-secondary-text-colour;
+}
+
+a > span.app-icon-item {
+  color: inherit;
 }
 
 .app-icon-item__icon {

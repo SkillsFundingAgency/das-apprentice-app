@@ -1,221 +1,285 @@
 @using SFA.DAS.ApprenticeApp.Application
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"
+></script>
 
 <a href="#filter" data-module="app-overlay" class="app-icon-action">
-    <span class="app-icon-action__icon">
-        <svg>
-            <use xlink:href="/assets/images/icons.svg#filter">
-            </use>
-        </svg>
-    </span>
-    <span class="app-icon-action__label">Filters</span>
+  <span class="app-icon-action__icon">
+    <svg>
+      <use xlink:href="/assets/images/icons.svg#filter"></use>
+    </svg>
+  </span>
+  <span class="app-icon-action__label">Filters</span>
 </a>
 
 <div class="app-overlay" id="filter">
-    <div class="app-overlay-header">
-        <div class="app-overlay-header__cancel">
-            <a href="#" class="app-overlay-header__link">Cancel</a>
-        </div>
-        <h2 class="app-overlay-header__heading">
-            Task filters
-        </h2>
-        <div class="app-overlay-header__save">
-            <a href="#" class="app-overlay-header__link apply">Apply</a>
-        </div>
+  <div class="app-overlay-header">
+    <div class="app-overlay-header__cancel">
+      <a href="#" class="app-overlay-header__link">Cancel</a>
     </div>
-    <div class="app-overlay__content">
-        <div class="govuk-form-group">
-            <fieldset class="app-fieldset">
-                <div class="app-page-header app-page-header--align-bottom">
-                    <legend class="app-fieldset__legend app-fieldset__legend--s govuk-!-margin-bottom-0">Filter by
-                        category:</legend>
-                    <a class="app-overlay-header__link resetall" href="#">Reset all</a>
-                </div>
-                <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes" style="clear:both">
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="none" name="filter" type="checkbox" value="none">
-                        <label class="govuk-label app-checkboxes__label" for="none">
-                            None
-                        </label>
-                    </div>
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="assignment" name="filter" type="checkbox"
-                            value="assignment">
-                        <label class="govuk-label app-checkboxes__label" for="assignment">
-                            <span class="app-tag app-tag--category-assignment">Assignment</span>
-                        </label>
-                    </div>
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="epa" name="filter" type="checkbox" value="epa">
-                        <label class="govuk-label app-checkboxes__label" for="epa">
-                            <span class="app-tag app-tag--category-endpointassessment">End-point assessment</span>
-                        </label>
-                    </div>
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="deadline" name="filter" type="checkbox"
-                            value="deadline">
-                        <label class="govuk-label app-checkboxes__label" for="deadline">
-                            <span class="app-tag app-tag--category-deadline">Deadline</span>
-                        </label>
-                    </div>
-
-                </div>
-            </fieldset>
-        </div>
-        <div class="govuk-form-group govuk-!-margin-top-8">
-            <fieldset class="app-fieldset">
-                <legend class="app-fieldset__legend app-fieldset__legend--s">Other filter options:</legend>
-                <div class="app-checkboxes app-checkboxes--small" data-module="app-checkboxes">
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="ksb" name="other-filter" type="checkbox" value="ksb">
-                        <label class="govuk-label app-checkboxes__label" for="ksb">
-                            Knowledge, skills and behaviours (KSBs) added
-                        </label>
-                    </div>
-
-                    <div class="app-checkboxes__item reminder-filter">
-                        <input class="app-checkboxes__input" id="reminder" name="other-filter" type="checkbox"
-                            value="reminder">
-                        <label class="govuk-label app-checkboxes__label" for="reminder">
-                            Reminder set
-                        </label>
-                    </div>
-
-                    <div class="app-checkboxes__item">
-                        <input class="app-checkboxes__input" id="note-added" name="other-filter" type="checkbox"
-                            value="note-added">
-                        <label class="govuk-label app-checkboxes__label" for="note-added">
-                            Note attached
-                        </label>
-                    </div>
-
-                </div>
-            </fieldset>
-        </div>
+    <h2 class="app-overlay-header__heading">Task filters</h2>
+    <div class="app-overlay-header__save">
+      <a href="#" class="app-overlay-header__link apply">Apply</a>
     </div>
+  </div>
+  <div class="app-overlay__content">
+    <div class="govuk-form-group">
+      <fieldset class="app-fieldset">
+        <div class="app-page-header app-page-header--align-bottom">
+          <legend
+            class="app-fieldset__legend app-fieldset__legend--s govuk-!-margin-bottom-0"
+          >
+            Filter by category:
+          </legend>
+          <a class="app-overlay-header__link resetall" href="#">Reset all</a>
+        </div>
+        <div
+          class="app-checkboxes app-checkboxes--small"
+          data-module="app-checkboxes"
+          style="clear: both"
+        >
+          <div class="app-checkboxes__item">
+            <input
+              class="app-checkboxes__input"
+              id="none"
+              name="filter"
+              type="checkbox"
+              value="none"
+            />
+            <label class="govuk-label app-checkboxes__label" for="none">
+              None
+            </label>
+          </div>
+
+          <div class="app-checkboxes__item">
+            <input
+              class="app-checkboxes__input"
+              id="assignment"
+              name="filter"
+              type="checkbox"
+              value="assignment"
+            />
+            <label class="govuk-label app-checkboxes__label" for="assignment">
+              <span class="app-tag app-tag--category-assignment"
+                >Assignment</span
+              >
+            </label>
+          </div>
+
+          <div class="app-checkboxes__item">
+            <input
+              class="app-checkboxes__input"
+              id="epa"
+              name="filter"
+              type="checkbox"
+              value="epa"
+            />
+            <label class="govuk-label app-checkboxes__label" for="epa">
+              <span class="app-tag app-tag--category-endpointassessment"
+                >End-point assessment</span
+              >
+            </label>
+          </div>
+
+          <div class="app-checkboxes__item">
+            <input
+              class="app-checkboxes__input"
+              id="deadline"
+              name="filter"
+              type="checkbox"
+              value="deadline"
+            />
+            <label class="govuk-label app-checkboxes__label" for="deadline">
+              <span class="app-tag app-tag--category-deadline">Deadline</span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="govuk-form-group govuk-!-margin-top-8">
+      <fieldset class="app-fieldset">
+        <legend class="app-fieldset__legend app-fieldset__legend--s">
+          Other filter options:
+        </legend>
+        <div
+          class="app-checkboxes app-checkboxes--small"
+          data-module="app-checkboxes"
+        >
+          <div class="app-checkboxes__item">
+            <input
+              class="app-checkboxes__input"
+              id="ksb"
+              name="other-filter"
+              type="checkbox"
+              value="ksb"
+            />
+            <label class="govuk-label app-checkboxes__label" for="ksb">
+              Knowledge, skills and behaviours (KSBs) added
+            </label>
+          </div>
+
+          <div class="app-checkboxes__item reminder-filter">
+            <input
+              class="app-checkboxes__input"
+              id="reminder"
+              name="other-filter"
+              type="checkbox"
+              value="reminder"
+            />
+            <label class="govuk-label app-checkboxes__label" for="reminder">
+              Reminder set
+            </label>
+          </div>
+
+          <div class="app-checkboxes__item">
+            <input
+              class="app-checkboxes__input"
+              id="note-added"
+              name="other-filter"
+              type="checkbox"
+              value="note-added"
+            />
+            <label class="govuk-label app-checkboxes__label" for="note-added">
+              Note attached
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
+  $(document).ready(function () {
+    var tabname = "Todo";
 
-    $(document).ready(function () {
+    if ($(".done").parents(".app-tabs__list-item--selected").length) {
+      tabname = "Done";
+    }
 
-        var tabname = "Todo";
+    var cookieFilter = "";
+    if (tabname == "Todo") {
+      cookieFilter = getCookie("@Constants.TaskFiltersTodoCookieName");
+    } else {
+      cookieFilter = getCookie("@Constants.TaskFiltersDoneCookieName");
+    }
 
-        if ($('.done').parents('.app-tabs__list-item--selected').length) {
-            tabname = "Done";
-        }
+    if (cookieFilter != null && cookieFilter != "") {
+      var filters = "";
+      if (tabname == "Todo") {
+        filters = getCookie("@Constants.TaskFiltersTodoCookieName");
+      } else {
+        filters = getCookie("@Constants.TaskFiltersDoneCookieName");
+      }
 
-        var cookieFilter = "";
-        if (tabname == "Todo") {
-            cookieFilter = getCookie("@Constants.TaskFiltersTodoCookieName");
-        }
-        else {
-            cookieFilter = getCookie("@Constants.TaskFiltersDoneCookieName");
-        }
+      data = filters.split("&");
 
+      for (var k in data) {
+        var newData = data[k].split("=");
 
-        if (cookieFilter != null && cookieFilter != "") {
+        $("#" + newData[1]).prop("checked", true);
 
-            var filters = "";
-            if (tabname == "Todo") {
-                filters = getCookie("@Constants.TaskFiltersTodoCookieName");
-            }
-            else {
-                filters = getCookie("@Constants.TaskFiltersDoneCookieName");
-            }
+        $("#filters-set-tasks").append(
+          "<div class='app-tag app-tag--filter'><span>" +
+            newData[1].replace(/\-/g, " ") +
+            "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
+            newData[1] +
+            "'><span class='govuk-visually-hidden'>Remove " +
+            newData[1].replace(/\-/g, " ") +
+            " from your filters</span></a></div>",
+        );
+      }
+    } else {
+      $("#filters-set-tasks").hide();
+    }
 
-            data = filters.split('&');
+    $("body #filters-set-tasks").on("click", ".remove-filter", function (e) {
+      var filterName = $(this).attr("data-id");
 
-            for (var k in data) {
+      $("#" + filterName).prop("checked", false);
 
-                var newData = data[k].split('=');
-
-                $("#" + newData[1]).prop('checked', true);
-
-                $("#filters-set-tasks").append("<div class='app-tag app-tag--filter'><span>" + newData[1].replace(/\-/g, " ") + "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" + newData[1] + "'><span class='govuk-visually-hidden'>Remove " + newData[1].replace(/\-/g, " ") + " from your filters</span></a></div>");
-            }
-        }
-        else {
-            $("#filters-set-tasks").hide();
-        }
-
-        $('body #filters-set-tasks').on('click', '.remove-filter', function (e) {
-            var filterName = $(this).attr('data-id');
-
-            $("#" + filterName).prop('checked', false);
-
-            applyAndSaveFilters()
-        });
-
-        $(".apply").click(function (e) {
-            applyAndSaveFilters()
-        });
-
-        $(".resetall").click(function (e) {
-            e.preventDefault()
-            $("input:checkbox").prop('checked', false);
-        });
-
+      applyAndSaveFilters();
     });
 
-    function applyAndSaveFilters() {
-        var sList = "";
+    $(".apply").click(function (e) {
+      applyAndSaveFilters();
+    });
 
-        $('input[type=checkbox]').each(function () {
-            sList += "(" + $(this).val() + "-" + (this.checked ? "checked" : "not checked") + ")";
-        });
+    $(".resetall").click(function (e) {
+      e.preventDefault();
+      $("input:checkbox").prop("checked", false);
+    });
+  });
 
-        var tabname = "Todo";
+  function applyAndSaveFilters() {
+    var sList = "";
 
-        if ($('.done').parents('.app-tabs__list-item--selected').length) {
-            tabname = "Done";
-        }
+    $("input[type=checkbox]").each(function () {
+      sList +=
+        "(" +
+        $(this).val() +
+        "-" +
+        (this.checked ? "checked" : "not checked") +
+        ")";
+    });
 
-        if (tabname == "Todo") {
-            setCookie('SFA.ApprenticeApp.TaskFiltersTodo', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
-        }
-        else {
-            setCookie('SFA.ApprenticeApp.TaskFiltersDone', $('input[type=checkbox]').serialize(), { secure: true, 'max-age': 3600 });
-        }
+    var tabname = "Todo";
 
-        location.reload();
+    if ($(".done").parents(".app-tabs__list-item--selected").length) {
+      tabname = "Done";
     }
 
-    function getCookie(name) {
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
+    if (tabname == "Todo") {
+      setCookie(
+        "SFA.ApprenticeApp.TaskFiltersTodo",
+        $("input[type=checkbox]").serialize(),
+        { secure: true, "max-age": 3600 },
+      );
+    } else {
+      setCookie(
+        "SFA.ApprenticeApp.TaskFiltersDone",
+        $("input[type=checkbox]").serialize(),
+        { secure: true, "max-age": 3600 },
+      );
     }
 
-    function setCookie(name, value, attributes = {}) {
-        attributes = {
-            path: '/',
-        };
+    location.reload();
+  }
 
-        if (attributes.expires instanceof Date) {
-            attributes.expires = attributes.expires.toUTCString();
-        }
+  function getCookie(name) {
+    let matches = document.cookie.match(
+      new RegExp(
+        "(?:^|; )" +
+          name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+          "=([^;]*)",
+      ),
+    );
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
 
-        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  function setCookie(name, value, attributes = {}) {
+    attributes = {
+      path: "/",
+    };
 
-        for (let attributeKey in attributes) {
-            updatedCookie += "; " + attributeKey;
-            let attributeValue = attributes[attributeKey];
-            if (attributeValue !== true) {
-                updatedCookie += "=" + attributeValue;
-            }
-        }
-
-        document.cookie = updatedCookie;
+    if (attributes.expires instanceof Date) {
+      attributes.expires = attributes.expires.toUTCString();
     }
 
+    let updatedCookie =
+      encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let attributeKey in attributes) {
+      updatedCookie += "; " + attributeKey;
+      let attributeValue = attributes[attributeKey];
+      if (attributeValue !== true) {
+        updatedCookie += "=" + attributeValue;
+      }
+    }
+
+    document.cookie = updatedCookie;
+  }
 </script>

@@ -42,7 +42,7 @@ a.app-card {
       background-color: settings.$govuk-brand-colour;
       border-color: settings.$govuk-brand-colour;
       color: white;
-      .app-card__heading, p {
+      .app-card__heading, p, ul, li {
         color: inherit;
       }
     }

@@ -9,7 +9,7 @@
        class="govuk-back-link app-back-link">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
-    View or edit a task
+    Edit task
 </h1>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -123,5 +123,33 @@
                 </div>
             </form>
         </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <ul class="govuk-list govuk-list--spaced">
+            <li><a href="#" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
+                <span class="app-icon-item">
+                    <svg width="24" height="24" class="app-icon-item__icon">
+                        <use href="/assets/icons/sprite.svg#checkbox-done"></use>
+                    </svg>
+                    <span class="app-icon__text">Move this task to done</span>
+                </span>
+                </a></li>
+                  <li><a href="#" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
+                                <span class="app-icon-item">
+                                    <svg width="24" height="24" class="app-icon-item__icon">
+                                        <use href="/assets/icons/sprite.svg#share"></use>
+                                    </svg>
+                                    <span class="app-icon__text">Share this task by email</span>
+                                </span>
+                                </a></li>
+                <li><a href="#" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap app-link--destructive">
+                                <span class="app-icon-item">
+                                    <svg width="24" height="24" class="app-icon-item__icon">
+                                        <use href="/assets/icons/sprite.svg#delete"></use>
+                                    </svg>
+                                    <span class="app-icon__text">Delete task</span>
+                                </span>
+                                </a></li>
+        </ul>
     </div>
 </div>
