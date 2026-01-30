@@ -1,0 +1,11 @@
+@use "govuk/settings/index" as settings;
+
+.app-link--destructive {
+  &, &:link, &:visited {
+    color: settings.$govuk-error-colour;
+  }
+  &:focus, &:active {
+    color: #000
+  }
+
+}

@@ -1,0 +1,100 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ProfileViewModel
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@using SFA.DAS.ApprenticeApp.Web.Extensions
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["Section"] = "Account";
+}
+
+@section BackLink {
+    <a class="govuk-back-link app-back-link" asp-controller="Account" asp-action="YourAccount">Back</a>
+}
+
+<h1 class="govuk-heading-xl">Your apprenticeship details</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+<h2 class="govuk-heading-l">Your details</h2>
+
+<dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+        Name:
+    </dt>
+    <dd class="govuk-summary-list__value">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+        Email address:
+    </dt>
+    <dd class="govuk-summary-list__value">@Model?.Apprentice?.Email</dd>
+    </div>
+    <div class="govuk-summary-list__row">
+    <dt class="govuk-summary-list__key">
+        Date of birth:
+    </dt>
+    <dd class="govuk-summary-list__value">@Model?.Apprentice?.DateOfBirth?.ToGdsFormat()</dd>
+    </div>
+</dl>
+
+
+<h2 class="govuk-heading-l">Your apprenticeship</h2>
+
+    <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Current employer:
+        </dt>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.EmployerName</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Training provider:
+        </dt>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.TrainingProviderName</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Apprenticeship:
+        </dt>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.Title</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Level:
+        </dt>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.Level</dd>
+        </div>
+        
+            @{
+            if (Model.MyApprenticeship.ApprenticeshipType != null)
+            {
+        <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Apprenticeship Type:
+                </dt>
+                <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.ApprenticeshipType.GetEnumDescription()</dd>
+        </div>
+            }
+        }
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Planned training start date:
+        </dt>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.StartDate?.ToGdsFormat()</dd>
+        </div>
+            <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Planned training end date:
+        </dt>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.EndDate?.ToGdsFormat()</dd>
+            </div>
+        <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            Estimated duration:
+        </dt>
+        <dd class="govuk-summary-list__value">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
+        </div>
+    </dl>
+    </div>
+</div>

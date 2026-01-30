@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.ViewLocation;
 using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using System.Diagnostics.CodeAnalysis;
 using WebEssentials.AspNetCore.Pwa;
@@ -14,7 +15,11 @@ var applicationConfiguration = rootConfiguration.Get<ApplicationConfiguration>()
 builder.Services.AddSingleton(applicationConfiguration!);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddRazorOptions(options =>
+    {
+        options.ViewLocationExpanders.Add(new NewUiViewLocationExpander());
+    });
 
 var environment = builder.Environment;
 builder.Services.AddServiceRegistration(environment, rootConfiguration, applicationConfiguration);
