@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
-    ViewBag.HideNavigation
+    ViewBag.HideNavigation = true;
 }
 @section BackLink {
     <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
