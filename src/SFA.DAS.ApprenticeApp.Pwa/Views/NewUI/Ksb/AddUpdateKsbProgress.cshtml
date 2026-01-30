@@ -5,6 +5,9 @@
     ViewData["Title"] = "Manage a knowledge, skill or behaviour (KSB)";
     ViewData["Section"] = "Ksbs";
 }
+@section BackLink {
+    <a asp-controller="Ksb" asp-action="Index" class="govuk-back-link app-back-link">Back without saving</a>
+}
 
 <h1 class="govuk-heading-xl">
     @Model.KsbProgress.KsbKey
@@ -16,108 +19,63 @@
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
               class="form submit-form">
 
-               <div class="govuk-form-group">
-                              <fieldset class="govuk-fieldset" id="CurrentStatus">
-                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                      Status
-                                  </legend>
+           <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset" id="CurrentStatus">
+                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                      Status
+                  </legend>
 
-                                  <div class="govuk-radios govuk-radios--small">
-                                      @foreach (var ksbStatus in Model.KsbStatuses)
-                                      {
-                                          <div class="govuk-radios__item">
-                                              <input class="govuk-radios__input" name="currentstatus" type="radio"
-                                                     value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
-                                                     asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
-                                              <label class="govuk-label govuk-radios__label" for="ksbStatus_@ksbStatus">
-                                                  @{
-                                                      var statusItem = ksbStatus;
-                                                      string statusItemDisplay = statusItem.GetEnumDescription();
-                                                      <text>@statusItemDisplay</text>
-                                                  }
-                                              </label>
-                                          </div>
-                                      }
-                                  </div>
-                              </fieldset>
+                  <div class="govuk-radios govuk-radios--small">
+                      @foreach (var ksbStatus in Model.KsbStatuses)
+                      {
+                          <div class="govuk-radios__item">
+                              <input class="govuk-radios__input" name="currentstatus" type="radio"
+                                     value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
+                                     asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
+                              <label class="govuk-label govuk-radios__label" for="ksbStatus_@ksbStatus">
+                                  @{
+                                      var statusItem = ksbStatus;
+                                      string statusItemDisplay = statusItem.GetEnumDescription();
+                                      <text>@statusItemDisplay</text>
+                                  }
+                              </label>
                           </div>
+                      }
+                  </div>
+              </fieldset>
+          </div>
 
-            <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+            <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000" data-threshold="85">
                 <label class="govuk-label" for="note">
                     Note
                 </label>
-                <div class="govuk-hint">You can add a note about this KSB</div>
+                <div class="govuk-hint">You can add a note about this KSB, for example, explaining how you've applied it to your job.</div>
                 <textarea class="govuk-textarea govuk-js-character-count" rows="8" id="note" name="note"
-                          aria-describedby="KsbProgress_Note-info" value="@Model.KsbProgress.Note">@Model.KsbProgress.Note</textarea>
-                <div id="KsbProgress_Note-info" class="govuk-hint govuk-character-count__message">
+                          aria-describedby="note-info" value="@Model.KsbProgress.Note">@Model.KsbProgress.Note</textarea>
+                <div id="note-info" class="govuk-hint govuk-character-count__message">
                     You can enter up to 1000 characters
                 </div>
             </div>
 
-
-
+             <h2 class="govuk-heading-m">Linked tasks</h2>
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
-                <div class="govuk-form-group">
-                    <fieldset class="govuk-fieldset">
-                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Linked tasks</legend>
+
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
-
-                                    <h2 class="app-card__heading">@task.Title</h2>
-                                    <ul class="app-icon-list app-icon-list--muted">
-                                        <li>
-                                            <span class="app-icon-list__icon">
-                                                <svg>
-                                                    <use xlink:href="/assets/images/icons.svg#calendar"></use>
-                                                </svg>
-                                            </span>
-                                            <span>Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
-                                        </li>
-                                        @if (task.TaskReminders != null && task.TaskReminders.Count() > 0)
-                                        {
-                                            <li>
-                                                <span class="app-icon-list__icon">
-                                                    <svg>
-                                                        <use xlink:href="/assets/images/icons.svg#notifications"></use>
-                                                    </svg>
-                                                </span>
-                                                <span>
-                                                    Reminder set: @task.TaskReminders.Select(r => r.ReminderValue).First()
-
-                                                    @switch (task.TaskReminders.First().ReminderValue)
-                                                    {
-                                                        case 0:
-                                                            <text>minute</text>
-                                                            break;
-                                                        case 1:
-                                                            <text>hour</text>
-                                                            break;
-                                                        case 2:
-                                                            <text>day</text>
-                                                            break;
-                                                        default:
-                                                            <text></text>
-                                                            break;
-                                                    }
-
-                                                    @if (task.TaskReminders.First().ReminderValue > 1)
-                                                    {
-                                                        <text>s</text>
-                                                    } before
-                                                </span>
-                                            </li>
-                                        }
-
+                        <div class="app-card">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">@task.Title</h2>
+                                <p>@task.Note</p>
+                            </div>
+                                    <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
                                         @if (task.TaskLinkedKsbs != null)
                                         {
-                                            <li>
-                                                <span class="app-icon-list__icon">
-                                                    <svg>
-                                                        <use xlink:href="/assets/images/icons.svg#ksbs"></use>
-                                                    </svg>
-                                                </span>
-                                                <span>
+                                            <li class="app-icon-item">
+                                                <svg width="24" height="24" class="app-icon-item__icon">
+                                                    <use href="/assets/icons/sprite.svg#link"></use>
+                                                </svg>
+                                                <span class="app-icon-item__text">
                                                     Linked to @task.TaskLinkedKsbs.Count.ToString()
                                                     @if (task.TaskLinkedKsbs.Count > 1)
                                                     {
@@ -130,47 +88,64 @@
                                                 </span>
                                             </li>
                                         }
+                                        <li class="app-icon-item">
+                                           <svg width="24" height="24" class="app-icon-item__icon">
+                                                <use href="/assets/icons/sprite.svg#calendar"></use>
+                                            </svg>
+                                            <span class="app-icon-item__text">Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
+                                        </li>
+                                        @if (task.TaskReminders != null && task.TaskReminders.Count() > 0)
+                                        {
+                                            <li class="app-icon-item">
+                                               <svg width="24" height="24" class="app-icon-item__icon">
+                                                    <use href="/assets/icons/sprite.svg#notifications"></use>
+                                                </svg>
+                                                <span class="app-icon-item__text">
+                                                    Reminder set:
+                                                    @switch (@task.TaskReminders.Select(r => r.ReminderValue).First())
+                                                    {
+                                                        case 0:
+                                                            <text>0 minutes before</text>
+                                                            break;
+                                                        case 60:
+                                                            <text>1 hour before</text>
+                                                            break;
+                                                        case 1440:
+                                                            <text>1 day before</text>
+                                                            break;
+                                                        default:
+                                                            <span class="app-js-convert-minutes-to-date"
+                                                                  data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)"
+                                                                  data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
+                                                            break;
+                                                    }
+                                                </span>
+                                            </li>
+                                        }
+
+
                                     </ul>
 
-                                        <div class="app-dropdown__menu">
-                                            <ul class="app-dropdown__menu-list">
-                                                <li class="share-link-container">
-                                                    <a href="#" class="app-dropdown__menu-link share-link">
-                                                        <span class="app-dropdown__menu-icon">
-                                                            <svg>
-                                                                <use xlink:href="/assets/images/icons.svg#share"></use>
-                                                            </svg>
-                                                        </span>
-                                                        <span>Share</span>
-                                                    </a>
-                                                    <input type="hidden" class="share-title" value="@task.Title" />
-                                                    <input type="hidden" class="share-note" value="@task.Note" />
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="app-dropdown__menu-link remove-ksb-task" data-progressId="@Model.KsbProgress.KsbProgressId" data-taskId="@task.TaskId">
-                                                        <span class="app-dropdown__menu-icon">
-                                                            <svg>
-                                                                <use xlink:href="/assets/images/icons.svg#unlink"></use>
-                                                            </svg>
-                                                        </span>
-                                                        <span>Remove link to task</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+
+                                </div>
 
                         }
-                    </fieldset>
-                </div>
+
+            } else {
+                <p class="govuk-hint">You have no tasks linked to this KSB.</p>
             }
 
             <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
             <input type="hidden" id="KsbId" name="KsbId" value="@Model.KsbProgress.KsbId" />
             <input type="hidden" id="KsbKey" name="KsbKey" value="@Model.KsbProgress.KsbKey" />
             <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
-            <button type="submit" class="govuk-button" data-module="govuk-button">
-                Save and continue
-            </button>
+
+            <div class="govuk-button-group app-button-group">
+                <a asp-controller="Ksb" asp-action="Index" class="govuk-back-link app-back-link">Back without saving</a>
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
         </form>
     </div>
 </div>

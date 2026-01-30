@@ -15,6 +15,9 @@
   .govuk-template--rebranded .govuk-service-navigation {
     border: none;
   }
+  .govuk-service-navigation__toggle {
+    display: none;
+  }
   .govuk-service-navigation__wrapper {
     position: fixed;
     left: 0;
@@ -25,6 +28,7 @@
     height: 5rem;
     background: #f4f8fb;
     border-top: 1px solid #b1b4b6;
+    z-index: 10;
   }
   .govuk-service-navigation__list {
     display: flex;
