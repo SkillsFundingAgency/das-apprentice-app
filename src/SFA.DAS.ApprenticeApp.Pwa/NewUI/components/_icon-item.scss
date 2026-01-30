@@ -1,0 +1,12 @@
+@use "govuk/settings/index" as settings;
+
+.app-icon-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: settings.$govuk-secondary-text-colour;
+}
+
+.app-icon-item__icon {
+  fill: currentColor;
+}
