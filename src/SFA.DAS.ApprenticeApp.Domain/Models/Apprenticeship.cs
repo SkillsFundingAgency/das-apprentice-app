@@ -17,4 +17,9 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public bool IsStopped => StoppedReceivedOn != null;
         public bool HasBeenConfirmedAtLeastOnce { get; set; }
     }
+
+    public class ApprenticeshipsList
+    {
+        public List<Apprenticeship> Apprenticeships { get; set; }
+    }
 }

@@ -113,7 +113,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             client.Setup(client => client.GetApprenticeDetails(It.IsAny<Guid>())).ReturnsAsync(new ApprenticeDetails() { MyApprenticeship = null });
             var result = await controller.Authenticated() as RedirectToActionResult;
             result.ActionName.Should().Be("CmadError");
-            result.ControllerName.Should().Be("Account");
+            result.ControllerName.Should().Be("Cmad");
         }
         //  
 
@@ -203,8 +203,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             };
             configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
             var result = controller.StubSignedIn() as RedirectToActionResult;
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Terms");
+            result.ActionName.Should().Be("ConfirmDetails");
+            result.ControllerName.Should().Be("Cmad");
         }
 
         [Test, MoqAutoData]

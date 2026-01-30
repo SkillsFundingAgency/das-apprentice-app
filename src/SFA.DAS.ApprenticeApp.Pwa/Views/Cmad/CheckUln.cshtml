@@ -1,0 +1,29 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
+@model CheckUlnViewModel
+@{
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header">
+            <h2>More details needed to find your apprenticeship</h2>
+        </div>
+        <p class="govuk-body">
+            We can match you to your apprenticeship using your unique learner number 
+            (ULN). You should be able to find this on your certificates or exam results.
+            Or, you can ask your training provider.
+        </p>
+
+        <form method="GET" asp-action="ConfirmUln" asp-controller="Cmad">
+            <div class="app-form-group">
+                <label asp-for="Uln" class="app-label">Your ULN</label>
+                <input asp-for="Uln" required="required" class="app-input" />
+            </div>
+
+            <div class="govuk-button-group">
+                <button class="app-button" type="submit">Continue</button>
+            </div>
+        </form>
+    </div>
+</div>
