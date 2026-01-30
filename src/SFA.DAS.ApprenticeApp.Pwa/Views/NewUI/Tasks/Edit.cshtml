@@ -6,7 +6,7 @@
 }
 @section BackLink {
     <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-       class="govuk-back-link">Back without saving</a>
+       class="govuk-back-link app-back-link">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
     View or edit a task
@@ -114,9 +114,13 @@
                         </div>
                     </fieldset>
                 </div>
+                <div class="govuk-button-group app-button-group">
+                    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+                           class="govuk-back-link app-back-link">Back without saving</a>
                <button type="submit" class="govuk-button" data-module="govuk-button">
                     Save and continue
                 </button>
+                </div>
             </form>
         </div>
     </div>

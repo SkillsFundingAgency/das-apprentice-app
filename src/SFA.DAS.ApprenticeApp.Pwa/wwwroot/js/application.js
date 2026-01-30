@@ -65,7 +65,8 @@ function initDataFetch() {
         element.innerHTML = html;
       })
       .catch(function (error) {
-        element.innerHTML = "Failed to load content";
+        element.innerHTML =
+          "<p class='govuk-error-message'>Failed to load content</p>";
         console.error("Data fetch error:", error);
       });
   });

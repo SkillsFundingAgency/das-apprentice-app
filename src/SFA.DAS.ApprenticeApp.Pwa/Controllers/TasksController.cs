@@ -103,7 +103,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
-                    return PartialView("_TasksNotStarted");
+                    return PartialView("_TasksNotStarted", "ToDo");
                 }
 
                 if (Request.Cookies[Constants.TaskFiltersTodoCookieName] != null)
@@ -137,7 +137,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return PartialView("_TasksToDo", vm);
             }
-            return PartialView("_TasksNotStarted");
+            return PartialView("_TasksNotStarted", "ToDo");
         }
 
         [HttpGet]
@@ -159,7 +159,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
-                    return PartialView("_TasksNotStarted");
+                    return PartialView("_TasksNotStarted", "Done");
                 }
 
                 if (Request.Cookies[Constants.TaskFiltersDoneCookieName] != null)
@@ -192,7 +192,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return PartialView("_TasksDone", vm);
             }
-            return PartialView("_TasksNotStarted");
+            return PartialView("_TasksNotStarted", "Done");
         }
 
         [HttpGet]

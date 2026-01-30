@@ -1,6 +1,6 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TaskViewModelBase
 
-<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150">
+<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150" data-threshold="85">
     <label class="govuk-label" asp-for="@Model.Task.Title">
         Task name
     </label>
@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000">
+<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000" data-threshold="85">
     <label class="govuk-label" for="note">
         Note <span class="govuk-!-font-weight-regular">(optional)</span>
     </label>
@@ -26,7 +26,7 @@
 
 <div class="govuk-form-group">
     <label class="govuk-label" for="date">
-        Select date the task @(Model.StatusId == 1 ? "was completed" : "is due")
+        Date
     </label>
     <div class="govuk-hint" id="duedate-hint">For example, 30/04/@DateTime.Now.Year</div>
     <div class="govuk-error-message" id="date-error"></div>
@@ -35,7 +35,7 @@
 
 <div class="govuk-form-group">
     <label class="govuk-label" for="time">
-        @(Model.StatusId == 1 ? "Enter the time the task was completed" : "Select time the task is due")
+        Time
     </label>
     <div class="govuk-error-message" id="time-error"></div>
     @if (Model.StatusId == 0)
@@ -75,7 +75,7 @@
     {
         <div class="govuk-form-group">
             <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Set a reminder</legend>
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Reminder</legend>
                 <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input task-reminder" id="ReminderValueNone" name="ReminderValue"
@@ -109,7 +109,7 @@
                         <input class="govuk-radios__input task-reminder" id="ReminderChoose" name="ReminderValue" type="radio"
                                value="" checked="@isCustomReminder">
                         <label class="govuk-label govuk-radios__label" for="ReminderChoose">
-                            Choose a day and time
+                            Custom
                         </label>
                     </div>
                 </div>
@@ -118,11 +118,10 @@
     }
 }
 
-<div id="reminder-date-time" class="app-modal">
-    <div class="app-modal__content" tabindex="0">
+
         <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend">Choose a day and time for the reminder</legend>
-            <p>How long before the task is due?</p>
+
             <div class="govuk-form-group--flex-row">
                 <label class="govuk-visually-hidden" for="reminder-length">Select date for reminder</label>
                 <input class="govuk-input" id="reminder-length" name="reminder-length" type="number" value="@customDays" />
@@ -138,12 +137,8 @@
                 <input class="govuk-input" id="reminder-time" name="reminder-time" type="time" value="@customTimeFormatted" />
             </div>
         </fieldset>
-        <div class="govuk-button-group govuk-button-group--space-between">
-            <a class="app-link govuk-link--no-underline" id="reminder-cancel" role="button" href="#">Cancel</a>
-            <a class="app-link govuk-link--no-underline" id="reminder-save" role="button" href="#">Confirm</a>
-        </div>
-    </div>
-</div>
+
+
 
 <div class="govuk-form-group">
     <p class="govuk-label">
