@@ -1,3 +1,4 @@
+@using SFA.DAS.ApprenticeApp.Application
 <!doctype html>
 <html lang="en" class="govuk-template govuk-template--rebranded dfe-branding">
   <head>
@@ -103,12 +104,15 @@
     >
       <div class="govuk-width-container">
         <div class="govuk-service-navigation__container">
-          <span class="govuk-service-navigation__service-name">
-            <a href="#" class="govuk-service-navigation__link">
-              Apprenticeship name
-            </a>
-          </span>
-          <partial name="_Navigation" />
+          <p class="govuk-service-navigation__service-name">
+              
+              Your Apprenticeship: @(User.FindFirst(Constants.ApprenticeshipTitleClaimKey)?.Value)
+      
+          </p>
+          @if (ViewBag.HideNavigation != true)
+          {
+              <partial name="_Navigation" />
+          }
         </div>
       </div>
     </section>

@@ -34,7 +34,7 @@
             </a>
         </li>
         <li class="govuk-service-navigation__item @(ViewBag.Section == "Notifications" ? "govuk-service-navigation__item--active" :"")">
-            <a class="govuk-service-navigation__link" href="#">
+            <a class="govuk-service-navigation__link" asp-controller="Notifications" asp-action="Index">
                 <span class="icon">
                     <svg width="24" height="24">
                         <use href="/assets/icons/sprite.svg#notifications@(ViewBag.Section == "Notifications" ? "-filled" :"")"></use>
@@ -50,7 +50,7 @@
                         <use href="/assets/icons/sprite.svg#account@(ViewBag.Section == "Account" ? "-filled" :"")"></use>
                     </svg>
                 </span>
-                <span class="text">You</span>
+                <span class="text">Account</span>
             </a>
         </li>
     </ul>

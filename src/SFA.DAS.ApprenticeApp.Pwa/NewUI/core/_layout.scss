@@ -2,6 +2,10 @@
   display: none;
 }
 
+.govuk-service-navigation__container {
+  flex-direction: column;
+}
+
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-template--rebranded {
     background: #fff;

@@ -110,6 +110,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
                     claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipTitleClaimKey, apprenticeDetails.MyApprenticeship.Title ?? ""));
 
                     // Enable new UI
                     claims?.Identities.First().AddClaim(new Claim(Constants.NewUiEnabledClaimKey, "true"));

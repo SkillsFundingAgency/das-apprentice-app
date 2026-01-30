@@ -17,6 +17,7 @@
         public const string ApprenticeNameClaimKey = "name";
         public const string ApprenticeLastNameClaimKey = "family_name";
         public const string NewUiEnabledClaimKey = "NewUiEnabled";
+        public const string ApprenticeshipTitleClaimKey = "ApprenticeshipTitle";
 
         public const string ContentfulTopLevelPageTypeName = "apprenticeAppCategory";
         public const string ContentfulContentPageTypeName = "apprenticeAppArticle";
