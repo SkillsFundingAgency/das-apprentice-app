@@ -8876,6 +8876,55 @@ a > span.app-icon-item {
   border-color: transparent;
 }
 
+.app-stack {
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #b1b4b6;
+}
+
+.app-stack__list-item {
+  border-bottom: 1px solid #b1b4b6;
+  font-size: 1.2rem;
+}
+
+.app-stack__link {
+  display: block;
+  padding: 1.5rem 2rem 1.5rem 0;
+  text-decoration: none;
+  font-weight: bold;
+  line-height: 1.25;
+  position: relative;
+}
+.app-stack__link:after, .app-stack__link:before {
+  content: "";
+  height: 7px;
+  width: 2px;
+  position: absolute;
+  background: currentColor;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  margin-top: 2px;
+}
+.app-stack__link:before {
+  transform: translateY(-50%) rotate(-45deg);
+  margin-top: -2px;
+}
+
+.app-stack__link:focus,
+.app-stack__link:active {
+  color: #000;
+}
+.app-stack__link:focus:visited,
+.app-stack__link:active:visited {
+  color: #000;
+}
+
+.app-stack__link:visited {
+  color: #1d70b8;
+}
+
 .app-summary-list {
   margin-bottom: 0;
 }

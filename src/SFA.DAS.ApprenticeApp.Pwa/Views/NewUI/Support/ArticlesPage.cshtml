@@ -1,0 +1,73 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportArticlesPageModel
+@{
+    ViewData["Title"] = Model.CategoryPage?.First().Heading;
+    ViewData["Section"] = "Support";
+    Layout = "_Layout";
+}
+
+@section BackLink {
+    <a asp-action="Index" asp-controller="Support" class="govuk-back-link app-back-link">Back</a>
+}
+<h1 class="govuk-heading-xl">@Model.CategoryPage?.First().Heading</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
+            @foreach (var item in Model.Articles.OrderBy(x => x.ArticleOrder))
+            {
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
+                                @item.Heading
+                            </span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-@item.Id" class="govuk-accordion__section-content">
+        
+                        @if (item.Content != null)
+                        {
+                            <div class="govuk-body">@Html.Raw(item.ArticleText)</div>
+                        }
+                        else
+                        {
+                            <div class="govuk-body">No content was found for this article</div>
+                        }
+        
+                        <div class="app-accordion__icons">
+                            @if (Model.ApprenticeArticles != null)
+                            {
+                            
+        
+                               @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true))
+                                {
+                                    <button class="article-button unsave" data-title="@item.Heading"><i class="fa-solid fa-bookmark"></i><span>Remove "@item.Heading" from your saved articles</span></button>
+                                }
+        
+                                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == false))
+                                {
+                                    <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
+                                }
+        
+                                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == null))
+                                {
+                                    <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
+                                }
+        
+                                @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Id).Count() == 0)
+                                {
+                                    <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
+                                }
+                            }
+        
+                            <button class="article-button share-btn"><img src="/assets/images/icons/share.svg" /><span>Share "@item.Heading"</span></button>
+                        </div>
+        
+                        <input class="article-title" type="hidden" value="@item.Heading" />
+                        <input class="entryid" type="hidden" value="@item.Id" />
+        
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
