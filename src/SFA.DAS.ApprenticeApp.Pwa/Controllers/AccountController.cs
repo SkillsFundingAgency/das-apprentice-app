@@ -51,7 +51,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {                    
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
-                    if (!string.IsNullOrEmpty(lastName))
+                    if (!string.IsNullOrEmpty(lastName) || apprenticeDetails.Apprentice == null)
                     {                                                
                         // Check terms
                         if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");

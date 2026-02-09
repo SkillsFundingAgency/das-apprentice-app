@@ -2,8 +2,8 @@
 {
     public class ApprenticeDetails
     {
-        public Apprentice? Apprentice { get; set; }
-        public ApprenticeshipsList Apprenticeship { get; set; }
-        public MyApprenticeship? MyApprenticeship { get; set; }
+        public Apprentice Apprentice { get; set; } = null!;
+        public ApprenticeshipsList Apprenticeship { get; set; } = null!;
+        public MyApprenticeship MyApprenticeship { get; set; } = null!;
     }
 }

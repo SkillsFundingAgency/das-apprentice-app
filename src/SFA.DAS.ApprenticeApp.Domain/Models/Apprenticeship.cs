@@ -20,6 +20,6 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
 
     public class ApprenticeshipsList
     {
-        public List<Apprenticeship> Apprenticeships { get; set; }
+        public List<Apprenticeship>? Apprenticeships { get; set; }
     }
 }
