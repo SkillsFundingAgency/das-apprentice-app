@@ -31,7 +31,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             try
             {
                 ApprenticeDetails apprenticeDetails;
-                var apprenticeAccount = await _client.GetApprenticeAccountByName(model.FirstName, model.LastName, model.DateOfBirth.Date.Date);
+                var apprenticeAccount = await _client.GetApprenticeAccountByName(model.FirstName, model.LastName, model.DateOfBirth.Date.Value);
 
                 // No Account matched                
                 if (!apprenticeAccount.Any()) return RedirectToAction("AccountNotFound", "Account");
