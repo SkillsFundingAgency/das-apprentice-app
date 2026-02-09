@@ -46,9 +46,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     apprenticeDetails = await HandleNonExitingApprenticeAccount((Guid)model.ApprenticeId, apprenticeAccount.SingleOrDefault());
                 }
 
-                if (apprenticeDetails?.MyApprenticeship != null
-              || apprenticeDetails.MyApprenticeship.TrainingProviderName == model.TrainingProvider
-              && apprenticeDetails.MyApprenticeship.Title == model.ApprenticeCourse)
+                if (apprenticeDetails?.MyApprenticeship != null)
                 {
                     var viewModel = await ConstructViewModel(apprenticeDetails);
                     ModelState.Clear();
@@ -61,7 +59,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("CmadError", "Account");
+                return RedirectToAction("AccountNotFound", "Account");
             }
 
         }
