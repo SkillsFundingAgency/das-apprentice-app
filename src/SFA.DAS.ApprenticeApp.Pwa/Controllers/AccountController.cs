@@ -63,7 +63,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
 
                 // Check if cmad completed                                  
-                var cmadComplete = apprenticeDetails.Apprenticeship.Apprenticeships.FirstOrDefault();
+                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+                if (cmadComplete == null)
+                {
+                    return RedirectToAction("AccountNotFound", "Account");
+                }
+
                 if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
 
                 // Send to CMAD
