@@ -28,31 +28,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return View("ConfirmDetails", model);
             }
 
+            if (model.DateOfBirth?.Date is not DateTime dateOfBirth)
+            {
+                ModelState.AddModelError(nameof(model.DateOfBirth), "Enter a valid date of birth");
+                return View("ConfirmDetails", model);
+            }
+
             try
             {
                 ApprenticeDetails apprenticeDetails;
                 var apprenticeAccount = await _client.GetApprenticeAccountByName(model.FirstName, model.LastName, model.DateOfBirth.Date.Value);
 
                 // No Account matched                
-                if (!apprenticeAccount.Any()) return RedirectToAction("AccountNotFound", "Account");
+                if (apprenticeAccount.Count == 0) return RedirectToAction("AccountNotFound", "Account");
 
                 // Further filter if more than one account is returned               
                 if (apprenticeAccount.Count >= 2) return View("CheckUln");
 
                 var apprentice = apprenticeAccount.SingleOrDefault();
 
-                if (apprentice == null)
+                if (apprentice == null || model.ApprenticeId is not Guid apprenticeId)
                 {
                     return RedirectToAction("AccountNotFound", "Account");
                 }
 
                 if (model.ApprenticeId == Guid.Empty)
                 {
-                    apprenticeDetails = await HandleExistingApprenticeAccount(apprenticeAccount.SingleOrDefault());
+                    apprenticeDetails = await HandleExistingApprenticeAccount(apprentice);
                 }
                 else
                 {
-                    apprenticeDetails = await HandleNonExitingApprenticeAccount((Guid)model.ApprenticeId, apprenticeAccount.SingleOrDefault());
+                    apprenticeDetails = await HandleNonExitingApprenticeAccount((Guid)model.ApprenticeId, apprentice);
                 }
 
                 if (apprenticeDetails?.MyApprenticeship != null)
@@ -114,7 +120,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, $"Error confirming apprenticeship details for apprenticeId: {apprenticeId}");
+                _logger.LogInformation(ex, "Error confirming apprenticeship details for apprenticeId: {ApprenticeId}", apprenticeId);
                 return RedirectToAction("CmadError", "Account");
             }
         }
@@ -142,7 +148,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             if (apprenticeDetails == null)
             {
-                _logger.LogInformation($"Apprentice Details not found for {apprenticeId}");
+                _logger.LogInformation("Apprentice Details not found for {ApprenticeId}", apprenticeId);
                 return new ApprenticeDetails();
             }
 
@@ -157,14 +163,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         private static ConfirmApprenticeshipDetailsViewModel ConstructViewModel(ApprenticeDetails apprenticeDetails)
-        {                        
+        {
+            if (apprenticeDetails == null || apprenticeDetails.MyApprenticeship == null) return new ConfirmApprenticeshipDetailsViewModel();
+
             var model = new ConfirmApprenticeshipDetailsViewModel()
             {
                 ApprenticeId = apprenticeDetails.Apprentice.ApprenticeId,
                 ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
                 RevisionId = 20034,
                 FullName = $"{apprenticeDetails.Apprentice.FirstName} {apprenticeDetails.Apprentice.LastName}",
-                Employer = apprenticeDetails.Apprenticeship.Apprenticeships.SingleOrDefault()?.EmployerName,
+                Employer = apprenticeDetails.Apprenticeship?.Apprenticeships?.SingleOrDefault()?.EmployerName,
                 Provider = apprenticeDetails.MyApprenticeship.TrainingProviderName,
                 Apprenticeship = apprenticeDetails.MyApprenticeship.Title,
                 Level = apprenticeDetails.MyApprenticeship.Level.ToString(),

@@ -20,7 +20,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
 
         public bool IsValid => Validate() == null;
 
-        private Exception Validate()
+        private ArgumentException? Validate()
         {
             // safe formatting for nullable ints
             var dayFmt = Day.HasValue ? Day.Value.ToString("00") : "??";
