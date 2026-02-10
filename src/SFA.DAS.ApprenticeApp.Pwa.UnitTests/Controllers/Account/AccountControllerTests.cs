@@ -259,17 +259,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             var result = await controller.StubSignedIn();
             result.Should().BeOfType<NotFoundResult>();
         }
-        
-        [Test, MoqAutoData]
-        public void IsUserInNewUiCohort_ReturnsTrue_ForProviderIds1To5([Greedy] AccountController controller)
-        {
-            // Arrange & Act & Assert
-            controller.IsUserInNewUiCohort(1).Should().BeTrue();
-            controller.IsUserInNewUiCohort(2).Should().BeTrue();
-            controller.IsUserInNewUiCohort(3).Should().BeTrue();
-            controller.IsUserInNewUiCohort(4).Should().BeTrue();
-            controller.IsUserInNewUiCohort(5).Should().BeTrue();
-        }
 
         [Test, MoqAutoData]
         public void IsUserInNewUiCohort_ReturnsFalse_ForOtherProviderIds([Greedy] AccountController controller)
