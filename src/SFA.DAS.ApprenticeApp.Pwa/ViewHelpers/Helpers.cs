@@ -29,10 +29,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
             }
             return null;
         }
-
+        
         public static string StripHTML(string input)
         {
             return Regex.Replace(input, "<.*?>", String.Empty);
         }
     }
+    
+    public static class SessionExtensions
+    {
+        public static bool IsSpecialUser(this ISession session) =>
+            session?.IsAvailable == true && session.GetString("UserType") == "SpecialUser";
+    }  
 }

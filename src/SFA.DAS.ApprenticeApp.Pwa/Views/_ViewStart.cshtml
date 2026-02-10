@@ -1,3 +1,9 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using Microsoft.AspNetCore.Http
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    Layout = HttpContextAccessor.HttpContext?.Session?.IsSpecialUser() == true 
+        ? "_LayoutNew" 
+        : "_Layout";
 }

@@ -53,6 +53,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     if (apprenticeDetails?.MyApprenticeship != null)
                     {
+                        // 1473
+                        SetUserLayoutCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
+                        
                         return RedirectToAction("Index", "Terms");
                     }
                     else
@@ -165,7 +168,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         [Authorize]
         [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
-        public IActionResult StubSignedIn()
+        public async Task<IActionResult> StubSignedIn()
         {
             if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
             {
@@ -177,6 +180,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value.ToLower(),
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
+            
+            // 1473
+            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            SetUserLayoutCohort(1);            
 
             return RedirectToAction("Index", "Terms");
         }
@@ -204,5 +211,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
+        
+        private void SetUserLayoutCohort(long? providerId)
+        {
+            bool isUserInNewUiCohort = IsUserInNewUiCohort(providerId.Value);
+            string userType = isUserInNewUiCohort ? "SpecialUser" : "RegularUser";
+            string logMessage = isUserInNewUiCohort 
+                ? $"User provider Id: {providerId} identified as SpecialUser (New UI Cohort)"
+                : $"User provider Id: {providerId} identified as RegularUser";
+    
+            HttpContext.Session.SetString("UserType", userType);
+            _logger.LogInformation(logMessage);
+        }
+
+        public bool IsUserInNewUiCohort(long providerId) => 
+            new long[] { 1, 10001919 }.Contains(providerId);        
     }
 }
