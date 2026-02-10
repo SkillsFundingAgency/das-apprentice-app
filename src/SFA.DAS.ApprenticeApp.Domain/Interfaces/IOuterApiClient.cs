@@ -12,7 +12,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         Task<Apprentice> GetApprentice([Path] Guid id);
 
         [Get("apprentices")]
-        Task<List<Apprentice>> GetApprenticeAccountByName([Query] string firstName, [Query] string lastName, [Query] DateTime dateOfBirth);
+        Task<List<Apprentice>> GetApprenticeAccountByName([Query] string firstName, [Query] string lastName, [Query] string dateOfBirth);
 
         [Patch("/apprentices/{id}")]
         Task UpdateApprentice([Path] Guid id, [Body] JsonPatchDocument<Apprentice> patch);

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
-using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
-using System.Text.Json;
+using System.Globalization;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -37,7 +36,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             try
             {
                 ApprenticeDetails apprenticeDetails;
-                var apprenticeAccount = await _client.GetApprenticeAccountByName(model.FirstName, model.LastName, model.DateOfBirth.Date.Value);
+                var dobIso = model.DateOfBirth.Date.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                var apprenticeAccount = await _client.GetApprenticeAccountByName(model.FirstName, model.LastName, dobIso);
 
                 // No Account matched                
                 if (apprenticeAccount.Count == 0) return RedirectToAction("AccountNotFound", "Account");
@@ -74,7 +74,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, "Error finding apprentice");
+                _logger.LogInformation(ex, "Error finding apprentice {ApprenticeId}", model.ApprenticeId);
                 return RedirectToAction("AccountNotFound", "Account");
             }
 
@@ -166,19 +166,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             if (apprenticeDetails == null || apprenticeDetails.MyApprenticeship == null) return new ConfirmApprenticeshipDetailsViewModel();
 
+            var apprenticeship = apprenticeDetails.Apprenticeship?.Apprenticeships?.SingleOrDefault();
+
             var model = new ConfirmApprenticeshipDetailsViewModel()
             {
                 ApprenticeId = apprenticeDetails.Apprentice.ApprenticeId,
                 ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
-                RevisionId = 20034,
+                RevisionId = apprenticeship.RevisionId,
                 FullName = $"{apprenticeDetails.Apprentice.FirstName} {apprenticeDetails.Apprentice.LastName}",
-                Employer = apprenticeDetails.Apprenticeship?.Apprenticeships?.SingleOrDefault()?.EmployerName,
+                Employer = apprenticeship.EmployerName,
                 Provider = apprenticeDetails.MyApprenticeship.TrainingProviderName,
                 Apprenticeship = apprenticeDetails.MyApprenticeship.Title,
                 Level = apprenticeDetails.MyApprenticeship.Level.ToString(),
-                Type = "Foundation", // GetDescription method to get description of enum
-                StartDate = apprenticeDetails.MyApprenticeship.StartDate.ToString(),
-                EndDate = apprenticeDetails.MyApprenticeship.EndDate.ToString(),
+                Type = apprenticeDetails.MyApprenticeship?.ApprenticeshipType?.GetEnumDescription(),
+                StartDate = apprenticeDetails.MyApprenticeship?.StartDate.ToString(),
+                EndDate = apprenticeDetails.MyApprenticeship?.EndDate.ToString(),
             };
 
             return model;

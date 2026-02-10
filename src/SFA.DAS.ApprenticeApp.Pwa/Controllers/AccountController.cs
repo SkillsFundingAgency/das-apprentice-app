@@ -187,6 +187,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
+        public IActionResult AccountNotFound()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Error()
         {
             return View();

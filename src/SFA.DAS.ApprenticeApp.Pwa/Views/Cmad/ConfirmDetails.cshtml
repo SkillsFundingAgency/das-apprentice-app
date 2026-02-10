@@ -18,11 +18,11 @@
             <input asp-for="ApprenticeId" type="hidden" />
             <div class="app-form-group">
                 <label asp-for="FirstName" class="app-label">First Name</label>
-                <input asp-for="FirstName" required="required" class="app-input" />
+                <input asp-for="FirstName" required="required" class="govuk-input" />
             </div>
             <div class="app-form-group">
                 <label asp-for="LastName" class="app-label">Last Name</label>
-                <input asp-for="LastName" required="required" class="app-input" />
+                <input asp-for="LastName" required="required" class="govuk-input" />
             </div>
             <div id="DateOfBirth" class="govuk-form-group">
                 <div validation-row-status property-name="DateOfBirth">
@@ -53,26 +53,9 @@
                         </div>
                     </fieldset>
                 </div>
-            </div>
-            @* <div class="app-form-group">
-                <input id="Title" name="ApprenticeCourse" type="hidden" />                
-                <label asp-for="ApprenticeCourse" class="app-label">Your apprenticeship course</label>
-
-                <input asp-for="ApprenticeCourse" type="text" id="courseSearchTerm" class="app-input" data-module="autoComplete" />
-                <label for="courseSearchTerm" class="govuk-visually-hidden">Search Result:</label>
-                <span asp-validation-for="ApprenticeCourse" class="text-danger"></span>
-            </div>
-            <div class="app-form-group">
-                <input id="Name" name="TrainingProvider" type="hidden" />                
-                <label asp-for="TrainingProvider" class="app-label">Your training provider</label>
-                
-                <input asp-for="TrainingProvider" type="text" id="SearchTerm" class="app-input" data-module="autoComplete" />
-                <label for="SearchTerm" class="govuk-visually-hidden">Search Result:</label>
-                <span asp-validation-for="TrainingProvider" class="text-danger"></span>
-            </div> *@
-
+            </div>        
             <div class="govuk-button-group">
-                <button class="app-button" type="submit">Continue</button>
+                <button class="govuk-button" type="submit">Continue</button>
             </div>
         </form>
     </div>
