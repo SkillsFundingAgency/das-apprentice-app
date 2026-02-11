@@ -1,0 +1,40 @@
+@use "govuk/settings/index" as settings;
+@use "govuk/helpers/index" as helpers;
+
+.app-navigation__link-count {
+  background: settings.$govuk-error-colour;
+  color: #fff;
+  min-width: 1.4rem;
+  height: .9rem;
+  display: inline-block;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  text-align: center;
+  line-height: 1rem;
+  padding: 0.2rem 0;
+  position: absolute;
+  top: 0.25rem;
+  left: 55%;
+  border: 1px solid #f4f8fb;
+
+  &:empty {
+    display: none;
+  }
+  &:focus & {
+    background: currentColor;
+    color: #1a65a6;
+  }
+
+  @include helpers.govuk-media-query(tablet) {
+    position: relative;
+    left: auto;
+    top: -3px;
+    height: auto;
+  }
+}
+
+.govuk-service-navigation__link {
+  &:focus .app-navigation__link-count {
+    background: #000;
+  }
+}

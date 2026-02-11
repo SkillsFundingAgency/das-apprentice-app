@@ -8866,6 +8866,42 @@ a.app-card:hover .app-card__heading, a.app-card:hover p, a.app-card:hover ul, a.
   color: inherit;
 }
 
+.app-navigation__link-count {
+  background: #d4351c;
+  color: #fff;
+  min-width: 1.4rem;
+  height: 0.9rem;
+  display: inline-block;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  text-align: center;
+  line-height: 1rem;
+  padding: 0.2rem 0;
+  position: absolute;
+  top: 0.25rem;
+  left: 55%;
+  border: 1px solid #f4f8fb;
+}
+.app-navigation__link-count:empty {
+  display: none;
+}
+.app-navigation__link-count:focus .app-navigation__link-count {
+  background: currentColor;
+  color: #1a65a6;
+}
+@media (min-width: 40.0625em) {
+  .app-navigation__link-count {
+    position: relative;
+    left: auto;
+    top: -3px;
+    height: auto;
+  }
+}
+
+.govuk-service-navigation__link:focus .app-navigation__link-count {
+  background: #000;
+}
+
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-footer {
     margin-bottom: 5.5rem;

@@ -41,6 +41,7 @@
                     </svg>
                 </span>
                 <span class="text">Notifications</span>
+                @await Component.InvokeAsync("NotificationCounter")
             </a>
         </li>
         <li class="govuk-service-navigation__item @(ViewBag.Section == "Account" ? "govuk-service-navigation__item--active" :"")">
