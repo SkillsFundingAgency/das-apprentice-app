@@ -3,7 +3,5 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    Layout = HttpContextAccessor.HttpContext?.Session?.IsSpecialUser() == true 
-        ? "_LayoutNew" 
-        : "_Layout";
+    Layout = "_Layout";
 }
