@@ -54,7 +54,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     if (apprenticeDetails?.MyApprenticeship != null)
                     {
                         // 1473
-                        SetUserLayoutCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
+                        SetUiforCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
                         
                         return RedirectToAction("Index", "Terms");
                     }
@@ -182,8 +182,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             };
             
             // 1473
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            SetUserLayoutCohort(1);            
+            SetUiforCohort(10001919);            
 
             return RedirectToAction("Index", "Terms");
         }
@@ -212,7 +211,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return View();
         }
         
-        private void SetUserLayoutCohort(long? providerId)
+        private void SetUiforCohort(long? providerId)
         {
             bool isUserInNewUiCohort = IsUserInNewUiCohort(providerId.Value);
             string userType = isUserInNewUiCohort ? "SpecialUser" : "RegularUser";
@@ -225,6 +224,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         public bool IsUserInNewUiCohort(long providerId) => 
-            new long[] { 1, 10001919 }.Contains(providerId);        
+            new long[] { 10001919 }.Contains(providerId);        
     }
 }
