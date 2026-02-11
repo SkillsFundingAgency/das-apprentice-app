@@ -22,11 +22,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var cookie = Request.Cookies[Constants.CookieTrackCookieName];
-        if (cookie == null)
-        {
-            return RedirectToAction("CookieStart", "Home");
-        }
+        //var cookie = Request.Cookies[Constants.CookieTrackCookieName];
+        //if (cookie == null)
+        //{
+        //    return RedirectToAction("CookieStart", "Home");
+        //}
         
         if (HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
         {
