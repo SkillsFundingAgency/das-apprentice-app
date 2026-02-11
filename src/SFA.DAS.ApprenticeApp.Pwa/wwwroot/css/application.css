@@ -5455,7 +5455,8 @@ p + .govuk-heading-s,
   background-color: #fcd6c3;
 }
 
-.govuk-tag--red, .app-tag--status-readyforreview {
+.govuk-tag--red, .app-tag--category-deadline,
+.app-tag--status-readyforreview {
   color: #2a0b06;
   background-color: #f4cdc6;
 }
@@ -5465,7 +5466,8 @@ p + .govuk-heading-s,
   background-color: #f9e1ec;
 }
 
-.govuk-tag--green, .app-tag--status-completed {
+.govuk-tag--green, .app-tag--category-assignment,
+.app-tag--status-completed {
   color: #005a30;
   background-color: #cce2d8;
 }
@@ -8837,6 +8839,7 @@ p + .govuk-heading-s,
 
 .app-card__heading {
   margin-top: 0;
+  margin-bottom: 1rem;
   font-family: "Inter", sans-serif;
   color: #1d70b8;
 }
@@ -9035,8 +9038,9 @@ a > span.app-icon-item {
 }
 
 .app-tag {
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   display: inline-block;
+  max-width: max-content;
 }
 
 .app-tag-group {
