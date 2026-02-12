@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Razor;
-using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.ViewLocation;
 
@@ -12,27 +12,30 @@ public class NewUiViewLocationExpander : IViewLocationExpander
     public void PopulateValues(ViewLocationExpanderContext context)
     {
         var httpContext = context.ActionContext.HttpContext;
-        var isNewUi = Claims.GetClaim(httpContext, Constants.NewUiEnabledClaimKey);
-        context.Values[IsNewUiKey] = isNewUi;
+        var isNewUi = httpContext.Session?.IsSpecialUser() ?? false;
+        
+        // Store as string for the key/value dictionary
+        context.Values[IsNewUiKey] = isNewUi.ToString();
     }
 
     public IEnumerable<string> ExpandViewLocations(
         ViewLocationExpanderContext context,
         IEnumerable<string> viewLocations)
     {
-        if (context.Values.TryGetValue(IsNewUiKey, out var isNewUi)
-            && string.Equals(isNewUi, "true", StringComparison.OrdinalIgnoreCase))
+        if (context.Values.TryGetValue(IsNewUiKey, out var isNewUiValue) 
+            && bool.TryParse(isNewUiValue, out var isNewUi) 
+            && isNewUi)
         {
+            // For new UI users, first try the NewUI folder, then fallback to original
             foreach (var location in viewLocations)
             {
-                // NewUI variant first
                 yield return location.Replace("/Views/", $"/Views/{NewUiFolder}/");
-                // Original as fallback
                 yield return location;
             }
         }
         else
         {
+            // For regular users, only original locations
             foreach (var location in viewLocations)
             {
                 yield return location;
