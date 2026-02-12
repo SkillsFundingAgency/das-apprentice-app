@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form">
+            <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
                 <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
                 <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
                 <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
@@ -118,7 +118,7 @@
                 <div class="govuk-button-group app-button-group">
                     <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
                            class="govuk-back-link app-back-link">Back without saving</a>
-               <button type="submit" class="govuk-button" data-module="govuk-button">
+               <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
                     Save and continue
                 </button>
                 </div>
@@ -154,3 +154,5 @@
         </ul>
     </div>
 </div>
+
+<script src="~/js/task-validation.js" asp-append-version="true"></script>

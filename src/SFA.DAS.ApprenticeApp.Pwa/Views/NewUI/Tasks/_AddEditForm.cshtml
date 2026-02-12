@@ -24,13 +24,44 @@
     </div>
 </div>
 
-<div class="govuk-form-group">
-    <label class="govuk-label" for="date">
-        Date
-    </label>
-    <div class="govuk-hint" id="duedate-hint">For example, 30/04/@DateTime.Now.Year</div>
-    <div class="govuk-error-message" id="date-error"></div>
-    <input class="govuk-input" id="date" name="duedate" type="date" asp-for="@Model.Task.DueDate" aria-describedby="duedate-hint">
+@{
+    var dueDateValue = Model.Task.DueDate.GetValueOrDefault();
+    var hasDate = Model.Task.DueDate != null;
+}
+<div class="govuk-form-group" id="date-group">
+    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-error">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+            Date
+        </legend>
+        <div class="govuk-error-message" id="date-error"></div>
+        <div class="govuk-date-input" id="duedate">
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-day">Day</label>
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-day"
+                           name="duedate-day" type="text" inputmode="numeric"
+                           value="@(hasDate ? dueDateValue.Day.ToString() : "")">
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-month">Month</label>
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-month"
+                           name="duedate-month" type="text" inputmode="numeric"
+                           value="@(hasDate ? dueDateValue.Month.ToString() : "")">
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-year">Year</label>
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="duedate-year"
+                           name="duedate-year" type="text" inputmode="numeric"
+                           value="@(hasDate ? dueDateValue.Year.ToString() : "")">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <input type="hidden" id="duedate-hidden" name="duedate" value="@(hasDate ? dueDateValue.ToString("yyyy-MM-dd") : "")">
 </div>
 
 <div class="govuk-form-group">
@@ -40,12 +71,12 @@
     <div class="govuk-error-message" id="time-error"></div>
     @if (Model.StatusId == 0)
     {
-        <input class="govuk-input" id="time" name="time" type="time"
+        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time"
                value="@(Model.Task.DueDate == null ? "" : Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm"))">
     }
     else
     {
-        <input class="govuk-input" id="time" name="time" type="time"
+        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time"
                value="@(Model.Task.CompletionDateTime == null ? "" : Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm"))">
     }
 </div>
@@ -107,36 +138,40 @@
                     </div>
                     <div class="govuk-radios__item">
                         <input class="govuk-radios__input task-reminder" id="ReminderChoose" name="ReminderValue" type="radio"
-                               value="" checked="@isCustomReminder">
+                               value="" checked="@isCustomReminder" data-aria-controls="custom-reminder">
                         <label class="govuk-label govuk-radios__label" for="ReminderChoose">
                             Custom
                         </label>
                     </div>
-                </div>
+                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="custom-reminder">
+                        
+                        
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend">Choose a day and time for the reminder</legend>
+                            <div class="govuk-form-group--flex-row">
+                                <label class="govuk-visually-hidden" for="reminder-length">Select date for reminder</label>
+                                <input class="govuk-input" id="reminder-length" name="reminder-length" type="number" value="@customDays" />
+                                <label class="govuk-visually-hidden" for="reminder-unit">Day or week</label>
+                                <select class="app-select" id="reminder-unit" name="reminder-unit">
+                                    <option value="day">Day(s)</option>
+                                    <option value="week">Week(s)</option>
+                                </select>
+                                <span class="govuk-body govuk-!-margin-bottom-0">before</span>
+                            </div>
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-!-font-weight-regular" for="reminder-time">Select a time <span class="govuk-visually-hidden">for the reminder</span></label>
+                                <input class="govuk-input" id="reminder-time" name="reminder-time" type="time" value="@customTimeFormatted" />
+                            </div>
+                        </fieldset>
+                        
+                    </div>
             </fieldset>
         </div>
     }
 }
 
 
-        <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend">Choose a day and time for the reminder</legend>
 
-            <div class="govuk-form-group--flex-row">
-                <label class="govuk-visually-hidden" for="reminder-length">Select date for reminder</label>
-                <input class="govuk-input" id="reminder-length" name="reminder-length" type="number" value="@customDays" />
-                <label class="govuk-visually-hidden" for="reminder-unit">Day or week</label>
-                <select class="app-select" id="reminder-unit" name="reminder-unit">
-                    <option value="day">Day(s)</option>
-                    <option value="week">Week(s)</option>
-                </select>
-                <span class="govuk-body govuk-!-margin-bottom-0">before</span>
-            </div>
-            <div class="govuk-form-group">
-                <label class="govuk-label govuk-!-font-weight-regular" for="reminder-time">Select a time <span class="govuk-visually-hidden">for the reminder</span></label>
-                <input class="govuk-input" id="reminder-time" name="reminder-time" type="time" value="@customTimeFormatted" />
-            </div>
-        </fieldset>
 
 
 

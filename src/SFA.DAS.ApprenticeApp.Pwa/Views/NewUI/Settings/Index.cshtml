@@ -1,0 +1,121 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
+@{
+    ViewData["Title"] = "Settings";
+    ViewData["Section"] = "Account";
+}
+
+@section BackLink {
+    <a asp-action="YourAccount" asp-controller="Account" class="govuk-back-link app-back-link">Back</a>
+}
+
+<h1 class="govuk-heading-xl">Settings</h1>
+
+
+<div class="app-card">
+    <div class="app-settings-wrap settings-grid-container">
+        <div class="app-settings-content-wrap" style="display:none" id="notificationsOn">
+            <h2 class="govuk-heading-m">
+                Push notifications
+            </h2>
+            <p class="govuk-body">
+                You have turned on push notifications. This means you will receive notifications directly to your
+                device, including:
+            </p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>any reminders you have set for activities in your tracker</li>
+                <li>useful guidance about your apprenticeship</li>
+            </ul>
+            <p class="govuk-body">
+                To turn off push notifications, use the toggle and block notifications when prompted.
+            </p>
+        </div>
+        <div class="app-settings-content-wrap" style="display:block" id="notificationsOff">
+            <h2 class="govuk-heading-m">
+                Push notifications
+            </h2>
+            <p class="govuk-body">
+                You have turned off push notifications. This means you will only see notifications when you are
+                using the app, and you will not receive them directly to your device. This includes:
+            </p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>any reminders you have set for activities in your tracker</li>
+                <li>useful guidance about your apprenticeship</li>
+            </ul>
+            <p class="govuk-body">
+                To turn on push notifications, use the toggle and allow notifications when prompted.
+            </p>
+        </div>
+        <div class="app-settings-switch-wrap">
+            <label class="toggle">
+                <span class="govuk-visually-hidden">Allow push notifications</span>
+                <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()"
+                       onkeydown="toggleNotifications()" onkeypress="toggleNotifications()"  tabindex="0">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="app-card">
+    <div class="app-settings-wrap settings-grid-container">
+        <div class="app-settings-content-wrap" style="display:none" id="trackCookiesContentOn">
+            <h2 class="govuk-heading-m">
+                Tracking analytics
+            </h2>
+            <p class="govuk-body">
+                You have turned on additional cookies so we can remember your settings, understand how people use the service and make improvements.
+            </p>
+        </div>
+        <div class="app-settings-content-wrap" id="trackCookiesContentOff">
+            <h2 class="govuk-heading-m">
+                Tracking analytics
+            </h2>
+            <p class="govuk-body">
+                You have turned off additional cookies.
+            </p>
+            <p class="govuk-body">
+                We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.
+            </p>
+        </div>
+        <div class="app-settings-switch-wrap">
+            <label class="toggle">
+                <span class="govuk-visually-hidden">Allow tracking analytics</span>
+                <input type="checkbox" id="trackCookiesSwitch" tabindex="0">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+
+<div class="app-card">
+    <div class="settings-grid-container">
+        <div class="app-settings-content-wrap">
+            <h2 class="govuk-heading-m">
+                <i class="fas fa-text-height"></i> Text size
+            </h2>          
+        </div>
+      
+        <div class="text-size-controls">
+            <button id="textSizeDecrease" class="text-size-btn" aria-label="Decrease text size">
+                <span class="fas fa-minus changer">-</span>
+            </button>
+            <div id="textSizeDisplay" class="text-size-display">100%</div>
+            <button id="textSizeIncrease" class="text-size-btn" aria-label="Increase text size">
+                <span class="fas fa-plus changer">+</span>
+            </button>
+        </div>
+        
+        <div class="text-size-controls">
+                <span class="" style="margin: -54px 82px 25px 0px; text-align:center"> Make text smaller</span>
+                <span class="" style="margin: -54px 0px 25px 0px; text-align:center">Make text larger</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
