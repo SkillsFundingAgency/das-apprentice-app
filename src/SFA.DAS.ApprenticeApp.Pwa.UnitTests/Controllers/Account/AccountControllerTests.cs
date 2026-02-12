@@ -13,9 +13,11 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Testing.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -115,14 +117,62 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ActionName.Should().Be("CmadError");
             result.ControllerName.Should().Be("Account");
         }
-        //  
-
 
         [Test, MoqAutoData]
-        public void Loading_YourAccount_Page([Greedy] AccountController controller)
+        public async Task Loading_YourAccount_Page(
+        [Frozen] Mock<IApprenticeContext> apprenticeContext,
+        [Frozen] Mock<IOuterApiClient> client,
+        [Frozen] Mock<IRequestCookieCollection> cookies,
+        [Greedy] AccountController controller)
         {
-            var result = controller.YourAccount() as ActionResult;
+            var apprenticeId = Guid.NewGuid().ToString();
+
+            apprenticeContext.Setup(x => x.ApprenticeId).Returns(apprenticeId);
+
+            var httpContext = new DefaultHttpContext();
+
+            cookies.Setup(c => c[Constants.KsbFiltersCookieName]).Returns("filter=NOT-STARTED");
+            httpContext.Request.Cookies = cookies.Object;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var ksbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb { Type = KsbType.Knowledge },
+                new ApprenticeKsb { Type = KsbType.Skill },
+                new ApprenticeKsb { Type = KsbType.Behaviour },
+                new ApprenticeKsb { Type = KsbType.Skill }
+            };
+
+            object value = client.Setup(x => x.GetApprenticeshipKsbs(It.IsAny<Guid>()))
+                  .ReturnsAsync(ksbs);
+
+            client.Setup(x => x.GetApprenticeDetails(It.IsAny<Guid>()))
+                  .ReturnsAsync(new ApprenticeDetails
+                  {
+                      MyApprenticeship = new MyApprenticeship()
+                  });
+
+            var result = await controller.YourAccount() as ViewResult;
+
             result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<ApprenticeAccountModel>();
+
+            var model = result!.Model as ApprenticeAccountModel;
+            var ksbsModel = model!.apprenticeKsbsPageModel;
+
+            using (new AssertionScope())
+            {
+                ksbsModel.Should().NotBeNull();
+                ksbsModel!.Ksbs.Should().HaveCount(4);
+                ksbsModel.KnowledgeCount.Should().Be(1);
+                ksbsModel.SkillCount.Should().Be(2);
+                ksbsModel.BehaviourCount.Should().Be(1);
+                ksbsModel.MyApprenticeship.Should().NotBeNull();
+            }
         }
 
         [Test, MoqAutoData]

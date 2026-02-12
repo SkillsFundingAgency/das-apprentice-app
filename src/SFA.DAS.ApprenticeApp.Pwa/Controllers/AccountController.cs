@@ -5,11 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -17,7 +20,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
-        private readonly IConfiguration _config;        
+        private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
         private readonly IApprenticeContext _apprenticeContext;
@@ -212,9 +215,43 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
-        public IActionResult YourAccount()
+        public async Task<IActionResult> YourAccount()
         {
-            return View();
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            var apprenticeAccountModel = new ApprenticeAccountModel();
+            var apprenticeKsbsPageModel = new ApprenticeKsbsPageModel();
+
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+
+                if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
+                {
+                    var filterKsbs = Filter.FilterKsbResults(
+                        apprenticeKsbResult,
+                        Request.Cookies[Constants.KsbFiltersCookieName]);
+
+                    if (filterKsbs.HasFilterRun)
+                    {
+                        apprenticeKsbResult = filterKsbs.FilteredKsbs;
+                    }
+                }
+
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                apprenticeKsbsPageModel.Ksbs = apprenticeKsbResult;
+                apprenticeKsbsPageModel.KnowledgeCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Knowledge);
+                apprenticeKsbsPageModel.SkillCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Skill);
+                apprenticeKsbsPageModel.BehaviourCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Behaviour);
+                apprenticeKsbsPageModel.SearchTerm = null;
+                apprenticeKsbsPageModel.MyApprenticeship = apprenticeDetails?.MyApprenticeship;
+            }
+
+            apprenticeAccountModel.apprenticeKsbsPageModel = apprenticeKsbsPageModel;
+
+            return View(apprenticeAccountModel);
         }
         
         private void SetUiforCohort(long? providerId)
@@ -232,4 +269,5 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public bool IsUserInNewUiCohort(long providerId) => 
             new long[] { 10001919 }.Contains(providerId);        
     }
+
 }

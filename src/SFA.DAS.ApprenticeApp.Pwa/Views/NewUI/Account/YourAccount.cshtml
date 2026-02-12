@@ -1,4 +1,6 @@
-﻿@{
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeAccountModel
+
+@{
     ViewData["Title"] = "Your account";
     ViewData["Section"] = "Account";
 }
@@ -17,7 +19,7 @@
         <a class="govuk-button govuk-button--secondary"  asp-controller="Account" asp-action="SigningOut">Sign out</a>
     </div>
     <div class="govuk-grid-column-one-third">
-        <partial name="../Ksb/_YourKSBs.cshtml" />
-        <partial name="../Ksb/_YourApprenticeship.cshtml" />
+        <partial name="../Ksb/_YourKSBs.cshtml" model="Model.apprenticeKsbsPageModel" />
+        <partial name="../Ksb/_YourApprenticeship.cshtml" model="Model.apprenticeKsbsPageModel" />
     </div>
 </div>
