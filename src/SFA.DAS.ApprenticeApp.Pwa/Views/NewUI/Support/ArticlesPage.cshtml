@@ -33,33 +33,42 @@
                             <div class="govuk-body">No content was found for this article</div>
                         }
         
-                        <div class="app-accordion__icons">
+                        <div class="app-article-actions">
                             @if (Model.ApprenticeArticles != null)
                             {
-                            
-        
-                               @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true))
+                                var isSaved = Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true);
+                                @if (isSaved)
                                 {
-                                    <button class="article-button unsave" data-title="@item.Heading"><i class="fa-solid fa-bookmark"></i><span>Remove "@item.Heading" from your saved articles</span></button>
+                                    <button class="app-article-actions__button unsave" data-title="@item.Heading">
+                                        <span class="icon">
+                                            <svg width="24" height="24">
+                                                <use href="/assets/icons/sprite.svg#pin-filled"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="text">Remove<span class="govuk-visually-hidden"> "@item.Heading" from your saved articles</span></span>
+                                    </button>
                                 }
-        
-                                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == false))
+                                else
                                 {
-                                    <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
-                                }
-        
-                                @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == null))
-                                {
-                                    <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
-                                }
-        
-                                @if (Model.ApprenticeArticles.Where(x => x.EntryId == item.Id).Count() == 0)
-                                {
-                                    <button class="article-button save" data-title="@item.Heading"><i class="fa-regular fa-bookmark"></i><span>Add "@item.Heading" to your saved articles</span></button>
+                                    <button class="app-article-actions__button save" data-title="@item.Heading">
+                                        <span class="icon">
+                                            <svg width="24" height="24">
+                                                <use href="/assets/icons/sprite.svg#pin"></use>
+                                            </svg>
+                                        </span>
+                                        <span class="text">Save<span class="govuk-visually-hidden"> "@item.Heading" to your saved articles</span></span>
+                                    </button>
                                 }
                             }
         
-                            <button class="article-button share-btn"><img src="/assets/images/icons/share.svg" /><span>Share "@item.Heading"</span></button>
+                            <button class="app-article-actions__button share-btn">
+                                <span class="icon">
+                                    <svg width="24" height="24">
+                                        <use href="/assets/icons/sprite.svg#share"></use>
+                                    </svg>
+                                </span>
+                                <span class="text">Share<span class="govuk-visually-hidden"> "@item.Heading"</span></span>
+                            </button>
                         </div>
         
                         <input class="article-title" type="hidden" value="@item.Heading" />
@@ -71,3 +80,5 @@
         </div>
     </div>
 </div>
+
+<script src="~/js/article-actions.js" asp-append-version="true"></script>

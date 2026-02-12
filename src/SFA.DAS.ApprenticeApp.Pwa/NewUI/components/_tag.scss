@@ -2,18 +2,21 @@
 
 .app-tag {
   @extend .govuk-tag;
-  padding: .5rem;
+  padding: .5rem 0.75rem;
   display: inline-block;
+  max-width: max-content;
 }
 
 .app-tag--status-notstarted {
   @extend .govuk-tag--grey;
 }
 
+.app-tag--category-assignment,
 .app-tag--status-completed {
   @extend .govuk-tag--green;
 }
 
+.app-tag--category-deadline,
 .app-tag--status-readyforreview {
   @extend .govuk-tag--red;
 }
