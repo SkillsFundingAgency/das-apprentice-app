@@ -1,6 +1,10 @@
 ﻿using NUnit.Framework;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
 {
@@ -68,6 +72,130 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             var description = ViewHelpers.Helpers.GetEnumDescription(type);
 
             Assert.IsNull(description);
+        }
+    }
+    
+     [TestFixture]
+    public class SessionExtensionsTests
+    {
+        [Test]
+        public void IsSpecialUser_WhenSessionIsNull_ReturnsFalse()
+        {
+            // Arrange
+            ISession session = null;
+
+            // Act
+            var result = session.IsSpecialUser();
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsSpecialUser_WhenSessionIsNotAvailable_ReturnsFalse()
+        {
+            // Arrange
+            var session = new TestSession { IsAvailable = false };
+
+            // Act
+            var result = session.IsSpecialUser();
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsSpecialUser_WhenSessionIsAvailableButUserTypeIsNull_ReturnsFalse()
+        {
+            // Arrange
+            var session = new TestSession { IsAvailable = true };
+            // UserType not set
+
+            // Act
+            var result = session.IsSpecialUser();
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsSpecialUser_WhenSessionIsAvailableAndUserTypeIsNotSpecialUser_ReturnsFalse()
+        {
+            // Arrange
+            var session = new TestSession { IsAvailable = true };
+            session.SetString("UserType", "RegularUser");
+
+            // Act
+            var result = session.IsSpecialUser();
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void IsSpecialUser_WhenSessionIsAvailableAndUserTypeIsSpecialUser_ReturnsTrue()
+        {
+            // Arrange
+            var session = new TestSession { IsAvailable = true };
+            session.SetString("UserType", "SpecialUser");
+
+            // Act
+            var result = session.IsSpecialUser();
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void IsSpecialUser_WhenSessionIsAvailableAndUserTypeIsSpecialUserCaseInsensitive_ReturnsFalse()
+        {
+            // Arrange
+            var session = new TestSession { IsAvailable = true };
+            session.SetString("UserType", "specialuser"); // lowercase
+
+            // Act
+            var result = session.IsSpecialUser();
+
+            // Assert
+            Assert.IsFalse(result); // Should be false because case-sensitive comparison
+        }
+
+        // Test Session implementation for mocking
+        private class TestSession : ISession
+        {
+            private readonly Dictionary<string, byte[]> _store = new();
+
+            public bool IsAvailable { get; set; }
+            public string Id { get; set; } = "TestSessionId";
+            public IEnumerable<string> Keys => _store.Keys;
+
+            public void Clear() => _store.Clear();
+
+            public Task CommitAsync(CancellationToken cancellationToken = default) 
+                => Task.CompletedTask;
+
+            public Task LoadAsync(CancellationToken cancellationToken = default) 
+                => Task.CompletedTask;
+
+            public void Remove(string key) => _store.Remove(key);
+
+            public void Set(string key, byte[] value) => _store[key] = value;
+
+            public bool TryGetValue(string key, out byte[] value) 
+                => _store.TryGetValue(key, out value);
+
+            // Helper method for testing
+            public void SetString(string key, string value)
+            {
+                if (value == null)
+                {
+                    _store.Remove(key);
+                }
+                else
+                {
+                    _store[key] = System.Text.Encoding.UTF8.GetBytes(value);
+                }
+            }
         }
     }
 }

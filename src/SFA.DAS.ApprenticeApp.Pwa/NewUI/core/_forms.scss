@@ -1,0 +1,13 @@
+.govuk-form-group {
+  & > .govuk-label {
+    font-weight: 700;
+  }
+}
+
+.govuk-error-message:empty {
+  display: none;
+}
+
+.govuk-character-count__message--disabled {
+  display: none;
+}

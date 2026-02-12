@@ -1,0 +1,31 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportCategoryPageModel
+
+@{
+    ViewData["Title"] = "Support and guidance";
+    ViewData["Section"] = "Support";
+    Layout = "_Layout";
+}
+
+<h1 class="govuk-heading-xl">Support and guidance</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <ul class="app-stack">
+            <li class="app-stack__list-item">
+                <a asp-controller="Support" asp-action="SavedArticles" class="app-stack__link">
+                    Your saved articles
+                </a>
+            </li>
+            @foreach (var item in Model.Categories.OrderBy(x => x.ArticleOrder))
+            {
+                @if (item.Slug != null)
+                {
+                    <li class="app-stack__list-item">
+                        <a asp-controller="Support" asp-action="ArticlesPage" asp-route-slug="@item.Slug" class="app-stack__link">
+                            @item.Heading
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>

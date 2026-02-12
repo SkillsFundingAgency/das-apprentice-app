@@ -1,0 +1,38 @@
+@use "govuk/settings/index" as settings;
+@use "govuk/helpers/index" as helpers;
+
+.app-tabs__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.app-tabs__list-item {
+  border-bottom: 4px solid transparent;
+  transition: border-bottom-color 0.3s ease;
+  &--selected {
+    border-bottom-color: settings.$govuk-brand-colour;
+  }
+}
+
+.app-tabs__tab {
+  padding: .5rem 0;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  @include helpers.govuk-font-size(19);
+  &:visited {
+    color: settings.$govuk-brand-colour;
+  }
+  &:focus {
+    color: #000;
+  }
+}
+
+.app-tabs__panel {
+
+}

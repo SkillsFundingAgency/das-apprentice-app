@@ -1,0 +1,54 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@using SFA.DAS.ApprenticeApp.Domain.Models
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+
+@{
+    var ksbList = Model?.Ksbs ?? new List<ApprenticeKsb>();
+
+    var ksbsByType = new Dictionary<string, List<ApprenticeKsb>>
+    {
+        { "Knowledge", ksbList.Where(k => k.Type == KsbType.Knowledge).ToList() },
+        { "Skills", ksbList.Where(k => k.Type == KsbType.Skill).ToList() },
+        { "Behaviours", ksbList.Where(k => k.Type == KsbType.Behaviour).ToList() }
+    };
+
+    var statusConfig = new (KSBStatus Status, string CssClass, string Label)[]
+    {
+        (KSBStatus.InProgress, "inprogress", "in progress"),
+        (KSBStatus.Completed, "completed", "complete"),
+        (KSBStatus.ReadyForReview, "readyforreview", "ready for review"),
+        (KSBStatus.NotStarted, "notstarted", "not started")
+    };
+
+    Func<List<ApprenticeKsb>, KSBStatus, int> countByStatus = (ksbs, status) =>
+        status == KSBStatus.NotStarted
+            ? ksbs.Count(k => k.Progress == null || k.Progress.CurrentStatus == status)
+            : ksbs.Count(k => k.Progress != null && k.Progress.CurrentStatus == status);
+}
+
+<div class="app-card app-card--highlight">
+    <div class="app-card__header">
+        <h2 class="govuk-heading-m">Your KSBs</h2>
+        <dl class="app-summary-list">
+            @foreach (var (typeName, ksbs) in ksbsByType)
+            {
+                <div class="app-summary-list__row">
+                    <dt class="app-summary-list__key">@typeName</dt>
+                    <dd class="app-summary-list__value">
+                        <div class="app-tag-group">
+                            @foreach (var (status, cssClass, label) in statusConfig)
+                            {
+                                var count = countByStatus(ksbs, status);
+                                if (count > 0)
+                                {
+                                    <span class="app-tag app-tag--status-@cssClass">@count @label</span>
+                                }
+                            }
+                        </div>
+                    </dd>
+                </div>
+            }
+        </dl>
+    </div>
+
+</div>

@@ -18,18 +18,18 @@
 <h2 class="govuk-heading-l govuk-!-margin-top-4">Your details</h2>
 <div class="app-card">
     <dl class="app-dl-list">
-        <dt class="app-dl-list__title">
+        <dt class="govuk-summary-list__key">
             Name:
         </dt>
-        <dd class="app-dl-list__content">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
-        <dt class="app-dl-list__title">
+        <dd class="govuk-summary-list__value">@Model?.Apprentice?.FirstName @Model?.Apprentice?.LastName</dd>
+        <dt class="govuk-summary-list__key">
             Email address:
         </dt>
-        <dd class="app-dl-list__content">@Model?.Apprentice?.Email</dd>
-        <dt class="app-dl-list__title">
+        <dd class="govuk-summary-list__value">@Model?.Apprentice?.Email</dd>
+        <dt class="govuk-summary-list__key">
             Date of birth:
         </dt>
-        <dd class="app-dl-list__content">@Model?.Apprentice?.DateOfBirth?.ToGdsFormat()</dd>
+        <dd class="govuk-summary-list__value">@Model?.Apprentice?.DateOfBirth?.ToGdsFormat()</dd>
     </dl>
 </div>
 
@@ -110,44 +110,44 @@
 <h2 class="govuk-heading-l">Your apprenticeship</h2>
 <div class="app-card">
     <dl class="app-dl-list">
-        <dt class="app-dl-list__title">
+        <dt class="govuk-summary-list__key">
             Current employer:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EmployerName</dd>
-        <dt class="app-dl-list__title">
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.EmployerName</dd>
+        <dt class="govuk-summary-list__key">
             Training provider:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.TrainingProviderName</dd>
-        <dt class="app-dl-list__title">
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.TrainingProviderName</dd>
+        <dt class="govuk-summary-list__key">
             Apprenticeship:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.Title</dd>        
-        <dt class="app-dl-list__title">
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.Title</dd>
+        <dt class="govuk-summary-list__key">
             Level:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.Level</dd>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.Level</dd>
         @{
             if (Model.MyApprenticeship.ApprenticeshipType != null)
             {
-                <dt class="app-dl-list__title">
+                <dt class="govuk-summary-list__key">
                     Apprenticeship Type:
                 </dt>
-                <dd class="app-dl-list__content">@Model.MyApprenticeship?.ApprenticeshipType.GetEnumDescription()</dd>
+                <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.ApprenticeshipType.GetEnumDescription()</dd>
             }
         }
        
-        <dt class="app-dl-list__title">
+        <dt class="govuk-summary-list__key">
             Planned training start date:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.StartDate?.ToGdsFormat()</dd>
-        <dt class="app-dl-list__title">
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.StartDate?.ToGdsFormat()</dd>
+        <dt class="govuk-summary-list__key">
             Planned training end date:
         </dt>
-        <dd class="app-dl-list__content">@Model.MyApprenticeship?.EndDate?.ToGdsFormat()</dd>
+        <dd class="govuk-summary-list__value">@Model.MyApprenticeship?.EndDate?.ToGdsFormat()</dd>
 
-        <dt class="app-dl-list__title">
+        <dt class="govuk-summary-list__key">
             Estimated duration:
         </dt>
-        <dd class="app-dl-list__content">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
+        <dd class="govuk-summary-list__value">@(Model.MyApprenticeship?.ApprenticeshipLength?.Days) days</dd>
     </dl>
 </div>
