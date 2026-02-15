@@ -1,0 +1,43 @@
+.app-details {
+  .govuk-details__summary {
+    padding-left: 30px;
+    &:after {
+      box-sizing: border-box;
+      display: inline-block;
+      position: absolute;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: .0625rem solid;
+      border-radius: 50%;
+      vertical-align: middle;
+      content: "";
+      left: 0;
+      top: 4px;
+    }
+    &:before {
+      content: "";
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: .4rem;
+      width: .375rem;
+      height: .375rem;
+      transform: rotate(135deg);
+      border: 0 solid transparent;
+      border-top: .125rem solid;
+      border-right: .125rem solid;
+      clip-path: none;
+    }
+  }
+  &[open] .govuk-details__summary:before {
+    border: 0 solid transparent;
+    border-top: .125rem solid;
+    border-right: .125rem solid;
+    width: 0.375rem;
+    height: 0.375rem;
+    transform: rotate(-45deg);
+    clip-path: none;
+    bottom: -5px;
+  }
+}
