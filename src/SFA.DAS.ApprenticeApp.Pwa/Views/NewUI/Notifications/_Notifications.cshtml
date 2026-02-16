@@ -1,0 +1,68 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
+@model NotificationPageModel
+
+<!--todo surveys -->
+@if (Model.SurveyNotificationSeen == false)
+{
+    <div>
+        <h2 class="govuk-heading-m">
+            <a class="govuk-link govuk-link--no-visited-state" href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_9BLPhxEaYanAwZM" rel="external" target="_blank">Give us feedback</a>
+        </h2>
+        <p>We're improving this app - <a href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_9BLPhxEaYanAwZM">take our survey</a> </p>
+        <a href="#" >
+            <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> Fill out survey</span></span>
+        </a>
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    </div>
+}
+
+
+@if (Model.TaskReminders != null)
+{
+    @foreach (var notification in Model.TaskReminders)
+    {
+        <div id="notification-@notification.TaskId" @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")>
+            <h2 class="govuk-heading-m">
+                <a asp-controller="Tasks" asp-action="Index" class="govuk-link govuk-link--no-visited-state">@notification.Title</a>
+            </h2>
+            <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
+                
+                <li class="app-icon-item">
+                    <svg width="24" height="24" class="app-icon-item__icon">
+                        <use href="/assets/icons/sprite.svg#calendar"></use>
+                    </svg>
+                    <span class="app-icon-item__text">
+                        Due @string.Format("{0:d MMMM, h:mm}", @notification.DueDate)@string.Format("{0:tt}", @notification.DueDate).ToLower()
+                    </span>
+                </li>
+                <li class="app-icon-item">
+                    <svg width="24" height="24" class="app-icon-item__icon">
+                        <use href="/assets/icons/sprite.svg#notifications"></use>
+                    </svg>
+                    <span class="app-icon-item__text">
+                        Reminder set:
+                        @switch (notification.ReminderValue)
+                        {
+                            case 0:
+                                <text>0 minutes before</text>
+                                break;
+                            case 60:
+                                <text>1 hour before</text>
+                                break;
+                            case 1440:
+                                <text>1 day before</text>
+                                break;
+                            default:
+                                <span class="app-js-convert-minutes-to-date" data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", notification.DueDate)" data-val="@notification.ReminderValue"></span>
+                    break;
+                    }
+                    </span>
+                </li>
+            </ul>
+            <a href="#" class="govuk-link" data-notification-id="@notification.TaskId">
+                <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
+            </a>
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+        </div>
+    }
+}
