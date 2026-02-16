@@ -68,9 +68,13 @@
                 <input class="apprenticeshipid" name="apprenticeshipid" type="hidden"
                        asp-for="@Model.Task.ApprenticeshipId" />
                 <input name="Status" type="hidden" asp-for="@Model.StatusId" />
+        
+        <div class="govuk-button-group app-button-group">    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+                                                                class="govuk-back-link app-back-link">Back without saving</a>
                    <button type="submit" class="govuk-button" data-module="govuk-button">
                                 Save and continue
                             </button>
+        </div>
             </form>
     </div>
 </div>

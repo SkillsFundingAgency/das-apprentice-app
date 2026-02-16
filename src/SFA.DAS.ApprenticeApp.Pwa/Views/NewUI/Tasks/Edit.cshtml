@@ -171,7 +171,7 @@
         
         fetch(url)
                 .then(function () {
-                    window.location.href = '@Url.Action("Index", "Tasks")';
+                    window.location.href = '@Url.Action("Index", "Tasks")' + '?status=' + statusId;
                 });
     });
 </script>
