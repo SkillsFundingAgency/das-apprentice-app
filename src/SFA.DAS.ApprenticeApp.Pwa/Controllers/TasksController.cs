@@ -99,7 +99,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     year = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(2010, 1, 1), new DateTime(2030, 1, 1));
+
+//                 var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(2010, 1, 1), new DateTime(2030, 1, 1));
+
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.ToDoStatus, new DateTime(year, 1, 1), new DateTime(year, 12, 12));
+
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -155,7 +159,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     yearValue = int.Parse(Request.Cookies[Constants.TaskFilterYearCookieName]);
                 }
 
-                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(2010, 1, 1), new DateTime(2030, 1, 1));
+
+//                 var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(2010, 1, 1), new DateTime(2030, 1, 1));
+
+                var taskResult = await _client.GetApprenticeTasks(new Guid(apprenticeId), Constants.DoneStatus, new DateTime(yearValue, 1, 1), new DateTime(yearValue, 12, 12));
+
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
@@ -373,6 +381,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
             }
             return Unauthorized();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ConfirmDelete(int id, int status = 0)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
+
+                var vm = new EditTaskPageModel
+                {
+                    Task = taskdata.Task,
+                    StatusId = status
+                };
+
+                return View(vm);
+            }
+            return RedirectToAction("Index", "Tasks");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int taskId, int status = 0)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                await _client.DeleteApprenticeTask(new Guid(apprenticeId), taskId);
+                return RedirectToAction("Index", new { status });
+            }
+            return RedirectToAction("Index", "Tasks");
         }
 
         [HttpDelete]
