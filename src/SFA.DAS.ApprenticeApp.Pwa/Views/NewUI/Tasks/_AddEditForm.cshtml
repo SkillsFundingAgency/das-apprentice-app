@@ -177,10 +177,9 @@
 
 <div class="govuk-form-group">
     <p class="govuk-label">
-        Link knowledge, skills and behaviours (KSBs)
+        Linked KSBs (optional)
     </p>
-    <button class="govuk-button--field" id="ksb-popup-btn" data-id="@Model.Task.TaskId">
-        Select KSBs this task will help you gain
-        <span class="govuk-button--field-icon"></span>
-    </button>
+    <a class="govuk-button govuk-button--secondary" asp-controller="Ksb" asp-action="LinkKsbs" asp-route-taskId="@Model.Task.TaskId">
+        Link KSBs
+    </a>
 </div>
