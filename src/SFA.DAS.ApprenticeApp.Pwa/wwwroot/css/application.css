@@ -8918,6 +8918,66 @@ a.app-card:hover .app-card__heading, a.app-card:hover p, a.app-card:hover ul, a.
   bottom: -5px;
 }
 
+@media (max-width: 40.0525em) and (orientation: portrait) {
+  .govuk-footer {
+    margin-bottom: 5.5rem;
+  }
+}
+.app-header {
+  display: flex;
+  padding: 1rem 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header__logo img {
+  height: 30px;
+}
+
+.app-header__link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.app-header__link:visited {
+  color: #fff;
+}
+.app-header__link:hover {
+  color: #fff;
+}
+.app-header__link:focus {
+  color: #000;
+}
+.app-header__link:active {
+  color: #000;
+}
+
+.app-icon-list__link-wrap {
+  display: inline-block;
+}
+
+.app-icon-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #505a5f;
+}
+
+a > span.app-icon-item {
+  color: inherit;
+}
+
+.app-icon-item__icon {
+  fill: currentColor;
+}
+
+.app-link--destructive, .app-link--destructive:link, .app-link--destructive:visited {
+  color: #d4351c;
+}
+.app-link--destructive:focus, .app-link--destructive:active {
+  color: #000;
+}
+
 .app-navigation__link-count {
   background: #d4351c;
   color: #fff;
@@ -8952,37 +9012,6 @@ a.app-card:hover .app-card__heading, a.app-card:hover p, a.app-card:hover ul, a.
 
 .govuk-service-navigation__link:focus .app-navigation__link-count {
   background: #000;
-}
-
-@media (max-width: 40.0525em) and (orientation: portrait) {
-  .govuk-footer {
-    margin-bottom: 5.5rem;
-  }
-}
-.app-icon-list__link-wrap {
-  display: inline-block;
-}
-
-.app-icon-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #505a5f;
-}
-
-a > span.app-icon-item {
-  color: inherit;
-}
-
-.app-icon-item__icon {
-  fill: currentColor;
-}
-
-.app-link--destructive, .app-link--destructive:link, .app-link--destructive:visited {
-  color: #d4351c;
-}
-.app-link--destructive:focus, .app-link--destructive:active {
-  color: #000;
 }
 
 .app-progress {
