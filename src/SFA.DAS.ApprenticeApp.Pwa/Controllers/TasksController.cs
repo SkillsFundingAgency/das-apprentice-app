@@ -375,6 +375,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return Unauthorized();
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ConfirmDelete(int id, int status = 0)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
+
+                var vm = new EditTaskPageModel
+                {
+                    Task = taskdata.Task,
+                    StatusId = status
+                };
+
+                return View(vm);
+            }
+            return RedirectToAction("Index", "Tasks");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int taskId, int status = 0)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                await _client.DeleteApprenticeTask(new Guid(apprenticeId), taskId);
+                return RedirectToAction("Index", new { status });
+            }
+            return RedirectToAction("Index", "Tasks");
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteApprenticeTask(int taskId)
         {

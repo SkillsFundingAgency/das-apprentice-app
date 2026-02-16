@@ -4,10 +4,15 @@
   }
 }
 
+.govuk-hint:empty,
 .govuk-error-message:empty {
   display: none;
 }
 
 .govuk-character-count__message--disabled {
   display: none;
+}
+
+.app-button--full-width {
+  width: 100%;
 }

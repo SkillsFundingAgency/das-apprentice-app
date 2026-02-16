@@ -10,6 +10,7 @@
     Layout = "_Layout";
 }
 <h1 class="govuk-heading-xl">Tasks</h1>
+<partial name="_HelpTasks.cshtml" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
@@ -39,7 +40,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-        <a href="@Url.Action("Add", "Tasks")" class="govuk-button">
+        <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width">
             <span>Add a task</span>
         </a>
     </div>

@@ -13,6 +13,12 @@
                     @task.ApprenticeshipCategory.First().Title
                 </div>
             }
+            @if (!String.IsNullOrEmpty(task.Note))
+            {
+            <p>
+                <span>@task.Note</span>
+            </p>
+            }
         <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
              @if (task.TaskLinkedKsbs.Any())
                         {
@@ -67,12 +73,7 @@
                  </span>
             </li>
             }
-            @if (!String.IsNullOrEmpty(task.Note))
-            {
-                <p>
-                    <span>Note added</span>
-                </p>
-            }
+            
             @if (task.TaskFiles.Any())
             {
                 <p>
