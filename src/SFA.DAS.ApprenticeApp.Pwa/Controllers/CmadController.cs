@@ -2,18 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
-using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using System.Globalization;
+using System.Text.Json;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
     public class CmadController : Controller
     {
-        private readonly ILogger<AccountController> _logger;
+        private readonly ILogger<CmadController> _logger;
         private readonly IOuterApiClient _client;
 
-        public CmadController(ILogger<AccountController> logger, IOuterApiClient client)
+        public CmadController(ILogger<CmadController> logger, IOuterApiClient client)
         {
             _logger = logger;
             _client = client;
@@ -21,13 +21,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpGet]
         public async Task<IActionResult> CheckDetails(CheckDetailsViewModel model)
-        {            
+        {
             if (!ModelState.IsValid)
-            {                
+            {
                 return View("ConfirmDetails", model);
             }
 
-            if (model.DateOfBirth?.Date is not DateTime dateOfBirth)
+            if (model.DateOfBirth == null || !model.DateOfBirth.IsValid || !model.DateOfBirth.TryGetDate(out var dob))
             {
                 ModelState.AddModelError(nameof(model.DateOfBirth), "Enter a valid date of birth");
                 return View("ConfirmDetails", model);
@@ -35,88 +35,118 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             try
             {
-                ApprenticeDetails apprenticeDetails;
-                var dobIso = model.DateOfBirth.Date.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-                var apprenticeAccount = await _client.GetApprenticeAccountByName(model.FirstName, model.LastName, dobIso);
+                var dobIso = ToIsoDate(dob);
 
-                // No Account matched                
-                if (apprenticeAccount.Count == 0) return RedirectToAction("AccountNotFound", "Account");
+                // fetch registrations and apprentice
+                var registrations = await _client.GetRegistrationByAccountDetails(model.FirstName, model.LastName, dobIso);
+                var apprentice = await _client.GetApprentice(model.ApprenticeId);
 
-                // Further filter if more than one account is returned               
-                if (apprenticeAccount.Count >= 2) return View("CheckUln");
+                // ensure apprentice has basic fields populated
+                await EnsureApprenticeHasBasicFields(apprentice, model, dob);
 
-                var apprentice = apprenticeAccount.SingleOrDefault();
-
-                if (apprentice == null || model.ApprenticeId is not Guid apprenticeId)
-                {
+                // No Account matched
+                if (registrations == null || registrations.Count == 0)
                     return RedirectToAction("AccountNotFound", "Account");
-                }
 
-                if (model.ApprenticeId == Guid.Empty)
-                {
-                    apprenticeDetails = await HandleExistingApprenticeAccount(apprentice);
-                }
-                else
-                {
-                    apprenticeDetails = await HandleNonExitingApprenticeAccount((Guid)model.ApprenticeId, apprentice);
-                }
+                // Save for next page
+                TempData["Registrations"] = JsonSerializer.Serialize(registrations);
 
-                if (apprenticeDetails?.MyApprenticeship != null)
+                // Multiple -> ask for ULN
+                if (registrations.Count >= 2)
+                    return RedirectToAction("CheckUln", new { model.ApprenticeId });
+
+                var registration = registrations.SingleOrDefault();
+                if (registration == null)
+                    return RedirectToAction("AccountNotFound", "Account");
+
+
+                var commitmentsApprenticeship = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                // Create apprenticeship and prepare view model
+                var viewModel = await CreateApprenticeshipAndBuildViewModel(registration.RegistrationId, model.ApprenticeId, commitmentsApprenticeship.Uln, apprentice.LastName, dobIso);
+                if (viewModel != null)
                 {
-                    var viewModel = ConstructViewModel(apprenticeDetails);
                     ModelState.Clear();
                     return View("ConfirmApprenticeshipDetails", viewModel);
                 }
-                else
-                {
-                    return RedirectToAction("AccountNotFound", "Account");
-                }
+
+                return RedirectToAction("AccountNotFound", "Account");
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(ex, "Error finding apprentice {ApprenticeId}", model.ApprenticeId);
                 return RedirectToAction("AccountNotFound", "Account");
             }
-
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ConfirmUln(CheckUlnViewModel model)
-        {
-            var apprenticeship = await _client.GetApprenticeshipByUln(model.Uln);
-
-            if (apprenticeship == null) return View("AccountNotFound");
-
-            var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeship.ApprenticeId);
-
-            var viewModel = ConstructViewModel(apprenticeDetails);
-            ModelState.Clear();            
-
-            return View("ConfirmApprenticeshipDetails", viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmApprenticeshipDetails(Guid apprenticeId, long apprenticeshipId, long revisionId)
+        public async Task<IActionResult> ConfirmUln(CheckUlnViewModel model)
         {
+            // Guard
+            if (model?.RegistrationIds == null || model.RegistrationIds.Count == 0)
+            {
+                return View("AccountNotFound");
+            }
+
+            foreach (var item in model.RegistrationIds)
+            {
+                if (!item.CommitmentApprenticeshipIds.HasValue) continue;
+
+                var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
+                if (commitment?.Uln == model.Uln.ToString())
+                {
+                    var apprentice = await _client.GetApprentice(model.ApprenticeId);
+                    var dobIso = apprentice.DateOfBirth.HasValue
+                        ? ToIsoDate(apprentice.DateOfBirth.Value)
+                        : null;
+
+                    // Create apprenticeship and build the confirm view model
+                    var viewModel = await CreateApprenticeshipAndBuildViewModel(item.RegistrationId, model.ApprenticeId, commitment.Uln, apprentice.LastName, dobIso);
+                    if (viewModel != null)
+                    {
+                        ModelState.Clear();
+                        return View("ConfirmApprenticeshipDetails", viewModel);
+                    }
+
+                    return RedirectToAction("AccountNotFound", "Account");
+                }
+            }
+
+            return View("AccountNotFound");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmApprenticeshipDetails(ConfirmApprenticeshipDetailsViewModel model, Guid apprenticeId, long apprenticeshipId, long revisionId)
+        {
+            var revision = await _client.GetRevisionById(apprenticeId, apprenticeshipId, revisionId);
+
             var confs = new Confirmations()
             {
                 ApprenticeshipCorrect = true,
                 ApprenticeshipDetailsCorrect = true,
                 EmployerCorrect = true,
-                RolesAndResponsibilitiesConfirmations = RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed
-                | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed
-                | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
+                RolesAndResponsibilitiesConfirmations =
+                    RolesAndResponsibilitiesConfirmations.ApprenticeRolesAndResponsibilitiesConfirmed
+                    | RolesAndResponsibilitiesConfirmations.EmployerRolesAndResponsibilitiesConfirmed
+                    | RolesAndResponsibilitiesConfirmations.ProviderRolesAndResponsibilitiesConfirmed,
                 HowApprenticeshipDeliveredCorrect = true,
                 TrainingProviderCorrect = true
-            };            
-
-            // Update Claims Context
-            HttpContext.Session.SetString("_currentApprenticeId", apprenticeId.ToString());
-
+            };          
+            
             try
-            {                
+            {
                 await _client.ConfirmApprenticeshipDetails(apprenticeId, apprenticeshipId, revisionId, confs);
-                return RedirectToAction("Index", "Terms");
+                await _client.CreateMyApprenticeship(apprenticeId, new CreateMyApprenticeshipRequest
+                {
+                    ApprenticeshipId = apprenticeshipId,
+                    Uln = model.Uln,
+                    EmployerName = revision.EmployerName,
+                    StartDate = ToIsoDate(revision.PlannedStartDate),
+                    EndDate = ToIsoDate(revision.PlannedEndDate),
+                    TrainingProviderId = revision.TrainingProviderId,
+                    TrainingProviderName = revision.TrainingProviderName,                    
+                });
+                return RedirectToAction("Index", "Welcome");
             }
             catch (Exception ex)
             {
@@ -125,66 +155,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
         }
 
-        private async Task<ApprenticeDetails> HandleExistingApprenticeAccount(Apprentice apprenticeAccount)
+        private static ConfirmApprenticeshipDetailsViewModel ConstructViewModel(Apprentice apprentice, Revision revision, Apprenticeship apprenticeship, string uln)
         {
-            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeAccount.ApprenticeId.ToByteArray()));
+            if (revision == null || apprenticeship == null) return new ConfirmApprenticeshipDetailsViewModel();
 
-            // Update Claims Context
-            HttpContext.Session.SetString("_currentApprenticeId", apprenticeAccount.ApprenticeId.ToString());
-
-            return apprenticeDetails;
-
-        }
-
-        private async Task<ApprenticeDetails> HandleNonExitingApprenticeAccount(Guid apprenticeId, Apprentice apprenticeAccount)
-        {
-            var existingApprenticeAccount = await _client.GetApprentice(apprenticeId);
-
-            var pathDoc = new JsonPatchDocument<Apprentice>();
-            pathDoc.Replace(x => x.Email, existingApprenticeAccount.Email);
-            pathDoc.Replace(x => x.GovUkIdentifier, existingApprenticeAccount.GovUkIdentifier);
-
-            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeAccount.ApprenticeId.ToByteArray()));
-
-            if (apprenticeDetails == null)
+            return new ConfirmApprenticeshipDetailsViewModel()
             {
-                _logger.LogInformation("Apprentice Details not found for {ApprenticeId}", apprenticeId);
-                return new ApprenticeDetails();
-            }
-
-            // Update Provider Apprentice Account with User OneLogin credentials              
-            await _client.DeleteApprenticeAccount(existingApprenticeAccount.ApprenticeId);
-            await _client.UpdateApprentice(new Guid(apprenticeDetails.Apprentice.ApprenticeId.ToByteArray()), pathDoc);
-
-            // Update Claims Context
-            HttpContext.Session.SetString("_currentApprenticeId", apprenticeId.ToString());
-
-            return apprenticeDetails;
-        }
-
-        private static ConfirmApprenticeshipDetailsViewModel ConstructViewModel(ApprenticeDetails apprenticeDetails)
-        {
-            if (apprenticeDetails == null || apprenticeDetails.MyApprenticeship == null) return new ConfirmApprenticeshipDetailsViewModel();
-
-            var apprenticeship = apprenticeDetails.Apprenticeship?.Apprenticeships?.SingleOrDefault();
-
-            var model = new ConfirmApprenticeshipDetailsViewModel()
-            {
-                ApprenticeId = apprenticeDetails.Apprentice.ApprenticeId,
-                ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId,
-                RevisionId = apprenticeship.RevisionId,
-                FullName = $"{apprenticeDetails.Apprentice.FirstName} {apprenticeDetails.Apprentice.LastName}",
-                Employer = apprenticeship.EmployerName,
-                Provider = apprenticeDetails.MyApprenticeship.TrainingProviderName,
-                Apprenticeship = apprenticeDetails.MyApprenticeship.Title,
-                Level = apprenticeDetails.MyApprenticeship.Level.ToString(),
-                Type = apprenticeDetails.MyApprenticeship?.ApprenticeshipType?.GetEnumDescription(),
-                StartDate = apprenticeDetails.MyApprenticeship?.StartDate.ToString(),
-                EndDate = apprenticeDetails.MyApprenticeship?.EndDate.ToString(),
+                ApprenticeId = apprenticeship.ApprenticeId,
+                ApprenticeshipId = apprenticeship.Id,
+                Uln = long.Parse(uln),
+                RevisionId = revision.RevisionId,
+                FullName = $"{apprentice.FirstName} {apprentice.LastName}",
+                EmployerName = revision.EmployerName,
+                TrainingProviderName = revision.TrainingProviderName,
+                TrainingProviderId = revision.TrainingProviderId,                
+                Apprenticeship = revision.CourseName,
+                Level = revision.CourseLevel.ToString(),
+                Type = revision.ApprenticeshipType.HasValue ? revision.ApprenticeshipType.Value.ToString() : string.Empty,
+                StartDate = revision.PlannedStartDate.ToString(),
+                EndDate = revision.PlannedEndDate.ToString(),                
             };
-
-            return model;
-        }       
+        }
 
         // Views
         [HttpGet]
@@ -194,15 +185,82 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
-        public IActionResult CheckUln()
+        public async Task<IActionResult> CheckUln(Guid apprenticeId, string token)
         {
-            return View();
+            var model = new CheckUlnViewModel();
+            var registrations = new List<Registration>();
+
+            if (TempData["Registrations"] is string json)
+            {
+                registrations = JsonSerializer.Deserialize<List<Registration>>(json) ?? new List<Registration>();
+            }
+
+            var registrationIds = registrations.Select(r => new RegistrationDetails
+            {
+                CommitmentApprenticeshipIds = r.CommitmentsApprenticeshipId,
+                RegistrationId = r.RegistrationId
+            }).ToList();            
+
+            model.ApprenticeId = apprenticeId;
+            model.RegistrationIds = registrationIds;
+
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult ConfirmApprenticeshipDetails(ConfirmApprenticeshipDetailsViewModel model)
-        {          
+        {
             return View(model);
+        }
+
+        // ---------------------------
+        // Helpers
+        // ---------------------------
+        private static string ToIsoDate(DateTime date) =>
+            date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        private async Task EnsureApprenticeHasBasicFields(Apprentice apprentice, CheckDetailsViewModel model, DateTime dob)
+        {
+            if (apprentice == null) return;
+
+            var needsPatch = string.IsNullOrWhiteSpace(apprentice.FirstName)
+                             || string.IsNullOrWhiteSpace(apprentice.LastName)
+                             || !apprentice.DateOfBirth.HasValue;
+
+            if (!needsPatch) return;
+
+            var patchDoc = new JsonPatchDocument<Apprentice>();
+            if (string.IsNullOrWhiteSpace(apprentice.FirstName))
+                patchDoc.Replace(x => x.FirstName, model.FirstName);
+            if (string.IsNullOrWhiteSpace(apprentice.LastName))
+                patchDoc.Replace(x => x.LastName, model.LastName);
+            if (!apprentice.DateOfBirth.HasValue)
+                patchDoc.Replace(x => x.DateOfBirth, dob);
+
+            if (patchDoc.Operations.Any())
+            {
+                await _client.UpdateApprentice(model.ApprenticeId, patchDoc);
+            }
+        }
+
+        /// <summary>
+        /// Creates an apprenticeship from a registration and returns the constructed ConfirmApprenticeshipDetailsViewModel if successful; otherwise null.
+        /// </summary>
+        private async Task<ConfirmApprenticeshipDetailsViewModel?> CreateApprenticeshipAndBuildViewModel(Guid registrationId, Guid apprenticeId, string uln, string lastName, string dobIso)
+        {
+            // Create apprenticeship from registration
+            await _client.CreateApprenticeshipFromRegistration(registrationId, apprenticeId, lastName, dobIso);
+
+            // Refresh apprentice details & find apprenticeship + revision
+            var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
+            var apprenticeship = apprenticeDetails?.Apprenticeship?.Apprenticeships?.SingleOrDefault();
+            if (apprenticeship == null) return null;
+
+            var revision = await _client.GetRevisionById(apprenticeDetails.Apprentice.ApprenticeId, apprenticeship.Id, apprenticeship.RevisionId);
+            if (revision == null) return null;
+
+            var apprentice = await _client.GetApprentice(apprenticeId);
+            return ConstructViewModel(apprentice, revision, apprenticeship, uln);
         }
     }
 }

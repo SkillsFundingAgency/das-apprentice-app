@@ -46,6 +46,11 @@ public class TermsController : Controller
 
             if (termsAccepted != null && termsAccepted == "True")
             {
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+                if (cmadComplete == null) return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+
                 return RedirectToAction("Index", "Welcome");
             }
             else
@@ -68,8 +73,13 @@ public class TermsController : Controller
                                .Replace(x => x.TermsOfUseAccepted, true);
 
             await _client.UpdateApprentice(new Guid(apprenticeId), patch);
-
             _logger.LogInformation($"Apprentice accepted the Terms. ApprenticeId: {apprenticeId}");
+
+            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+            var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+            if (cmadComplete == null) return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+            
             return RedirectToAction("Index", "Welcome");
         }
 

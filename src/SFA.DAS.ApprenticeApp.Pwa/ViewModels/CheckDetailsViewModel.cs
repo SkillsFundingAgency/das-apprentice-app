@@ -9,7 +9,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
         [Required]
         public string? LastName { get; set; }
         [Required]
-        public DateModel? DateOfBirth { get; set; }       
-        public Guid? ApprenticeId { get; set; }
+        public DateModel DateOfBirth { get; set; }       
+        public Guid ApprenticeId { get; set; }
     }
 }

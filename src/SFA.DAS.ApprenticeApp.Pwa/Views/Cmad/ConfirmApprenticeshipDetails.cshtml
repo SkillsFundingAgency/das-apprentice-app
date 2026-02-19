@@ -15,21 +15,22 @@
             <input asp-for="ApprenticeId" type="hidden" />
             <input asp-for="ApprenticeshipId" type="hidden" />
             <input asp-for="RevisionId" type="hidden" />
+            <input asp-for="Uln" type="hidden" />
 
             <table class="govuk-table data-table">
                 <caption class="govuk-table__caption govuk-table__caption--m"></caption>
                 <tbody class="govuk-table__body">
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Name</th>
-                        <td class="govuk-table__cell">@Model.FullName</td>
+                        <td class="govuk-table__cell" asp-for="EmployerName">@Model.FullName</td>                        
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Employer</th>
-                        <td class="govuk-table__cell">@Model.Employer</td>
+                        <td class="govuk-table__cell">@Model.EmployerName</td>
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Provider</th>
-                        <td class="govuk-table__cell">@Model.Provider</td>
+                        <td class="govuk-table__cell">@Model.TrainingProviderName</td>
                     </tr>
                     <tr class="govuk-table__row">
                         <th scope="row" class="govuk-table__header">Apprenticeship</th>

@@ -6,19 +6,13 @@ using SFA.DAS.ApprenticeApp.Domain.Models;
 namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 {
     public interface IOuterApiClient
-    {        
+    {
         //Apprentice
         [Get("/apprentices/{id}")]
         Task<Apprentice> GetApprentice([Path] Guid id);
 
-        [Get("apprentices")]
-        Task<List<Apprentice>> GetApprenticeAccountByName([Query] string firstName, [Query] string lastName, [Query] string dateOfBirth);
-
         [Patch("/apprentices/{id}")]
         Task UpdateApprentice([Path] Guid id, [Body] JsonPatchDocument<Apprentice> patch);
-
-        [Delete("/apprentice/{id}")]
-        Task DeleteApprenticeAccount([Path] Guid id);
 
         [Post("/apprentices/{id}/subscriptions")]
         Task ApprenticeAddSubscription([Path] Guid id, [Body] ApprenticeAddSubscriptionRequest request);
@@ -33,15 +27,27 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Get("/apprentices/{id}/details")]
         Task<ApprenticeDetails> GetApprenticeDetails([Path] Guid id);
 
-        [Get("/apprentice/{uln}")]
-        Task<MyApprenticeship> GetApprenticeshipByUln([Path] int uln);
+        //Commitments        
+        [Get("registrations")]
+        Task<List<Registration>> GetRegistrationByAccountDetails([Query] string firstName, [Query] string lastName, [Query] string dateOfBirth);
 
-        //Commitments
-        [Get("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}")]
-        Task<Apprenticeship> GetApprenticeship([Path] Guid apprenticeId, [Path] long apprenticeshipId);
+        [Get("revisionsById")]
+        Task<Revision> GetRevisionById([Query] Guid apprenticeId, [Query] long apprenticeshipId, [Query] long revisionId);
+
+        [Get("/commitments/{commitmentId}")]
+        Task<CommitmentsApprenticeshipIdList> GetApprenticeshipIdByCommitmentsId([Path] long commitmentId);
+
+        [Get("/commitments-apprenticeships/{apprenticeshipId}")]
+        Task<CommitmentsApprenticeship> GetCommitmentsApprenticeshipById([Path] long apprenticeshipId);
 
         [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/revisions/{revisionId}/confirmations")]
         Task ConfirmApprenticeshipDetails([Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long revisionId, [Body] Confirmations patch);
+
+        [Post("apprenticeships")]
+        Task CreateApprenticeshipFromRegistration([Query] Guid registrationId, [Query] Guid apprenticeId, [Query] string lastName, [Query] string dateOfBirth);
+
+        [Post("/apprentices/{id}/MyApprenticeship")]
+        Task CreateMyApprenticeship([Path] Guid id, [Body] CreateMyApprenticeshipRequest data);
 
         //KsbProgress
         [Post("/apprentices/{id}/ksbs")]
@@ -61,13 +67,6 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Get("/apprentices/{id}/ksbs/{ksbId}")]
         Task<ApprenticeKsb> GetApprenticeshipKsb([Path] Guid id, [Path] Guid ksbId);
-
-        // Providers
-        [Get("/providers/registeredProviders")]
-        Task<List<RegisteredProviders>> GetRegisteredProviders();
-
-        [Get("/providers/activeStandards")]
-        Task<List<Courses>> GetActiveStandards();
 
         //Support&Guidance
 

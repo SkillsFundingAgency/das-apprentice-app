@@ -67,13 +67,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (cmadComplete == null)
                 {
-                    return RedirectToAction("AccountNotFound", "Account");
+                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
                 }
 
                 if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
 
                 // Send to CMAD
-                return RedirectToAction("ConfirmDetails", "Cmad");
+                return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
 
             }
             catch (Exception ex)

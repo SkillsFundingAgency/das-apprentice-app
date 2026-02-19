@@ -15,7 +15,15 @@
             Or, you can ask your training provider.
         </p>
 
-        <form method="GET" asp-action="ConfirmUln" asp-controller="Cmad">
+        <form method="POST" asp-action="ConfirmUln" asp-controller="Cmad">   
+            @for (int i = 0; i < Model.RegistrationIds.Count; i++)
+            {
+                <input type="hidden" asp-for="RegistrationIds[i].CommitmentApprenticeshipIds" />
+                <input type="hidden" asp-for="RegistrationIds[i].RegistrationId" />
+            }            
+            <input type="hidden" asp-for="ApprenticeId" />
+
+
             <div class="app-form-group">
                 <label asp-for="Uln" class="app-label">Your ULN</label>
                 <input asp-for="Uln" required="required" class="govuk-input" />
