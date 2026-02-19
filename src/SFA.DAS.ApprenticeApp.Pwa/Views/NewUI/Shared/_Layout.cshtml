@@ -1,4 +1,6 @@
 @using SFA.DAS.ApprenticeApp.Application
+@using Microsoft.AspNetCore.Http
+
 <!doctype html>
 <html lang="en" class="govuk-template govuk-template--rebranded dfe-branding">
   <head>
@@ -42,7 +44,29 @@
     />
   </head>
 
-  <body class="govuk-template__body">
+
+  <!-- New UI opt-out banner (blue) with updated text and link styles -->
+  @if (Context.Session.GetString("UserType") == "SpecialUser")
+  {
+    <div style="background-color: #d2e1f3; padding: 0.75rem 1.5rem; font-family: 'GDS Transport', arial, sans-serif; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.75rem;">
+      <span style="font-weight: 700; font-size: 1.125rem; color: #0b0c0c;">You're using our beta</span>
+      <a href="https://www.google.com" style="color: #3973ab; text-decoration: underline; font-weight: normal; font-size: 1.125rem;"
+         onmouseover="this.style.color='#032d77'"
+         onmouseout="this.style.color='#3973ab'"
+         onfocus="this.style.outline='3px solid #fd0'; this.style.outlineOffset='2px'; this.style.backgroundColor='#fd0'; this.style.color='#0b0c0c'; this.style.textDecoration='none'"
+         onblur="this.style.outline=''; this.style.backgroundColor=''; this.style.color='#3973ab'; this.style.textDecoration='underline'"
+         target="_blank">Give us feedback</a>
+      <span style="font-size: 1.125rem; color: #0b0c0c;">or</span>
+      <a href="@Url.Action("OptOutNewUi", "Account", new { returnUrl = Context.Request.Path })"
+         style="color: #3973ab; text-decoration: underline; font-weight: normal; font-size: 1.125rem;"
+         onmouseover="this.style.color='#032d77'"
+         onmouseout="this.style.color='#3973ab'"
+         onfocus="this.style.outline='3px solid #fd0'; this.style.outlineOffset='2px'; this.style.backgroundColor='#fd0'; this.style.color='#0b0c0c'; this.style.textDecoration='none'"
+         onblur="this.style.outline=''; this.style.backgroundColor=''; this.style.color='#3973ab'; this.style.textDecoration='underline'">switch back to our old design</a>
+    </div>
+  }
+
+<body class="govuk-template__body">
     <script>
       document.body.className +=
         " js-enabled" +
