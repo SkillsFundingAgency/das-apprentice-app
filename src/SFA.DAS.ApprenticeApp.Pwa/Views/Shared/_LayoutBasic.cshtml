@@ -19,13 +19,7 @@
 <body class="govuk-template__body app-template__body" id="top">
     <main class="app-main--basic">
         @RenderBody()
-    </main>
-    <script type="module" src="/js/libs/govuk-frontend.min.js"></script>
-    <script type="module">
-        import {
-                    initAll
-                } from '/js/libs/govuk-frontend.min.js'
-                initAll()</script>
+    </main>   
     @await Html.PartialAsync("_FrontendJs.cshtml")
 </body>
 
