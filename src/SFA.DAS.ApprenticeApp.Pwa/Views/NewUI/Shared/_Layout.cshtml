@@ -50,6 +50,17 @@
           ? " govuk-frontend-supported"
           : "");
     </script>
+    <script>
+      (function () {
+        var match = document.cookie.match(/(?:^|;\s*)SFA\.ApprenticeApp\.TextSize=([^;]+)/);
+        if (match) {
+          var size = parseFloat(match[1]);
+          if (!isNaN(size) && size >= 0.8 && size <= 1.5) {
+            document.documentElement.style.fontSize = (size * 100) + "%";
+          }
+        }
+      })();
+    </script>
 
     <a
       href="#main-content"
