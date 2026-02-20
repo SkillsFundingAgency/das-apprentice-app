@@ -1,0 +1,61 @@
+@model SFA.DAS.ApprenticeApp.Domain.Models.ApprenticeTaskReminder
+@{
+    ViewData["Title"] = "Notifications";
+    ViewData["Section"] = "Notifications";
+    ViewBag.HideNavigation = true;
+}
+@section BackLink {
+    <a asp-action="Index" asp-controller="Notifications" class="govuk-back-link app-back-link">Back without deleting</a>
+}
+
+<h1 class="govuk-heading-xl">Are you sure you want to delete this notification?</h1>
+
+<div class="govuk-inset-text">
+    <h2 class="govuk-heading-s">@Model.Title</h2>
+
+    <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
+        <li class="app-icon-item">
+            <svg width="24" height="24" class="app-icon-item__icon">
+                <use href="/assets/icons/sprite.svg#calendar"></use>
+            </svg>
+            <span class="app-icon-item__text">
+                Due @string.Format("{0:d MMMM, h:mm}", Model.DueDate)@string.Format("{0:tt}", Model.DueDate).ToLower()
+            </span>
+        </li>
+        <li class="app-icon-item">
+            <svg width="24" height="24" class="app-icon-item__icon">
+                <use href="/assets/icons/sprite.svg#notifications"></use>
+            </svg>
+            <span class="app-icon-item__text">
+                Reminder set:
+                @switch (Model.ReminderValue)
+                {
+                    case 0:
+                        <text>0 minutes before</text>
+                        break;
+                    case 60:
+                        <text>1 hour before</text>
+                        break;
+                    case 1440:
+                        <text>1 day before</text>
+                        break;
+                    default:
+                        <span class="app-js-convert-minutes-to-date"
+                              data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", Model.DueDate)"
+                              data-val="@Model.ReminderValue"></span>
+                        break;
+                }
+            </span>
+        </li>
+    </ul>
+</div>
+
+<form action="@Url.Action("DeleteNotification", "Notifications")" method="post">
+    <input type="hidden" name="taskId" value="@Model.TaskId" />
+    <div class="govuk-button-group app-button-group">
+        <a asp-action="Index" asp-controller="Notifications" class="govuk-back-link app-back-link">Back without deleting</a>
+        <button type="submit" class="govuk-button govuk-button--warning" data-module="govuk-button">
+            Delete this notification
+        </button>
+    </div>
+</form>
