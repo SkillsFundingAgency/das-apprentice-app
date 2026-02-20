@@ -4,15 +4,22 @@
 <!--todo surveys -->
 @if (Model.SurveyNotificationSeen == false)
 {
-    <div>
+    <div id="notification-8039" class="app-notification">
         <h2 class="govuk-heading-m">
             <a class="govuk-link govuk-link--no-visited-state" href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_9BLPhxEaYanAwZM" rel="external" target="_blank">Give us feedback</a>
         </h2>
-        <p>We're improving this app - <a href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_9BLPhxEaYanAwZM">take our survey</a> </p>
-        <a href="#" >
-            <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> Fill out survey</span></span>
-        </a>
-        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+        <p>We're improving this app - <a href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_9BLPhxEaYanAwZM" class="govuk-link govuk-link--no-visited-state">take our survey</a> </p>
+        <div class="app-flex-align-right">
+            <a href="#" class="govuk-link app-link--destructive">
+                <span class="app-icon-item">
+                    <svg width="24" height="24" class="app-icon-item__icon">
+                        <use href="/assets/icons/sprite.svg#delete"></use>
+                    </svg>
+                    <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> Fill out survey</span></span>
+              </span>
+            </a>
+        </div>
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
     </div>
 }
 
@@ -21,7 +28,7 @@
 {
     @foreach (var notification in Model.TaskReminders)
     {
-        <div id="notification-@notification.TaskId" @(notification.ReminderStatus == SFA.DAS.ApprenticeApp.Domain.Models.ReminderStatus.NotSent ? "app-card--highlight" : "")>
+        <div id="notification-@notification.TaskId" class="app-notification">
             <h2 class="govuk-heading-m">
                 <a asp-controller="Tasks" asp-action="Index" class="govuk-link govuk-link--no-visited-state">@notification.Title</a>
             </h2>
@@ -59,10 +66,17 @@
                     </span>
                 </li>
             </ul>
-            <a href="#" class="govuk-link" data-notification-id="@notification.TaskId">
-                <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
-            </a>
-            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+            <div class="app-flex-align-right">
+                <a href="#" class="govuk-link app-link--destructive" data-notification-id="@notification.TaskId">
+                    <span class="app-icon-item">
+                        <svg width="24" height="24" class="app-icon-item__icon">
+                            <use href="/assets/icons/sprite.svg#delete"></use>
+                        </svg>
+                        <span class="app-icon-action__label">Delete<span class="govuk-visually-hidden"> @notification.Title</span></span>
+                    </span>
+                </a>
+            </div>
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         </div>
     }
 }
