@@ -46,6 +46,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _apprenticeContext = apprenticeContext;
         }
 
+        
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Authenticated()
