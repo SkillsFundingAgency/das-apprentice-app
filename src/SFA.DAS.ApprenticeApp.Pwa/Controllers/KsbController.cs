@@ -107,15 +107,54 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
 
-                    {
-                        Ksbs = apprenticeKsbResult,
-                        KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
-                        SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
-                        KsbStatuses = KsbHelpers.KSBStatuses()
-                    };
+                {
+                    Ksbs = apprenticeKsbResult,
+                    KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
+                    SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
+                    BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
+                    KsbStatuses = KsbHelpers.KSBStatuses()
+                };
 
-                    return View("_LinkKsb", apprenticeKsbsPageModel);
+                return View("_LinkKsb", apprenticeKsbsPageModel);
+            }
+            else
+            {
+                _logger.LogWarning("ApprenticeId not found in user claims for Ksbs LinkKsbs.");
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> LinkKsbs(int taskId, string linkedKsbGuids, int StatusId)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+
+                if (apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
+                {
+                    string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController LinkKsbs.";
+                    _logger.LogWarning(noKsbMessage);
+                    return View("_LinkNoKsbs");
+                }
+
+                ApprenticeKsbsPageModel apprenticeKsbsPageModel = new ApprenticeKsbsPageModel()
+                {
+                    Ksbs = apprenticeKsbResult,
+                    KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
+                    SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
+                    BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
+                    KsbStatuses = KsbHelpers.KSBStatuses()
+                };
+
+                ViewData["LinkedKsbGuids"] = linkedKsbGuids ?? string.Empty;
+                ViewData["TaskId"] = taskId;
+                ViewData["StatusId"] = StatusId;
+
+                return View("_LinkKsb", apprenticeKsbsPageModel);
             }
             else
             {

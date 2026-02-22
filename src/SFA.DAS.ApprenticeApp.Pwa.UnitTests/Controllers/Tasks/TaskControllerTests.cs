@@ -18,9 +18,11 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -408,7 +410,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             {
                 HttpContext = httpContext
             };
-           
+
             var result = await controller.Add();
             result.Should().BeOfType(typeof(ViewResult));
         }
@@ -499,7 +501,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                            v.ToString().Contains($"Invalid apprenticeship id. Cannot add task")),
                    It.IsAny<Exception>(),
                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
-                
+
                 result.Should().NotBeNull();
                 result.ActionName.Should().Be("Index");
                 result.ControllerName.Should().Be("Tasks");
@@ -517,7 +519,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
             var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
+            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
             {
                 apprenticeIdClaim
             })});
@@ -536,11 +538,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
             task.ApprenticeshipId = 123;
             var result = await controller.Add(task) as RedirectToActionResult;
-            
+
             result.Should().NotBeNull();
             result.ActionName.Should().Be("Index");
             result.RouteValues["status"].Should().Be((int)task.Status);
-           
+
         }
 
         [Test, MoqAutoData]
@@ -569,7 +571,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
                 HttpContext = httpContext
             };
 
-           
+
             client.Setup(c => c.GetApprenticeDetails(apprenticeId)).ReturnsAsync(apprenticeDetails);
             task.ApprenticeshipId = apprenticeDetails.MyApprenticeship.ApprenticeshipId;
             client.Setup(x => x.AddApprenticeTask(1, task)).ThrowsAsync(new Exception("Error"));
@@ -658,7 +660,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
         [Test, MoqAutoData]
         public async Task DeleteTask_Must_Have_ValidId(
-            [Frozen] Mock<ILogger<TasksController>> logger, 
+            [Frozen] Mock<ILogger<TasksController>> logger,
             [Greedy] TasksController controller)
         {
             var httpContext = new DefaultHttpContext();
@@ -772,11 +774,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
         [Test, MoqAutoData]
         public async Task ChangeTaskStatus_Must_Have_ApprenticeId(
-    [Frozen] Mock<IOuterApiClient> client,
-    ApprenticeDetails apprenticeDetails,
-    [Frozen] Mock<ILogger<TasksController>> logger,
-    [Frozen] Mock<IApprenticeContext> apprenticeContext,
-    [Greedy] TasksController controller)
+        [Frozen] Mock<IOuterApiClient> client,
+        ApprenticeDetails apprenticeDetails,
+        [Frozen] Mock<ILogger<TasksController>> logger,
+        [Frozen] Mock<IApprenticeContext> apprenticeContext,
+        [Greedy] TasksController controller)
         {
             // Arrange
             apprenticeContext
@@ -788,6 +790,121 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
             // Assert
             result.Should().BeOfType<OkResult>();
+        }
+
+        [Test, MoqAutoData]
+        public async Task PostEditLinkedKsbs_Returns_EditView_With_NewAndExistingKsbs(
+        [Frozen] Mock<IOuterApiClient> client,
+        [Frozen] Mock<IApprenticeContext> apprenticeContext,
+        [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+            var existingGuid = Guid.NewGuid();
+            var taskData = new ApprenticeTaskData
+            {
+                Task = new ApprenticeTask { TaskId = 123 },
+                TaskCategories = null,
+                KsbProgress = new List<ApprenticeKsbData>
+                {
+                    new ApprenticeKsbData { KsbId = existingGuid, KsbKey = "EXIST", Detail = "Existing", CurrentStatus = KSBStatus.InProgress }
+                }
+            };
+
+            var newGuid = Guid.NewGuid();
+            var linkedKsbGuids = $"{existingGuid},{newGuid}";
+
+            var apiKsbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb { Id = newGuid, Key = "NEW", Detail = "NewDetail", Type = KsbType.Skill, Progress = null }
+            };
+
+            client.Setup(c => c.GetTaskViewData(It.IsAny<Guid>(), It.IsAny<int>())).ReturnsAsync(taskData);
+            client.Setup(c => c.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(apiKsbs);
+            apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
+
+            var result = await controller.EditLinkedKsbs(linkedKsbGuids, taskData.Task.TaskId, status: 0) as ViewResult;
+
+            result.Should().NotBeNull();
+            result!.ViewName.Should().Be("Edit");
+            result.Model.Should().BeOfType<EditTaskPageModel>();
+            var vm = (EditTaskPageModel?)result.Model;
+            vm.LinkedKsbGuids.Should().Be(linkedKsbGuids);
+
+            vm.KsbProgressData.Should().NotBeNull();
+            vm.KsbProgressData?.Count.Should().Be(2);
+            vm.KsbProgressData?.Select(k => k.KsbId).Should().Contain(existingGuid);
+            vm.KsbProgressData?.Select(k => k.KsbId).Should().Contain(newGuid);
+        }
+
+        [Test, MoqAutoData]
+        public async Task PostEditLinkedKsbs_NoApprenticeId_RedirectsToIndex()
+        {
+            var logger = new Mock<ILogger<TasksController>>();
+            var client = new Mock<IOuterApiClient>();
+            var apprenticeContext = new Mock<IApprenticeContext>();
+            apprenticeContext.Setup(a => a.ApprenticeId).Returns((string?)null);
+
+            var controller = new TasksController(logger.Object, client.Object, apprenticeContext.Object);
+
+            var result = await controller.EditLinkedKsbs("", 1, 0) as RedirectToActionResult;
+
+            result.Should().NotBeNull();
+            result!.ActionName.Should().Be("Index");
+            result.ControllerName.Should().Be("Tasks");
+        }
+
+        [Test, MoqAutoData]
+        public async Task PostEditLinkedKsbs_OnlyExistingSelected_Returns_EditView_WithOnlyExisting(
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<IApprenticeContext> apprenticeContext,
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeId = Guid.NewGuid();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
+            var claimsPrincipal = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
+            httpContext.User = claimsPrincipal;
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+            var existingGuid = Guid.NewGuid();
+            var taskData = new ApprenticeTaskData
+            {
+                Task = new ApprenticeTask { TaskId = 222 },
+                TaskCategories = null,
+                KsbProgress = new List<ApprenticeKsbData>
+                {
+                    new ApprenticeKsbData { KsbId = existingGuid, KsbKey = "EXIST", Detail = "Existing", CurrentStatus = KSBStatus.InProgress }
+                }
+            };
+
+            var linkedKsbGuids = $"{existingGuid}";
+
+            var apiKsbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb { Id = Guid.NewGuid(), Key = "OTHER", Detail = "Other", Type = KsbType.Knowledge }
+            };
+
+            client.Setup(c => c.GetTaskViewData(It.IsAny<Guid>(), It.IsAny<int>())).ReturnsAsync(taskData);
+            client.Setup(c => c.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(apiKsbs);
+            apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
+
+            var result = await controller.EditLinkedKsbs(linkedKsbGuids, taskData.Task.TaskId, status: 1) as ViewResult;
+
+            result.Should().NotBeNull();
+            result!.ViewName.Should().Be("Edit");
+            var vm = result.Model as EditTaskPageModel;
+            vm.Should().NotBeNull();
+            vm!.LinkedKsbGuids.Should().Be(linkedKsbGuids);
+            vm.KsbProgressData.Should().NotBeNull();
+            vm.KsbProgressData?.Count.Should().Be(1);
+            vm.KsbProgressData?[0].KsbId.Should().Be(existingGuid);
+            vm.StatusId.Should().Be(1);
         }
     }
 }

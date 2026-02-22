@@ -226,6 +226,82 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpPost]
         [Authorize]
+        public async Task<IActionResult> EditLinkedKsbs(string linkedKsbGuids, int taskId, int status)
+        {
+                var apprenticeId = _apprenticeContext.ApprenticeId;
+
+                if (!string.IsNullOrEmpty(apprenticeId))
+                {
+                    var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), taskId);
+
+                    var guids = taskdata.KsbProgress?.Select(k => k.KsbId).ToList() ?? new List<Guid>();
+                    var existingLinkedKsbGuids = guids.Any() ? string.Join(",", guids) : string.Empty;
+
+                    var existingKsbIds = new HashSet<string>(
+                        (existingLinkedKsbGuids ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(s => s.Trim()),
+                        StringComparer.OrdinalIgnoreCase);
+
+                    var selectedKsbIds = new HashSet<string>(
+                        (linkedKsbGuids ?? string.Empty)
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(s => s.Trim()),
+                        StringComparer.OrdinalIgnoreCase);
+
+                    var newKsbIds = selectedKsbIds.Except(existingKsbIds, StringComparer.OrdinalIgnoreCase).ToList();
+
+                    var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+
+                    var filteredKsbs = apprenticeKsbResult
+                        .Where(k => newKsbIds.Contains(k.Id.ToString(), StringComparer.OrdinalIgnoreCase))
+                        .ToList();
+
+                    var newlyLinkedKsbData = filteredKsbs.Select(ksb => new ApprenticeKsbData
+                    {
+                        KsbProgressId = ksb.Progress?.KsbProgressId ?? 0,
+                        ApprenticeshipId = ksb.Progress?.ApprenticeshipId ?? 0,
+                        KsbProgressType = ksb.Type,
+                        KsbId = ksb.Id,
+                        KsbKey = ksb.Key,
+                        CurrentStatus = ksb.Progress?.CurrentStatus,
+                        Note = ksb.Progress?.Note,
+                        Tasks = ksb.Progress?.Tasks ?? new List<ApprenticeTask>(),
+                        Detail = ksb.Detail
+                    }).ToList();
+
+                    var combinedKsbProgress = new List<ApprenticeKsbData>();
+                    var selectedGuidSet = new HashSet<Guid>(selectedKsbIds.Select(Guid.Parse));
+                    if (taskdata.KsbProgress != null)
+                    {
+                        combinedKsbProgress.AddRange(
+                            taskdata.KsbProgress
+                                .Where(k => selectedGuidSet.Contains(k.KsbId))
+                        );
+                    }
+
+                    combinedKsbProgress.AddRange(newlyLinkedKsbData);
+
+                    var vm = new EditTaskPageModel
+                    {
+                        Task = taskdata.Task,
+                        Categories = taskdata.TaskCategories?.TaskCategories,
+                        KsbProgressData = combinedKsbProgress,
+                        LinkedKsbGuids = linkedKsbGuids,
+                        StatusId = status
+                    };
+
+                    if (taskdata.Task.TaskReminders != null && taskdata.Task.TaskReminders.Count == 1)
+                    {
+                        vm.Task.ReminderValue = taskdata.Task.TaskReminders.FirstOrDefault().ReminderValue;
+                    }
+                    return View("Edit", vm);
+                }
+                return RedirectToAction("Index", "Tasks");
+            }
+
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(ApprenticeTask task)
         {
             var apprenticeId = _apprenticeContext.ApprenticeId;

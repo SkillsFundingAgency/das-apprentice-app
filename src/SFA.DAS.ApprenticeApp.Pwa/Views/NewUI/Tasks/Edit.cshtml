@@ -6,8 +6,8 @@
     ViewBag.HideNavigation = true;
 }
 @section BackLink {
-<a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-   class="govuk-back-link app-back-link">Back without saving</a>
+    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+       class="govuk-back-link app-back-link">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
     Edit task
@@ -28,138 +28,140 @@
                 </div>
             </div>
             <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
-            <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
-            <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
-            <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
-            <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
-            <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
-            <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
-            <partial name="_AddEditForm" model="@Model" />
+                <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
+                <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
+                <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
+                <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
+                <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
+                <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
+                <partial name="_AddEditForm" model="@Model" />
+                <div class="govuk-form-group">
+                    <p class="govuk-label">
+                        Knowledge, skills and behaviours (KSBs) added to this task
+                    </p>
+                    <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids"
+                           asp-for="@Model.Task.KsbsLinked" />
+                    <div id="linked-ksb-details">
+                        @foreach (var ksbProgressData in Model.KsbProgressData)
+                        {
+                          
+                           <div class="app-card ksb-item" id="ksb-item-@ksbProgressData.KsbId">
+                                    <div class="app-card__header">
+                                        <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                                    </div>
+                                    <p>@ksbProgressData.Detail</p>
+                                    <span>
+                                        @{
+                                            var statusItem = @ksbProgressData.CurrentStatus;
+                                            string statusItemDisplay = statusItem.GetEnumDescription();
+                                            <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ", "").Replace("-", "")">
+                                                <text>@statusItemDisplay</text>
+                                            </div>
+                                        }
+                                    </span>
+                                    <hr class="app-separator" />
+                                    <div class="app-dropdown" data-module="app-dropdown">
+                                        <button class="app-dropdown__toggle" aria-expanded="false">
+                                            View actions<span class="govuk-visually-hidden"> for @ksbProgressData.KsbKey</span>
+                                        </button>
+                                        <div class="app-dropdown__menu">
+                                            <ul class="app-dropdown__menu-list">
+                                                <li>
+                                                    <a class="app-dropdown__menu-link ksb-item-edit" href="#">
+                                                        <span class="app-dropdown__menu-icon">
+                                                            <svg>
+                                                                <use xlink:href="/assets/images/icons.svg#edit"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span>Edit</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="app-dropdown__menu-link ksb-item-removeLink" href="#"
+                                                       data-id="@ksbProgressData.KsbId">
+                                                        <span class="app-dropdown__menu-icon">
+                                                            <svg>
+                                                                <use xlink:href="/assets/images/icons.svg#unlink"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span>Remove link to this KSB</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                </div>
+
             <div class="govuk-form-group">
-                <p class="govuk-label">
-                    Knowledge, skills and behaviours (KSBs) added to this task
-                </p>
-                <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids"
-                       asp-for="@Model.Task.KsbsLinked" />
-                <div id="linked-ksb-details">
-                    @foreach (var ksb in Model.Task.TaskLinkedKsbs)
-                    {
-                    var ksbProgressData = Model.KsbProgressData.Where(k => k.KsbProgressId ==
-                    ksb.KSBProgressId).FirstOrDefault();
-                    if (ksbProgressData != null)
-                    {
-                    <div class="app-card ksb-item" id="ksb-item-@ksbProgressData.KsbId">
-                        <div class="app-card__header">
-                            <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
-                        </div>
-                        <p>@ksbProgressData.Detail</p>
-                        <span>
-                            @{
-                            var statusItem = @ksbProgressData.CurrentStatus;
-                            string statusItemDisplay = statusItem.GetEnumDescription();
-                            <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ","").Replace("-", "")">
-                            <text>@statusItemDisplay</text>
+                <fieldset class="govuk-fieldset">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Category</legend>
+                    <div class="govuk-radios govuk-radios--small" id="app-collapse-task-cat">
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
+                                       id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
+                                       checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                                <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
+                                    @cat.Title
+                                </label>
+                            </div>
+                        }
                     </div>
-                    }
-                    </span>
-                    <hr class="app-separator" />
-                    <div class="app-dropdown" data-module="app-dropdown">
-                        <button class="app-dropdown__toggle" aria-expanded="false">
-                            View actions<span class="govuk-visually-hidden"> for @ksbProgressData.KsbKey</span>
-                        </button>
-                        <div class="app-dropdown__menu">
-                            <ul class="app-dropdown__menu-list">
-                                <li>
-                                    <a class="app-dropdown__menu-link ksb-item-edit" href="#">
-                                        <span class="app-dropdown__menu-icon">
-                                            <svg>
-                                                <use xlink:href="/assets/images/icons.svg#edit"></use>
-                                            </svg>
-                                        </span>
-                                        <span>Edit</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="app-dropdown__menu-link ksb-item-removeLink" href="#"
-                                       data-id="@ksbProgressData.KsbId">
-                                        <span class="app-dropdown__menu-icon">
-                                            <svg>
-                                                <use xlink:href="/assets/images/icons.svg#unlink"></use>
-                                            </svg>
-                                        </span>
-                                        <span>Remove link to this KSB</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                }
-                }
+                </fieldset>
             </div>
+            <div class="govuk-button-group app-button-group">
+                <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+                   class="govuk-back-link app-back-link">Back without saving</a>
+                <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
+                    Save and continue
+                </button>
+            </div>
+             </form>
+            <form id="link-ksb-form" action="@Url.Action("LinkKsbs", "Ksb")" method="post" class="govuk-!-display-none">
+                <input type="hidden" name="taskId" value="@Model.Task.TaskId" />
+                <input type="hidden" name="linkedKsbGuids" value="@Model.LinkedKsbGuids" />
+                <input type="hidden" name="status" value="@Model.StatusId" />
+            </form>
         </div>
-        <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Category</legend>
-                <div class="govuk-radios govuk-radios--small" id="app-collapse-task-cat">
-                    @foreach (var cat in Model.Categories)
-                    {
-                    <div class="govuk-radios__item">
-                        <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
-                               id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
-                               checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
-                        <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
-                            @cat.Title
-                        </label>
-                    </div>
-                    }
-                </div>
-            </fieldset>
-        </div>
-        <div class="govuk-button-group app-button-group">
-            <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-               class="govuk-back-link app-back-link">Back without saving</a>
-            <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
-                Save and continue
-            </button>
-        </div>
-        </form>
     </div>
-</div>
-<div class="govuk-grid-column-one-third">
-    <ul class="govuk-list govuk-list--spaced">
-        <li>
-            <a href="#" id="move-task-status" data-status-id="@(Model.StatusId == 0 ? 1 : 0)" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
-                <span class="app-icon-item">
-                    <svg width="24" height="24" class="app-icon-item__icon">
-                        <use href="/assets/icons/sprite.svg#checkbox-done"></use>
-                    </svg>
-                    <span class="app-icon__text">Move this task to @(Model.StatusId == 0 ? "Done" : "To do")</span>
-                </span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
-                <span class="app-icon-item">
-                    <svg width="24" height="24" class="app-icon-item__icon">
-                        <use href="/assets/icons/sprite.svg#share"></use>
-                    </svg>
-                    <span class="app-icon__text">Share this task by email</span>
-                </span>
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("ConfirmDelete", "Tasks", new { id = Model.Task.TaskId, status = Model.StatusId })" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap app-link--destructive">
-            <span class="app-icon-item">
-                <svg width="24" height="24" class="app-icon-item__icon">
-                    <use href="/assets/icons/sprite.svg#delete"></use>
-                </svg>
-                <span class="app-icon__text">Delete task</span>
-            </span>
-            </a>
-        </li>
-    </ul>
-</div>
+    <div class="govuk-grid-column-one-third">
+        <ul class="govuk-list govuk-list--spaced">
+            <li>
+                <a href="#" id="move-task-status" data-status-id="@(Model.StatusId == 0 ? 1 : 0)" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
+                    <span class="app-icon-item">
+                        <svg width="24" height="24" class="app-icon-item__icon">
+                            <use href="/assets/icons/sprite.svg#checkbox-done"></use>
+                        </svg>
+                        <span class="app-icon__text">Move this task to @(Model.StatusId == 0 ? "Done" : "To do")</span>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
+                    <span class="app-icon-item">
+                        <svg width="24" height="24" class="app-icon-item__icon">
+                            <use href="/assets/icons/sprite.svg#share"></use>
+                        </svg>
+                        <span class="app-icon__text">Share this task by email</span>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("ConfirmDelete", "Tasks", new { id = Model.Task.TaskId, status = Model.StatusId })" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap app-link--destructive">
+                    <span class="app-icon-item">
+                        <svg width="24" height="24" class="app-icon-item__icon">
+                            <use href="/assets/icons/sprite.svg#delete"></use>
+                        </svg>
+                        <span class="app-icon__text">Delete task</span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
 <script src="~/js/task-validation.js" asp-append-version="true"></script>
 <script>
@@ -168,7 +170,7 @@
         var taskId = document.getElementById('TaskId').value;
         var statusId = this.dataset.statusId;
         var url = '@Url.Action("ChangeTaskStatus", "Tasks")' + '?taskId=' + encodeURIComponent(taskId) + '&statusId=' + statusId;
-        
+
         fetch(url)
                 .then(function () {
                     window.location.href = '@Url.Action("Index", "Tasks")' + '?status=' + statusId;

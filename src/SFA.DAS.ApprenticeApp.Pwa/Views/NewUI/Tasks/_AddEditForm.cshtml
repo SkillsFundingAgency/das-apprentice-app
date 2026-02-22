@@ -170,16 +170,11 @@
     }
 }
 
-
-
-
-
-
 <div class="govuk-form-group">
     <p class="govuk-label">
         Linked KSBs (optional)
     </p>
-    <a class="govuk-button govuk-button--secondary" asp-controller="Ksb" asp-action="LinkKsbs" asp-route-taskId="@Model.Task.TaskId">
+    <button type="submit" form="link-ksb-form" class="govuk-button govuk-button--secondary">
         Link KSBs
-    </a>
+    </button>
 </div>
