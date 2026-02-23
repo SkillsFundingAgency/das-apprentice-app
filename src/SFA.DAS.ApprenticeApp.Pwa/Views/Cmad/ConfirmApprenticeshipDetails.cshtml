@@ -8,12 +8,13 @@
 <div class="app-main">
     <div class="app-main__inner">
         <div class="app-page-header">
-            <h2>Confirm Your Apprenticeship Details</h2>
+            <h2>Check your apprenticeship details</h2>
         </div>        
 
         <form method="post" asp-action="ConfirmApprenticeshipDetails" asp-controller="Cmad">
             <input asp-for="ApprenticeId" type="hidden" />
             <input asp-for="ApprenticeshipId" type="hidden" />
+            <input asp-for="CommitmentsApprenticeshipId" type="hidden" />
             <input asp-for="RevisionId" type="hidden" />
             <input asp-for="Uln" type="hidden" />
 
@@ -21,15 +22,15 @@
                 <caption class="govuk-table__caption govuk-table__caption--m"></caption>
                 <tbody class="govuk-table__body">
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Name</th>
+                        <th scope="row" class="govuk-table__header">Full name</th>
                         <td class="govuk-table__cell" asp-for="EmployerName">@Model.FullName</td>                        
                     </tr>
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Employer</th>
+                        <th scope="row" class="govuk-table__header">Current employer</th>
                         <td class="govuk-table__cell">@Model.EmployerName</td>
                     </tr>
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Provider</th>
+                        <th scope="row" class="govuk-table__header">Training provider</th>
                         <td class="govuk-table__cell">@Model.TrainingProviderName</td>
                     </tr>
                     <tr class="govuk-table__row">
@@ -45,13 +46,13 @@
                         <td class="govuk-table__cell">@Model.Type</td>
                     </tr>                    
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Planned Start Date</th>
+                        <th scope="row" class="govuk-table__header">Planned training start date</th>
                         <td class="govuk-table__cell">@Model.StartDate</td>
                     </tr>
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header">Estimated Duration</th>
-                        <td class="govuk-table__cell">@Model.StartDate - @Model.EndDate</td>
-                    </tr>
+                        <th scope="row" class="govuk-table__header">Planned training end date</th>
+                        <td class="govuk-table__cell">@Model.EndDate</td>
+                    </tr>                   
                 </tbody>
             </table>           
             <div class="govuk-button-group">

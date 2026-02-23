@@ -4,8 +4,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
 {
     public class ConfirmApprenticeshipDetailsViewModel
     {
-        public Guid ApprenticeId { get; set; }
+        public Guid ApprenticeId { get; set; }        
         public long ApprenticeshipId { get; set; }
+        public long CommitmentsApprenticeshipId { get; set; }
         public long Uln { get; set; }
         public long RevisionId { get; set; }
         public string? FullName { get; set; }

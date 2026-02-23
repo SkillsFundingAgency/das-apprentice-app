@@ -26,8 +26,13 @@
 
             <div class="app-form-group">
                 <label asp-for="Uln" class="app-label">Your ULN</label>
+                <div class="govuk-hint" id="duedate-hint">Your ULN is 10 digits and only numbers, for example '1234567890'</div>
                 <input asp-for="Uln" required="required" class="govuk-input" />
             </div>
+
+            <p class="govuk-body">
+                <a asp-action="AccountNotFound" asp-controller="Account" class="govuk-link govuk-link--no-visited-state">I do not know my ULN</a>
+            </p>
 
             <div class="govuk-button-group">
                 <button class="govuk-button" type="submit">Continue</button>

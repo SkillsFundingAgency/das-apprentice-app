@@ -3,6 +3,7 @@
     public class Revision
     {
         public long RevisionId { get; set; }
+        public long ApprenticeshipId { get; set; }
         public long CommitmentsApprenticeshipId { get; set; }
         public DateTime ApprovedOn { get; set; }
         public string EmployerName { get; set; } = null!;

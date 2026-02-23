@@ -17,11 +17,11 @@
         <form method="GET" asp-action="CheckDetails" asp-controller="Cmad">
             <input asp-for="ApprenticeId" type="hidden" />
             <div class="app-form-group">
-                <label asp-for="FirstName" class="app-label">First Name</label>
+                <label asp-for="FirstName" class="app-label">First name</label>
                 <input asp-for="FirstName" required="required" class="govuk-input" />
             </div>
             <div class="app-form-group">
-                <label asp-for="LastName" class="app-label">Last Name</label>
+                <label asp-for="LastName" class="app-label">Last name</label>
                 <input asp-for="LastName" required="required" class="govuk-input" />
             </div>
             <div id="DateOfBirth" class="govuk-form-group">
@@ -29,7 +29,8 @@
                     <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint date-of-birth-error">
                         <label class="govuk-label govuk-label--s" asp-for="DateOfBirth">
                             Date of birth
-                        </label>                        
+                        </label>       
+                        <div class="govuk-hint" id="duedate-hint">For example, 26 05 2007</div>
                         <span asp-validation-for="DateOfBirth" class="govuk-error-message"></span>
                         <div class="govuk-date-input" id="date-of-birth">
                             <div class="govuk-date-input__item">

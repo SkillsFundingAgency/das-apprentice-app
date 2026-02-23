@@ -85,7 +85,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             // Guard
             if (model?.RegistrationIds == null || model.RegistrationIds.Count == 0)
             {
-                return View("AccountNotFound");
+                return View("AccountNotFound", "Account");
             }
 
             foreach (var item in model.RegistrationIds)
@@ -138,7 +138,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 await _client.ConfirmApprenticeshipDetails(apprenticeId, apprenticeshipId, revisionId, confs);
                 await _client.CreateMyApprenticeship(apprenticeId, new CreateMyApprenticeshipRequest
                 {
-                    ApprenticeshipId = apprenticeshipId,
+                    ApprenticeshipId = revision.CommitmentsApprenticeshipId,
                     Uln = model.Uln,
                     EmployerName = revision.EmployerName,
                     StartDate = ToIsoDate(revision.PlannedStartDate),
@@ -163,6 +163,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 ApprenticeId = apprenticeship.ApprenticeId,
                 ApprenticeshipId = apprenticeship.Id,
+                CommitmentsApprenticeshipId = revision.CommitmentsApprenticeshipId,
                 Uln = long.Parse(uln),
                 RevisionId = revision.RevisionId,
                 FullName = $"{apprentice.FirstName} {apprentice.LastName}",
