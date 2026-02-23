@@ -1,4 +1,6 @@
 @using SFA.DAS.ApprenticeApp.Application
+@using Microsoft.AspNetCore.Http
+
 <!doctype html>
 <html lang="en" class="govuk-template govuk-template--rebranded dfe-branding">
   <head>
@@ -42,7 +44,24 @@
     />
   </head>
 
-  <body class="govuk-template__body">
+
+  <!-- New UI opt-out banner (blue) with updated text and link styles -->
+  @if (Context.Session.GetString("UserType") == "SpecialUser")
+  {
+    <div class="app-banner">
+        <div class="govuk-width-container">
+            <p>
+              <b>You're using our beta</b>
+              <a  class="govuk-link govuk-link--no-visited-state"  href="https://dferesearch.fra1.qualtrics.com/jfe/form/SV_5nVvoRsCBPuUamq"
+                 target="_blank">Give us feedback</a>
+              <span style="font-size: 1.125rem; color: #0b0c0c;">or</span>
+              <a class="govuk-link govuk-link--no-visited-state" href="@Url.Action("OptOutNewUi", "Account", new { returnUrl = Context.Request.Path })">switch back to our old design</a>
+            </p>
+        </div>
+    </div>
+  }
+
+<body class="govuk-template__body">
     <script>
       document.body.className +=
         " js-enabled" +

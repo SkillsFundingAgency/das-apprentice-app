@@ -44,3 +44,17 @@ $govuk-canvas-background-colour: $app-bg-colour;
     margin: 0 auto;
   }
 }
+
+.app-banner {
+  background: #d6e8d9;
+  b {
+    margin-right: .5rem;
+    display: inline-block;
+  }
+}
+
+.app-banner__inner {
+  padding: .75rem 1rem;
+  max-width: 1024px;
+  margin: 0 auto;
+}
