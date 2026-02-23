@@ -8624,6 +8624,10 @@ p + .govuk-heading-s,
   width: 100%;
 }
 
+.app-radios__conditional--reminder {
+  border-left-color: #1D70B8;
+}
+
 .govuk-service-navigation__link span.icon {
   display: none;
 }
@@ -8722,6 +8726,16 @@ p + .govuk-heading-s,
     color: #ccc;
   }
 }
+.app-flex-align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-column-sticky {
+  position: sticky;
+  top: 2rem;
+}
+
 .app-onboarding__step-count {
   display: block;
   position: relative;
@@ -9266,6 +9280,44 @@ a > span.app-icon-item {
 .app-tag-group .app-tag {
   font-size: 14px;
   white-space: nowrap;
+}
+
+.app-text-size {
+  display: flex;
+  align-items: center;
+  font-family: "Inter";
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-text-size__btn {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  background: none;
+  color: #1a65a6;
+}
+.app-text-size__btn:hover {
+  background: #f3f2f1;
+}
+.app-text-size__btn:focus {
+  color: #000;
+  outline: 3px solid #ffdd00;
+}
+.app-text-size__btn:active {
+  color: #000;
+}
+
+.app-text-size__icon {
+  font-size: 3rem;
+}
+
+.app-text-size__label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 1rem;
 }
 
 .app-dropdown__menu-icon,

@@ -63,6 +63,7 @@ function initDataFetch() {
       })
       .then(function (html) {
         element.innerHTML = html;
+        convertMinutesToReadableDate();
       })
       .catch(function (error) {
         element.innerHTML =
@@ -71,6 +72,23 @@ function initDataFetch() {
       });
   });
 }
+
+const convertMinutesToReadableDate = () => {
+  const dates = document.querySelectorAll(`.app-js-convert-minutes-to-date`);
+  dates.forEach(function (element) {
+    const dueDateTime = new Date(element.dataset.due);
+    const minutes = parseInt(element.dataset.val, 10);
+    const date = new Date(dueDateTime.getTime() - minutes * 60 * 1000);
+    element.innerHTML = date.toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  });
+};
 
 const appInit = () => {
   const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
@@ -82,6 +100,7 @@ const appInit = () => {
   }
 
   initDataFetch();
+  convertMinutesToReadableDate();
 };
 
 appInit();

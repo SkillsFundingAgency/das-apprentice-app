@@ -96,3 +96,13 @@
     color: #ccc;
   }
 }
+
+.app-flex-align-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-column-sticky {
+  position: sticky;
+  top: 2rem;
+}
