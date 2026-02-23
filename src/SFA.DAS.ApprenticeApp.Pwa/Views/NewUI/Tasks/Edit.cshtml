@@ -98,7 +98,7 @@
             </form>
         </div>
     </div>
-    <div class="govuk-grid-column-one-third">
+    <div class="govuk-grid-column-one-third app-column-sticky">
         <ul class="govuk-list govuk-list--spaced">
             <li>
                 <a href="#" id="move-task-status" data-status-id="@(Model.StatusId == 0 ? 1 : 0)" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
@@ -134,6 +134,7 @@
     </div>
 </div>
 <script src="~/js/task-validation.js" asp-append-version="true"></script>
+<script src="~/js/task-reminder.js" asp-append-version="true"></script>
 <script>
     document.getElementById('move-task-status').addEventListener('click', function (e) {
         e.preventDefault();

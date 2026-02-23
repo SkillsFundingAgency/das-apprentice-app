@@ -12,110 +12,69 @@
 
 <h1 class="govuk-heading-xl">Settings</h1>
 
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-<div class="app-card">
-    <div class="app-settings-wrap settings-grid-container">
-        <div class="app-settings-content-wrap" style="display:none" id="notificationsOn">
-            <h2 class="govuk-heading-m">
-                Push notifications
-            </h2>
-            <p class="govuk-body">
-                You have turned on push notifications. This means you will receive notifications directly to your
-                device, including:
-            </p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>any reminders you have set for activities in your tracker</li>
-                <li>useful guidance about your apprenticeship</li>
-            </ul>
-            <p class="govuk-body">
-                To turn off push notifications, use the toggle and block notifications when prompted.
-            </p>
-        </div>
-        <div class="app-settings-content-wrap" style="display:block" id="notificationsOff">
-            <h2 class="govuk-heading-m">
-                Push notifications
-            </h2>
-            <p class="govuk-body">
-                You have turned off push notifications. This means you will only see notifications when you are
-                using the app, and you will not receive them directly to your device. This includes:
-            </p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>any reminders you have set for activities in your tracker</li>
-                <li>useful guidance about your apprenticeship</li>
-            </ul>
-            <p class="govuk-body">
-                To turn on push notifications, use the toggle and allow notifications when prompted.
-            </p>
-        </div>
-        <div class="app-settings-switch-wrap">
-            <label class="toggle">
-                <span class="govuk-visually-hidden">Allow push notifications</span>
-                <input type="checkbox" id="notificationSwitch" onclick="toggleNotifications()"
-                       onkeydown="toggleNotifications()" onkeypress="toggleNotifications()"  tabindex="0">
-                <span class="slider"></span>
-            </label>
-        </div>
-    </div>
-</div>
+        <h2 class="govuk-heading-m">
+            Push notifications
+        </h2>
+        <p class="govuk-body">
+            Turning on push notifications means you can get notifications directly to your
+            device, including:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>when you've set task reminders</li>
+            <li>if we need to tell you something about the Your Apprenticeship service</li>
+        </ul>
 
-<div class="app-card">
-    <div class="app-settings-wrap settings-grid-container">
-        <div class="app-settings-content-wrap" style="display:none" id="trackCookiesContentOn">
-            <h2 class="govuk-heading-m">
-                Tracking analytics
-            </h2>
-            <p class="govuk-body">
-                You have turned on additional cookies so we can remember your settings, understand how people use the service and make improvements.
-            </p>
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" type="checkbox" id="notificationSwitch" />
+                <label class="govuk-label govuk-checkboxes__label" for="notificationSwitch">Turn on push notifications</label>
+            </div>
         </div>
-        <div class="app-settings-content-wrap" id="trackCookiesContentOff">
-            <h2 class="govuk-heading-m">
-                Tracking analytics
-            </h2>
-            <p class="govuk-body">
-                You have turned off additional cookies.
-            </p>
-            <p class="govuk-body">
-                We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.
-            </p>
-        </div>
-        <div class="app-settings-switch-wrap">
-            <label class="toggle">
-                <span class="govuk-visually-hidden">Allow tracking analytics</span>
-                <input type="checkbox" id="trackCookiesSwitch" tabindex="0">
-                <span class="slider"></span>
-            </label>
-        </div>
-    </div>
-</div>
+        <p id="notificationHint" class="govuk-body govuk-!-margin-top-3" hidden></p>
 
+        <hr class="govuk-section-break govuk-section-break--l">
 
-<div class="app-card">
-    <div class="settings-grid-container">
-        <div class="app-settings-content-wrap">
-            <h2 class="govuk-heading-m">
-                <i class="fas fa-text-height"></i> Text size
-            </h2>          
+        <h2 class="govuk-heading-m">
+            Additional cookies
+        </h2>
+        <p class="govuk-body">
+            Turning on additional cookies allows us to remember your settings.
+            It also helps us understand how many people use the service, so we can improve it.
+        </p>
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" type="checkbox" id="additionalCookiesSwitch" />
+                <label class="govuk-label govuk-checkboxes__label" for="additionalCookiesSwitch">Turn on additional cookies</label>
+            </div>
         </div>
-      
-        <div class="text-size-controls">
-            <button id="textSizeDecrease" class="text-size-btn" aria-label="Decrease text size">
-                <span class="fas fa-minus changer">-</span>
+
+        <hr class="govuk-section-break govuk-section-break--l">
+
+        <h2 class="govuk-heading-m">
+            Text size
+        </h2>
+
+        <div class="app-text-size">
+            <button id="textSizeDecrease" class="app-text-size__btn" aria-label="Decrease text size">
+                <span class="app-text-size__icon">-</span>
+                <span class="app-text-size__text">Make text smaller</span>
             </button>
-            <div id="textSizeDisplay" class="text-size-display">100%</div>
-            <button id="textSizeIncrease" class="text-size-btn" aria-label="Increase text size">
-                <span class="fas fa-plus changer">+</span>
+            <div id="textSizeDisplay" class="app-text-size__label">100%</div>
+            <button id="textSizeIncrease" class="app-text-size__btn" aria-label="Increase text size">
+                <span class="app-text-size__icon">+</span>
+                <span class="app-text-size__text">Make text larger</span>
             </button>
         </div>
         
-        <div class="text-size-controls">
-                <span class="" style="margin: -54px 82px 25px 0px; text-align:center"> Make text smaller</span>
-                <span class="" style="margin: -54px 0px 25px 0px; text-align:center">Make text larger</span>
-        </div>
     </div>
 </div>
+
 
 <script>
     var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
     window.pushNotificationKey = publicKey;
 </script>
+<script src="~/js/settings.js" asp-append-version="true"></script>

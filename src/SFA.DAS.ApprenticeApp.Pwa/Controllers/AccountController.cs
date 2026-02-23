@@ -25,6 +25,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly IOuterApiClient _client;
         private readonly IApprenticeContext _apprenticeContext;
 
+        private const string NewUiOptInCookieName = "SFA.ApprenticeApp.NewUiOptIn";
+        private const string CohortUserSessionKey = "CohortUser";
+        private const string OptInUserSessionKey = "OptInUser";
+        private const string ForceOldUISessionKey = "ForceOldUI";
+        
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
             ApplicationConfiguration appConfig,
@@ -41,6 +46,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _apprenticeContext = apprenticeContext;
         }
 
+        
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Authenticated()
@@ -56,9 +62,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     if (apprenticeDetails?.MyApprenticeship != null)
                     {
-                        // 1473
-                        SetUiforCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
-                        
+                        // Determine cohort membership
+                        bool isCohort = IsUserInNewUiCohort(apprenticeDetails.MyApprenticeship.TrainingProviderId);
+                        HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
+
+                        // Check opt‑in cookie
+                        bool optIn = Request.Cookies[NewUiOptInCookieName] == "true";
+                        HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
+
+                        // Set legacy UserType for backward compatibility
+                        string userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
+                        HttpContext.Session.SetString("UserType", userType);
+
                         return RedirectToAction("Index", "Terms");
                     }
                     else
@@ -185,7 +200,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             };
             
             // 1473
-            SetUiforCohort(10001919);            
+            bool isCohort = IsUserInNewUiCohort(1);
+            HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
+
+            // Check opt‑in cookie
+            bool optIn = Request.Cookies[NewUiOptInCookieName] == "true";
+            HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
+
+            // Set legacy UserType for backward compatibility
+            string userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
+            HttpContext.Session.SetString("UserType", userType);
+      
 
             return RedirectToAction("Index", "Terms");
         }
@@ -213,7 +238,71 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
+        
+        [Authorize]
+        [HttpGet]
+        public IActionResult OptInNewUi(string returnUrl)
+        {
+            // Set cookie with long expiry (e.g., 1 year)
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            };
+            Response.Cookies.Append(NewUiOptInCookieName, "true", cookieOptions);
 
+            // Clear any force‑old‑UI flag (in case user previously opted out)
+            HttpContext.Session.Remove(ForceOldUISessionKey);
+
+            // Set opt‑in flag in session
+            HttpContext.Session.SetString(OptInUserSessionKey, "true");
+            HttpContext.Session.SetString("UserType", "SpecialUser");
+
+            // Clear welcome splash screen cookie so user sees it again
+            if (Request.Cookies[Constants.WelcomeSplashScreenCookieName] != null)
+            {
+                Response.Cookies.Delete(Constants.WelcomeSplashScreenCookieName);
+            }
+
+            _logger.LogInformation("User opted into new UI via button.");
+
+            // Always redirect to Welcome screen to show the welcome message
+            return RedirectToAction("Index", "Welcome");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult OptOutNewUi(string returnUrl)
+        {
+            // Delete the opt-in cookie by setting an expired cookie
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            };
+            Response.Cookies.Append(NewUiOptInCookieName, "false", cookieOptions);
+
+            // Set a session flag to force old UI for this session
+            HttpContext.Session.SetString("ForceOldUI", "true");
+
+            // Clear any opt-in session flag
+            HttpContext.Session.SetString(OptInUserSessionKey, "false");
+            HttpContext.Session.SetString("UserType", "RegularUser");
+
+            _logger.LogInformation("User opted out of new UI.");
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+
+            return RedirectToAction("Index", "Tasks");
+        }
+        
         [HttpGet]
         public async Task<IActionResult> YourAccount()
         {
@@ -267,7 +356,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         public bool IsUserInNewUiCohort(long providerId) => 
-            new long[] { 10001919 }.Contains(providerId);        
+            new long[] {  }.Contains(providerId);        
     }
 
 }
