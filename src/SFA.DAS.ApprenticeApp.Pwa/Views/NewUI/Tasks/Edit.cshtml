@@ -45,8 +45,7 @@
                     <div id="linked-ksb-details">
                         @foreach (var ksbProgressData in Model.KsbProgressData)
                         {
-                          
-                           <div class="app-card ksb-item" id="ksb-item-@ksbProgressData.KsbId">
+                            <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksbProgressData.KsbId" class="app-card">
                                     <div class="app-card__header">
                                         <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
                                     </div>
@@ -60,7 +59,7 @@
                                             </div>
                                         }
                                     </span>
-                                </div>
+                          </a>
                         }
                     </div>
                 </div>
