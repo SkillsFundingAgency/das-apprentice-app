@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -29,8 +30,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             else
             {
+                var isNewUi = Claims.GetClaim(HttpContext, Constants.NewUiEnabledClaimKey);
+                if (string.Equals(isNewUi, "true", StringComparison.OrdinalIgnoreCase))
+                {
+                    return RedirectToAction("Index", "Ksb");
+                }
                 return RedirectToAction("Index", "Tasks");
-
             }
         }
     }

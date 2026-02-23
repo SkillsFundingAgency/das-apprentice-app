@@ -5,11 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -20,12 +23,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
-            ApplicationConfiguration appConfig, 
+            ApplicationConfiguration appConfig,
             IConfiguration configuration,
-            IOuterApiClient client
+            IOuterApiClient client,
+            IApprenticeContext apprenticeContext
         )
         {
             _logger = logger;
@@ -33,13 +38,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Authenticated()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
@@ -47,23 +53,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 try
                 {
-                    var lastName = Claims.GetClaim(HttpContext, Constants.ApprenticeLastNameClaimKey);
-                    if (!string.IsNullOrEmpty(lastName))
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    if (apprenticeDetails?.MyApprenticeship != null)
                     {
-                        var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                        if (apprenticeDetails?.MyApprenticeship != null)
-                        {
-                            return RedirectToAction("Index", "Terms");
-                        }
-                        else
-                        {
-                            string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                            _logger.LogInformation(cmaderrormsg);
-                            return RedirectToAction("CmadError", "Account");
-                        }
+                        // 1473
+                        SetUiforCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
+                        
+                        return RedirectToAction("Index", "Terms");
                     }
                     else
                     {
+                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
+                        _logger.LogInformation(cmaderrormsg);
                         return RedirectToAction("CmadError", "Account");
                     }
                 }
@@ -115,6 +116,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                     claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
                     claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
+                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipTitleClaimKey, apprenticeDetails.MyApprenticeship.Title ?? ""));
+
+                    // Enable new UI
+                    claims?.Identities.First().AddClaim(new Claim(Constants.NewUiEnabledClaimKey, "true"));
                 }
 
                 // Set extended cookie expiration here
@@ -142,7 +147,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> SigningOut()
         {
-           var idToken = await HttpContext.GetTokenAsync("id_token");
+            var idToken = await HttpContext.GetTokenAsync("id_token");
 
             var authenticationProperties = new AuthenticationProperties();
             authenticationProperties.Parameters.Clear();
@@ -166,7 +171,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         [Authorize]
         [Route("Stub-Auth", Name = RouteNames.StubSignedIn)]
-        public IActionResult StubSignedIn()
+        public async Task<IActionResult> StubSignedIn()
         {
             if (_config["ResourceEnvironmentName"].ToUpper() == "PRD")
             {
@@ -178,8 +183,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 Email = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email))?.Value.ToLower(),
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
+            
+            // 1473
+            SetUiforCohort(10001919);            
 
             return RedirectToAction("Index", "Terms");
+        }
+
+        [HttpGet]
+        public IActionResult AccountNotFound()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -187,23 +201,73 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult CmadError()
         {
             return View();
-        }      
-        
+        }
+
         [HttpGet]
         public IActionResult EmailMismatchError()
         {
             return View();
-        }             
+        }
 
         [HttpGet]
-        public IActionResult YourAccount()
+        public async Task<IActionResult> YourAccount()
         {
-            return View();
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            var apprenticeAccountModel = new ApprenticeAccountModel();
+            var apprenticeKsbsPageModel = new ApprenticeKsbsPageModel();
+
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+
+                if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
+                {
+                    var filterKsbs = Filter.FilterKsbResults(
+                        apprenticeKsbResult,
+                        Request.Cookies[Constants.KsbFiltersCookieName]);
+
+                    if (filterKsbs.HasFilterRun)
+                    {
+                        apprenticeKsbResult = filterKsbs.FilteredKsbs;
+                    }
+                }
+
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                apprenticeKsbsPageModel.Ksbs = apprenticeKsbResult;
+                apprenticeKsbsPageModel.KnowledgeCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Knowledge);
+                apprenticeKsbsPageModel.SkillCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Skill);
+                apprenticeKsbsPageModel.BehaviourCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Behaviour);
+                apprenticeKsbsPageModel.SearchTerm = null;
+                apprenticeKsbsPageModel.MyApprenticeship = apprenticeDetails?.MyApprenticeship;
+            }
+
+            apprenticeAccountModel.apprenticeKsbsPageModel = apprenticeKsbsPageModel;
+
+            return View(apprenticeAccountModel);
         }
+        
+        private void SetUiforCohort(long? providerId)
+        {
+            bool isUserInNewUiCohort = IsUserInNewUiCohort(providerId.Value);
+            string userType = isUserInNewUiCohort ? "SpecialUser" : "RegularUser";
+            string logMessage = isUserInNewUiCohort 
+                ? $"User provider Id: {providerId} identified as SpecialUser (New UI Cohort)"
+                : $"User provider Id: {providerId} identified as RegularUser";
+    
+            HttpContext.Session.SetString("UserType", userType);
+            _logger.LogInformation(logMessage);
+        }
+
+        public bool IsUserInNewUiCohort(long providerId) => 
+            new long[] { 10001919 }.Contains(providerId);        
     }
+
 }

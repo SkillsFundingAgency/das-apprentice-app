@@ -1,0 +1,103 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
+@{
+    ViewData["Section"] = "Ksbs";
+    Layout = "_Layout";
+    ViewBag.HideNavigation = true;
+}
+<h1 class="govuk-heading-xl">Link task to KSBs</h1>
+<partial name="_HelpKSBs.cshtml" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="app-tabs" data-module="app-tabs">
+            <ul class="app-tabs__list">
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab" href="#knowledge">
+                        Knowledge (<span class="k-count">@Model.KnowledgeCount.ToString()</span>)
+                    </a>
+                </li>
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab" href="#skill">
+                        Skills (<span class="s-count">@Model.SkillCount.ToString()</span>)
+                    </a>
+                </li>
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab" href="#behaviour">
+                        Behaviours (<span class="b-count">@Model.BehaviourCount.ToString()</span>)
+                    </a>
+                </li>
+            </ul>
+            @{
+                string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
+                int ksbCount = 1;
+            
+                foreach (var KSBType in KSBTypes)
+                {
+                    <div class="app-tabs__panel" id="@KSBType.ToLower()">
+                        @foreach (var ksb in Model.Ksbs.OrderBy(k => int.Parse(k.Key.Substring(1))))
+                        {
+                            if (KSBType == ksb.Type.ToString())
+                            {
+                                var statusTitleDisplayClass = "";
+                                var statusTitleDisplay = "";
+                                var noteText = "";
+            
+                                if (ksb.Progress != null)
+                                {
+                                    var statusTitleClass = ksb.Progress.CurrentStatus;
+                                    statusTitleDisplayClass = statusTitleClass.GetEnumDescription().Replace(" ", "-").ToLower();
+                                    statusTitleDisplay = statusTitleClass.GetEnumDescription();
+                                    noteText = ksb.Progress.Note;
+                                }
+                                else
+                                {
+                                    statusTitleDisplayClass = "not-started";
+                                    statusTitleDisplay = "Not started";
+                                }
+                             
+                                    <div>
+                                        <h2 class="govuk-heading-m">@ksb.Key</h2>
+                                        <p class="govuk-hint govuk-!-font-size-16">@ksb.Detail</p>
+                                        
+                                        @if (ksb.Progress == null)
+                                        {
+                                            <div class="app-tag app-tag--status-notstarted govuk-!-margin-top-1 govuk-!-margin-bottom-5">
+                                                <text>Not started</text>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            var status = ksb.Progress.CurrentStatus;
+                                            string statusDisplay = status.GetEnumDescription();
+                                            <div class="app-tag app-tag--status-@status.ToString().ToLower() govuk-!-margin-top-1 govuk-!-margin-bottom-5">
+                                                <text>@statusDisplay</text>
+                                            </div>
+                                        }
+                                        
+                                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                            <div class="govuk-checkboxes__item">
+                                                <input class="govuk-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
+                                                       id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText" />
+                                                <label class="govuk-label govuk-checkboxes__label" for="ksb-@ksb.Id">
+                                                    Link this KSB to the task
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+                                    
+                                    </div>
+                        
+                         
+                            }
+                            ksbCount++;
+                        }
+                    </div>
+                }
+            }
+        </div>
+        <div class="govuk-button-group app-button-group">
+            <a href="#" class="govuk-back-link app-back-link">Back without saving</a>
+            <button class="govuk-button" data-module="govuk-button" >Save and continue</button>
+        </div>
+    </div>
+</div>

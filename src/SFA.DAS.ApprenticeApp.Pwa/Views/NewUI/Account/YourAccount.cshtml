@@ -1,0 +1,25 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeAccountModel
+
+@{
+    ViewData["Title"] = "Your account";
+    ViewData["Section"] = "Account";
+}
+
+<h1 class="govuk-heading-xl">Account</h1>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <ul class="app-stack">
+            <li class="app-stack__list-item"><a asp-controller="Profile" asp-action="Index" class="app-stack__link">Your
+                    apprenticeship details</a></li>
+            <li class="app-stack__list-item"><a asp-controller="Settings" asp-action="Index"
+                    class="app-stack__link">Settings</a></li>
+            <li class="app-stack__list-item"><a asp-controller="Home" asp-action="AccessibilityStatement"
+                    class="app-stack__link">Accessibility statement</a></li>
+        </ul>
+        <a class="govuk-button govuk-button--secondary"  asp-controller="Account" asp-action="SigningOut">Sign out</a>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <partial name="../Ksb/_YourKSBs.cshtml" model="Model.apprenticeKsbsPageModel" />
+        <partial name="../Ksb/_YourApprenticeship.cshtml" model="Model.apprenticeKsbsPageModel" />
+    </div>
+</div>

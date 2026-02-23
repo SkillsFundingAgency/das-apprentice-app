@@ -12,21 +12,24 @@ public class ProfileController : Controller
 {
     private readonly ILogger<ProfileController> _logger;
     private readonly IOuterApiClient _client;
+    private readonly IApprenticeContext _apprenticeContext;
 
     public ProfileController
         (
         ILogger<ProfileController> logger,
-        IOuterApiClient client
+        IOuterApiClient client,
+        IApprenticeContext apprenticeContext
         )
     {
         _logger = logger;
         _client = client;
+        _apprenticeContext = apprenticeContext;
     }
 
     [Authorize]
     public async Task<IActionResult> Index()
     {
-        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+        var apprenticeId = _apprenticeContext.ApprenticeId;
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
@@ -50,7 +53,7 @@ public class ProfileController : Controller
             _logger.LogWarning("ProfileController: ModelState is not valid in AddSubscription.");
             return RedirectToAction("Index", "Profile");
         }
-        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+        var apprenticeId = _apprenticeContext.ApprenticeId;
 
         if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(request.Endpoint))
         {
@@ -82,7 +85,7 @@ public class ProfileController : Controller
             return RedirectToAction("Index", "Profile");
         }
 
-        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+        var apprenticeId = _apprenticeContext.ApprenticeId;
 
         if (!string.IsNullOrEmpty(apprenticeId) && !string.IsNullOrEmpty(request.Endpoint))
         {

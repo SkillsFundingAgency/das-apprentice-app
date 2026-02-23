@@ -12,21 +12,30 @@ public class TermsController : Controller
 {
     private readonly ILogger<TermsController> _logger;
     private readonly IOuterApiClient _client;
+    private readonly IApprenticeContext _apprenticeContext;
 
     public TermsController
         (
         ILogger<TermsController> logger,
-        IOuterApiClient client
+        IOuterApiClient client,
+        IApprenticeContext apprenticeContext
         )
     {
         _logger = logger;
         _client = client;
+        _apprenticeContext = apprenticeContext;
     }
 
     [Authorize]
     public async Task<IActionResult> Index()
-    {
-        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+    {        
+        var apprenticeId = _apprenticeContext.ApprenticeId;
+
+        if (!Guid.TryParse(apprenticeId, out var apprenticeGuid))
+        {
+            _logger.LogWarning("ApprenticeId claim is missing or invalid in Terms Index.");
+            return RedirectToAction("Error", "Account");
+        }
 
         // update apprentice log in time
         await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
@@ -51,7 +60,7 @@ public class TermsController : Controller
     [Authorize]
     public async Task<IActionResult> TermsAccept()
     {
-        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+        var apprenticeId = _apprenticeContext.ApprenticeId;
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {
@@ -71,7 +80,7 @@ public class TermsController : Controller
     [Authorize]
     public IActionResult TermsDecline()
     {
-        var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+        var apprenticeId = _apprenticeContext.ApprenticeId;
         _logger.LogInformation($"Apprentice declined the Terms. ApprenticeId: {apprenticeId}");
         return RedirectToAction("SigningOut", "Account");
     }

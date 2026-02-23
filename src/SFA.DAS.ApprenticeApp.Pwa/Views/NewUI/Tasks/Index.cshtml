@@ -1,0 +1,47 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
+@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using SFA.DAS.ApprenticeApp.Web.Extensions
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
+
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    Layout = "_Layout";
+}
+<h1 class="govuk-heading-xl">Tasks</h1>
+<partial name="_HelpTasks.cshtml" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
+            <ul class="app-tabs__list">
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab todo" href="#tasks-todo">
+                        To do
+                    </a>
+                </li>
+                <li class="app-tabs__list-item">
+                    <a class="app-tabs__tab done" href="#tasks-done">
+                        Done
+                    </a>
+                </li>
+            </ul>
+            <div class="app-tabs__panel" id="tasks-todo">
+                <div data-fetch="true" data-url="@Url.Action("ToDoTasks", "Tasks")">
+                    <p class="govuk-hint">Loading</p>
+                </div>
+            </div>
+            <div class="app-tabs__panel" id="tasks-done">
+                <div data-fetch="true" data-url="@Url.Action("DoneTasks", "Tasks")">
+                    <p class="govuk-hint">Loading</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width">
+            <span>Add a task</span>
+        </a>
+    </div>
+</div>

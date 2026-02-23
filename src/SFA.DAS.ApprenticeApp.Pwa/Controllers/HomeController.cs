@@ -12,11 +12,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 public class HomeController : Controller
 {
     private readonly IOuterApiClient _client;
+    private readonly IApprenticeContext _apprenticeContext;
 
-    public HomeController(IOuterApiClient client)
+    public HomeController(IOuterApiClient client, IApprenticeContext apprenticeContext)
         {
             _client = client;
-        }
+            _apprenticeContext = apprenticeContext;
+    }
 
     public async Task<IActionResult> Index()
     {
@@ -28,7 +30,7 @@ public class HomeController : Controller
         
         if (HttpContext.User.Identity != null && HttpContext.User.Identity.IsAuthenticated)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {

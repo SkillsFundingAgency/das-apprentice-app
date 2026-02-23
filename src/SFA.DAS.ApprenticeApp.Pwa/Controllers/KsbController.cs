@@ -14,21 +14,24 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<KsbController> _logger;
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
         public KsbController(
             ILogger<KsbController> logger,
-            IOuterApiClient client
+            IOuterApiClient client,
+            IApprenticeContext apprenticeContext
             )
         {
             _logger = logger;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index(string searchTerm)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -64,13 +67,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         }
                     }
 
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
                     ApprenticeKsbsPageModel apprenticeKsbsPageModel = new()
                     {
                         Ksbs = apprenticeKsbResult,
                         KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
                         SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
                         BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
-                        SearchTerm = searchTerm
+                        SearchTerm = searchTerm,
+                        MyApprenticeship = apprenticeDetails?.MyApprenticeship
                     };
 
                     return View(apprenticeKsbsPageModel);
@@ -86,7 +92,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> LinkKsbs()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -122,7 +128,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> AddUpdateKsbProgress(Guid id)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -174,7 +180,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             if (ksbProgressData != null && ksbProgressData.ApprenticeshipId == 0)
             {
-                var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+                var apprenticeId = _apprenticeContext.ApprenticeId;
 
                 if (!string.IsNullOrEmpty(apprenticeId))
                 {
@@ -203,7 +209,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> EditKsbProgress(Guid ksbId, string ksbKey, KsbType ksbType, KSBStatus ksbStatus, string note)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -243,7 +249,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveTaskFromKsbProgress(int progressId, int taskId)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {

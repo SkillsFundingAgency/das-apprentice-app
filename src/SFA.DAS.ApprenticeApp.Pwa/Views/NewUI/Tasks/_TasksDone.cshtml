@@ -1,0 +1,92 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+
+@{
+    Layout = null;
+}
+
+@foreach (var task in Model.Tasks)
+{
+    <a class="app-card" id="task-@task.TaskId" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId, status = 1 })">
+        <div class="app-card__header">
+            <h2 class="app-card__heading">@task.Title</h2>
+        </div>
+        <div class="app-card__content">
+            @if (task.ApprenticeshipCategory != null && task.ApprenticeshipCategory.Count > 0)
+            {
+            <div class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "") govuk-!-margin-bottom-3">
+            @task.ApprenticeshipCategory.First().Title
+        </div>
+        }
+        @if (!String.IsNullOrEmpty(task.Note))
+        {
+        <p>
+            <span>@task.Note</span>
+        </p>
+        }
+        <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
+            @if (task.TaskLinkedKsbs.Any())
+            {
+            <li class="app-icon-item">
+                <svg width="24" height="24" class="app-icon-item__icon">
+                    <use href="/assets/icons/sprite.svg#link"></use>
+                </svg>
+                <span class="app-icon-item__text">
+                                            Linked to @task.TaskLinkedKsbs.Count.ToString()
+                                            @if (task.TaskLinkedKsbs.Count > 1)
+                                            {
+                                                <text>KSBs</text>
+                                            }
+                                            else
+                                            {
+                                                <text>KSB</text>
+                                            }
+                                        </span>
+            </li>
+            }
+            <li class="app-icon-item">
+                <svg width="24" height="24" class="app-icon-item__icon">
+                    <use href="/assets/icons/sprite.svg#calendar"></use>
+                </svg>
+                <span class="app-icon-item__text">Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
+            </li>
+            @if (task.TaskReminders.Any())
+            {
+            <li class="app-icon-item">
+                <svg width="24" height="24" class="app-icon-item__icon">
+                    <use href="/assets/icons/sprite.svg#notifications"></use>
+                </svg>
+                <span class="app-icon-item__text">
+                                Reminder set:
+                            @switch (@task.TaskReminders.Select(r => r.ReminderValue).First())
+                            {
+                                case 0:
+                                    <text>0 minutes before</text>
+                                    break;
+                                case 60:
+                                    <text>1 hour before</text>
+                                    break;
+                                case 1440:
+                                    <text>1 day before</text>
+                                    break;
+                                default:
+                                    <span class="app-js-convert-minutes-to-date"
+                                          data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)"
+                                          data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
+                break;
+                }
+                </span>
+            </li>
+            }
+         
+            @if (task.TaskFiles.Any())
+            {
+            <p>
+                <span>@task.TaskFiles.Count.ToString() file(s) attached</span>
+            </p>
+            }
+        
+        
+        </ul>
+        </div>
+    </a>
+}

@@ -11,10 +11,13 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.GovUK.Auth.Services;
 using SFA.DAS.Testing.AutoFixture;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -64,25 +67,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
 
         [Test, MoqAutoData]
         public async Task Loading_Authenticated_Page_LoadsError_ForNoApprentice(
-           [Frozen] Mock<IOuterApiClient> client,
-           [Greedy] AccountController controller)
+    [Frozen] Mock<IOuterApiClient> client,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Greedy] AccountController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, "");
+            // Arrange
+            apprenticeContext
+                .Setup(x => x.ApprenticeId)
+                .Returns((string?)null);   // ← no apprentice
 
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-               apprenticeIdClaim
-            })});
-            httpContext.User = claimsPrincipal;
+            var httpContext = new DefaultHttpContext();
 
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
 
+            // Act
             var result = await controller.Authenticated() as RedirectToActionResult;
-            result.ActionName.Should().Be("EmailMismatchError");
+
+            // Assert
+            result!.ActionName.Should().Be("EmailMismatchError");
             result.ControllerName.Should().Be("Account");
         }
 
@@ -112,14 +117,62 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ActionName.Should().Be("CmadError");
             result.ControllerName.Should().Be("Account");
         }
-        //  
-
 
         [Test, MoqAutoData]
-        public void Loading_YourAccount_Page([Greedy] AccountController controller)
+        public async Task Loading_YourAccount_Page(
+        [Frozen] Mock<IApprenticeContext> apprenticeContext,
+        [Frozen] Mock<IOuterApiClient> client,
+        [Frozen] Mock<IRequestCookieCollection> cookies,
+        [Greedy] AccountController controller)
         {
-            var result = controller.YourAccount() as ActionResult;
+            var apprenticeId = Guid.NewGuid().ToString();
+
+            apprenticeContext.Setup(x => x.ApprenticeId).Returns(apprenticeId);
+
+            var httpContext = new DefaultHttpContext();
+
+            cookies.Setup(c => c[Constants.KsbFiltersCookieName]).Returns("filter=NOT-STARTED");
+            httpContext.Request.Cookies = cookies.Object;
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var ksbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb { Type = KsbType.Knowledge },
+                new ApprenticeKsb { Type = KsbType.Skill },
+                new ApprenticeKsb { Type = KsbType.Behaviour },
+                new ApprenticeKsb { Type = KsbType.Skill }
+            };
+
+            object value = client.Setup(x => x.GetApprenticeshipKsbs(It.IsAny<Guid>()))
+                  .ReturnsAsync(ksbs);
+
+            client.Setup(x => x.GetApprenticeDetails(It.IsAny<Guid>()))
+                  .ReturnsAsync(new ApprenticeDetails
+                  {
+                      MyApprenticeship = new MyApprenticeship()
+                  });
+
+            var result = await controller.YourAccount() as ViewResult;
+
             result.Should().NotBeNull();
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().BeOfType<ApprenticeAccountModel>();
+
+            var model = result!.Model as ApprenticeAccountModel;
+            var ksbsModel = model!.apprenticeKsbsPageModel;
+
+            using (new AssertionScope())
+            {
+                ksbsModel.Should().NotBeNull();
+                ksbsModel!.Ksbs.Should().HaveCount(4);
+                ksbsModel.KnowledgeCount.Should().Be(1);
+                ksbsModel.SkillCount.Should().Be(2);
+                ksbsModel.BehaviourCount.Should().Be(1);
+                ksbsModel.MyApprenticeship.Should().NotBeNull();
+            }
         }
 
         [Test, MoqAutoData]
@@ -156,7 +209,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             result.ControllerName.Should().Be("Account");
         }
 
-        
+
         [Test, MoqAutoData]
         public void Get_AccountDetails_StubFails_InProd(
            [Frozen] Mock<IConfiguration> configuration,
@@ -181,50 +234,136 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
         }
 
         [Test, MoqAutoData]
-        public void StubSignedIn_Redirects_To_Terms(
-             [Frozen] Mock<IConfiguration> configuration,
-             [Greedy] AccountController controller)
+        public async Task StubSignedIn_Redirects_To_Terms(
+            [Frozen] Mock<IConfiguration> configuration,
+            [Greedy] AccountController controller)
         {
+            // Arrange
             var httpContext = new DefaultHttpContext();
+    
+            // Create a mock session - mock the Set method (not SetString which is an extension method)
+            var sessionMock = new Mock<ISession>();
+    
+            // Set up the Set method which SetString extension method calls internally
+            sessionMock.Setup(s => s.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Callback<string, byte[]>((key, value) => 
+                {
+                    // Optionally capture values if needed for assertions
+                })
+                .Verifiable();
+    
+            // Also mock IsAvailable to return true
+            sessionMock.SetupGet(s => s.IsAvailable).Returns(true);
+    
+            httpContext.Session = sessionMock.Object;
+    
             var emailClaim = new Claim(ClaimTypes.Email, "test@test.com");
             var nameClaim = new Claim(ClaimTypes.NameIdentifier, "test");
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, Guid.NewGuid().ToString());
+    
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-     {
-         emailClaim,
-         nameClaim
-     })});
+            {
+                emailClaim,
+                nameClaim,
+                apprenticeIdClaim
+            })});
+    
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
+    
             configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
-            var result = controller.StubSignedIn() as RedirectToActionResult;
+    
+            // Act
+            var result = await controller.StubSignedIn() as RedirectToActionResult;
+    
+            // Assert
             result.ActionName.Should().Be("Index");
             result.ControllerName.Should().Be("Terms");
+    
+            // Verify Set was called (which SetString calls)
+            sessionMock.Verify(s => s.Set(It.IsAny<string>(), It.IsAny<byte[]>()), Times.AtLeastOnce);
         }
-
+        
         [Test, MoqAutoData]
-        public void StubSignedIn_Fails_In_Prod(
-             [Frozen] Mock<IConfiguration> configuration,
-             [Greedy] AccountController controller)
+        public async Task StubSignedIn_Fails_In_Prod(
+            [Frozen] Mock<IConfiguration> configuration,
+            [Greedy] AccountController controller)
         {
             var httpContext = new DefaultHttpContext();
             var emailClaim = new Claim(ClaimTypes.Email, "test@test.com");
             var nameClaim = new Claim(ClaimTypes.NameIdentifier, "test");
             var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-     {
-         emailClaim,
-         nameClaim
-     })});
+            {
+                emailClaim,
+                nameClaim
+            })});
             httpContext.User = claimsPrincipal;
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
             configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("PRD");
-            var result = controller.StubSignedIn();
-            result.Should().BeOfType(typeof(NotFoundResult));
+            var result = await controller.StubSignedIn();
+            result.Should().BeOfType<NotFoundResult>();
         }
+
+        [Test, MoqAutoData]
+        public void IsUserInNewUiCohort_ReturnsFalse_ForOtherProviderIds([Greedy] AccountController controller)
+        {
+            // Arrange & Act & Assert
+            controller.IsUserInNewUiCohort(0).Should().BeFalse();
+            controller.IsUserInNewUiCohort(6).Should().BeFalse();
+            controller.IsUserInNewUiCohort(999).Should().BeFalse();
+            controller.IsUserInNewUiCohort(-1).Should().BeFalse();
+        }
+
+        [Test, MoqAutoData]
+        public async Task AccountDetails_Post_WithApprenticeId_AddsNewUiEnabledClaim(
+            [Frozen] Mock<IConfiguration> configuration,
+            [Frozen] Mock<IStubAuthenticationService> authenticationService,
+            [Frozen] Mock<IOuterApiClient> client,
+            [Greedy] AccountController controller)
+        {
+            // Arrange
+            var httpContext = new DefaultHttpContext();
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            
+            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
+            
+            var model = new StubAuthenticationViewModel { Email = "test@test.com" };
+            var apprenticeId = Guid.NewGuid();
+            
+            // Mock authentication service to return claims with apprentice ID
+            var claimsIdentity = new ClaimsIdentity();
+            claimsIdentity.AddClaim(new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString()));
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            
+            authenticationService.Setup(x => x.GetStubSignInClaims(model))
+                .ReturnsAsync(claimsPrincipal);
+            
+            // Mock client to return apprentice details
+            client.Setup(c => c.GetApprenticeDetails(It.Is<Guid>(id => id == apprenticeId)))
+                .ReturnsAsync(new ApprenticeDetails
+                {
+                    MyApprenticeship = new MyApprenticeship
+                    {
+                        ApprenticeshipId = 123,
+                        StandardUId = "456"
+                    }
+                });
+
+            // Act
+            var result = await controller.AccountDetails(model);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>();
+            
+            // Verify that the NewUiEnabledClaim was added
+            claimsIdentity.HasClaim(Constants.NewUiEnabledClaimKey, "true").Should().BeTrue();
+        }
+        
     }
 }

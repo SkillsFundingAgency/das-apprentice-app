@@ -1,0 +1,103 @@
+.govuk-service-navigation__link span.icon {
+  display: none;
+}
+
+.govuk-service-navigation__container {
+  flex-direction: column;
+}
+
+@media (max-width: 40.0525em) and (orientation: portrait) {
+  .govuk-template--rebranded {
+    background: #fff;
+  }
+  .govuk-header {
+    display: none;
+  }
+  .govuk-service-navigation__service-name {
+    display: none;
+  }
+  .govuk-template--rebranded .govuk-service-navigation {
+    border: none;
+  }
+  .govuk-service-navigation__toggle {
+    display: none;
+  }
+  .govuk-service-navigation__wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    height: 5rem;
+    background: #f4f8fb;
+    border-top: 1px solid #b1b4b6;
+    z-index: 10;
+  }
+  .govuk-service-navigation__list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+    margin: 0 10px;
+    padding: 0;
+    list-style: none;
+    gap: 1px;
+    justify-content: space-around;
+  }
+  .govuk-service-navigation__item {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: none;
+    text-align: center;
+    border-top: 4px solid transparent;
+    min-width: 15%;
+  }
+  .govuk-service-navigation__item--active {
+    font-weight: 700;
+    border-top-color: #1d70b8;
+  }
+  .govuk-service-navigation__item--active span.icon {
+    opacity: 1 !important;
+  }
+  .govuk-service-navigation__link {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    font-size: 0;
+    align-items: center;
+  }
+  .govuk-service-navigation__link span.text {
+    font-size: 14px;
+  }
+  .govuk-service-navigation__link span.icon {
+    display: block;
+    svg {
+      fill: currentColor;
+      width: 2rem;
+      height: 2rem;
+      margin-top: 5px;
+      margin-bottom: 2px;
+    }
+  }
+  .govuk-footer,
+  .govuk-template--rebranded .govuk-footer {
+    background: none;
+    border: none;
+    text-align: center;
+  }
+  .govuk-footer__meta {
+    display: none;
+  }
+  .govuk-footer__crown {
+    color: #ccc;
+  }
+}
+
+.app-flex-align-right {
+  display: flex;
+  justify-content: flex-end;
+}

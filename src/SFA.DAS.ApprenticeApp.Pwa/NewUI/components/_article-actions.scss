@@ -1,0 +1,41 @@
+@use "govuk/settings/index" as settings;
+
+.app-article-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 1.5rem;
+  position: relative;
+  bottom: -1rem;
+}
+
+.app-article-actions__button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  color: settings.$govuk-link-colour;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  & .icon {
+    fill: currentColor;
+  }
+
+  &:hover {
+    color: settings.$govuk-link-colour;
+  }
+
+  &:active {
+    color: settings.$govuk-link-active-colour;
+    outline: none;
+  }
+
+  &:focus {
+    outline: none;
+    color: #000;
+  }
+
+}

@@ -8220,8 +8220,7 @@ input {
   margin-bottom: 0;
   padding-left: 8px;
   padding-right: 8px;
-  flex-grow: 1;
-  flex-basis: max-content;
+  flex: 1;
 }
 
 .app-button-group--space-between {
@@ -9954,6 +9953,35 @@ input:checked + .slider:before {
 
 .app-\!-align-bottom {
   margin-top: auto;
+}
+
+@media (min-width: 48.0625em) {
+  .app-fab--highlight,
+  .app-navigation,
+  .app-container {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  #add-edit-wrapper,
+  .app-overlay {
+    max-width: 1024px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .app-modal__content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .app-fab {
+    right: auto;
+  }
+  .app-fab--highlight {
+    right: 1.5rem;
+  }
+  .app-pages-welcome {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
 }
 
 /*# sourceMappingURL=app.css.map */

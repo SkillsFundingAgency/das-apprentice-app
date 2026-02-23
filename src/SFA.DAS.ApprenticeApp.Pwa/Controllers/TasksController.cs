@@ -13,11 +13,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<TasksController> _logger;
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
-        public TasksController(ILogger<TasksController> logger, IOuterApiClient client)
+        public TasksController
+            (
+            ILogger<TasksController> logger,
+            IOuterApiClient client,
+            IApprenticeContext apprenticeContext
+            )
         {
             _logger = logger;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [HttpGet]
@@ -81,7 +88,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<PartialViewResult> ToDoTasks()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -96,7 +103,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
-                    return PartialView("_TasksNotStarted");
+                    return PartialView("_TasksNotStarted", "ToDo");
                 }
 
                 if (Request.Cookies[Constants.TaskFiltersTodoCookieName] != null)
@@ -128,14 +135,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return PartialView("_TasksToDo", vm);
             }
-            return PartialView("_TasksNotStarted");
+            return PartialView("_TasksNotStarted", "ToDo");
         }
 
         [HttpGet]
         [Authorize]
         public async Task<PartialViewResult> DoneTasks()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -150,7 +157,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 if (taskResult == null || taskResult.Tasks.Count == 0)
                 {
-                    return PartialView("_TasksNotStarted");
+                    return PartialView("_TasksNotStarted", "Done");
                 }
 
                 if (Request.Cookies[Constants.TaskFiltersDoneCookieName] != null)
@@ -182,14 +189,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 return PartialView("_TasksDone", vm);
             }
-            return PartialView("_TasksNotStarted");
+            return PartialView("_TasksNotStarted", "Done");
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(int id, int status = 0)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -218,7 +225,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(ApprenticeTask task)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -270,7 +277,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [Authorize]
         public async Task<IActionResult> Add(int status = 0)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -298,7 +305,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ApprenticeTask task)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -363,6 +370,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return Unauthorized();
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> ConfirmDelete(int id, int status = 0)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                var taskdata = await _client.GetTaskViewData(new Guid(apprenticeId), id);
+
+                var vm = new EditTaskPageModel
+                {
+                    Task = taskdata.Task,
+                    StatusId = status
+                };
+
+                return View(vm);
+            }
+            return RedirectToAction("Index", "Tasks");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(int taskId, int status = 0)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                await _client.DeleteApprenticeTask(new Guid(apprenticeId), taskId);
+                return RedirectToAction("Index", new { status });
+            }
+            return RedirectToAction("Index", "Tasks");
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteApprenticeTask(int taskId)
         {
@@ -372,7 +414,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -397,7 +439,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("Index", "Tasks");
             }
 
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {

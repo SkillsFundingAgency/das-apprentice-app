@@ -12,21 +12,24 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<NotificationsController> _logger;
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
         public NotificationsController(
                     ILogger<NotificationsController> logger,
-                    IOuterApiClient client
+                    IOuterApiClient client,
+                    IApprenticeContext apprenticeContext
                     )
         {
             _logger = logger;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
+            var apprenticeId = _apprenticeContext.ApprenticeId;
 
             if (!string.IsNullOrEmpty(apprenticeId))
             {
@@ -60,11 +63,58 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ConfirmDeleteNotification(int taskId)
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                try
+                {
+                    var notificationsResult = await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
+                    var notification = notificationsResult.TaskReminders?.FirstOrDefault(r => r.TaskId == taskId);
+                    if (notification != null)
+                    {
+                        return View(notification);
+                    }
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning("Error in Notifications: ConfirmDeleteNotification");
+                }
+            }
+            else
+            {
+                _logger.LogWarning("ApprenticeId not found in user claims for Notifications ConfirmDeleteNotification.");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult ConfirmDeleteSurveyNotification()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult DeleteSurveyNotification()
+        {
+            Response.Cookies.Append(
+                "SFA.DAS.ApprenticeApp.SurveyNotificationSeen",
+                "1",
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> DeleteNotification(int taskId)
         {
-            var apprenticeId = Claims.GetClaim(HttpContext, Constants.ApprenticeIdClaimKey);
-            
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 try

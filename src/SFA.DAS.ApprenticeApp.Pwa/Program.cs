@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
+using SFA.DAS.ApprenticeApp.Pwa.ViewLocation;
 using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
 using System.Diagnostics.CodeAnalysis;
 using WebEssentials.AspNetCore.Pwa;
@@ -14,7 +15,11 @@ var applicationConfiguration = rootConfiguration.Get<ApplicationConfiguration>()
 builder.Services.AddSingleton(applicationConfiguration!);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddRazorOptions(options =>
+    {
+        options.ViewLocationExpanders.Add(new NewUiViewLocationExpander());
+    });
 
 var environment = builder.Environment;
 builder.Services.AddServiceRegistration(environment, rootConfiguration, applicationConfiguration);
@@ -26,9 +31,19 @@ builder.Services.AddDataProtection(applicationConfiguration);
 builder.Services.AddHealthChecks();
 builder.Services.AddProgressiveWebApp(new PwaOptions { RegisterServiceWorker = true });
 
+builder.Services.AddDistributedMemoryCache();
+// HTTP Context Accessor - MUST be before AddSession
+builder.Services.AddHttpContextAccessor();
+
+// Add Session with proper configuration
 builder.Services.AddSession(options =>
 {
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set a timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.Name = ".ApprenticeApp.Session";
+    options.Cookie.SameSite = SameSiteMode.Strict;
 });
 
 builder.Services.AddLogging(builder =>
@@ -72,23 +87,24 @@ app.UseHealthChecks("/ping");
 
 app.UseStatusCodePagesWithReExecute("/ErrorPage/{0}");
 
-app.UseAuthentication();
 app.UseRouting();
+
+// IMPORTANT: Session middleware must be after UseRouting and before UseAuthentication/UseAuthorization
+app.UseSession();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
+// Remove UseEndpoints and use the new minimal API routing
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=CookieStart}/{id?}");
+
+app.MapGet("/home/keepalive", async context =>
 {
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=CookieStart}/{id?}");
-    
-    endpoints.MapGet("/home/keepalive", async context =>
-    {
-        context.Response.StatusCode = context.User.Identity?.IsAuthenticated == true 
-            ? StatusCodes.Status204NoContent 
-            : StatusCodes.Status401Unauthorized;
-    });
-    
+    context.Response.StatusCode = context.User.Identity?.IsAuthenticated == true 
+        ? StatusCodes.Status204NoContent 
+        : StatusCodes.Status401Unauthorized;
 });
 
 app.Use(async (context, next) =>
@@ -121,8 +137,6 @@ app.Use(async (context, next) =>
     
     await next();
 });
-
-
 
 app.Run();
 

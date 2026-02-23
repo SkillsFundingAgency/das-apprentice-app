@@ -1,0 +1,20 @@
+.app-summary-list {
+  margin-bottom: 0;
+}
+
+.app-summary-list__row {
+  border-top: 1px solid #D2E2F1;
+  display: flex;
+  padding: 1rem 0;
+  justify-content: space-between;
+}
+
+.app-summary-list__key {
+  font-family: "Inter";
+  -webkit-font-smoothing: antialiased;
+  width: 50%;
+}
+
+.app-summary-list__value {
+  width: 50%;
+}
