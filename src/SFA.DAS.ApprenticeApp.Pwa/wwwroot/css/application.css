@@ -8731,6 +8731,11 @@ p + .govuk-heading-s,
   justify-content: flex-end;
 }
 
+.app-column-sticky {
+  position: sticky;
+  top: 2rem;
+}
+
 .app-onboarding__step-count {
   display: block;
   position: relative;
