@@ -1,0 +1,42 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
+@model CheckUlnViewModel
+@{
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header">
+            <h2>More details needed to find your apprenticeship</h2>
+        </div>
+        <p class="govuk-body">
+            We can match you to your apprenticeship using your unique learner number 
+            (ULN). You should be able to find this on your certificates or exam results.
+            Or, you can ask your training provider.
+        </p>
+
+        <form method="POST" asp-action="ConfirmUln" asp-controller="Cmad">   
+            @for (int i = 0; i < Model.RegistrationIds.Count; i++)
+            {
+                <input type="hidden" asp-for="RegistrationIds[i].CommitmentApprenticeshipIds" />
+                <input type="hidden" asp-for="RegistrationIds[i].RegistrationId" />
+            }            
+            <input type="hidden" asp-for="ApprenticeId" />
+
+
+            <div class="app-form-group">
+                <label asp-for="Uln" class="app-label">Your ULN</label>
+                <div class="govuk-hint" id="duedate-hint">Your ULN is 10 digits and only numbers, for example '1234567890'</div>
+                <input asp-for="Uln" required="required" class="govuk-input" />
+            </div>
+
+            <p class="govuk-body">
+                <a asp-action="AccountNotFound" asp-controller="Account" class="govuk-link govuk-link--no-visited-state">I do not know my ULN</a>
+            </p>
+
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit">Continue</button>
+            </div>
+        </form>
+    </div>
+</div>

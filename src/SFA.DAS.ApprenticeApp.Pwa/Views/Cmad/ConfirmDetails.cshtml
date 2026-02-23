@@ -1,0 +1,67 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
+@model CheckDetailsViewModel
+
+@{
+    Layout = "_LayoutBasic";
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header">
+            <h2>Find your apprenticeship</h2>
+        </div>
+        <p class="govuk-body">
+            We need to check a few details so we can match you to your apprenticeship
+        </p>
+
+        <form method="GET" asp-action="CheckDetails" asp-controller="Cmad">
+            <input asp-for="ApprenticeId" type="hidden" />
+            <div class="app-form-group">
+                <label asp-for="FirstName" class="app-label">First name</label>
+                <input asp-for="FirstName" required="required" class="govuk-input" />
+            </div>
+            <div class="app-form-group">
+                <label asp-for="LastName" class="app-label">Last name</label>
+                <input asp-for="LastName" required="required" class="govuk-input" />
+            </div>
+            <div id="DateOfBirth" class="govuk-form-group">
+                <div validation-row-status property-name="DateOfBirth">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint date-of-birth-error">
+                        <label class="govuk-label govuk-label--s" asp-for="DateOfBirth">
+                            Date of birth
+                        </label>       
+                        <div class="govuk-hint" id="duedate-hint">For example, 26 05 2007</div>
+                        <span asp-validation-for="DateOfBirth" class="govuk-error-message"></span>
+                        <div class="govuk-date-input" id="date-of-birth">
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Day">Day</label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 length-limit" asp-for="DateOfBirth.Day" type="text" autocomplete="bday-day" pattern="[0-9]*" inputmode="numeric" maxlength="2" min="1" max="31">
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Month">Month</label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 length-limit" asp-for="DateOfBirth.Month" type="text" autocomplete="bday-month" pattern="[0-9]*" inputmode="numeric" maxlength="2" min="1" max="12">
+                                </div>
+                            </div>
+                            <div class="govuk-date-input__item">
+                                <div class="govuk-form-group">
+                                    <label class="govuk-label govuk-label govuk-date-input__label" asp-for="DateOfBirth.Year">Year</label>
+                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4 length-limit" asp-for="DateOfBirth.Year" type="text" autocomplete="bday-year" pattern="[0-9]*" inputmode="numeric" maxlength="4" min="1900" max="9999">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>        
+            <div class="govuk-button-group">
+                <button class="govuk-button" type="submit">Continue</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

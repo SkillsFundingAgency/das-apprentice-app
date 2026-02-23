@@ -27,6 +27,28 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Get("/apprentices/{id}/details")]
         Task<ApprenticeDetails> GetApprenticeDetails([Path] Guid id);
 
+        //Commitments        
+        [Get("registrations")]
+        Task<List<Registration>> GetRegistrationByAccountDetails([Query] string firstName, [Query] string lastName, [Query] string dateOfBirth);
+
+        [Get("revisionsById")]
+        Task<Revision> GetRevisionById([Query] Guid apprenticeId, [Query] long apprenticeshipId, [Query] long revisionId);
+
+        [Get("/commitments/{commitmentId}")]
+        Task<CommitmentsApprenticeshipIdList> GetApprenticeshipIdByCommitmentsId([Path] long commitmentId);
+
+        [Get("/commitments-apprenticeships/{apprenticeshipId}")]
+        Task<CommitmentsApprenticeship> GetCommitmentsApprenticeshipById([Path] long apprenticeshipId);
+
+        [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/revisions/{revisionId}/confirmations")]
+        Task ConfirmApprenticeshipDetails([Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long revisionId, [Body] Confirmations patch);
+
+        [Post("apprenticeships")]
+        Task CreateApprenticeshipFromRegistration([Query] Guid registrationId, [Query] Guid apprenticeId, [Query] string lastName, [Query] string dateOfBirth);
+
+        [Post("/apprentices/{id}/MyApprenticeship")]
+        Task CreateMyApprenticeship([Path] Guid id, [Body] CreateMyApprenticeshipRequest data);
+
         //KsbProgress
         [Post("/apprentices/{id}/ksbs")]
         Task AddUpdateKsbProgress([Path] Guid id, [Body] ApprenticeKsbProgressData data);

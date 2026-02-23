@@ -17,7 +17,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
-        private readonly IConfiguration _config;        
+        private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
         private readonly IApprenticeContext _apprenticeContext;
@@ -42,38 +42,47 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> Authenticated()
         {
-            var apprenticeId = _apprenticeContext.ApprenticeId;
-            if (!string.IsNullOrEmpty(apprenticeId))
-            {
-                string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
-                _logger.LogInformation(message);
+            var authenticatedApprenticeId = _apprenticeContext.ApprenticeId;
+            if (string.IsNullOrWhiteSpace(authenticatedApprenticeId)) return RedirectToAction("AccountNotFound", "Account");
 
-                try
-                {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    if (apprenticeDetails?.MyApprenticeship != null)
-                    {
-                        return RedirectToAction("Index", "Terms");
-                    }
-                    else
-                    {
-                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                        _logger.LogInformation(cmaderrormsg);
-                        return RedirectToAction("CmadError", "Account");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
-                    _logger.LogInformation(cmaderrormsg);
-                    return RedirectToAction("CmadError", "Account");
-                }
-            }
-            else
+            if (!Guid.TryParse(authenticatedApprenticeId, out var apprenticeId))
             {
-                return RedirectToAction("EmailMismatchError", "Account");
+                return RedirectToAction("AccountNotFound", "Account");
+            }
+
+            try
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
+
+                if (apprenticeDetails == null)
+                {
+                    return RedirectToAction("AccountNotFound", "Account");
+                }
+
+                // Check terms
+                if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
+
+                // Check if cmad completed                                  
+                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+                if (cmadComplete == null)
+                {
+                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+                }
+
+                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
+
+                // Send to CMAD
+                return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,"MyApprenticeship data error or not found for {ApprenticeId}",apprenticeId);
+                return RedirectToAction("AccountNotFound", "Account");
             }
         }
+
 
         [HttpGet]
         [Route("account-details", Name = RouteNames.StubAccountDetailsGet)]
@@ -174,7 +183,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 Id = User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value
             };
 
-            return RedirectToAction("Index", "Terms");
+            return RedirectToAction("ConfirmDetails", "Cmad");
         }
 
         [HttpGet]
