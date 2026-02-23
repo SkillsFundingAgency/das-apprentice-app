@@ -29,14 +29,11 @@
 <!-- Old UI opt‑in banner (light green) with updated colours -->
 @if (Context.Session.GetString("UserType") != "SpecialUser")
 {
-    <div style="background-color: #d6e8d9; padding: 0.75rem 1.5rem; font-family: 'GDS Transport', arial, sans-serif; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.75rem;">
-        <span style="font-weight: 700; font-size: 1.125rem; color: #0b0c0c;">Try our beta</span>
-        <a href="@Url.Action("OptInNewUi", "Account", new { returnUrl = Context.Request.Path })"
-           style="color: #125e39; text-decoration: underline; font-weight: normal; font-size: 1.125rem;"
-           onmouseover="this.style.color='#075a32'"
-           onmouseout="this.style.color='#125e39'"
-           onfocus="this.style.outline='3px solid #fd0'; this.style.outlineOffset='2px'; this.style.backgroundColor='#fd0'; this.style.color='#0b0c0c'; this.style.textDecoration='none'"
-           onblur="this.style.outline=''; this.style.backgroundColor=''; this.style.color='#125e39'; this.style.textDecoration='underline'">Switch to our new design</a>
+    <div class="app-banner">
+        <div class="app-banner__inner">
+        <b>Try our beta</b>
+        <a href="@Url.Action("OptInNewUi", "Account", new { returnUrl = Context.Request.Path })" class="app-link">Switch to our new design</a>
+        </div>
     </div>
 }
 

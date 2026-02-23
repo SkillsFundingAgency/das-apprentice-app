@@ -8876,6 +8876,18 @@ p + .govuk-heading-s,
   border-color: currentColor;
 }
 
+.app-banner {
+  background-color: #d2e1f3;
+  padding: 0.75rem 0;
+}
+.app-banner b {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+.app-banner p {
+  margin: 0;
+}
+
 .app-button-group {
   justify-content: space-between;
   align-items: center;
