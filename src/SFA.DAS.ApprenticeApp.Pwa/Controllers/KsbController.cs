@@ -125,8 +125,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> LinkKsbs(int taskId, string linkedKsbGuids, int StatusId)
+        [HttpGet]
+        public async Task<IActionResult> LinkKsbsToTask(int taskId, string linkedKsbGuids, int statusId)
         {
             var apprenticeId = _apprenticeContext.ApprenticeId;
 
@@ -152,7 +152,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 ViewData["LinkedKsbGuids"] = linkedKsbGuids ?? string.Empty;
                 ViewData["TaskId"] = taskId;
-                ViewData["StatusId"] = StatusId;
+                ViewData["StatusId"] = statusId;
 
                 return View("_LinkKsb", apprenticeKsbsPageModel);
             }

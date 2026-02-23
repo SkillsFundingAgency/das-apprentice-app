@@ -30,6 +30,7 @@
             <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
                 <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
                 <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
+                <input type="hidden" id="StatusId" name="StatusId" value="@Model.StatusId" />
                 <input type="hidden" id="TaskFiles" name="TaskFiles" value="@Model.Task.TaskFiles" />
                 <input type="hidden" id="TaskLinkedKsbs" name="TaskLinkedKsbs" value="@Model.Task.TaskLinkedKsbs" />
                 <input type="hidden" id="CompletionDateTime" name="CompletionDateTime" value="@Model.Task.CompletionDateTime" />
@@ -59,37 +60,6 @@
                                             </div>
                                         }
                                     </span>
-                                    <hr class="app-separator" />
-                                    <div class="app-dropdown" data-module="app-dropdown">
-                                        <button class="app-dropdown__toggle" aria-expanded="false">
-                                            View actions<span class="govuk-visually-hidden"> for @ksbProgressData.KsbKey</span>
-                                        </button>
-                                        <div class="app-dropdown__menu">
-                                            <ul class="app-dropdown__menu-list">
-                                                <li>
-                                                    <a class="app-dropdown__menu-link ksb-item-edit" href="#">
-                                                        <span class="app-dropdown__menu-icon">
-                                                            <svg>
-                                                                <use xlink:href="/assets/images/icons.svg#edit"></use>
-                                                            </svg>
-                                                        </span>
-                                                        <span>Edit</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="app-dropdown__menu-link ksb-item-removeLink" href="#"
-                                                       data-id="@ksbProgressData.KsbId">
-                                                        <span class="app-dropdown__menu-icon">
-                                                            <svg>
-                                                                <use xlink:href="/assets/images/icons.svg#unlink"></use>
-                                                            </svg>
-                                                        </span>
-                                                        <span>Remove link to this KSB</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                         }
                     </div>

@@ -1,4 +1,5 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.AddTaskPageModel
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
@@ -23,7 +24,6 @@
                 </div>
             </div>
         </div>
-        
     </div>
 </div>
 
@@ -37,8 +37,34 @@
             <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
                 <partial name="_AddEditForm" model="@Model" />
 
-                <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="" asp-for="@Model.Task.KsbsLinked" />
-                <div id="linked-ksb-details"></div>
+            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
+            <div id="linked-ksb-details">
+                @if (Model.KsbProgressData !=null)
+                {
+                      @foreach (var ksbProgressData in Model.KsbProgressData)
+                    {
+
+                        <div class="app-card ksb-item" id="ksb-item-@ksbProgressData.KsbId">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                            </div>
+                            <p>@ksbProgressData.Detail</p>
+                            <span>
+                                @{
+                                    @if (@ksbProgressData.CurrentStatus != null)
+                                    {
+                                        var statusItem = @ksbProgressData.CurrentStatus;
+                                        string statusItemDisplay = statusItem.GetEnumDescription();
+                                        <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ", "").Replace("-", "")">
+                                            <text>@statusItemDisplay</text>
+                                        </div>
+                                    }
+                                }
+                            </span>
+                        </div>
+                    }
+                }
+            </div>
 
                 <div class="govuk-form-group">
                     <fieldset class="govuk-fieldset">
@@ -49,6 +75,8 @@
                                        id="category_0" type="radio" value="0" checked />
                                 <label class="govuk-label govuk-radios__label" for="category_0">None</label>
                             </div>
+                        @if (Model.Categories != null)
+                        {
                             @foreach (var cat in Model.Categories)
                             {
                                 <div class="govuk-radios__item">
@@ -59,6 +87,7 @@
                                     </label>
                                 </div>
                             }
+                        }
                         </div>
                     </fieldset>
                 </div>

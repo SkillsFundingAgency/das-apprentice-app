@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -791,120 +792,240 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             // Assert
             result.Should().BeOfType<OkResult>();
         }
-
+        
         [Test, MoqAutoData]
-        public async Task PostEditLinkedKsbs_Returns_EditView_With_NewAndExistingKsbs(
-        [Frozen] Mock<IOuterApiClient> client,
-        [Frozen] Mock<IApprenticeContext> apprenticeContext,
-        [Greedy] TasksController controller)
+        public async Task AddFromKsb_NoApprenticeId_ReturnsRedirectToIndexWhenTaskIdProvided(
+            [Frozen] Mock<ILogger<TasksController>> logger,
+            [Frozen] Mock<IApprenticeContext> apprenticeContext,
+            [Greedy] TasksController controller)
         {
-            var httpContext = new DefaultHttpContext();
-            var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var claimsPrincipal = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            apprenticeContext.Setup(x => x.ApprenticeId).Returns((string?)null);
 
-            var existingGuid = Guid.NewGuid();
-            var taskData = new ApprenticeTaskData
+            var result = await controller.AddFromKsb(linkedKsbGuids: "a,b", taskId: 123, statusId: 0) as RedirectToActionResult;
+
+            using (new AssertionScope())
             {
-                Task = new ApprenticeTask { TaskId = 123 },
-                TaskCategories = null,
-                KsbProgress = new List<ApprenticeKsbData>
-                {
-                    new ApprenticeKsbData { KsbId = existingGuid, KsbKey = "EXIST", Detail = "Existing", CurrentStatus = KSBStatus.InProgress }
-                }
-            };
-
-            var newGuid = Guid.NewGuid();
-            var linkedKsbGuids = $"{existingGuid},{newGuid}";
-
-            var apiKsbs = new List<ApprenticeKsb>
-            {
-                new ApprenticeKsb { Id = newGuid, Key = "NEW", Detail = "NewDetail", Type = KsbType.Skill, Progress = null }
-            };
-
-            client.Setup(c => c.GetTaskViewData(It.IsAny<Guid>(), It.IsAny<int>())).ReturnsAsync(taskData);
-            client.Setup(c => c.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(apiKsbs);
-            apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
-
-            var result = await controller.EditLinkedKsbs(linkedKsbGuids, taskData.Task.TaskId, status: 0) as ViewResult;
-
-            result.Should().NotBeNull();
-            result!.ViewName.Should().Be("Edit");
-            result.Model.Should().BeOfType<EditTaskPageModel>();
-            var vm = (EditTaskPageModel?)result.Model;
-            vm.LinkedKsbGuids.Should().Be(linkedKsbGuids);
-
-            vm.KsbProgressData.Should().NotBeNull();
-            vm.KsbProgressData?.Count.Should().Be(2);
-            vm.KsbProgressData?.Select(k => k.KsbId).Should().Contain(existingGuid);
-            vm.KsbProgressData?.Select(k => k.KsbId).Should().Contain(newGuid);
+                result.Should().NotBeNull();
+                result!.ActionName.Should().Be("Index");
+                result.ControllerName.Should().Be("Tasks");
+            }
         }
 
         [Test, MoqAutoData]
-        public async Task PostEditLinkedKsbs_NoApprenticeId_RedirectsToIndex()
+        public async Task AddFromKsb_NoApprenticeId_RedirectsToAddWhenTaskIdZero(
+            [Frozen] Mock<ILogger<TasksController>> logger,
+            [Frozen] Mock<IApprenticeContext> apprenticeContext,
+            [Greedy] TasksController controller)
         {
-            var logger = new Mock<ILogger<TasksController>>();
-            var client = new Mock<IOuterApiClient>();
-            var apprenticeContext = new Mock<IApprenticeContext>();
-            apprenticeContext.Setup(a => a.ApprenticeId).Returns((string?)null);
+            apprenticeContext.Setup(x => x.ApprenticeId).Returns((string?)null);
 
-            var controller = new TasksController(logger.Object, client.Object, apprenticeContext.Object);
+            var result = await controller.AddFromKsb(linkedKsbGuids: "a,b", taskId: 0, statusId: 0) as RedirectToActionResult;
 
-            var result = await controller.EditLinkedKsbs("", 1, 0) as RedirectToActionResult;
-
-            result.Should().NotBeNull();
-            result!.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Tasks");
+            using (new AssertionScope())
+            {
+                result.Should().NotBeNull();
+                result!.ActionName.Should().Be("Add");
+            }
         }
 
         [Test, MoqAutoData]
-        public async Task PostEditLinkedKsbs_OnlyExistingSelected_Returns_EditView_WithOnlyExisting(
+        public async Task AddFromKsb_TaskIdGreaterThanZero_ReturnsEditViewWithCombinedKsbs(
             [Frozen] Mock<IOuterApiClient> client,
             [Frozen] Mock<IApprenticeContext> apprenticeContext,
             [Greedy] TasksController controller)
         {
-            var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var claimsPrincipal = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
 
             var existingGuid = Guid.NewGuid();
-            var taskData = new ApprenticeTaskData
+            var existingProgress = new ApprenticeKsbData
             {
-                Task = new ApprenticeTask { TaskId = 222 },
-                TaskCategories = null,
-                KsbProgress = new List<ApprenticeKsbData>
-                {
-                    new ApprenticeKsbData { KsbId = existingGuid, KsbKey = "EXIST", Detail = "Existing", CurrentStatus = KSBStatus.InProgress }
-                }
+                KsbId = existingGuid,
+                KsbKey = "EX",
+                Detail = "Existing",
+                CurrentStatus = KSBStatus.InProgress
             };
 
-            var linkedKsbGuids = $"{existingGuid}";
+            var taskData = new ApprenticeTaskData
+            {
+                Task = new ApprenticeTask { TaskId = 10 },
+                TaskCategories = null,
+                KsbProgress = new List<ApprenticeKsbData> { existingProgress }
+            };
 
+            var newGuid = Guid.NewGuid();
             var apiKsbs = new List<ApprenticeKsb>
             {
-                new ApprenticeKsb { Id = Guid.NewGuid(), Key = "OTHER", Detail = "Other", Type = KsbType.Knowledge }
+                new ApprenticeKsb { Id = newGuid, Key = "NEW", Detail = "New detail", Type = KsbType.Skill, Progress = null }
             };
 
             client.Setup(c => c.GetTaskViewData(It.IsAny<Guid>(), It.IsAny<int>())).ReturnsAsync(taskData);
             client.Setup(c => c.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(apiKsbs);
             apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
 
-            var result = await controller.EditLinkedKsbs(linkedKsbGuids, taskData.Task.TaskId, status: 1) as ViewResult;
+            var linked = $"{existingGuid},{newGuid}";
+
+            var result = await controller.AddFromKsb(linkedKsbGuids: linked, taskId: taskData.Task.TaskId, statusId: 1) as ViewResult;
 
             result.Should().NotBeNull();
             result!.ViewName.Should().Be("Edit");
-            var vm = result.Model as EditTaskPageModel;
-            vm.Should().NotBeNull();
-            vm!.LinkedKsbGuids.Should().Be(linkedKsbGuids);
+            result.Model.Should().BeOfType<EditTaskPageModel>();
+            var vm = (EditTaskPageModel)result.Model;
+            vm.LinkedKsbGuids.Should().Be(linked);
             vm.KsbProgressData.Should().NotBeNull();
-            vm.KsbProgressData?.Count.Should().Be(1);
-            vm.KsbProgressData?[0].KsbId.Should().Be(existingGuid);
-            vm.StatusId.Should().Be(1);
+            vm.KsbProgressData.Count.Should().Be(2);
+            vm.KsbProgressData.Select(k => k.KsbId).Should().Contain(existingGuid);
+            vm.KsbProgressData.Select(k => k.KsbId).Should().Contain(newGuid);
+            vm.Task.TaskId.Should().Be(taskData.Task.TaskId);
+        }
+
+        [Test, MoqAutoData]
+        public async Task AddFromKsb_TaskIdZero_TempDataMissing_RedirectsToAdd(
+            [Frozen] Mock<IApprenticeContext> apprenticeContext,
+            [Greedy] TasksController controller)
+        {
+            var apprenticeId = Guid.NewGuid();
+            apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
+
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+
+            var result = await controller.AddFromKsb(linkedKsbGuids: "abc", taskId: 0, statusId: 0) as RedirectToActionResult;
+
+            result.Should().NotBeNull();
+            result!.ActionName.Should().Be("Add");
+        }
+
+        [Test, MoqAutoData]
+        public async Task AddFromKsb_TaskIdZero_WithTempData_ReturnsAddViewWithMergedKsbsAndCategories(
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] Mock<IApprenticeContext> apprenticeContext,
+            [Greedy] TasksController controller)
+        {
+            var apprenticeId = Guid.NewGuid();
+            apprenticeContext.Setup(a => a.ApprenticeId).Returns(apprenticeId.ToString());
+
+            var existingGuid = Guid.NewGuid();
+            var tempModel = new EditTaskPageModel
+            {
+                Task = new ApprenticeTask { TaskId = 0 },
+                Categories = null,
+                KsbProgressData = new List<ApprenticeKsbData>
+                {
+                    new ApprenticeKsbData { KsbId = existingGuid, KsbKey = "EX", Detail = "Existing" }
+                },
+                LinkedKsbGuids = string.Empty,
+                StatusId = 0
+            };
+
+            controller.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
+            controller.TempData.Put("TempAddTask", tempModel);
+
+            var newGuid = Guid.NewGuid();
+            var apiKsbs = new List<ApprenticeKsb>
+            {
+                new ApprenticeKsb { Id = newGuid, Key = "NEW", Detail = "New", Type = KsbType.Knowledge, Progress = null }
+            };
+            client.Setup(c => c.GetApprenticeshipKsbs(It.IsAny<Guid>())).ReturnsAsync(apiKsbs);
+
+            var categoriesResponse = new ApprenticeTaskCategoryCollection { TaskCategories = new List<ApprenticeshipCategory> { new ApprenticeshipCategory { CategoryId = 5, Title = "Cat" } } };
+            client.Setup(c => c.GetTaskCategories(It.IsAny<Guid>())).ReturnsAsync(categoriesResponse);
+
+            var linked = $"{existingGuid},{newGuid}";
+
+            var result = await controller.AddFromKsb(linkedKsbGuids: linked, taskId: 0, statusId: 2) as ViewResult;
+
+            result.Should().NotBeNull();
+            result!.ViewName.Should().Be("Add");
+            result.Model.Should().BeOfType<EditTaskPageModel>();
+            var vm = (EditTaskPageModel)result.Model;
+            vm.LinkedKsbGuids.Should().Be(linked);
+            vm.KsbProgressData.Should().NotBeNull();
+            vm.KsbProgressData.Select(k => k.KsbId).Should().Contain(existingGuid);
+            vm.KsbProgressData.Select(k => k.KsbId).Should().Contain(newGuid);
+            vm.Categories.Should().NotBeNull();
+            vm.Categories.Any(c => c.CategoryId == 5).Should().BeTrue();
+        }
+
+        [Test, MoqAutoData]
+        public void SaveTaskAndRedirectToLinkKsbs_PopulatesTempDataAndRedirects(
+        [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var form = new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
+            {
+                ["title"] = "My title",
+                ["note"] = "Some note",
+                ["Apprenticeshipid"] = "12345",
+                ["duedate-day"] = "15",
+                ["duedate-month"] = "4",
+                ["duedate-year"] = "2026",
+                ["time"] = "09:30",
+                ["ReminderValue"] = "60",
+                ["ksbslinked"] = "11111111-1111-1111-1111-111111111111,22222222-2222-2222-2222-222222222222",
+                ["statusId"] = "2",
+                ["taskId"] = "0"
+            };
+            httpContext.Request.Form = new FormCollection(form);
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            controller.TempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+
+            var result = controller.SaveTaskAndRedirectToLinkKsbs() as RedirectToActionResult;
+
+            result.Should().NotBeNull();
+            result!.ActionName.Should().Be("LinkKsbsToTask");
+            result.ControllerName.Should().Be("Ksb");
+
+            result.RouteValues.Should().ContainKey("taskId");
+            result.RouteValues["linkedKsbGuids"].Should().Be("11111111-1111-1111-1111-111111111111,22222222-2222-2222-2222-222222222222");
+            result.RouteValues["statusId"].Should().Be(2);
+
+            var saved = controller.TempData.Get<EditTaskPageModel>("TempAddTask");
+            saved.Should().NotBeNull();
+            saved!.Task?.Title.Should().Be("My title");
+            saved.Task?.Note.Should().Be("Some note");
+            saved.Task?.ApprenticeshipId.Should().Be(12345);
+            saved.Task?.DueDate.Should().NotBeNull();
+            saved.Task?.DueDate.Value.ToString("yyyy-MM-dd HH:mm").Should().Be("2026-04-15 09:30");
+            saved.Task?.ReminderValue.Should().Be(60);
+            saved.LinkedKsbGuids.Should().Be("11111111-1111-1111-1111-111111111111,22222222-2222-2222-2222-222222222222");
+            saved.StatusId.Should().Be(2);
+        }
+
+        [Test, MoqAutoData]
+        public void SaveTaskAndRedirectToLinkKsbs_HandlesInvalidDateAndDefaults(
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var form = new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
+            {
+                ["title"] = "Another title",
+                ["note"] = "",
+                ["Apprenticeshipid"] = "999",
+                ["duedate-day"] = "aa",
+                ["duedate-month"] = "bb",
+                ["duedate-year"] = "cccc",
+                ["time"] = "not-a-time",
+                ["ksbslinked"] = "",
+                ["statusId"] = "invalid"
+            };
+            httpContext.Request.Form = new FormCollection(form);
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+            controller.TempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
+
+            var result = controller.SaveTaskAndRedirectToLinkKsbs() as RedirectToActionResult;
+
+            result.Should().NotBeNull();
+            result!.ActionName.Should().Be("LinkKsbsToTask");
+            result.ControllerName.Should().Be("Ksb");
+            result.RouteValues?["linkedKsbGuids"].Should().Be(string.Empty);
+            result.RouteValues?["statusId"].Should().Be(0);
+
+            var saved = controller.TempData.Get<EditTaskPageModel>("TempAddTask");
+            saved.Should().NotBeNull();
+            saved.Task?.Title.Should().Be("Another title");
+            saved.Task?.ApprenticeshipId.Should().Be(999);
+            saved.Task?.DueDate.Should().BeNull();
+            saved.StatusId.Should().Be(0);
         }
     }
 }
