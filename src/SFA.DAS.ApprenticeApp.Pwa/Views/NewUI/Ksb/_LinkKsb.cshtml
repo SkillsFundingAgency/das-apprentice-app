@@ -4,6 +4,14 @@
     ViewData["Section"] = "Ksbs";
     Layout = "_Layout";
     ViewBag.HideNavigation = true;
+    var linkedKsbGuids = (ViewData["LinkedKsbGuids"] as string) ?? string.Empty;
+    var linkedIds = new HashSet<string>(
+        linkedKsbGuids
+            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(g => g.Trim()), StringComparer.OrdinalIgnoreCase);
+
+    var taskId = int.TryParse(ViewData["TaskId"]?.ToString(), out var id) ? id : 0;
+    var taskStatusId = int.TryParse(ViewData["StatusId"]?.ToString(), out var statusId) ? statusId : 0;
 }
 <h1 class="govuk-heading-xl">Link task to KSBs</h1>
 <partial name="_HelpKSBs.cshtml" />
@@ -30,7 +38,7 @@
             @{
                 string[] KSBTypes = { "Knowledge", "Skill", "Behaviour" };
                 int ksbCount = 1;
-            
+
                 foreach (var KSBType in KSBTypes)
                 {
                     <div class="app-tabs__panel" id="@KSBType.ToLower()">
@@ -41,7 +49,7 @@
                                 var statusTitleDisplayClass = "";
                                 var statusTitleDisplay = "";
                                 var noteText = "";
-            
+
                                 if (ksb.Progress != null)
                                 {
                                     var statusTitleClass = ksb.Progress.CurrentStatus;
@@ -54,40 +62,38 @@
                                     statusTitleDisplayClass = "not-started";
                                     statusTitleDisplay = "Not started";
                                 }
-                             
-                                    <div>
-                                        <h2 class="govuk-heading-m">@ksb.Key</h2>
-                                        <p class="govuk-hint govuk-!-font-size-16">@ksb.Detail</p>
-                                        
-                                        @if (ksb.Progress == null)
-                                        {
-                                            <div class="app-tag app-tag--status-notstarted govuk-!-margin-top-1 govuk-!-margin-bottom-5">
-                                                <text>Not started</text>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            var status = ksb.Progress.CurrentStatus;
-                                            string statusDisplay = status.GetEnumDescription();
-                                            <div class="app-tag app-tag--status-@status.ToString().ToLower() govuk-!-margin-top-1 govuk-!-margin-bottom-5">
-                                                <text>@statusDisplay</text>
-                                            </div>
-                                        }
-                                        
-                                        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                                            <div class="govuk-checkboxes__item">
-                                                <input class="govuk-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
-                                                       id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText" />
-                                                <label class="govuk-label govuk-checkboxes__label" for="ksb-@ksb.Id">
-                                                    Link this KSB to the task
-                                                </label>
-                                            </div>
+
+                                <div>
+                                    <h2 class="govuk-heading-m">@ksb.Key</h2>
+                                    <p class="govuk-hint govuk-!-font-size-16">@ksb.Detail</p>
+
+                                    @if (ksb.Progress == null)
+                                    {
+                                        <div class="app-tag app-tag--status-notstarted govuk-!-margin-top-1 govuk-!-margin-bottom-5">
+                                            <text>Not started</text>
                                         </div>
-                                        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-                                    
+                                    }
+                                    else
+                                    {
+                                        var status = ksb.Progress.CurrentStatus;
+                                        string statusDisplay = status.GetEnumDescription();
+                                        <div class="app-tag app-tag--status-@status.ToString().ToLower() govuk-!-margin-top-1 govuk-!-margin-bottom-5">
+                                            <text>@statusDisplay</text>
+                                        </div>
+                                    }
+                                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
+                                                   id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText"
+                                                   @(linkedIds.Contains(ksb.Id.ToString()) ? "checked" : "") />
+                                            <label class="govuk-label govuk-checkboxes__label" for="ksb-@ksb.Id">
+                                                Link this KSB to the task
+                                            </label>
+                                        </div>
                                     </div>
-                        
-                         
+                                    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+                                </div>
                             }
                             ksbCount++;
                         }
@@ -95,9 +101,41 @@
                 }
             }
         </div>
-        <div class="govuk-button-group app-button-group">
-            <a href="#" class="govuk-back-link app-back-link">Back without saving</a>
-            <button class="govuk-button" data-module="govuk-button" >Save and continue</button>
-        </div>
+        <form id="ksb-confirm-form" asp-controller="Tasks" asp-action="AddFromKsb" method="post">
+            <input type="hidden" id="task-id" name="taskId" value="@taskId" />
+            <input type="hidden" id="status-id" name="statusId" value="@taskStatusId" />
+            <input type="hidden" id="linked-ksb-ids" name="linkedKsbGuids" value="@linkedKsbGuids" />
+            <div class="govuk-button-group app-button-group">
+                <a href="#" class="govuk-back-link app-back-link ksb-cancel-link">Back without saving</a>
+                <button type="submit" class="govuk-button" data-module="govuk-button">Save and continue</button>
+            </div>
+        </form>
     </div>
 </div>
+
+<script type="text/javascript">
+      (function () {
+        // Build a comma separated string of selected ids and write to the hidden input with id 'linked-ksb-ids'
+        function updateLinkedHidden() {
+            var checked = document.querySelectorAll('.link-ksb-checkbox:checked');
+            var values = Array.prototype.map.call(checked, function (c) { return c.value; });
+            var joined = values.join(',');
+            var hidden = document.getElementById('linked-ksb-ids');
+            if (hidden) {
+                hidden.value = joined;
+            }
+        }
+
+        // Update on change
+        document.addEventListener('change', function (e) {
+            if (e.target && e.target.classList && e.target.classList.contains('link-ksb-checkbox')) {
+                updateLinkedHidden();
+            }
+        });
+
+        // Initialize hidden field on load
+        document.addEventListener('DOMContentLoaded', function () {
+            updateLinkedHidden();
+        });
+    })();
+</script>

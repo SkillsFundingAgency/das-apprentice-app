@@ -1,4 +1,4 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TaskViewModelBase
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 
 <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150" data-threshold="85">
     <label class="govuk-label" asp-for="@Model.Task.Title">
@@ -40,7 +40,7 @@
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-day">Day</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-day"
                            name="duedate-day" type="text" inputmode="numeric"
-                           value="@(hasDate ? dueDateValue.Day.ToString() : "")">
+                           value="@(hasDate? dueDateValue.Day.ToString() : "")">
                 </div>
             </div>
             <div class="govuk-date-input__item">
@@ -48,7 +48,7 @@
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-month">Month</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-month"
                            name="duedate-month" type="text" inputmode="numeric"
-                           value="@(hasDate ? dueDateValue.Month.ToString() : "")">
+                           value="@(hasDate? dueDateValue.Month.ToString() : "")">
                 </div>
             </div>
             <div class="govuk-date-input__item">
@@ -56,12 +56,12 @@
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-year">Year</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="duedate-year"
                            name="duedate-year" type="text" inputmode="numeric"
-                           value="@(hasDate ? dueDateValue.Year.ToString() : "")">
+                           value="@(hasDate? dueDateValue.Year.ToString() : "")">
                 </div>
             </div>
         </div>
     </fieldset>
-    <input type="hidden" id="duedate-hidden" name="duedate" value="@(hasDate ? dueDateValue.ToString("yyyy-MM-dd") : "")">
+    <input type="hidden" id="duedate-hidden" name="duedate" value="@(hasDate? dueDateValue.ToString("yyyy-MM-dd") : "")">
 </div>
 
 <div class="govuk-form-group">
@@ -162,16 +162,13 @@
     </div>
 }
 
-
-
-
-
-
 <div class="govuk-form-group">
     <p class="govuk-label">
         Linked KSBs (optional)
     </p>
-    <a class="govuk-button govuk-button--secondary" asp-controller="Ksb" asp-action="LinkKsbs" asp-route-taskId="@Model.Task.TaskId">
+    <button type="submit"
+            formaction="@Url.Action("SaveTaskAndRedirectToLinkKsbs", "Tasks")"
+            class="govuk-button govuk-button--secondary">
         Link KSBs
-    </a>
+    </button>
 </div>
