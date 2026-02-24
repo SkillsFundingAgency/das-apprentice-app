@@ -9287,17 +9287,25 @@ a > span.app-icon-item {
   align-items: center;
   font-family: "Inter";
   -webkit-font-smoothing: antialiased;
+  justify-content: space-between;
+}
+@media (min-width: 40.0625em) {
+  .app-text-size {
+    max-width: 80%;
+  }
 }
 
 .app-text-size__btn {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 0;
   cursor: pointer;
   text-align: center;
   border: none;
   background: none;
   color: #1a65a6;
+  max-width: 40%;
+  flex: 1;
 }
 .app-text-size__btn:hover {
   background: #f3f2f1;
@@ -9312,12 +9320,18 @@ a > span.app-icon-item {
 
 .app-text-size__icon {
   font-size: 3rem;
+  line-height: 1;
+}
+
+.app-text-size__text {
+  font-size: 1rem;
 }
 
 .app-text-size__label {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
-  padding: 1rem;
+  width: 20%;
+  text-align: center;
 }
 
 .app-dropdown__menu-icon,
