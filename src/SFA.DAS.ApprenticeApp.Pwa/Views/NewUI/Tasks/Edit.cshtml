@@ -110,12 +110,12 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
+                <a href="#" id="share-task" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
                     <span class="app-icon-item">
                         <svg width="24" height="24" class="app-icon-item__icon">
                             <use href="/assets/icons/sprite.svg#share"></use>
                         </svg>
-                        <span class="app-icon__text">Share this task by email</span>
+                        <span class="app-icon__text">Share this task</span>
                     </span>
                 </a>
             </li>
@@ -135,6 +135,16 @@
 <script src="~/js/task-validation.js" asp-append-version="true"></script>
 <script src="~/js/task-reminder.js" asp-append-version="true"></script>
 <script>
+    document.getElementById('share-task').addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!navigator.share) return;
+        var title = document.getElementById('Task_Title').value;
+        var note = document.getElementById('note').value.trim();
+        var shareData = { title: title };
+        if (note) shareData.text = note;
+        navigator.share(shareData).catch(function () {});
+    });
+
     document.getElementById('move-task-status').addEventListener('click', function (e) {
         e.preventDefault();
         var taskId = document.getElementById('TaskId').value;
