@@ -1,0 +1,22 @@
+.govuk-form-group {
+  & > .govuk-label {
+    font-weight: 700;
+  }
+}
+
+.govuk-hint:empty,
+.govuk-error-message:empty {
+  display: none;
+}
+
+.govuk-character-count__message--disabled {
+  display: none;
+}
+
+.app-button--full-width {
+  width: 100%;
+}
+
+.app-radios__conditional--reminder {
+  border-left-color: #1D70B8;
+}

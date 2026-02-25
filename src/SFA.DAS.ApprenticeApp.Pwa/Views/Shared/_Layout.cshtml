@@ -1,4 +1,5 @@
 ﻿@using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics
+@using Microsoft.AspNetCore.Http
 
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
@@ -13,13 +14,31 @@
     <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    
 </head>
 
 <body class="govuk-template__body app-template__body" id="top">
 
-    <partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
-    <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
-    <div class="app-container">
+<partial name="_GoogleAnalytics" model="GoogleAnalyticsTag.Head" />
+<script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+
+<!-- Old UI opt‑in banner (light green) with updated colours -->
+@if (Context.Session.GetString("UserType") != "SpecialUser")
+{
+    <div class="app-banner">
+        <div class="app-banner__inner">
+        <b>We’re redesigning the app</b>
+        <a href="@Url.Action("OptInNewUi", "Account", new { returnUrl = Context.Request.Path })" class="app-link">Switch to our new design</a>
+        </div>
+    </div>
+}
+
+
+<div class="app-container">
         <main class="app-main">
             <div class="app-main__inner">
                 @RenderBody()

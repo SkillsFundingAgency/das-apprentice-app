@@ -1,0 +1,58 @@
+<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+    <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
+        Menu
+    </button>
+    <ul class="govuk-service-navigation__list" id="navigation">
+        <li class="govuk-service-navigation__item @(ViewBag.Section == "Ksbs" ? "govuk-service-navigation__item--active" :"")">
+            <a class="govuk-service-navigation__link" asp-controller="Ksb" asp-action="Index">
+                <span class="icon">
+                    <svg width="24" height="24">
+                        <use href="/assets/icons/sprite.svg#head@(ViewBag.Section == "Ksbs" ? "-filled" :"")"></use>
+                    </svg>
+                </span>
+                <span class="text">KSBs</span>
+            </a>
+        </li>
+        <li class="govuk-service-navigation__item @(ViewBag.Section == "Tasks" ? "govuk-service-navigation__item--active" :"")">
+            <a class="govuk-service-navigation__link" asp-controller="Tasks" asp-action="Index">
+                <span class="icon">
+                    <svg width="24" height="24">
+                        <use href="/assets/icons/sprite.svg#list@(ViewBag.Section == "Tasks" ? "-filled" :"")"></use>
+                    </svg>
+                </span>
+                <span class="text">Tasks</span>
+            </a>
+        </li>
+        <li class="govuk-service-navigation__item @(ViewBag.Section == "Support" ? "govuk-service-navigation__item--active" :"")">
+            <a class="govuk-service-navigation__link" asp-controller="Support" asp-action="Index">
+                <span class="icon">
+                    <svg width="24" height="24">
+                        <use href="/assets/icons/sprite.svg#support@(ViewBag.Section == "Support" ? "-filled" :"")"></use>
+                    </svg>
+                </span>
+                <span class="text">Support</span>
+            </a>
+        </li>
+        <li class="govuk-service-navigation__item @(ViewBag.Section == "Notifications" ? "govuk-service-navigation__item--active" :"")">
+            <a class="govuk-service-navigation__link" asp-controller="Notifications" asp-action="Index">
+                <span class="icon">
+                    <svg width="24" height="24">
+                        <use href="/assets/icons/sprite.svg#notifications@(ViewBag.Section == "Notifications" ? "-filled" :"")"></use>
+                    </svg>
+                </span>
+                <span class="text">Notifications</span>
+                @await Component.InvokeAsync("NotificationCounter")
+            </a>
+        </li>
+        <li class="govuk-service-navigation__item @(ViewBag.Section == "Account" ? "govuk-service-navigation__item--active" :"")">
+            <a class="govuk-service-navigation__link" asp-controller="Account" asp-action="YourAccount">
+                <span class="icon">
+                    <svg width="24" height="24">
+                        <use href="/assets/icons/sprite.svg#account@(ViewBag.Section == "Account" ? "-filled" :"")"></use>
+                    </svg>
+                </span>
+                <span class="text">Account</span>
+            </a>
+        </li>
+    </ul>
+</nav>

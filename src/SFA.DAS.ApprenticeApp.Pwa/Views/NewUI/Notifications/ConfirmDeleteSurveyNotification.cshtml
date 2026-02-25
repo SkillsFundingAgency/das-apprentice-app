@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Notifications";
+    ViewData["Section"] = "Notifications";
+    ViewBag.HideNavigation = true;
+}
+@section BackLink {
+    <a asp-action="Index" asp-controller="Notifications" class="govuk-back-link app-back-link">Back without deleting</a>
+}
+
+<h1 class="govuk-heading-xl">Are you sure you want to delete this notification?</h1>
+
+<div class="govuk-inset-text">
+    <h2 class="govuk-heading-s">Give us feedback</h2>
+    <p class="govuk-body">We're improving this app - take our survey</p>
+</div>
+
+<form action="@Url.Action("DeleteSurveyNotification", "Notifications")" method="post">
+    <div class="govuk-button-group app-button-group">
+        <a asp-action="Index" asp-controller="Notifications" class="govuk-back-link app-back-link">Back without deleting</a>
+        <button type="submit" class="govuk-button govuk-button--warning" data-module="govuk-button">
+            Delete this notification
+        </button>
+    </div>
+</form>

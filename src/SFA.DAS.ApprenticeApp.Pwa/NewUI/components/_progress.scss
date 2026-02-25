@@ -1,0 +1,24 @@
+.app-progress {
+  background-color: #D2E2F1;
+  height: 40px;
+  width: 100%;
+}
+
+.app-progress__label {
+  margin-bottom: 10px;
+}
+
+.app-progress[value] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.app-progress[value]::-webkit-progress-bar {
+  background-color: #D2E2F1;
+}
+
+.app-progress[value]::-webkit-progress-value {
+  background: #1D70B8;
+  box-shadow: none;
+  border-color: transparent;
+}

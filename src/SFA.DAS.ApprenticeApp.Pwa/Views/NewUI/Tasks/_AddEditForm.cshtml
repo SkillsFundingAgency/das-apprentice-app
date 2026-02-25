@@ -1,0 +1,174 @@
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
+
+<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150" data-threshold="85">
+    <label class="govuk-label" asp-for="@Model.Task.Title">
+        Task name
+    </label>
+    <div class="govuk-error-message" id="Task_Title-error"></div>
+    <input class="govuk-input govuk-js-character-count" name="title" type="text" asp-for="@Model.Task.Title"
+           aria-describedby="Task_Title-info">
+    <div id="Task_Title-info" class="govuk-hint govuk-character-count__message">
+        You can enter up to 150 characters
+    </div>
+</div>
+
+<div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000" data-threshold="85">
+    <label class="govuk-label" for="note">
+        Note <span class="govuk-!-font-weight-regular">(optional)</span>
+    </label>
+    <div class="note-error form-error govuk-hint"></div>
+    <textarea class="govuk-textarea govuk-js-character-count" id="note" name="note" rows="5"
+              aria-describedby="note-info" value="@Model.Task.Note">@Model.Task.Note</textarea>
+    <div id="note-info" class="govuk-hint govuk-character-count__message">
+        You can enter up to 1000 characters
+    </div>
+</div>
+
+@{
+    var dueDateValue = Model.Task.DueDate.GetValueOrDefault();
+    var hasDate = Model.Task.DueDate != null;
+}
+<div class="govuk-form-group" id="date-group">
+    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-error">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+            Date
+        </legend>
+        <div class="govuk-error-message" id="date-error"></div>
+        <div class="govuk-date-input" id="duedate">
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-day">Day</label>
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-day"
+                           name="duedate-day" type="text" inputmode="numeric"
+                           value="@(hasDate? dueDateValue.Day.ToString() : "")">
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-month">Month</label>
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-month"
+                           name="duedate-month" type="text" inputmode="numeric"
+                           value="@(hasDate? dueDateValue.Month.ToString() : "")">
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-year">Year</label>
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="duedate-year"
+                           name="duedate-year" type="text" inputmode="numeric"
+                           value="@(hasDate? dueDateValue.Year.ToString() : "")">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <input type="hidden" id="duedate-hidden" name="duedate" value="@(hasDate? dueDateValue.ToString("yyyy-MM-dd") : "")">
+</div>
+
+<div class="govuk-form-group">
+    <label class="govuk-label" for="time">
+        Time
+    </label>
+    <div class="govuk-error-message" id="time-error"></div>
+    @if (Model.StatusId == 0)
+    {
+        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time"
+               value="@(Model.Task.DueDate == null ? "" : Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm"))">
+    }
+    else
+    {
+        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time"
+               value="@(Model.Task.CompletionDateTime == null ? "" : Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm"))">
+    }
+</div>
+
+@if (Model.StatusId != 1)
+{
+    <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset" data-reminder-value="@Model.Task.ReminderValue">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Reminder</legend>
+            <div class="govuk-radios govuk-radios--small" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input task-reminder" id="ReminderValueNone" name="ReminderValue"
+                           type="radio" value="">
+                    <label class="govuk-label govuk-radios__label" for="ReminderValueNone">
+                        None
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input task-reminder" id="ReminderValueZero" name="ReminderValue"
+                           type="radio" value="0">
+                    <label class="govuk-label govuk-radios__label" for="ReminderValueZero">
+                        At the time of activity
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input task-reminder" id="ReminderValueSixty" name="ReminderValue"
+                           type="radio" value="60">
+                    <label class="govuk-label govuk-radios__label" for="ReminderValueSixty">
+                        1 hour before
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input task-reminder" id="ReminderValueOneDay" name="ReminderValue"
+                           type="radio" value="1440">
+                    <label class="govuk-label govuk-radios__label" for="ReminderValueOneDay">
+                        1 day before
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input task-reminder" id="ReminderChoose" name="ReminderValue" type="radio"
+                           value="" data-aria-controls="custom-reminder">
+                    <label class="govuk-label govuk-radios__label" for="ReminderChoose">
+                        Custom
+                    </label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden app-radios__conditional--reminder" id="custom-reminder">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-visually-hidden">Choose a number and unit for the reminder</legend>
+                        <div class="govuk-form-group govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+                            <label class="govuk-visually-hidden" for="reminder-length">Enter a number for reminder</label>
+                            <input class="govuk-input govuk-input--width-10" id="reminder-length" name="reminder-length" type="number" min="1" value="" />
+                        </div>
+                        <div class="govuk-form-group">
+                            <label class="govuk-visually-hidden" for="reminder-unit">Select a unit for reminder</label>
+                            <div class="govuk-radios govuk-radios--small" data-module="govuk-radios" id="reminder-unit">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="ReminderUnitMinute" name="ReminderUnit"
+                                           type="radio" value="1">
+                                    <label class="govuk-label govuk-radios__label" for="ReminderUnitMinute">
+                                        minute(s) before
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="ReminderUnitHour" name="ReminderUnit"
+                                           type="radio" value="60">
+                                    <label class="govuk-label govuk-radios__label" for="ReminderUnitHour">
+                                        hour(s) before
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="ReminderUnitDay" name="ReminderUnit"
+                                           type="radio" value="1440">
+                                    <label class="govuk-label govuk-radios__label" for="ReminderUnitDay">
+                                        day(s) before
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+}
+
+<div class="govuk-form-group">
+    <p class="govuk-label">
+        Linked KSBs (optional)
+    </p>
+    <button type="submit"
+            formaction="@Url.Action("SaveTaskAndRedirectToLinkKsbs", "Tasks")"
+            class="govuk-button govuk-button--secondary">
+        Link KSBs
+    </button>
+</div>
