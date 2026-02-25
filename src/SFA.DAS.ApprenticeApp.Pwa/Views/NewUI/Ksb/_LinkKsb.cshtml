@@ -13,6 +13,12 @@
     var taskId = int.TryParse(ViewData["TaskId"]?.ToString(), out var id) ? id : 0;
     var taskStatusId = int.TryParse(ViewData["StatusId"]?.ToString(), out var statusId) ? statusId : 0;
 }
+@section BackLink {
+    <a href="#" class="govuk-back-link app-back-link ksb-cancel-link"
+       onclick="event.preventDefault(); window.history.back();">
+        Back without saving
+    </a>
+}
 <h1 class="govuk-heading-xl">Link task to KSBs</h1>
 <partial name="_HelpKSBs.cshtml" />
 <div class="govuk-grid-row">
@@ -106,7 +112,10 @@
             <input type="hidden" id="status-id" name="statusId" value="@taskStatusId" />
             <input type="hidden" id="linked-ksb-ids" name="linkedKsbGuids" value="@linkedKsbGuids" />
             <div class="govuk-button-group app-button-group">
-                <a href="#" class="govuk-back-link app-back-link ksb-cancel-link">Back without saving</a>
+                <a href="#" class="govuk-back-link app-back-link ksb-cancel-link"
+                   onclick="event.preventDefault(); window.history.back();">
+                    Back without saving
+                </a>
                 <button type="submit" class="govuk-button" data-module="govuk-button">Save and continue</button>
             </div>
         </form>
