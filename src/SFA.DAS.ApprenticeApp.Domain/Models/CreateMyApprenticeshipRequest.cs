@@ -8,6 +8,7 @@
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public long TrainingProviderId { get; set; }
-        public string TrainingProviderName { get; set; }
+        public string TrainingProviderName { get; set; }        
+        public string StandardUId { get; set; }
     }
 }

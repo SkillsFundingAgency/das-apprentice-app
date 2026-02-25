@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace SFA.DAS.ApprenticeApp.Domain.Models
-{
-    public class CommitmentsApprenticeshipIdList
-    {
-        public List<long> ApprenticeshipIds { get; set; }
-    }
-
+{ 
     public class CommitmentsApprenticeship
     {
         public long Id { get; set; }
@@ -62,6 +52,6 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public long? TransferSenderId { get; set; }
         public int? DurationReducedByHours { get; set; }
         public int? TrainingTotalHours { get; set; }
-        public bool? IsDurationReducedByRpl { get; set; }
+        public bool? IsDurationReducedByRpl { get; set; }        
     }
 }

@@ -31,11 +31,11 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         [Get("registrations")]
         Task<List<Registration>> GetRegistrationByAccountDetails([Query] string firstName, [Query] string lastName, [Query] string dateOfBirth);
 
+        [Get("registrations/email")]
+        Task<List<Registration>> GetRegistrationByEmail([Query] string email);
+
         [Get("revisionsById")]
         Task<Revision> GetRevisionById([Query] Guid apprenticeId, [Query] long apprenticeshipId, [Query] long revisionId);
-
-        [Get("/commitments/{commitmentId}")]
-        Task<CommitmentsApprenticeshipIdList> GetApprenticeshipIdByCommitmentsId([Path] long commitmentId);
 
         [Get("/commitments-apprenticeships/{apprenticeshipId}")]
         Task<CommitmentsApprenticeship> GetCommitmentsApprenticeshipById([Path] long apprenticeshipId);

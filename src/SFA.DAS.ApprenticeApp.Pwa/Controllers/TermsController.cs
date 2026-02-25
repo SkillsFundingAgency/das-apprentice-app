@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
@@ -12,17 +14,20 @@ public class TermsController : Controller
 {
     private readonly ILogger<TermsController> _logger;
     private readonly IOuterApiClient _client;
+    private readonly ICommitmentsService _commitmentsService;
     private readonly IApprenticeContext _apprenticeContext;
 
     public TermsController
         (
         ILogger<TermsController> logger,
         IOuterApiClient client,
+        ICommitmentsService commitmentsService,
         IApprenticeContext apprenticeContext
         )
     {
         _logger = logger;
         _client = client;
+        _commitmentsService = commitmentsService;
         _apprenticeContext = apprenticeContext;
     }
 
@@ -47,6 +52,25 @@ public class TermsController : Controller
             if (termsAccepted != null && termsAccepted == "True")
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
+
+                if (registrationByEmail.Count == 1)
+                {
+                    var registration = registrationByEmail.FirstOrDefault();
+                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                        registration.RegistrationId,
+                        Guid.Parse(apprenticeId),
+                        commitment.Uln,
+                        registration.LastName,
+                        registration.DateOfBirth.ToIsoDate());
+
+                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                }
+
                 var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
                 if (cmadComplete == null) return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });

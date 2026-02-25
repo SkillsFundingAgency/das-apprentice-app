@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 
@@ -17,6 +19,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
+        private readonly ICommitmentsService _commitmentsService;
         private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
@@ -24,6 +27,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
+            ICommitmentsService commitmentsService,
             ApplicationConfiguration appConfig,
             IConfiguration configuration,
             IOuterApiClient client,
@@ -32,6 +36,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             _logger = logger;
             _stubAuthenticationService = stubAuthenticationService;
+            _commitmentsService = commitmentsService;
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
@@ -62,7 +67,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 // Check terms
                 if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
 
-                // Check if cmad completed                                  
+                // Check if cmad completed
+                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
+
+                if (registrationByEmail.Count == 1)
+                {
+                    var registration = registrationByEmail.FirstOrDefault();
+                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                        registration.RegistrationId,
+                        apprenticeId,
+                        commitment.Uln,
+                        registration.LastName,
+                        registration.DateOfBirth.ToIsoDate());
+
+                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                }
+
                 var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
                 if (cmadComplete == null)

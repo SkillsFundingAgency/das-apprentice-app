@@ -18,6 +18,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.AppStart
         {
             services.AddGovLoginAuthentication(configuration);
             services.AddTransient<IApprenticeAccountProvider, ApprenticeAccountProvider>();
+            services.AddTransient<ICommitmentsService, CommitmentsService>();
             services.AddAuthorization();
             services.AddScoped<AuthenticatedUser>();
             services.AddHttpContextAccessor();

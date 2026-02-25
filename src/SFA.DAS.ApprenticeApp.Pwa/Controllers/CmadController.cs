@@ -1,20 +1,22 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
-using System.Globalization;
 using System.Text.Json;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
     public class CmadController : Controller
     {
+        private readonly ICommitmentsService _commitmentsService;
         private readonly ILogger<CmadController> _logger;
         private readonly IOuterApiClient _client;
 
-        public CmadController(ILogger<CmadController> logger, IOuterApiClient client)
+        public CmadController(ICommitmentsService commitmentsService, ILogger<CmadController> logger, IOuterApiClient client)
         {
+            _commitmentsService = commitmentsService;
             _logger = logger;
             _client = client;
         }
@@ -34,15 +36,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
 
             try
-            {
-                var dobIso = ToIsoDate(dob);
-
+            {                
                 // fetch registrations and apprentice
-                var registrations = await _client.GetRegistrationByAccountDetails(model.FirstName, model.LastName, dobIso);
+                var registrations = await _client.GetRegistrationByAccountDetails(model.FirstName, model.LastName, dob.ToIsoDate());
                 var apprentice = await _client.GetApprentice(model.ApprenticeId);
 
                 // ensure apprentice has basic fields populated
-                await EnsureApprenticeHasBasicFields(apprentice, model, dob);
+                await _commitmentsService.EnsureApprenticeHasBasicFields(apprentice, model, dob);                
 
                 // No Account matched
                 if (registrations == null || registrations.Count == 0)
@@ -62,8 +62,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 var commitmentsApprenticeship = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
 
-                // Create apprenticeship and prepare view model
-                var viewModel = await CreateApprenticeshipAndBuildViewModel(registration.RegistrationId, model.ApprenticeId, commitmentsApprenticeship.Uln, apprentice.LastName, dobIso);
+                // Create apprenticeship and prepare view model                
+                var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                    registration.RegistrationId,
+                    model.ApprenticeId,
+                    commitmentsApprenticeship.Uln,
+                    apprentice.LastName,
+                    dob.ToIsoDate());
                 if (viewModel != null)
                 {
                     ModelState.Clear();
@@ -97,11 +102,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 {
                     var apprentice = await _client.GetApprentice(model.ApprenticeId);
                     var dobIso = apprentice.DateOfBirth.HasValue
-                        ? ToIsoDate(apprentice.DateOfBirth.Value)
+                        ? apprentice.DateOfBirth.Value.ToIsoDate()
                         : null;
 
-                    // Create apprenticeship and build the confirm view model
-                    var viewModel = await CreateApprenticeshipAndBuildViewModel(item.RegistrationId, model.ApprenticeId, commitment.Uln, apprentice.LastName, dobIso);
+                    // Create apprenticeship and build the confirm view model                    
+                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                    item.RegistrationId,
+                    model.ApprenticeId,
+                    commitment.Uln,
+                    apprentice.LastName,
+                    dobIso);
                     if (viewModel != null)
                     {
                         ModelState.Clear();
@@ -119,6 +129,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> ConfirmApprenticeshipDetails(ConfirmApprenticeshipDetailsViewModel model, Guid apprenticeId, long apprenticeshipId, long revisionId)
         {
             var revision = await _client.GetRevisionById(apprenticeId, apprenticeshipId, revisionId);
+            var commitmentsApprenticeship = await _client.GetCommitmentsApprenticeshipById(revision.CommitmentsApprenticeshipId);
 
             var confs = new Confirmations()
             {
@@ -141,10 +152,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     ApprenticeshipId = revision.CommitmentsApprenticeshipId,
                     Uln = model.Uln,
                     EmployerName = revision.EmployerName,
-                    StartDate = ToIsoDate(revision.PlannedStartDate),
-                    EndDate = ToIsoDate(revision.PlannedEndDate),
+                    StartDate = revision.PlannedStartDate.ToIsoDate(),
+                    EndDate = revision.PlannedEndDate.ToIsoDate(),
                     TrainingProviderId = revision.TrainingProviderId,
                     TrainingProviderName = revision.TrainingProviderName,                    
+                    StandardUId = commitmentsApprenticeship.StandardUId
                 });
                 return RedirectToAction("Index", "Welcome");
             }
@@ -154,30 +166,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("CmadError", "Account");
             }
         }
-
-        private static ConfirmApprenticeshipDetailsViewModel ConstructViewModel(Apprentice apprentice, Revision revision, Apprenticeship apprenticeship, string uln)
-        {
-            if (revision == null || apprenticeship == null) return new ConfirmApprenticeshipDetailsViewModel();
-
-            return new ConfirmApprenticeshipDetailsViewModel()
-            {
-                ApprenticeId = apprenticeship.ApprenticeId,
-                ApprenticeshipId = apprenticeship.Id,
-                CommitmentsApprenticeshipId = revision.CommitmentsApprenticeshipId,
-                Uln = long.Parse(uln),
-                RevisionId = revision.RevisionId,
-                FullName = $"{apprentice.FirstName} {apprentice.LastName}",
-                EmployerName = revision.EmployerName,
-                TrainingProviderName = revision.TrainingProviderName,
-                TrainingProviderId = revision.TrainingProviderId,                
-                Apprenticeship = revision.CourseName,
-                Level = revision.CourseLevel.ToString(),
-                Type = revision.ApprenticeshipType.HasValue ? revision.ApprenticeshipType.Value.ToString() : string.Empty,
-                StartDate = revision.PlannedStartDate.ToString(),
-                EndDate = revision.PlannedEndDate.ToString(),                
-            };
-        }
-
+        
         // Views
         [HttpGet]
         public IActionResult ConfirmDetails(Guid apprenticeId)
@@ -211,57 +200,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult ConfirmApprenticeshipDetails(ConfirmApprenticeshipDetailsViewModel model)
         {
-            return View(model);
-        }
-
-        // ---------------------------
-        // Helpers
-        // ---------------------------
-        private static string ToIsoDate(DateTime date) =>
-            date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-        private async Task EnsureApprenticeHasBasicFields(Apprentice apprentice, CheckDetailsViewModel model, DateTime dob)
-        {
-            if (apprentice == null) return;
-
-            var needsPatch = string.IsNullOrWhiteSpace(apprentice.FirstName)
-                             || string.IsNullOrWhiteSpace(apprentice.LastName)
-                             || !apprentice.DateOfBirth.HasValue;
-
-            if (!needsPatch) return;
-
-            var patchDoc = new JsonPatchDocument<Apprentice>();
-            if (string.IsNullOrWhiteSpace(apprentice.FirstName))
-                patchDoc.Replace(x => x.FirstName, model.FirstName);
-            if (string.IsNullOrWhiteSpace(apprentice.LastName))
-                patchDoc.Replace(x => x.LastName, model.LastName);
-            if (!apprentice.DateOfBirth.HasValue)
-                patchDoc.Replace(x => x.DateOfBirth, dob);
-
-            if (patchDoc.Operations.Any())
+            if (TempData["ConfirmModel"] is string json)
             {
-                await _client.UpdateApprentice(model.ApprenticeId, patchDoc);
+                var tempDataModel = JsonSerializer.Deserialize<ConfirmApprenticeshipDetailsViewModel>(json);
+                return View(tempDataModel);
             }
-        }
 
-        /// <summary>
-        /// Creates an apprenticeship from a registration and returns the constructed ConfirmApprenticeshipDetailsViewModel if successful; otherwise null.
-        /// </summary>
-        private async Task<ConfirmApprenticeshipDetailsViewModel?> CreateApprenticeshipAndBuildViewModel(Guid registrationId, Guid apprenticeId, string uln, string lastName, string dobIso)
-        {
-            // Create apprenticeship from registration
-            await _client.CreateApprenticeshipFromRegistration(registrationId, apprenticeId, lastName, dobIso);
-
-            // Refresh apprentice details & find apprenticeship + revision
-            var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
-            var apprenticeship = apprenticeDetails?.Apprenticeship?.Apprenticeships?.SingleOrDefault();
-            if (apprenticeship == null) return null;
-
-            var revision = await _client.GetRevisionById(apprenticeDetails.Apprentice.ApprenticeId, apprenticeship.Id, apprenticeship.RevisionId);
-            if (revision == null) return null;
-
-            var apprentice = await _client.GetApprentice(apprenticeId);
-            return ConstructViewModel(apprentice, revision, apprenticeship, uln);
-        }
+            return View(model);
+        }              
     }
 }
