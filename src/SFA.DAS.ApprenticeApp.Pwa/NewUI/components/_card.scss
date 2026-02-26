@@ -15,6 +15,9 @@
 .app-card--highlight {
   background-color: #F4F8FB;
   border-color: #D2E2F1;
+  @include helpers.govuk-media-query(tablet) {
+    padding: 1rem;
+  }
 }
 
 .app-card__heading {

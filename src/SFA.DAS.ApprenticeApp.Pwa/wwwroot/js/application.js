@@ -20,6 +20,10 @@ Tabs.prototype.init = function () {
   const params = new URLSearchParams(window.location.search);
   if (this.showActiveTab && params.has(this.showActiveTab)) {
     this.tabs[params.get(this.showActiveTab)].click();
+  } else if (this.showActiveTab) {
+    const savedHash = sessionStorage.getItem("app-tabs:" + window.location.pathname);
+    const savedTab = savedHash && Array.from(this.tabs).find((t) => t.hash === savedHash);
+    (savedTab || this.tabs[0]).click();
   } else {
     this.tabs[0].click();
   }
@@ -41,6 +45,9 @@ Tabs.prototype.handleTabClick = function (event) {
   const panel = document.getElementById(hash.substring(1));
   if (panel) {
     panel.hidden = false;
+  }
+  if (this.showActiveTab) {
+    sessionStorage.setItem("app-tabs:" + window.location.pathname, hash);
   }
 };
 

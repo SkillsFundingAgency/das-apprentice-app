@@ -27,11 +27,13 @@
                 </li>
             </ul>
             <div class="app-tabs__panel" id="tasks-todo">
+                <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />
                 <div data-fetch="true" data-url="@Url.Action("ToDoTasks", "Tasks")">
                     <p class="govuk-hint">Loading</p>
                 </div>
             </div>
             <div class="app-tabs__panel" id="tasks-done">
+                <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "done" } })' />
                 <div data-fetch="true" data-url="@Url.Action("DoneTasks", "Tasks")">
                     <p class="govuk-hint">Loading</p>
                 </div>
