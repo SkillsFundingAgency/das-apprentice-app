@@ -1,3 +1,4 @@
+@using SFA.DAS.ApprenticeApp.Domain.Models
 @using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 @{
@@ -52,11 +53,15 @@
                                     <p>@ksbProgressData.Detail</p>
                                     <span>
                                         @{
-                                            var statusItem = @ksbProgressData.CurrentStatus;
-                                            string statusItemDisplay = statusItem.GetEnumDescription();
-                                            <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ", "").Replace("-", "")">
-                                                <text>@statusItemDisplay</text>
-                                            </div>
+                                        var statusItem = @ksbProgressData.CurrentStatus;
+                                        if (statusItem == null)
+                                        {
+                                            statusItem = KSBStatus.NotStarted;
+                                        }
+                                        string statusItemDisplay = statusItem.GetEnumDescription();
+                                        <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ", "").Replace("-", "")">
+                                            <text>@statusItemDisplay</text>
+                                        </div>
                                         }
                                     </span>
                           </a>
