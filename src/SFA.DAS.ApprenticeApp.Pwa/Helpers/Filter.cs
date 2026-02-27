@@ -68,65 +68,85 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
 
         public static FilterKsbResults FilterKsbResults(List<ApprenticeKsb> ksbs, string ksbFiltersValue)
         {
-            var filteredKsbs = new List<ApprenticeKsb>();
+            if (string.IsNullOrEmpty(ksbFiltersValue))
+                return new FilterKsbResults { FilteredKsbs = new List<ApprenticeKsb>(), HasFilterRun = false };
 
-            if (!string.IsNullOrEmpty(ksbFiltersValue))
+            // Parse the filter string into groups
+            var statusFilters = new List<string>();
+            var otherFilters = new List<string>();
+            string keyword = null;
+
+            foreach (string filter in ksbFiltersValue.Split('&', StringSplitOptions.RemoveEmptyEntries))
             {
-                foreach (string filter in ksbFiltersValue.Split("&"))
-                {
-                    string[] filterparts = filter.Split("=");
-                    var filterType = filterparts[0];
-                    var filterValue = filterparts[1];
+                var parts = filter.Split('=');
+                if (parts.Length != 2) continue;
 
-                    if (filterType == "filter")
+                var filterType = parts[0];
+                var filterValue = parts[1];
+
+                if (filterType == "filter")
+                    statusFilters.Add(filterValue);
+                else if (filterType == "other-filter")
+                    otherFilters.Add(filterValue);
+                else if (filterType == "keyword")
+                    keyword = filterValue;
+            }
+
+            // Start with the full list
+            IEnumerable<ApprenticeKsb> result = ksbs;
+
+            // Apply status filters (OR within the group)
+            if (statusFilters.Any())
+            {
+                result = result.Where(ksb =>
+                {
+                    foreach (var status in statusFilters)
                     {
-                        switch (filterValue.ToUpper())
+                        switch (status.ToUpper())
                         {
                             case "NOT-STARTED":
-                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.NotStarted).ToList());
-                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress == null));
+                                if (ksb.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.NotStarted || ksb.Progress == null)
+                                    return true;
                                 break;
                             case "IN-PROGRESS":
-                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.InProgress).ToList());
+                                if (ksb.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.InProgress)
+                                    return true;
                                 break;
                             case "READY-FOR-REVIEW":
-                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.ReadyForReview).ToList());
+                                if (ksb.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.ReadyForReview)
+                                    return true;
                                 break;
                             case "COMPLETED":
-                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.Completed).ToList());
+                                if (ksb.Progress?.CurrentStatus.GetValueOrDefault() == KSBStatus.Completed)
+                                    return true;
                                 break;
                         }
                     }
-                    if (filterType == "other-filter")
-                    {
-                        switch (filterValue.ToUpper())
-                        {
-                            case "LINKED-TO-A-TASK":
-                                filteredKsbs.AddRange(ksbs.Where(x => x.Progress?.Tasks?.Count > 0).ToList());
-                                break;
-                        }
-                    }
-                    // New keyword filter
-                    if (filterType == "keyword")
-                    {
-                        var keyword = filterValue;
-                        if (!string.IsNullOrWhiteSpace(keyword))
-                        {
-                            filteredKsbs.AddRange(ksbs.Where(x =>
-                                (x.Progress?.Note?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                                (x.Key?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                                (x.Detail?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false)
-                            ).ToList());
-                        }
-                    }
-                }
-
-                // Remove duplicates (a KSB could match multiple filters)
-                filteredKsbs = filteredKsbs.Distinct().ToList();
-
-                return new FilterKsbResults() { FilteredKsbs = filteredKsbs, HasFilterRun = true };
+                    return false;
+                });
             }
-            return new FilterKsbResults() { FilteredKsbs = new List<ApprenticeKsb>(), HasFilterRun = false };
+
+            // Apply other filters (currently only "LINKED-TO-A-TASK")
+            if (otherFilters.Contains("linked-to-a-task", StringComparer.OrdinalIgnoreCase))
+            {
+                result = result.Where(ksb => ksb.Progress?.Tasks?.Count > 0);
+            }
+
+            // Apply keyword filter
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                result = result.Where(ksb =>
+                    (ksb.Progress?.Note?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (ksb.Key?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (ksb.Detail?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false)
+                );
+            }
+
+            return new FilterKsbResults
+            {
+                FilteredKsbs = result.ToList(),
+                HasFilterRun = true
+            };
         }
     }
    
