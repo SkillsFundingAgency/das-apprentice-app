@@ -20,16 +20,16 @@
                                 Status filters
                             </legend>
                             <div
-                                    class="govuk-checkboxes govuk-checkboxes--small"
-                                    data-module="govuk-checkboxes"
+                                class="govuk-checkboxes govuk-checkboxes--small"
+                                data-module="govuk-checkboxes"
                             >
                                 <div class="govuk-checkboxes__item">
                                     <input
-                                            class="govuk-checkboxes__input"
-                                            id="not-started"
-                                            name="filter"
-                                            type="checkbox"
-                                            value="not-started"
+                                        class="govuk-checkboxes__input"
+                                        id="not-started"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="not-started"
                                     />
                                     <label class="govuk-label govuk-checkboxes__label" for="not-started">
               <span
@@ -37,14 +37,14 @@
               >
                                     </label>
                                 </div>
-                                
+
                                 <div class="govuk-checkboxes__item">
                                     <input
-                                            class="govuk-checkboxes__input"
-                                            id="in-progress"
-                                            name="filter"
-                                            type="checkbox"
-                                            value="in-progress"
+                                        class="govuk-checkboxes__input"
+                                        id="in-progress"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="in-progress"
                                     />
                                     <label class="govuk-label govuk-checkboxes__label" for="in-progress">
               <span
@@ -52,32 +52,32 @@
               >
                                     </label>
                                 </div>
-                                
+
                                 <div class="govuk-checkboxes__item">
                                     <input
-                                            class="govuk-checkboxes__input"
-                                            id="ready-for-review"
-                                            name="filter"
-                                            type="checkbox"
-                                            value="ready-for-review"
+                                        class="govuk-checkboxes__input"
+                                        id="ready-for-review"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="ready-for-review"
                                     />
                                     <label
-                                            class="govuk-label govuk-checkboxes__label"
-                                            for="ready-for-review"
+                                        class="govuk-label govuk-checkboxes__label"
+                                        for="ready-for-review"
                                     >
               <span
               >Ready for review</span
               >
                                     </label>
                                 </div>
-                                
+
                                 <div class="govuk-checkboxes__item">
                                     <input
-                                            class="govuk-checkboxes__input"
-                                            id="done"
-                                            name="filter"
-                                            type="checkbox"
-                                            value="done"
+                                        class="govuk-checkboxes__input"
+                                        id="done"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="done"
                                     />
                                     <label class="govuk-label govuk-checkboxes__label" for="done">
                                         <span>Done</span>
@@ -92,24 +92,32 @@
                                 Other filters
                             </legend>
                             <div
-                                    class="govuk-checkboxes govuk-checkboxes--small"
-                                    data-module="govuk-checkboxes"
+                                class="govuk-checkboxes govuk-checkboxes--small"
+                                data-module="govuk-checkboxes"
                             >
                                 <div class="govuk-checkboxes__item">
                                     <input
-                                            class="govuk-checkboxes__input"
-                                            id="linked-to-a-task"
-                                            name="other-filter"
-                                            type="checkbox"
-                                            value="linked-to-a-task"
+                                        class="govuk-checkboxes__input"
+                                        id="linked-to-a-task"
+                                        name="other-filter"
+                                        type="checkbox"
+                                        value="linked-to-a-task"
                                     />
                                     <label
-                                            class="govuk-label govuk-checkboxes__label"
-                                            for="linked-to-a-task"
+                                        class="govuk-label govuk-checkboxes__label"
+                                        for="linked-to-a-task"
                                     >
                                         Linked to a task
                                     </label>
                                 </div>
+                            </div>
+
+                            <!-- Keyword filter input -->
+                            <div class="govuk-form-group govuk-!-margin-top-4 govuk-!-margin-bottom-2">
+                                <label class="govuk-label govuk-label--s" for="keyword-filter">
+                                    Keyword
+                                </label>
+                                <input class="govuk-input" id="keyword-filter" name="keyword" type="text" />
                             </div>
                         </fieldset>
                     </div>
@@ -121,105 +129,119 @@
 </details>
 
 <script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
-    var filtersSet = document.getElementById('filters-set');
+    document.addEventListener('DOMContentLoaded', function () {
+        var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
+        var filtersSet = document.getElementById('filters-set');
 
-    if (cookieFilter != null && cookieFilter != "") {
-      document.getElementById('filterKSBs').open = true;
+        if (cookieFilter != null && cookieFilter != "") {
+            document.getElementById('filterKSBs').open = true;
 
-      var filters = getCookieKsb("@Constants.KsbFiltersCookieName");
+            var data = cookieFilter.split("&");
 
-      var data = filters.split("&");
+            for (var k in data) {
+                var line = data[k].split("=");
+                var key = decodeURIComponent(line[0]);
+                var value = decodeURIComponent(line[1] || "");
 
-      for (var k in data) {
-        var line = data[k].split("=");
+                if (key === "keyword") {
+                    // Populate keyword input
+                    var keywordInput = document.getElementById('keyword-filter');
+                    if (keywordInput) keywordInput.value = value;
+                } else {
+                    // Handle checkbox filters
+                    var checkbox = document.getElementById(value);
+                    if (checkbox) checkbox.checked = true;
 
-        var checkbox = document.getElementById(line[1]);
-        if (checkbox) checkbox.checked = true;
+                    var tag = document.createElement('div');
+                    tag.className = 'app-tag app-tag--filter';
+                    tag.innerHTML =
+                        "<span>" +
+                        value.replace(/\-/g, " ") +
+                        "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
+                        value +
+                        "'><span class='govuk-visually-hidden'>Remove " +
+                        value.replace(/\-/g, " ") +
+                        " from your filters</span></a> ";
+                    filtersSet.appendChild(tag);
+                }
+            }
+        } else {
+            if (filtersSet) filtersSet.style.display = 'none';
+        }
 
-        var tag = document.createElement('div');
-        tag.className = 'app-tag app-tag--filter';
-        tag.innerHTML =
-          "<span>" +
-          line[1].replace(/\-/g, " ") +
-          "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
-          line[1] +
-          "'><span class='govuk-visually-hidden'>Remove " +
-          line[1].replace(/\-/g, " ") +
-          " from your filters</span></a> ";
-        filtersSet.appendChild(tag);
-      }
-    } else {
-      if (filtersSet) filtersSet.style.display = 'none';
+        if (filtersSet) {
+            filtersSet.addEventListener('click', function (e) {
+                var target = e.target.closest('.remove-filter');
+                if (!target) return;
+                e.preventDefault();
+
+                // Untick the checkbox in the hidden popup
+                var filterNames = target.dataset.id;
+                var checkbox = document.getElementById(filterNames);
+                if (checkbox) checkbox.checked = false;
+
+                applyAndSaveFiltersKsb();
+            });
+        }
+
+        var applyBtn = document.querySelector('#filterKSBs .apply');
+        if (applyBtn) {
+            applyBtn.addEventListener('click', applyAndSaveFiltersKsb);
+        }
+    });
+
+    function applyAndSaveFiltersKsb() {
+        var checkboxes = document.querySelectorAll('#filterKSBs input[type=checkbox]:checked');
+        var serialized = Array.from(checkboxes)
+            .map(function (cb) { return encodeURIComponent(cb.name) + '=' + encodeURIComponent(cb.value); })
+            .join('&');
+
+        // Add keyword if present
+        var keywordInput = document.getElementById('keyword-filter');
+        if (keywordInput && keywordInput.value.trim() !== "") {
+            var keywordPart = encodeURIComponent('keyword') + '=' + encodeURIComponent(keywordInput.value.trim());
+            serialized = serialized ? serialized + '&' + keywordPart : keywordPart;
+        }
+
+        setCookieKsb(
+            "SFA.ApprenticeApp.KsbFilters",
+            serialized,
+            { secure: true, "max-age": 3600 },
+        );
+        location.reload();
     }
 
-    if (filtersSet) {
-      filtersSet.addEventListener('click', function (e) {
-        var target = e.target.closest('.remove-filter');
-        if (!target) return;
-        e.preventDefault();
-
-        //Untick the checkbox in the hidden popup
-        var filterNames = target.dataset.id;
-        var checkbox = document.getElementById(filterNames);
-        if (checkbox) checkbox.checked = false;
-
-        applyAndSaveFiltersKsb();
-      });
+    function getCookieKsb(name) {
+        let matchess = document.cookie.match(
+            new RegExp(
+                "(?:^|; )" +
+                name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+                "=([^;]*)",
+            ),
+        );
+        return matchess ? decodeURIComponent(matchess[1]) : undefined;
     }
 
-    var applyBtn = document.querySelector('#filterKSBs .apply');
-    if (applyBtn) {
-      applyBtn.addEventListener('click', applyAndSaveFiltersKsb);
+    function setCookieKsb(name, value, attributes = {}) {
+        attributes = {
+            path: "/",
+        };
+
+        if (attributes.expires instanceof Date) {
+            attributes.expires = attributes.expires.toUTCString();
+        }
+
+        let updatedCookies =
+            encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let attributeKeys in attributes) {
+            updatedCookies += "; " + attributeKeys;
+            let attributeValues = attributes[attributeKeys];
+            if (attributeValues !== true) {
+                updatedCookies += "=" + attributeValues;
+            }
+        }
+
+        document.cookie = updatedCookies;
     }
-  });
-
-  function applyAndSaveFiltersKsb() {
-    var checkboxes = document.querySelectorAll('#filterKSBs input[type=checkbox]:checked');
-    var serialized = Array.from(checkboxes)
-      .map(function (cb) { return encodeURIComponent(cb.name) + '=' + encodeURIComponent(cb.value); })
-      .join('&');
-
-    setCookieKsb(
-      "SFA.ApprenticeApp.KsbFilters",
-      serialized,
-      { secure: true, "max-age": 3600 },
-    );
-    location.reload();
-  }
-
-  function getCookieKsb(name) {
-    let matchess = document.cookie.match(
-      new RegExp(
-        "(?:^|; )" +
-          name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-          "=([^;]*)",
-      ),
-    );
-    return matchess ? decodeURIComponent(matchess[1]) : undefined;
-  }
-
-  function setCookieKsb(name, value, attributes = {}) {
-    attributes = {
-      path: "/",
-    };
-
-    if (attributes.expires instanceof Date) {
-      attributes.expires = attributes.expires.toUTCString();
-    }
-
-    let updatedCookies =
-      encodeURIComponent(name) + "=" + encodeURIComponent(value);
-
-    for (let attributeKeys in attributes) {
-      updatedCookies += "; " + attributeKeys;
-      let attributeValues = attributes[attributeKeys];
-      if (attributeValues !== true) {
-        updatedCookies += "=" + attributeValues;
-      }
-    }
-
-    document.cookie = updatedCookies;
-  }
 </script>

@@ -1,4 +1,5 @@
 ﻿using SFA.DAS.ApprenticeApp.Domain.Models;
+using System.Linq; // Already used, but ensures Distinct is available
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
 {
@@ -105,7 +106,24 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                                 break;
                         }
                     }
+                    // New keyword filter
+                    if (filterType == "keyword")
+                    {
+                        var keyword = filterValue;
+                        if (!string.IsNullOrWhiteSpace(keyword))
+                        {
+                            filteredKsbs.AddRange(ksbs.Where(x =>
+                                (x.Progress?.Note?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                                (x.Key?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                                (x.Detail?.Contains(keyword, StringComparison.OrdinalIgnoreCase) ?? false)
+                            ).ToList());
+                        }
+                    }
                 }
+
+                // Remove duplicates (a KSB could match multiple filters)
+                filteredKsbs = filteredKsbs.Distinct().ToList();
+
                 return new FilterKsbResults() { FilteredKsbs = filteredKsbs, HasFilterRun = true };
             }
             return new FilterKsbResults() { FilteredKsbs = new List<ApprenticeKsb>(), HasFilterRun = false };
