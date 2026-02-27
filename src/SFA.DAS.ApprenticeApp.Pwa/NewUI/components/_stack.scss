@@ -48,3 +48,7 @@
 .app-stack__link:visited {
   color: settings.$govuk-link-colour;
 }
+
+.app-stack__link:visited:hover {
+  color: settings.$govuk-link-hover-colour;
+}

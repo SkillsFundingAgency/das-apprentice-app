@@ -125,6 +125,15 @@ const convertMinutesToReadableDate = () => {
   });
 };
 
+function initBackLinks() {
+  document.querySelectorAll(".js-back-link").forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      history.back();
+    });
+  });
+}
+
 const appInit = () => {
   const appTabs = document.querySelectorAll(`[data-module="app-tabs"]`);
 
@@ -134,6 +143,7 @@ const appInit = () => {
     });
   }
 
+  initBackLinks();
   initDataFetch();
   convertMinutesToReadableDate();
   // No call to updateTaskCounts() here – avoids the (0) flash

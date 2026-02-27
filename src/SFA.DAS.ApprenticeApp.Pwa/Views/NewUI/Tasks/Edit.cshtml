@@ -7,8 +7,7 @@
     ViewBag.HideNavigation = true;
 }
 @section BackLink {
-    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-       class="govuk-back-link app-back-link">Back without saving</a>
+    <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
     Edit task
@@ -68,8 +67,7 @@
 
             
             <div class="govuk-button-group app-button-group">
-                <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-                   class="govuk-back-link app-back-link">Back without saving</a>
+                <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
                 <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
                     Save and continue
                 </button>

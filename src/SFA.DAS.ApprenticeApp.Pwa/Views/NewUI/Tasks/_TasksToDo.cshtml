@@ -7,12 +7,11 @@
             <h2 class="app-card__heading">@task.Title</h2>
         </div>
         <div class="app-card__content">
-            @if (task.ApprenticeshipCategory != null && task.ApprenticeshipCategory.Count > 0)
-            {
-                <div class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "") govuk-!-margin-bottom-3">
-                    @task.ApprenticeshipCategory.First().Title
-                </div>
-            }
+ 
+            <div class="app-tag  govuk-!-margin-bottom-3">
+                To do
+            </div>
+            
             @if (!String.IsNullOrEmpty(task.Note))
             {
             <p>
