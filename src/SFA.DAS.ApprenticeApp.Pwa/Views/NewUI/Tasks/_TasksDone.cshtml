@@ -11,12 +11,11 @@
             <h2 class="app-card__heading">@task.Title</h2>
         </div>
         <div class="app-card__content">
-            @if (task.ApprenticeshipCategory != null && task.ApprenticeshipCategory.Count > 0)
-            {
-            <div class="app-tag app-tag--category-@task.ApprenticeshipCategory.First().Title.ToLower().Replace(" ","").Replace("-", "") govuk-!-margin-bottom-3">
-            @task.ApprenticeshipCategory.First().Title
-        </div>
-        }
+   
+            <div class="app-tag govuk-tag--green govuk-!-margin-bottom-3">
+                Done
+            </div>
+        
         @if (!String.IsNullOrEmpty(task.Note))
         {
         <p>
@@ -47,7 +46,7 @@
                 <svg width="24" height="24" class="app-icon-item__icon">
                     <use href="/assets/icons/sprite.svg#calendar"></use>
                 </svg>
-                <span class="app-icon-item__text">Due @string.Format("{0:d MMMM, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
+                <span class="app-icon-item__text">Due @string.Format("{0:d MMMM yyyy, h:mm}", task.DueDate)@string.Format("{0:tt}", task.DueDate).ToLower()</span>
             </li>
             @if (task.TaskReminders.Any())
             {
