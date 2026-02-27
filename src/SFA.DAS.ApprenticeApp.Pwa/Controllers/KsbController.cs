@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
@@ -32,60 +33,75 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> Index(string searchTerm)
         {
             var apprenticeId = _apprenticeContext.ApprenticeId;
-
-            if (!string.IsNullOrEmpty(apprenticeId))
-            {
-                var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
-                
-                if(apprenticeKsbResult == null || apprenticeKsbResult.Count == 0 || apprenticeKsbResult.Any(k => string.IsNullOrEmpty(k.Key)))
-                {
-                    string noKsbMessage = $"No KSBs found for {apprenticeId} in KsbController Index.";
-                    _logger.LogWarning(noKsbMessage);
-                    return View("NoKsbs");
-                }
-
-                if (!string.IsNullOrEmpty(searchTerm))
-                {
-                    apprenticeKsbResult = apprenticeKsbResult
-                        .Where(ksb => ksb.Detail.ToLower().Contains(searchTerm.ToLower()) || ksb.Key.ToLower().Contains(searchTerm.ToLower()))
-                        .ToList();
-                    
-                    foreach (ApprenticeKsb item in apprenticeKsbResult)
-                    {
-                        item.Key = Regex.Replace(item.Key, searchTerm, "<span style='background-color: yellow'>$0</span>", RegexOptions.IgnoreCase);
-                        item.Detail = Regex.Replace(item.Detail, searchTerm, "<span style='background-color: yellow'>$0</span>", RegexOptions.IgnoreCase);
-                    }
-                }
-                
-                if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
-                    {
-                        var filterKsbs = Filter.FilterKsbResults(apprenticeKsbResult, Request.Cookies[Constants.KsbFiltersCookieName]);
-
-                        if (filterKsbs.HasFilterRun.Equals(true))
-                        {
-                            apprenticeKsbResult = filterKsbs.FilteredKsbs;
-                        }
-                    }
-
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-
-                    ApprenticeKsbsPageModel apprenticeKsbsPageModel = new()
-                    {
-                        Ksbs = apprenticeKsbResult,
-                        KnowledgeCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Knowledge),
-                        SkillCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Skill),
-                        BehaviourCount = apprenticeKsbResult.Count(k => k.Type == KsbType.Behaviour),
-                        SearchTerm = searchTerm,
-                        MyApprenticeship = apprenticeDetails?.MyApprenticeship
-                    };
-
-                    return View(apprenticeKsbsPageModel);
-            }
-            else
+            if (string.IsNullOrEmpty(apprenticeId))
             {
                 _logger.LogWarning("ApprenticeId not found in user claims for Ksbs Index.");
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+
+            // 1. Original list from the API – stays unchanged
+            var allKsbs = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+            if (allKsbs == null || allKsbs.Count == 0 || allKsbs.Any(k => string.IsNullOrEmpty(k.Key)))
+            {
+                _logger.LogWarning($"No KSBs found for {apprenticeId} in KsbController Index.");
+                return View("NoKsbs");
+            }
+
+            // Start with the full list (references to original objects)
+            IEnumerable<ApprenticeKsb> filteredBase = allKsbs;
+
+            // 2. Apply search term – create highlighted copies only for matching KSBs
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var matchingKsbs = allKsbs
+                    .Where(ksb => ksb.Detail.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                  ksb.Key.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                var highlightedKsbs = new List<ApprenticeKsb>();
+                foreach (var ksb in matchingKsbs)
+                {
+                    // Create a new object with highlighted text, but keep the original Progress reference
+                    var copy = new ApprenticeKsb
+                    {
+                        Id = ksb.Id,
+                        Key = Regex.Replace(ksb.Key, searchTerm, "<span style='background-color: yellow'>$0</span>", RegexOptions.IgnoreCase),
+                        Detail = Regex.Replace(ksb.Detail, searchTerm, "<span style='background-color: yellow'>$0</span>", RegexOptions.IgnoreCase),
+                        Type = ksb.Type,
+                        Progress = ksb.Progress,   // shared reference – filter conditions will still work
+                        // If there are other properties (e.g., CreatedAt, UpdatedAt), copy them too
+                    };
+                    highlightedKsbs.Add(copy);
+                }
+                filteredBase = highlightedKsbs;   // use these copies for the main tabs
+            }
+
+            // 3. Apply cookie‑based filters (status, linked to task, keyword) to the current list
+            if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
+            {
+                var filterResult = Filter.FilterKsbResults(filteredBase.ToList(), Request.Cookies[Constants.KsbFiltersCookieName]);
+                if (filterResult.HasFilterRun)
+                {
+                    filteredBase = filterResult.FilteredKsbs;
+                }
+            }
+
+            // 4. Get apprentice details for the side panel
+            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+            // 5. Build the view model
+            var model = new ApprenticeKsbsPageModel
+            {
+                AllKsbs = allKsbs,                            // original list for the right‑hand panel
+                Ksbs = filteredBase.ToList(),                  // filtered (and possibly highlighted) list for the main tabs
+                KnowledgeCount = filteredBase.Count(k => k.Type == KsbType.Knowledge),
+                SkillCount = filteredBase.Count(k => k.Type == KsbType.Skill),
+                BehaviourCount = filteredBase.Count(k => k.Type == KsbType.Behaviour),
+                SearchTerm = searchTerm,
+                MyApprenticeship = apprenticeDetails?.MyApprenticeship
+            };
+
+            return View(model);
         }
 
         [Authorize]
