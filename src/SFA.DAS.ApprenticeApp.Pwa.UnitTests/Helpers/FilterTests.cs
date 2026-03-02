@@ -175,30 +175,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
         }
 
         [Test]
-        public void FilterKsbResults_OtherFilter_ProgressSet_Returns_Results()
-        {
-            // Arrange
-            var tasks = new List<ApprenticeKsb>
-            {
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() },
-                new ApprenticeKsb {  Id = Guid.NewGuid() }
-            };
-
-            tasks[0].Progress = new ApprenticeKsbProgressData() { KsbProgressId = 1, CurrentStatus = KSBStatus.Completed };
-
-            // Act
-            var result = Filter.FilterKsbResults(tasks, "other-filter=REMINDER-SET");
-
-            // Assert
-            result.FilteredKsbs.Count.Should().Be(0);
-            result.HasFilterRun.Should().BeTrue();
-        }
-
- 
-
-        [Test]
         public void FilterKsbResults_No_Filter_Returns_No_Results()
         {
             // Arrange

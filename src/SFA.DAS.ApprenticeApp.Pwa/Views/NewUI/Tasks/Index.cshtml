@@ -17,21 +17,23 @@
             <ul class="app-tabs__list">
                 <li class="app-tabs__list-item">
                     <a class="app-tabs__tab todo" href="#tasks-todo">
-                        To do
+                        To do  <!--<span id="todo-task-count"></span>-->
                     </a>
                 </li>
                 <li class="app-tabs__list-item">
                     <a class="app-tabs__tab done" href="#tasks-done">
-                        Done
+                        Done  <!--<span id="done-task-count"></span>-->
                     </a>
                 </li>
             </ul>
             <div class="app-tabs__panel" id="tasks-todo">
+                <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />
                 <div data-fetch="true" data-url="@Url.Action("ToDoTasks", "Tasks")">
                     <p class="govuk-hint">Loading</p>
                 </div>
             </div>
             <div class="app-tabs__panel" id="tasks-done">
+                <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "done" } })' />
                 <div data-fetch="true" data-url="@Url.Action("DoneTasks", "Tasks")">
                     <p class="govuk-hint">Loading</p>
                 </div>

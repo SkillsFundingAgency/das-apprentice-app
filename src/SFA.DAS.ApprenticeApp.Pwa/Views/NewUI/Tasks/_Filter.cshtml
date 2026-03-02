@@ -1,255 +1,240 @@
 @using SFA.DAS.ApprenticeApp.Application
+@{
+    var tab = ViewData["Tab"] as string ?? "todo";
+    var cookieName = tab == "todo" ? Constants.TaskFiltersTodoCookieName : Constants.TaskFiltersDoneCookieName;
+    var detailsId = $"filter-tasks-{tab}";
+    var filtersSetId = $"filters-set-{tab}";
+}
 
-<script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous"
-></script>
+<div class="app-task-list">
 
-<a href="#filter" data-module="app-overlay" class="app-icon-action">
-  <span class="app-icon-action__icon">
-    <svg>
-      <use xlink:href="/assets/images/icons.svg#filter"></use>
-    </svg>
-  </span>
-  <span class="app-icon-action__label">Filters</span>
-</a>
 
-<div class="app-overlay" id="filter">
-  <div class="app-overlay-header">
-    <div class="app-overlay-header__cancel">
-      <a href="#" class="app-overlay-header__link">Cancel</a>
-    </div>
-    <h2 class="app-overlay-header__heading">Task filters</h2>
-    <div class="app-overlay-header__save">
-      <a href="#" class="app-overlay-header__link apply">Apply</a>
-    </div>
-  </div>
-  <div class="app-overlay__content">
-    <div class="govuk-form-group">
-      <fieldset class="app-fieldset">
-        <div class="app-page-header app-page-header--align-bottom">
-          <legend
-            class="app-fieldset__legend app-fieldset__legend--s govuk-!-margin-bottom-0"
-          >
-            Filter by category:
-          </legend>
-          <a class="app-overlay-header__link resetall" href="#">Reset all</a>
+    <details class="govuk-details app-details" id="@detailsId">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+                Show filters
+            </span>
+        </summary>
+        <div class="govuk-!-margin-top-4">
+            <div class="app-card app-card--highlight">
+                <div class="app-card__heading">
+                    <h2 class="govuk-heading-m">Filters</h2>
+                </div>
+                <div id="@filtersSetId" class="app-tag__wrapper"></div>
+                <div class="app-card__body">
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-one-half">
+                            <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                    Category filters
+                                </legend>
+                                <div
+                                        class="govuk-checkboxes govuk-checkboxes--small"
+                                        data-module="govuk-checkboxes"
+                                        style="clear: both"
+                                >
+                                    <div class="govuk-checkboxes__item">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="none-@tab"
+                                                name="filter"
+                                                type="checkbox"
+                                                value="none"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="none-@tab">
+                                            None
+                                        </label>
+                                    </div>
+    
+                                    <div class="govuk-checkboxes__item">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="assignment-@tab"
+                                                name="filter"
+                                                type="checkbox"
+                                                value="assignment"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="assignment-@tab">
+                                            <span>Assignment</span>
+                                        </label>
+                                    </div>
+    
+                                    <div class="govuk-checkboxes__item">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="epa-@tab"
+                                                name="filter"
+                                                type="checkbox"
+                                                value="epa"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="epa-@tab">
+                                            <span>Apprenticeship assessment</span>
+                                        </label>
+                                    </div>
+    
+                                    <div class="govuk-checkboxes__item">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="deadline-@tab"
+                                                name="filter"
+                                                type="checkbox"
+                                                value="deadline"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="deadline-@tab">
+                                            <span>Deadline</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="govuk-grid-column-one-half">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                    Other filters
+                                </legend>
+                                <div
+                                        class="govuk-checkboxes govuk-checkboxes--small"
+                                        data-module="govuk-checkboxes"
+                                >
+                                    <div class="govuk-checkboxes__item">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="ksb-@tab"
+                                                name="other-filter"
+                                                type="checkbox"
+                                                value="ksb"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="ksb-@tab">
+                                            Linked to KSB
+                                        </label>
+                                    </div>
+    
+                                    <div class="govuk-checkboxes__item reminder-filter">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="reminder-@tab"
+                                                name="other-filter"
+                                                type="checkbox"
+                                                value="reminder"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="reminder-@tab">
+                                            Reminder set
+                                        </label>
+                                    </div>
+    
+                                    <div class="govuk-checkboxes__item">
+                                        <input
+                                                class="govuk-checkboxes__input"
+                                                id="note-added-@tab"
+                                                name="other-filter"
+                                                type="checkbox"
+                                                value="note-added"
+                                        />
+                                        <label class="govuk-label govuk-checkboxes__label" for="note-added-@tab">
+                                            Note attached
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <a href="#" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-top-3 apply">Apply filters</a>
+                </div>
+            </div>
         </div>
-        <div
-          class="app-checkboxes app-checkboxes--small"
-          data-module="app-checkboxes"
-          style="clear: both"
-        >
-          <div class="app-checkboxes__item">
-            <input
-              class="app-checkboxes__input"
-              id="none"
-              name="filter"
-              type="checkbox"
-              value="none"
-            />
-            <label class="govuk-label app-checkboxes__label" for="none">
-              None
-            </label>
-          </div>
-
-          <div class="app-checkboxes__item">
-            <input
-              class="app-checkboxes__input"
-              id="assignment"
-              name="filter"
-              type="checkbox"
-              value="assignment"
-            />
-            <label class="govuk-label app-checkboxes__label" for="assignment">
-              <span class="app-tag app-tag--category-assignment"
-                >Assignment</span
-              >
-            </label>
-          </div>
-
-          <div class="app-checkboxes__item">
-            <input
-              class="app-checkboxes__input"
-              id="epa"
-              name="filter"
-              type="checkbox"
-              value="epa"
-            />
-            <label class="govuk-label app-checkboxes__label" for="epa">
-              <span class="app-tag app-tag--category-endpointassessment"
-                >End-point assessment</span
-              >
-            </label>
-          </div>
-
-          <div class="app-checkboxes__item">
-            <input
-              class="app-checkboxes__input"
-              id="deadline"
-              name="filter"
-              type="checkbox"
-              value="deadline"
-            />
-            <label class="govuk-label app-checkboxes__label" for="deadline">
-              <span class="app-tag app-tag--category-deadline">Deadline</span>
-            </label>
-          </div>
-        </div>
-      </fieldset>
+    </details>
+    
+    <div class="app-task-list__sort-by">
+        <label for="sort-by-@tab" class="govuk-visually-hidden">
+            Sort by
+        </label>
+        <select class="govuk-select" id="sort-by-@tab" name="sort-by">
+            <option value="recently_added">Sort by recently added</option>
+            <option value="date_due">Sort by due date</option>
+        </select>
     </div>
-    <div class="govuk-form-group govuk-!-margin-top-8">
-      <fieldset class="app-fieldset">
-        <legend class="app-fieldset__legend app-fieldset__legend--s">
-          Other filter options:
-        </legend>
-        <div
-          class="app-checkboxes app-checkboxes--small"
-          data-module="app-checkboxes"
-        >
-          <div class="app-checkboxes__item">
-            <input
-              class="app-checkboxes__input"
-              id="ksb"
-              name="other-filter"
-              type="checkbox"
-              value="ksb"
-            />
-            <label class="govuk-label app-checkboxes__label" for="ksb">
-              Knowledge, skills and behaviours (KSBs) added
-            </label>
-          </div>
-
-          <div class="app-checkboxes__item reminder-filter">
-            <input
-              class="app-checkboxes__input"
-              id="reminder"
-              name="other-filter"
-              type="checkbox"
-              value="reminder"
-            />
-            <label class="govuk-label app-checkboxes__label" for="reminder">
-              Reminder set
-            </label>
-          </div>
-
-          <div class="app-checkboxes__item">
-            <input
-              class="app-checkboxes__input"
-              id="note-added"
-              name="other-filter"
-              type="checkbox"
-              value="note-added"
-            />
-            <label class="govuk-label app-checkboxes__label" for="note-added">
-              Note attached
-            </label>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-  </div>
+    
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function () {
-    var tabname = "Todo";
+  (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('@detailsId');
+      var filtersSet = document.getElementById('@filtersSetId');
+      var cookieFilter = getCookie('@cookieName');
 
-    if ($(".done").parents(".app-tabs__list-item--selected").length) {
-      tabname = "Done";
-    }
-
-    var cookieFilter = "";
-    if (tabname == "Todo") {
-      cookieFilter = getCookie("@Constants.TaskFiltersTodoCookieName");
-    } else {
-      cookieFilter = getCookie("@Constants.TaskFiltersDoneCookieName");
-    }
-
-    if (cookieFilter != null && cookieFilter != "") {
-      var filters = "";
-      if (tabname == "Todo") {
-        filters = getCookie("@Constants.TaskFiltersTodoCookieName");
-      } else {
-        filters = getCookie("@Constants.TaskFiltersDoneCookieName");
+      var sortSelect = document.getElementById('sort-by-@tab');
+      if (sortSelect) {
+        var params = new URLSearchParams(window.location.search);
+        var sortParam = params.get('sort');
+        if (sortParam) {
+          sortSelect.value = sortParam;
+        }
+        sortSelect.addEventListener('change', function () {
+          var params = new URLSearchParams(window.location.search);
+          params.set('sort', this.value);
+          window.location.search = params.toString();
+        });
       }
 
-      data = filters.split("&");
+      if (cookieFilter != null && cookieFilter != "") {
+        container.open = true;
 
-      for (var k in data) {
-        var newData = data[k].split("=");
+        var data = cookieFilter.split("&");
 
-        $("#" + newData[1]).prop("checked", true);
+        for (var k in data) {
+          var newData = data[k].split("=");
 
-        $("#filters-set-tasks").append(
-          "<div class='app-tag app-tag--filter'><span>" +
-            newData[1].replace(/\-/g, " ") +
+          var checkbox = container.querySelector('input[value="' + newData[1] + '"]');
+          if (checkbox) checkbox.checked = true;
+
+          var tag = document.createElement('div');
+          tag.className = 'app-tag app-tag--filter';
+          tag.innerHTML =
+            "<span>" +
+            newData[1].replace(/-/g, " ") +
             "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
             newData[1] +
             "'><span class='govuk-visually-hidden'>Remove " +
-            newData[1].replace(/\-/g, " ") +
-            " from your filters</span></a></div>",
-        );
+            newData[1].replace(/-/g, " ") +
+            " from your filters</span></a>";
+          filtersSet.appendChild(tag);
+        }
+      } else {
+        if (filtersSet) filtersSet.style.display = 'none';
       }
-    } else {
-      $("#filters-set-tasks").hide();
-    }
 
-    $("body #filters-set-tasks").on("click", ".remove-filter", function (e) {
-      var filterName = $(this).attr("data-id");
+      if (filtersSet) {
+        filtersSet.addEventListener('click', function (e) {
+          var target = e.target.closest('.remove-filter');
+          if (!target) return;
+          e.preventDefault();
 
-      $("#" + filterName).prop("checked", false);
+          var filterName = target.dataset.id;
+          var checkbox = container.querySelector('input[value="' + filterName + '"]');
+          if (checkbox) checkbox.checked = false;
 
-      applyAndSaveFilters();
+          applyAndSaveFilters();
+        });
+      }
+
+      var applyBtn = container.querySelector('.apply');
+      if (applyBtn) {
+        applyBtn.addEventListener('click', applyAndSaveFilters);
+      }
+
+      function applyAndSaveFilters() {
+        var serialized = Array.from(container.querySelectorAll('input[type=checkbox]:checked'))
+          .map(function (cb) { return encodeURIComponent(cb.name) + '=' + encodeURIComponent(cb.value); })
+          .join('&');
+
+        setCookie('@cookieName', serialized, { secure: true, "max-age": 3600 });
+        location.reload();
+      }
     });
+  })();
 
-    $(".apply").click(function (e) {
-      applyAndSaveFilters();
-    });
-
-    $(".resetall").click(function (e) {
-      e.preventDefault();
-      $("input:checkbox").prop("checked", false);
-    });
-  });
-
-  function applyAndSaveFilters() {
-    var sList = "";
-
-    $("input[type=checkbox]").each(function () {
-      sList +=
-        "(" +
-        $(this).val() +
-        "-" +
-        (this.checked ? "checked" : "not checked") +
-        ")";
-    });
-
-    var tabname = "Todo";
-
-    if ($(".done").parents(".app-tabs__list-item--selected").length) {
-      tabname = "Done";
-    }
-
-    if (tabname == "Todo") {
-      setCookie(
-        "SFA.ApprenticeApp.TaskFiltersTodo",
-        $("input[type=checkbox]").serialize(),
-        { secure: true, "max-age": 3600 },
-      );
-    } else {
-      setCookie(
-        "SFA.ApprenticeApp.TaskFiltersDone",
-        $("input[type=checkbox]").serialize(),
-        { secure: true, "max-age": 3600 },
-      );
-    }
-
-    location.reload();
-  }
-
-  function getCookie(name) {
+  window.getCookie = window.getCookie || function (name) {
     let matches = document.cookie.match(
       new RegExp(
         "(?:^|; )" +
@@ -258,9 +243,9 @@
       ),
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
-  }
+  };
 
-  function setCookie(name, value, attributes = {}) {
+  window.setCookie = window.setCookie || function (name, value, attributes = {}) {
     attributes = {
       path: "/",
     };
@@ -281,5 +266,5 @@
     }
 
     document.cookie = updatedCookie;
-  }
+  };
 </script>

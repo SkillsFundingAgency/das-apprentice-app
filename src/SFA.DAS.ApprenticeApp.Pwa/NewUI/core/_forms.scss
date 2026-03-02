@@ -20,3 +20,7 @@
 .app-radios__conditional--reminder {
   border-left-color: #1D70B8;
 }
+
+.govuk-checkboxes--small .govuk-checkboxes__label::before {
+  background: #fff;
+}

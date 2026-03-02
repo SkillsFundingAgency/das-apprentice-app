@@ -3,8 +3,8 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 
 @{
-    var ksbList = Model?.Ksbs ?? new List<ApprenticeKsb>();
-
+    var ksbList = Model?.AllKsbs ?? new List<ApprenticeKsb>();
+    
     var ksbsByType = new Dictionary<string, List<ApprenticeKsb>>
     {
         { "Knowledge", ksbList.Where(k => k.Type == KsbType.Knowledge).ToList() },
