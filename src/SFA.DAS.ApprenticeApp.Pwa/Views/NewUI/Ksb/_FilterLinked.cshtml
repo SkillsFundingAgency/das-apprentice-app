@@ -164,6 +164,8 @@
             filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
         }
 
+        applyFiltersToList();
+
         if (filtersSet) {
             filtersSet.addEventListener('click', function (e) {
                 var target = e.target.closest('.remove-filter');
@@ -197,6 +199,39 @@
             { secure: true, "max-age": 3600 },
         );
         location.reload();
+    }
+
+    function applyFiltersToList() {
+        var statusFilters = Array.from(document.querySelectorAll('#filterLinkedKSBs input[name="filter"]:checked'))
+            .map(function (cb) { return cb.value; });
+        var otherFilters = Array.from(document.querySelectorAll('#filterLinkedKSBs input[name="other-filter"]:checked'))
+            .map(function (cb) { return cb.value; });
+
+        var counts = { knowledge: 0, skill: 0, behaviour: 0 };
+
+        document.querySelectorAll('.app-ksb-item').forEach(function (item) {
+            var status = item.dataset.ksbStatus;
+            var checkbox = item.querySelector('.link-ksb-checkbox');
+            var isLinked = checkbox && checkbox.checked;
+            var type = checkbox && checkbox.dataset.type ? checkbox.dataset.type.toLowerCase() : '';
+
+            var statusMatch = statusFilters.length === 0 || statusFilters.indexOf(status) !== -1;
+            var linkedMatch = otherFilters.indexOf('linked-to-a-task') === -1 || isLinked;
+            var visible = statusMatch && linkedMatch;
+
+            item.style.display = visible ? '' : 'none';
+
+            if (visible && counts.hasOwnProperty(type)) {
+                counts[type]++;
+            }
+        });
+
+        var kCount = document.querySelector('.k-count');
+        var sCount = document.querySelector('.s-count');
+        var bCount = document.querySelector('.b-count');
+        if (kCount) kCount.textContent = counts.knowledge;
+        if (sCount) sCount.textContent = counts.skill;
+        if (bCount) bCount.textContent = counts.behaviour;
     }
 
     function getCookieKsb(name) {
