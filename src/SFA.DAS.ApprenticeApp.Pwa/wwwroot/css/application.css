@@ -9066,6 +9066,21 @@ a.app-card:hover .app-card__heading, a.app-card:hover p, a.app-card:hover ul, a.
   bottom: -5px;
 }
 
+.app-details__show-text {
+  display: inline;
+}
+
+.app-details__hide-text {
+  display: none;
+}
+
+.app-details[open] .app-details__show-text {
+  display: none;
+}
+.app-details[open] .app-details__hide-text {
+  display: inline;
+}
+
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-footer {
     margin-bottom: 5.5rem;
@@ -9328,6 +9343,8 @@ a > span.app-icon-item {
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #d2e2f1;
 }
 
 .app-tag--filter {

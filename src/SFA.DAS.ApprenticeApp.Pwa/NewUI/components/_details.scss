@@ -46,3 +46,19 @@
     bottom: -5px;
   }
 }
+
+.app-details__show-text {
+  display: inline;
+}
+.app-details__hide-text {
+  display: none;
+}
+
+.app-details[open] {
+  .app-details__show-text {
+    display: none;
+  }
+  .app-details__hide-text {
+    display: inline;
+  }
+}

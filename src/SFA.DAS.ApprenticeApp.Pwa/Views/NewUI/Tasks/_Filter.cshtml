@@ -11,8 +11,11 @@
 
     <details class="govuk-details app-details" id="@detailsId">
         <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
+            <span class="govuk-details__summary-text app-details__show-text">
                 Show filters
+            </span>
+            <span class="govuk-details__summary-text app-details__hide-text">
+                Hide filters
             </span>
         </summary>
         <div class="govuk-!-margin-top-4">
@@ -192,16 +195,16 @@
           tag.className = 'app-tag app-tag--filter';
           tag.innerHTML =
             "<span>" +
-            newData[1].replace(/-/g, " ") +
+            userFriendlyTag(newData[1]) +
             "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
             newData[1] +
             "'><span class='govuk-visually-hidden'>Remove " +
-            newData[1].replace(/-/g, " ") +
+                  userFriendlyTag(newData[1]) +
             " from your filters</span></a>";
           filtersSet.appendChild(tag);
         }
       } else {
-        if (filtersSet) filtersSet.style.display = 'none';
+          filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
       }
 
       if (filtersSet) {
@@ -233,6 +236,25 @@
       }
     });
   })();
+  
+  function userFriendlyTag(tag) {
+      switch (tag) {
+        case "none":
+            return "None";
+        case "assignment":
+            return "Assignment";
+        case "epa":
+            return "Apprenticeship assessment";
+        case "deadline":
+            return "Deadline";
+        case "ksb":
+            return "Linked to KSB";
+        case "reminder":
+            return "Reminder set";
+        case "note-added"  :
+            return "Has note";
+      }
+  }
 
   window.getCookie = window.getCookie || function (name) {
     let matches = document.cookie.match(
