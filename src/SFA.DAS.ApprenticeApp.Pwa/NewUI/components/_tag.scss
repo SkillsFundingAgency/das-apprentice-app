@@ -31,3 +31,54 @@
     white-space: nowrap;
   }
 }
+
+.app-tag__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 1rem;
+}
+
+.app-tag--filter {
+  @extend .govuk-tag;
+  @extend .govuk-tag--grey;
+  padding: .5rem 0.75rem;
+  max-width: max-content;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  span:first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.app-tag__action--remove::before,
+.app-tag__action--remove::after {
+  height: 2px;
+  width: 20px;
+  background: #1d70b8;
+  display: block;
+  content: "";
+  position: absolute;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  top: 11px;
+  left: 4px;
+}
+
+.app-tag__action--remove::after {
+  transform: rotate(-45deg);
+}
+
+.app-tag__action {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+}
+
+.remove-filter, .edit-btn {
+  cursor: pointer;
+}

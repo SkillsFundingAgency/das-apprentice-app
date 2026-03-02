@@ -163,8 +163,32 @@
 }
 
 <div class="govuk-form-group">
-    <p class="govuk-label">
-        Linked KSBs (optional)
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Category</legend>
+        <div class="govuk-radios govuk-radios--small" id="app-collapse-task-cat">
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
+                       id="category_0" type="radio" value="0" checked />
+                <label class="govuk-label govuk-radios__label" for="category_0">None</label>
+            </div>
+            @foreach (var cat in Model.Categories)
+            {
+            <div class="govuk-radios__item">
+                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
+                       id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
+                       checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
+                    @cat.Title
+                </label>
+            </div>
+            }
+        </div>
+    </fieldset>
+</div>
+
+<div class="govuk-form-group">
+    <p class="govuk-label govuk-!-margin-bottom-4">
+        Linked KSBs <span class="govuk-!-font-weight-regular">(optional)</span>
     </p>
     <button type="submit"
             formaction="@Url.Action("SaveTaskAndRedirectToLinkKsbs", "Tasks")"

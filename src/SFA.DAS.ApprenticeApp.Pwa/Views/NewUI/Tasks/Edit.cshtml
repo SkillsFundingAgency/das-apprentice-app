@@ -7,8 +7,7 @@
     ViewBag.HideNavigation = true;
 }
 @section BackLink {
-    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-       class="govuk-back-link app-back-link">Back without saving</a>
+    <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
     Edit task
@@ -38,9 +37,6 @@
                 <input type="hidden" id="Apprenticeshipid" name="Apprenticeshipid" value="@Model.Task.ApprenticeshipId" />
                 <partial name="_AddEditForm" model="@Model" />
                 <div class="govuk-form-group">
-                    <p class="govuk-label">
-                        Knowledge, skills and behaviours (KSBs) added to this task
-                    </p>
                     <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids"
                            asp-for="@Model.Task.KsbsLinked" />
                     <div id="linked-ksb-details">
@@ -69,27 +65,9 @@
                     </div>
                 </div>
 
-            <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset">
-                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Category</legend>
-                    <div class="govuk-radios govuk-radios--small" id="app-collapse-task-cat">
-                        @foreach (var cat in Model.Categories)
-                        {
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
-                                       id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
-                                       checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
-                                <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
-                                    @cat.Title
-                                </label>
-                            </div>
-                        }
-                    </div>
-                </fieldset>
-            </div>
+            
             <div class="govuk-button-group app-button-group">
-                <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
-                   class="govuk-back-link app-back-link">Back without saving</a>
+                <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
                 <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
                     Save and continue
                 </button>

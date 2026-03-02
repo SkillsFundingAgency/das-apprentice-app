@@ -1,4 +1,5 @@
 @using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@using TaskStatus = SFA.DAS.ApprenticeApp.Domain.Models.TaskStatus
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditKsbPageModel
 
 @{
@@ -7,7 +8,7 @@
     ViewBag.HideNavigation = true;
 }
 @section BackLink {
-    <a asp-controller="Ksb" asp-action="Index" class="govuk-back-link app-back-link">Back without saving</a>
+    <a href="#" class="govuk-back-link app-back-link js-back-link">Back without saving</a>
 }
 
 <h1 class="govuk-heading-xl">
@@ -58,17 +59,29 @@
                 </div>
             </div>
 
-             <h2 class="govuk-heading-m">Linked tasks</h2>
+             <h2 class="govuk-heading-s">Linked tasks</h2>
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
 
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
-                        <div class="app-card">
+                        <a class="app-card" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId })">
                             <div class="app-card__header">
                                 <h2 class="app-card__heading">@task.Title</h2>
                                 <p>@task.Note</p>
                             </div>
+            
+                                @if (task.Status == TaskStatus.Done)
+                                {
+                                    <span class="app-tag govuk-tag--green govuk-!-margin-bottom-3">Done</span>
+                                }
+                                else
+                                {
+                                    <span class="app-tag govuk-tag--blue govuk-!-margin-bottom-3">To do</span>
+                                }
+                               
+            
+            
                                     <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
                                         @if (task.TaskLinkedKsbs != null)
                                         {
@@ -128,7 +141,7 @@
                                     </ul>
 
 
-                                </div>
+                                </a>
 
                         }
 
@@ -142,7 +155,7 @@
             <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
 
             <div class="govuk-button-group app-button-group">
-                <a asp-controller="Ksb" asp-action="Index" class="govuk-back-link app-back-link">Back without saving</a>
+                <a href="#" class="govuk-back-link app-back-link js-back-link">Back without saving</a>
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Save and continue
                 </button>
