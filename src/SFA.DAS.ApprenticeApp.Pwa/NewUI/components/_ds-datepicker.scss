@@ -1,0 +1,492 @@
+﻿// ============================================================
+// Variables
+// ============================================================
+$color-text: #1a1a1a;
+$color-text-secondary: #5e5e5e;
+$color-bg: #fff;
+$color-border: #b3b3b3;
+$color-focus: #fdd522;
+$font-weight-bold: 700;
+$font-weight-normal: 400;
+$breakpoint-medium: 768px;
+
+// ============================================================
+// Visually hidden utility (used by datepicker button labels)
+// ============================================================
+.visually-hidden {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    width: 1px;
+    white-space: nowrap;
+}
+
+// ============================================================
+// Fieldset and Legend
+// ============================================================
+fieldset {
+    border: 0;
+}
+
+legend {
+    font-size: 1.1875rem;
+    line-height: 1.2631578947;
+    font-weight: $font-weight-bold;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: $breakpoint-medium) {
+        font-size: 1.375rem;
+        line-height: 1.4545454545;
+    }
+}
+
+// ============================================================
+// Hint Text
+// ============================================================
+.ds_hint-text {
+    color: $color-text-secondary;
+    margin-bottom: 1rem;
+
+    > * {
+        margin-bottom: 0.5rem;
+    }
+}
+
+// ============================================================
+// Datepicker wrapper
+// ============================================================
+.ds_datepicker {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: $breakpoint-medium) {
+        margin-bottom: 2rem;
+    }
+
+    .ds_input {
+        margin-bottom: 0;
+    }
+
+    &__input-wrapper {
+        display: flex;
+        gap: 1rem;
+    }
+    // The calendar toggle button (icon-only, sits beside the input)
+    &__button,
+    .js-calendar-button {
+        align-self: end;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        min-width: 48px;
+        padding: 4px;
+        margin: 0;
+        line-height: 1;
+
+        > .ds_icon,
+        > svg {
+            display: block;
+            fill: currentColor;
+            height: 32px;
+            width: 32px;
+            pointer-events: none;
+        }
+        // Keep the "Choose date" text visually hidden
+        > span:not(.ds_icon) {
+            clip: rect(1px, 1px, 1px, 1px);
+            height: 1px;
+            overflow: hidden;
+            position: absolute !important;
+            width: 1px;
+            white-space: nowrap;
+        }
+
+        &:focus {
+            background-color: $color-focus;
+            color: $color-text;
+            outline: 0.125rem solid $color-focus;
+            outline-offset: 0;
+            box-shadow: 0 -2px $color-focus, 0 4px $color-text;
+        }
+    }
+}
+
+// ============================================================
+// Labels
+// ============================================================
+.ds_label {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: $color-text;
+    display: inline-block;
+    font-weight: $font-weight-bold;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: $breakpoint-medium) {
+        font-size: 1.1875rem;
+        line-height: 1.6842105263;
+    }
+}
+
+// ============================================================
+// Inputs
+// ============================================================
+.ds_input {
+    margin-bottom: 1.5rem;
+    background-color: $color-bg;
+    border: 0.125rem solid currentColor;
+    border-radius: 0;
+    min-height: 3rem;
+    padding: 0.375rem 0.625rem;
+    display: block;
+    line-height: 2rem;
+    width: 100%;
+
+    &:focus {
+        box-shadow: inset 0 0 0 0.125em $color-text;
+        outline: 0.125rem solid $color-focus;
+        outline-offset: 0;
+    }
+
+    &--fixed-2 {
+        max-width: calc(16px + 2em);
+    }
+
+    &--fixed-4 {
+        max-width: calc(16px + 4em);
+    }
+
+    @media (min-width: $breakpoint-medium) {
+        margin-bottom: 1.5rem;
+    }
+}
+
+// ============================================================
+// Datepicker Dialog
+// ============================================================
+.ds_datepicker__dialog {
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
+    background-color: $color-bg;
+    clear: both;
+    display: none;
+    padding: 8px;
+    outline: 1px solid $color-border;
+    outline-offset: -1px;
+    position: static;
+    top: 0;
+    transition: background-color 0.2s, outline-color 0.2s;
+    width: 296px;
+    z-index: 2;
+
+    &--open {
+        display: block;
+        left: 0;
+    }
+    // --------------------------------------------------------
+    // Header: flex row — nav groups flank the centred title
+    // --------------------------------------------------------
+    &__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+        min-height: 40px;
+    }
+
+    &__title {
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin: 0 !important;
+        text-transform: uppercase;
+        flex: 1;
+        text-align: center;
+
+        @media (min-width: $breakpoint-medium) {
+            font-size: 1rem;
+            padding: 8px 0;
+        }
+    }
+    // --------------------------------------------------------
+    // Nav button groups (two buttons each: year + month)
+    // --------------------------------------------------------
+    &__navbuttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-shrink: 0;
+        gap: 0;
+        // Icon-only nav buttons — hide label text, show only SVG
+        button,
+        .ds_button--icon-only {
+            align-items: center;
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            color: $color-text;
+            cursor: pointer;
+            display: inline-flex;
+            font-weight: $font-weight-normal;
+            height: 40px;
+            justify-content: center;
+            margin: 0;
+            padding: 4px;
+            min-height: 40px;
+            min-width: 36px;
+            width: 36px;
+            transition: color 0.2s, background-color 0.2s;
+            // Hide the visually-hidden label text inside buttons
+            .visually-hidden {
+                clip: rect(1px, 1px, 1px, 1px);
+                height: 1px;
+                overflow: hidden;
+                position: absolute !important;
+                width: 1px;
+                white-space: nowrap;
+            }
+
+            > svg,
+            .ds_icon {
+                display: block;
+                fill: currentColor;
+                height: 24px;
+                width: 24px;
+                pointer-events: none;
+                flex-shrink: 0;
+            }
+
+            &:hover {
+                background-color: #d9eeff;
+                color: #00437d;
+            }
+
+            &:focus {
+                background-color: $color-focus;
+                color: $color-text;
+                outline: 0.125rem solid $color-focus;
+                outline-offset: 0;
+                box-shadow: 0 0.285em 0 currentColor;
+            }
+        }
+    }
+}
+
+// ============================================================
+// Dialog Table
+// ============================================================
+.ds_datepicker__dialog__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    tbody:focus-within {
+        outline: 0.125em solid $color-focus;
+    }
+
+    // --------------------------------------------------------
+    // Grid borders on day cells
+    // --------------------------------------------------------
+    td {
+        border: 1px solid $color-border;
+        margin: 0;
+        outline: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    th {
+        font-size: 0.75rem;
+        line-height: 2;
+        color: $color-text-secondary;
+        font-weight: $font-weight-normal;
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 0;
+
+        @media (min-width: $breakpoint-medium) {
+            font-size: 0.875rem;
+        }
+        // Clip the full day name; only the aria-hidden abbreviation is visible
+        .visually-hidden {
+            clip: rect(1px, 1px, 1px, 1px);
+            height: 1px;
+            overflow: hidden;
+            position: absolute !important;
+            width: 1px;
+            white-space: nowrap;
+        }
+    }
+
+    button {
+        font-size: 0.875rem;
+        line-height: 1.7142857143;
+        color: $color-text;
+        font-weight: $font-weight-normal;
+        height: 40px;
+        width: 100%;
+        min-height: 40px;
+        min-width: 40px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+
+        &:hover {
+            color: #00437d;
+            background-color: #d9eeff;
+        }
+
+        &:focus {
+            background-color: $color-focus;
+            color: $color-text;
+            outline: 0.125rem solid $color-focus;
+            outline-offset: 0;
+            box-shadow: inset 0 -0.16em $color_text;
+            position: relative;
+            z-index: 2;
+        }
+
+        &[disabled="true"],
+        &[aria-disabled="true"] {
+            background-color: #ebebeb;
+            color: $color-text-secondary;
+            pointer-events: none;
+        }
+
+        &.fully-hidden {
+            visibility: hidden;
+        }
+
+        &.ds_datepicker__current {
+            outline: 2px solid $color-text !important;
+            outline-offset: -2px;
+        }
+
+        &.ds_datepicker__today {
+            font-weight: $font-weight-bold;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 4px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background-color: currentColor;
+            }
+        }
+
+        &.ds_selected:not(:focus) {
+            background-color: $color-text;
+            color: $color-bg;
+        }
+    }
+}
+
+// ============================================================
+// Table Caption
+// ============================================================
+.ds_datepicker__dialog__table-caption {
+    font-size: 0.75rem;
+    line-height: 2;
+    caption-side: bottom;
+    margin-top: 8px;
+    text-align: center;
+
+    @media (min-width: $breakpoint-medium) {
+        font-size: 0.875rem;
+        line-height: 1.7142857143;
+    }
+}
+
+// ============================================================
+// Select / Close button group
+// ============================================================
+.ds_datepicker__dialog__buttongroup {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+    overflow: visible;
+
+    button {
+        margin: 0;
+    }
+
+    // "Select" button – green background, white foreground
+    .js-datepicker-ok {
+        background-color: #00703c;
+        color: #fff;
+        border: none;
+        border-bottom: 2px solid #002d18;
+        padding: 8px 16px;
+        font-weight: $font-weight-bold;
+        font-size: 1rem;
+        cursor: pointer;
+        min-height: 40px;
+        width: auto;
+
+        &:hover {
+            background-color: #005a30;
+            color: #fff;
+        }
+
+        &:focus {
+            outline: 3px solid $color-focus;
+            outline-offset: 0;
+            color: $color-text;
+            background-color: $color-focus;
+            box-shadow: 0 2px 0 $color-text;
+        }
+    }
+
+    // "Close" button – light grey background, dark foreground
+    .js-datepicker-cancel {
+        background-color: #dee0e2;
+        color: #0b0c0c;
+        border: none;
+        border-bottom: 2px solid #929598;
+        padding: 8px 16px;
+        font-weight: $font-weight-normal;
+        font-size: 1rem;
+        cursor: pointer;
+        min-height: 40px;
+        width: auto;
+
+        &:hover {
+            background-color: #c9cbcd;
+            color: #0b0c0c;
+        }
+
+        &:focus {
+            outline: 3px solid $color-focus;
+            outline-offset: 0;
+            color: $color-text;
+            background-color: $color-focus;
+            box-shadow: 0 2px 0 $color-text;
+        }
+    }
+}
+
+// ============================================================
+// Absolute positioning on medium+ screens
+// ============================================================
+@media (min-width: $breakpoint-medium) {
+    .ds_datepicker__dialog {
+        position: absolute;
+    }
+}
