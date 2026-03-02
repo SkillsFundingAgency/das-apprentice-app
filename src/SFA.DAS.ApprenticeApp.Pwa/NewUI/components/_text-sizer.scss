@@ -1,0 +1,51 @@
+@use "govuk/helpers/index" as helpers;
+
+.app-text-size {
+  display: flex;
+  align-items: center;
+  font-family: "Inter";
+  -webkit-font-smoothing: antialiased;
+  justify-content: space-between;
+  @include helpers.govuk-media-query(tablet) {
+    max-width: 80%;
+  }
+}
+
+.app-text-size__btn {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  background: none;
+  color: #1a65a6;
+  max-width: 40%;
+  flex: 1;
+  &:hover {
+    background: #f3f2f1;
+  }
+  &:focus {
+    color: #000;
+    outline: 3px solid #ffdd00;
+  }
+  &:active {
+    color: #000;
+  }
+}
+
+.app-text-size__icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.app-text-size__text {
+  font-size: 1rem;
+}
+
+.app-text-size__label {
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 20%;
+  text-align: center;
+}

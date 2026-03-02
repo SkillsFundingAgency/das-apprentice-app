@@ -1,0 +1,10 @@
+.app-button-group {
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  margin-right: 0;
+  gap: 1rem;
+  .govuk-button {
+    margin: 0;
+  }
+}

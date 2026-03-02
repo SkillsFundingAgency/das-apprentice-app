@@ -1,0 +1,9 @@
+@model string
+@{
+    Layout = null;
+}
+@if (Model == "Done") {
+<p class="govuk-hint">You have no done tasks.</p>
+} else {
+<p class="govuk-hint">You have no tasks - add one to get started.</p>
+}

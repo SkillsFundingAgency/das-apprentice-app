@@ -13,5 +13,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
         public string? SearchTerm { get; set; }
 
         public List<KSBStatus> KsbStatuses { get; set; }
+
+        public MyApprenticeship? MyApprenticeship { get; set; }
     }
 }

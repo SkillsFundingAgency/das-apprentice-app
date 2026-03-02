@@ -1,0 +1,72 @@
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportArticlesPageModel
+@{
+    ViewData["Title"] = "Your saved articles";
+    ViewData["Section"] = "Support";
+    Layout = "_Layout";
+}
+
+@section BackLink {
+    <a asp-action="Index" asp-controller="Support" class="govuk-back-link app-back-link">Back</a>
+}
+
+<h1 class="govuk-heading-xl">Your saved articles</h1>
+
+@if (!Model.Articles.Any())
+{
+    <div class="govuk-body govuk-!-margin-top-4">
+        <p>You have no saved articles. Any support and guidance articles you save will be shown here. </p>
+    </div>
+}
+else
+{
+    <div class="govuk-accordion govuk-!-margin-top-4" data-module="govuk-accordion" id="accordion-default">
+        @foreach (var item in Model.Articles.Where(x => x.Heading != null))
+        {
+            <div class="govuk-accordion__section" id="accordion-@item.Sys.Id">
+                <div class="govuk-accordion__section-header">
+                    <h2 class="govuk-accordion__section-heading">
+                        <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
+                            @item.Heading
+                        </span>
+                    </h2>
+                </div>
+                <div id="accordion-default-content-@item.Sys.Id" class="govuk-accordion__section-content">
+                    @if (item.Content != null)
+                    {
+                        <div class="govuk-body">@Html.Raw(item.ArticleText)</div>
+                    }
+                    else
+                    {
+                        <div class="govuk-body">No content was found for this article</div>
+                    }
+
+                    <div class="app-article-actions">
+                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == true))
+                        {
+                            <button class="app-article-actions__button unsave" data-title="@item.Heading">
+                                            <span class="icon">
+                                                <svg width="24" height="24">
+                                                    <use href="/assets/icons/sprite.svg#pin-filled"></use>
+                                                </svg>
+                                            </span>
+                                <span class="text">Remove<span class="govuk-visually-hidden"> "@item.Heading" from your saved articles</span></span>
+                            </button>
+                        }
+                        <button class="app-article-actions__button share-btn">
+                                <span class="icon">
+                                    <svg width="24" height="24">
+                                        <use href="/assets/icons/sprite.svg#share"></use>
+                                    </svg>
+                                </span>
+                            <span class="text">Share<span class="govuk-visually-hidden"> "@item.Heading"</span></span>
+                        </button>
+                    </div>
+                    <input class="article-title" type="hidden" value="@item.Heading" />
+                    <input class="entryid" type="hidden" value="@item.Sys.Id" />
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script src="~/js/article-actions.js" asp-append-version="true"></script>

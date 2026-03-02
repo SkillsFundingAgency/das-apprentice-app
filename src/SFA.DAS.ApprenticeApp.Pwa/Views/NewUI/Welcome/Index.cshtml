@@ -1,0 +1,169 @@
+@{
+    ViewData["Title"] = "Welcome";
+    ViewBag.HideNavigation = true;
+    ViewBag.HideCrown = true;
+    Layout = "_Layout";
+}
+
+<div class="app-onboarding" data-module="app-onboarding">
+    <div class="app-onboarding__screen" id="welcome" data-screen="0">
+        <h1 class="govuk-heading-xl">Welcome, let’s take a quick tour of Your Apprenticeship</h1>
+        <span class="govuk-caption-l app-onboarding__step-count">1 of 6</span>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body">Your Apprenticeship helps you learn, prepare for your assessment, and succeed in your career.</p>
+                <p>Available on your phone, tablet and computer so you can work on the go or at your desk.</p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <img src="~/assets/images/onboarding/screen-1.svg" alt="Welcome" class="app-onboarding__image" />
+            </div>
+        </div>
+        <div class="app-onboarding__actions">
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <button type="button" class="govuk-button app-onboarding__next" data-target="ksbs">Next</button>
+        </div>
+    </div>
+
+    <div class="app-onboarding__screen" id="ksbs" data-screen="1" hidden>
+        <a href="#welcome" class="govuk-back-link app-back-link app-onboarding__back">Back</a>
+        <h1 class="govuk-heading-xl">All your knowledge, skills and behaviours (KSBs) in one place </h1>
+        <span class="govuk-caption-l app-onboarding__step-count">2 of 6</span>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body">View, search and filter your KSBs, link them to tasks, track your progress and capture notes and reflections. </p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <img src="~/assets/images/onboarding/screen-2.svg" alt="KSBs" class="app-onboarding__image--desktop" />
+                <img src="~/assets/images/onboarding/screen-2-mobile.svg" alt="KSBs" class="app-onboarding__image--mobile" />
+            </div>
+        </div>
+        <div class="app-onboarding__actions">
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <button type="button" class="govuk-button app-onboarding__next" data-target="tasks">Next</button>
+        </div>
+    </div>
+
+    <div class="app-onboarding__screen" id="tasks" data-screen="2" hidden>
+        <a href="#ksbs" class="govuk-back-link app-back-link app-onboarding__back">Back</a>
+        <h1 class="govuk-heading-xl">Keep on top of things with tasks</h1>
+        <span class="govuk-caption-l app-onboarding__step-count">3 of 6</span>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body">Create tasks to help manage your apprenticeship, with reminders to keep you on track. </p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <img src="~/assets/images/onboarding/screen-3.svg" alt="Keep on top of things with tasks" class="app-onboarding__image--desktop" />
+                <img src="~/assets/images/onboarding/screen-3-mobile.svg" alt="Keep on top of things with tasks" class="app-onboarding__image--mobile" />
+            </div>
+        </div>
+        <div class="app-onboarding__actions">
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <button type="button" class="govuk-button app-onboarding__next" data-target="support">Next</button>
+        </div>
+    </div>
+
+    <div class="app-onboarding__screen" id="support" data-screen="3" hidden>
+        <a href="#tasks" class="govuk-back-link app-back-link app-onboarding__back">Back</a>
+        <h1 class="govuk-heading-xl">Information you can trust</h1>
+        <span class="govuk-caption-l app-onboarding__step-count">4 of 6</span>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body">Get Government-approved information about what you’re entitled to, what you can claim, and where to go if you need support. </p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <img src="~/assets/images/onboarding/screen-4.svg" alt="Information you can trust" class="app-onboarding__image--desktop" />
+                <img src="~/assets/images/onboarding/screen-4-mobile.svg" alt="Information you can trust" class="app-onboarding__image--mobile" />
+            </div>
+        </div>
+        <div class="app-onboarding__actions">
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <button type="button" class="govuk-button app-onboarding__next" data-target="notifications">Next</button>
+        </div>
+    </div>
+
+    <div class="app-onboarding__screen" id="notifications" data-screen="4" hidden>
+        <a href="#support" class="govuk-back-link app-back-link app-onboarding__back">Back</a>
+        <h1 class="govuk-heading-xl">Stay notified</h1>
+        <span class="govuk-caption-l app-onboarding__step-count">5 of 6</span>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body">Get notified about your task deadlines and useful information about your apprenticeship.</p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <img src="~/assets/images/onboarding/screen-5.svg" alt="Stay notified" class="app-onboarding__image--desktop" />
+                <img src="~/assets/images/onboarding/screen-5-mobile.svg" alt="Stay notified" class="app-onboarding__image--mobile" />
+            </div>
+        </div>
+        <div class="app-onboarding__actions">
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <button type="button" class="govuk-button app-onboarding__next" data-target="account">Next</button>
+        </div>
+    </div>
+
+    <div class="app-onboarding__screen" id="account" data-screen="5" hidden>
+        <a href="#notifications" class="govuk-back-link app-back-link app-onboarding__back">Back</a>
+        <h1 class="govuk-heading-xl">Your account</h1>
+        <span class="govuk-caption-l app-onboarding__step-count">6 of 6</span>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-half">
+                <p class="govuk-body">View your apprenticeship details, your progress, and change settings to make Your Apprenticeship work for you. </p>
+            </div>
+            <div class="govuk-grid-column-one-half">
+                <img src="~/assets/images/onboarding/screen-6.svg" alt="Your account" class="app-onboarding__image--desktop" />
+                <img src="~/assets/images/onboarding/screen-6-mobile.svg" alt="Your account" class="app-onboarding__image--mobile" />
+            </div>
+        </div>
+        <div class="app-onboarding__actions">
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <a class="govuk-button app-onboarding__next" asp-controller="Ksb" asp-action="Index">Finish</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var container = document.querySelector('[data-module="app-onboarding"]');
+        if (!container) return;
+
+        var screens = container.querySelectorAll('.app-onboarding__screen');
+        var screenIds = [];
+
+        screens.forEach(function (screen) {
+            screenIds.push(screen.id);
+        });
+
+        function showScreen(id) {
+            screens.forEach(function (screen) {
+                screen.hidden = screen.id !== id;
+            });
+            window.location.hash = id;
+        }
+        
+        container.querySelectorAll('.app-onboarding__next').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                showScreen(btn.dataset.target);
+            });
+        });
+        
+        
+        container.querySelectorAll('.app-onboarding__back').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = link.getAttribute('href').substring(1);
+                showScreen(target);
+            });
+        });
+        
+        var hash = window.location.hash.substring(1);
+        if (hash && screenIds.indexOf(hash) !== -1) {
+            showScreen(hash);
+        }
+        
+        window.addEventListener('hashchange', function () {
+            var hash = window.location.hash.substring(1);
+            if (hash && screenIds.indexOf(hash) !== -1) {
+                showScreen(hash);
+            }
+        });
+    })();
+</script>

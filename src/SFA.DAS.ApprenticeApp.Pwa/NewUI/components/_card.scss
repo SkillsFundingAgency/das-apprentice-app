@@ -1,0 +1,50 @@
+@use "../settings/typography" as typography;
+@use "govuk/settings/index" as settings;
+@use "govuk/helpers/index" as helpers;
+
+.app-card {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid settings.$govuk-border-colour;
+  @include helpers.govuk-media-query(tablet) {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.app-card--highlight {
+  background-color: #F4F8FB;
+  border-color: #D2E2F1;
+}
+
+.app-card__heading {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-family: typography.$app-font-family;
+  color: settings.$govuk-brand-colour;
+}
+
+.app-card:focus .app-card__heading {
+  color: inherit;
+}
+
+.app-card__content {
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+a.app-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+    &:hover {
+      background-color: settings.$govuk-brand-colour;
+      border-color: settings.$govuk-brand-colour;
+      color: white;
+      .app-card__heading, p, ul, li {
+        color: inherit;
+      }
+    }
+}

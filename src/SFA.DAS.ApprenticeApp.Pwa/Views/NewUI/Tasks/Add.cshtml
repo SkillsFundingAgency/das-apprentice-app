@@ -1,0 +1,112 @@
+@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
+@{
+    ViewData["Title"] = "Tasks";
+    ViewData["Section"] = "Tasks";
+    ViewBag.HideNavigation = true;
+}
+@section BackLink {
+    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+       class="govuk-back-link app-back-link">Back without saving</a>
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        <div class="govuk-error-summary govuk-visually-hidden" aria-hidden="true" id="errorSummary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 class="govuk-heading-xl">
+    Add a @(Model.StatusId == 1 ? "completed" : "new") task
+</h1>
+<partial name="_HelpTasks.cshtml" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+            <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
+                <partial name="_AddEditForm" model="@Model" />
+
+            <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
+            <div id="linked-ksb-details">
+                @if (Model.KsbProgressData !=null)
+                {
+                      @foreach (var ksbProgressData in Model.KsbProgressData)
+                    {
+
+                        <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksbProgressData.KsbId" class="app-card">
+                            <div class="app-card__header">
+                                <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                            </div>
+                            <p>@ksbProgressData.Detail</p>
+                            <span>
+                                @{
+                                    @if (@ksbProgressData.CurrentStatus != null)
+                                    {
+                                        var statusItem = @ksbProgressData.CurrentStatus;
+                                        string statusItemDisplay = statusItem.GetEnumDescription();
+                                        <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ", "").Replace("-", "")">
+                                            <text>@statusItemDisplay</text>
+                                        </div>
+                                    }
+                                }
+                            </span>
+                            </a>
+                    }
+                }
+            </div>
+
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Assign a category</legend>
+                        <div class="govuk-radios govuk-radios--small">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
+                                       id="category_0" type="radio" value="0" checked />
+                                <label class="govuk-label govuk-radios__label" for="category_0">None</label>
+                            </div>
+                        @if (Model.Categories != null)
+                        {
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" name="ApprenticeshipCategoryId"
+                                           id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId" />
+                                    <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
+                                        @cat.Title
+                                    </label>
+                                </div>
+                            }
+                        }
+                        </div>
+                    </fieldset>
+                </div>
+
+                <input class="taskCategory" name="apprenticeshipcategoryid" type="hidden"
+                       asp-for="@Model.Task.ApprenticeshipCategoryId" />
+                <input class="apprenticeshipid" name="apprenticeshipid" type="hidden"
+                       asp-for="@Model.Task.ApprenticeshipId" />
+                <input name="Status" type="hidden" asp-for="@Model.StatusId" />
+        
+        <div class="govuk-button-group app-button-group">    <a asp-action="Index" asp-controller="Tasks" asp-route-status="@Model.StatusId"
+                                                                class="govuk-back-link app-back-link">Back without saving</a>
+                   <button type="submit" class="govuk-button" data-module="govuk-button">
+                                Save and continue
+                            </button>
+        </div>
+            </form>
+    </div>
+</div>
+
+<script src="~/js/task-validation.js" asp-append-version="true"></script>
+<script src="~/js/task-reminder.js" asp-append-version="true"></script>

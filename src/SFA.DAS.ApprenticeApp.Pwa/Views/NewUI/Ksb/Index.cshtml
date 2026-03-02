@@ -1,0 +1,35 @@
+@{
+ViewData["Title"] = "Your knowledge, skills and behaviours (KSBs)";
+ViewData["Section"] = "Ksbs";
+Layout = "_Layout";
+}
+<h1 class="govuk-heading-xl">Knowledge, skills and behaviours (KSBs)</h1>
+<partial name="_HelpKSBs.cshtml" />
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <div class="app-tabs" data-module="app-tabs">
+      <ul class="app-tabs__list">
+        <li class="app-tabs__list-item">
+          <a class="app-tabs__tab tab-knowledge" href="#knowledge">
+            Knowledge (@Model.KnowledgeCount.ToString())
+          </a>
+        </li>
+        <li class="app-tabs__list-item">
+          <a class="app-tabs__tab tab-skills" href="#skill">
+            Skills (@Model.SkillCount.ToString())
+          </a>
+        </li>
+        <li class="app-tabs__list-item">
+          <a class="app-tabs__tab tab-behaviours" href="#behaviour">
+            Behaviours (@Model.BehaviourCount.ToString())
+          </a>
+        </li>
+      </ul>
+      <partial name="_KsbsAll.cshtml" />
+    </div>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <partial name="_YourKSBs.cshtml" />
+    <partial name="_YourApprenticeship.cshtml" />
+  </div>
+</div>

@@ -1,0 +1,80 @@
+﻿@using SFA.DAS.ApprenticeApp.Pwa.Configuration
+@using Newtonsoft.Json
+@inject ApplicationConfiguration applicationConfiguration
+@{
+    ViewData["Title"] = "Settings";
+    ViewData["Section"] = "Account";
+}
+
+@section BackLink {
+    <a asp-action="YourAccount" asp-controller="Account" class="govuk-back-link app-back-link">Back</a>
+}
+
+<h1 class="govuk-heading-xl">Settings</h1>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h2 class="govuk-heading-m">
+            Push notifications
+        </h2>
+        <p class="govuk-body">
+            Turning on push notifications means you can get notifications directly to your
+            device, including:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>when you've set task reminders</li>
+            <li>if we need to tell you something about the Your Apprenticeship service</li>
+        </ul>
+
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" type="checkbox" id="notificationSwitch" />
+                <label class="govuk-label govuk-checkboxes__label" for="notificationSwitch">Turn on push notifications</label>
+            </div>
+        </div>
+        <p id="notificationHint" class="govuk-body govuk-!-margin-top-3" hidden></p>
+
+        <hr class="govuk-section-break govuk-section-break--l">
+
+        <h2 class="govuk-heading-m">
+            Additional cookies
+        </h2>
+        <p class="govuk-body">
+            Turning on additional cookies allows us to remember your settings.
+            It also helps us understand how many people use the service, so we can improve it.
+        </p>
+        <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" type="checkbox" id="additionalCookiesSwitch" />
+                <label class="govuk-label govuk-checkboxes__label" for="additionalCookiesSwitch">Turn on additional cookies</label>
+            </div>
+        </div>
+
+        <hr class="govuk-section-break govuk-section-break--l">
+
+        <h2 class="govuk-heading-m">
+            Text size
+        </h2>
+
+        <div class="app-text-size">
+            <button id="textSizeDecrease" class="app-text-size__btn" aria-label="Decrease text size">
+                <span class="app-text-size__icon">-</span>
+                <span class="app-text-size__text">Make text smaller</span>
+            </button>
+            <div id="textSizeDisplay" class="app-text-size__label">100%</div>
+            <button id="textSizeIncrease" class="app-text-size__btn" aria-label="Increase text size">
+                <span class="app-text-size__icon">+</span>
+                <span class="app-text-size__text">Make text larger</span>
+            </button>
+        </div>
+        
+    </div>
+</div>
+
+
+<script>
+    var publicKey = @Html.Raw(Json.Serialize(@applicationConfiguration.PushNotificationPublicKey));
+    window.pushNotificationKey = publicKey;
+</script>
+<script src="~/js/settings.js" asp-append-version="true"></script>

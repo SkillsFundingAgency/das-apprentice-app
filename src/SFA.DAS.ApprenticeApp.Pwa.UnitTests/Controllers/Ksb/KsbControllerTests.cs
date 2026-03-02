@@ -12,6 +12,7 @@ using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Controllers;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Collections.Generic;
@@ -741,11 +742,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
 
         [Test, MoqAutoData]
         public async Task RemoveTaskFromKsbProgress_HttpDelete_Async_NoApprenticeId(
-    int progressId,
-    int taskId,
-    [Frozen] Mock<ILogger<KsbController>> logger,
-    [Frozen] Mock<IApprenticeContext> apprenticeContext,
-    [Greedy] KsbController controller)
+        int progressId,
+        int taskId,
+        [Frozen] Mock<ILogger<KsbController>> logger,
+        [Frozen] Mock<IApprenticeContext> apprenticeContext,
+        [Greedy] KsbController controller)
         {
             // Arrange
             apprenticeContext
