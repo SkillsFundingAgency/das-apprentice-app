@@ -8968,6 +8968,19 @@ p + .govuk-heading-s,
   margin: 0;
 }
 
+.app-fab {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  width: auto;
+}
+@media (min-width: 40.0625em) {
+  .app-fab {
+    position: relative;
+    width: 100%;
+  }
+}
+
 .app-card {
   padding: 1rem;
   margin-bottom: 1rem;
@@ -9079,6 +9092,12 @@ a.app-card:hover .app-card__heading, a.app-card:hover p, a.app-card:hover ul, a.
 }
 .app-details[open] .app-details__hide-text {
   display: inline;
+}
+
+@media (min-width: 40.0625em) {
+  .app-details--mobile-only .govuk-details__summary {
+    display: none;
+  }
 }
 
 @media (max-width: 40.0525em) and (orientation: portrait) {
