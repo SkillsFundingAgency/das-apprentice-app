@@ -59,15 +59,7 @@
                            value="@(hasDate? dueDateValue.Year.ToString() : "")">
                 </div>
             </div>
-            <details class="govuk-details app-details govuk-!-margin-top-4" id="calendar-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text" id="calendar-toggle-text">
-                        Show calendar
-                    </span>
-                </summary>
-                <div class="govuk-details__text" id="calendar-container" style="border-left: none; padding-left: 0;">
-                </div>
-            </details>
+            <div id="calendar-container" style="display:none;width:100%;"></div>
         </div>
     </fieldset>
     <input type="hidden" id="duedate-hidden" name="duedate" value="@(hasDate? dueDateValue.ToString("yyyy-MM-dd") : "")">
@@ -205,14 +197,3 @@
         Link KSBs
     </button>
 </div>
-<script>
-    (function () {
-        var details = document.getElementById("calendar-details");
-        var toggleText = document.getElementById("calendar-toggle-text");
-        if (!details || !toggleText) return;
-
-        details.addEventListener("toggle", function () {
-            toggleText.textContent = details.open ? "Hide calendar" : "Show calendar";
-        });
-    })();
-</script>

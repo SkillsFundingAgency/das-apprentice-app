@@ -453,10 +453,8 @@
                     const a = t.querySelector(".ds_tag") ? t.querySelector(".ds_tag").textContent.trim() : "phase";
                     [].slice.call(t.querySelectorAll("a")).forEach(t => {
                         t.getAttribute("data-banner") || t.setAttribute("data-banner", `banner-${e(a)}-link`)
-                    }
-                    )
-                }
-                )
+                    });
+                });
             },
             radios: function (t = document) {
                 a.gatherElements("ds_radio__input", t).forEach(t => {
@@ -756,20 +754,25 @@
                         return;
                     this.setOptions();
                     this.icons = {
-                        calendar_today: '<svg class="ds_icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>',
+                        calendar_today: '<svg width="32" height="35" viewBox="0 0 32 35" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.7373 0.0126953V3.5127H22.7627V0.0126953H26.2373V3.5127H28C28.9592 3.5127 29.7798 3.85402 30.4629 4.53711C31.146 5.2202 31.4873 6.04084 31.4873 7V31.5C31.4873 32.4592 31.146 33.2798 30.4629 33.9629C29.7798 34.646 28.9592 34.9873 28 34.9873H3.5C2.54084 34.9873 1.7202 34.646 1.03711 33.9629C0.354018 33.2798 0.0126953 32.4592 0.0126953 31.5V7C0.0126953 6.04084 0.354018 5.2202 1.03711 4.53711C1.7202 3.85402 2.54084 3.5127 3.5 3.5127H5.2627V0.0126953H8.7373ZM3.4873 31.5127H28.0127V13.9873H3.4873V31.5127ZM8.75 24.5127C9.24269 24.5127 9.65532 24.6788 9.98828 25.0117C10.3212 25.3447 10.4873 25.7573 10.4873 26.25C10.4873 26.7427 10.3212 27.1553 9.98828 27.4883C9.65532 27.8212 9.24269 27.9873 8.75 27.9873C8.25731 27.9873 7.84468 27.8212 7.51172 27.4883C7.17876 27.1553 7.0127 26.7427 7.0127 26.25C7.0127 25.7573 7.17876 25.3447 7.51172 25.0117C7.84468 24.6788 8.25731 24.5127 8.75 24.5127ZM15.75 24.5127C16.2427 24.5127 16.6553 24.6788 16.9883 25.0117C17.3212 25.3447 17.4873 25.7573 17.4873 26.25C17.4873 26.7427 17.3212 27.1553 16.9883 27.4883C16.6553 27.8212 16.2427 27.9873 15.75 27.9873C15.2573 27.9873 14.8447 27.8212 14.5117 27.4883C14.1788 27.1553 14.0127 26.7427 14.0127 26.25C14.0127 25.7573 14.1788 25.3447 14.5117 25.0117C14.8447 24.6788 15.2573 24.5127 15.75 24.5127ZM22.75 24.5127C23.2427 24.5127 23.6553 24.6788 23.9883 25.0117C24.3212 25.3447 24.4873 25.7573 24.4873 26.25C24.4873 26.7427 24.3212 27.1553 23.9883 27.4883C23.6553 27.8212 23.2427 27.9873 22.75 27.9873C22.2573 27.9873 21.8447 27.8212 21.5117 27.4883C21.1788 27.1553 21.0127 26.7427 21.0127 26.25C21.0127 25.7573 21.1788 25.3447 21.5117 25.0117C21.8447 24.6788 22.2573 24.5127 22.75 24.5127ZM8.75 17.5127C9.24269 17.5127 9.65532 17.6788 9.98828 18.0117C10.3212 18.3447 10.4873 18.7573 10.4873 19.25C10.4873 19.7427 10.3212 20.1553 9.98828 20.4883C9.65532 20.8212 9.24269 20.9873 8.75 20.9873C8.25731 20.9873 7.84468 20.8212 7.51172 20.4883C7.17876 20.1553 7.0127 19.7427 7.0127 19.25C7.0127 18.7573 7.17876 18.3447 7.51172 18.0117C7.84468 17.6788 8.25731 17.5127 8.75 17.5127ZM15.75 17.5127C16.2427 17.5127 16.6553 17.6788 16.9883 18.0117C17.3212 18.3447 17.4873 18.7573 17.4873 19.25C17.4873 19.7427 17.3212 20.1553 16.9883 20.4883C16.6553 20.8212 16.2427 20.9873 15.75 20.9873C15.2573 20.9873 14.8447 20.8212 14.5117 20.4883C14.1788 20.1553 14.0127 19.7427 14.0127 19.25C14.0127 18.7573 14.1788 18.3447 14.5117 18.0117C14.8447 17.6788 15.2573 17.5127 15.75 17.5127ZM22.75 17.5127C23.2427 17.5127 23.6553 17.6788 23.9883 18.0117C24.3212 18.3447 24.4873 18.7573 24.4873 19.25C24.4873 19.7427 24.3212 20.1553 23.9883 20.4883C23.6553 20.8212 23.2427 20.9873 22.75 20.9873C22.2573 20.9873 21.8447 20.8212 21.5117 20.4883C21.1788 20.1553 21.0127 19.7427 21.0127 19.25C21.0127 18.7573 21.1788 18.3447 21.5117 18.0117C21.8447 17.6788 22.2573 17.5127 22.75 17.5127Z" fill="#1D70B8" stroke="#1D70B8" stroke-width="0.025"/></svg>',
                         chevron_left: '<svg focusable="false" class="ds_icon" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>',
                         chevron_right: '<svg focusable="false" class="ds_icon" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>',
                         double_chevron_left: '<svg focusable="false" class="ds_icon" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 16.6 17.6 18l-6-6 6-6L19 7.4 14.4 12l4.6 4.6Zm-6.6 0L11 18l-6-6 6-6 1.4 1.4L7.8 12l4.6 4.6Z"/></svg>',
                         double_chevron_right: '<svg focusable="false" class="ds_icon" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.6 12 5 7.4 6.4 6l6 6-6 6L5 16.6 9.6 12Zm6.6 0-4.6-4.6L13 6l6 6-6 6-1.4-1.4 4.6-4.6Z"/></svg>'
                     };
 
-                    // Detect the <details> inline calendar container
-                    this.detailsElement = this.datePickerParent.querySelector("#calendar-details");
-                    this.calendarContainer = this.datePickerParent.querySelector("#calendar-container");
-                    this.useInlineMode = !!(this.detailsElement && this.calendarContainer);
+                    // Look for the calendar icon button already in the HTML (placed next to date inputs)
+                    this.calendarToggleButton = this.datePickerParent.querySelector(".js-calendar-toggle-btn");
 
-                    // Create the calendar toggle button (hidden dummy when inline, visible icon when not)
+                    // Look for the calendar container div in the HTML
+                    this.calendarContainer = this.datePickerParent.querySelector("#calendar-container");
+
+                    // Determine if we use the inline icon-toggle mode (icon button + container exist in HTML)
+                    this.useInlineMode = !!(this.calendarToggleButton && this.calendarContainer);
+
+                    // Create the internal calendar button reference used by the picker logic
                     if (this.useInlineMode) {
+                        // Use the existing icon button as the toggle; create a hidden dummy for internal references
                         this.calendarButtonElement = document.createElement("button");
                         this.calendarButtonElement.type = "button";
                         this.calendarButtonElement.style.display = "none";
@@ -781,7 +784,27 @@
                         this.calendarButtonElement = e.firstChild;
                         this.calendarButtonElement.setAttribute("data-button", `datepicker-${this.inputElement.id}-toggle`);
                         if (this.isMultipleInput) {
-                            this.inputElement.parentNode.parentNode.appendChild(this.calendarButtonElement);
+                            // Wrap button in a date-input item centered with the input fields
+                            const wrapper = document.createElement("div");
+                            wrapper.className = "govuk-date-input__item";
+                            wrapper.style.alignSelf = "flex-end";
+                            wrapper.style.marginLeft = "4px";
+                            // Remove any default styling from the button itself
+                            this.calendarButtonElement.style.background = "none";
+                            this.calendarButtonElement.style.border = "none";
+                            this.calendarButtonElement.style.padding = "0";
+                            this.calendarButtonElement.style.cursor = "pointer";
+                            this.calendarButtonElement.style.lineHeight = "0";
+                            // Nudge icon down to vertically center with input boxes (input height 40px, icon 35px)
+                            this.calendarButtonElement.style.paddingTop = "3px";
+                            wrapper.appendChild(this.calendarButtonElement);
+                            // Insert the wrapper before #calendar-container so it sits in the input row
+                            const calContainer = this.datePickerParent.querySelector("#calendar-container");
+                            if (calContainer) {
+                                this.datePickerParent.insertBefore(wrapper, calContainer);
+                            } else {
+                                this.datePickerParent.appendChild(wrapper);
+                            }
                         } else {
                             this.inputElement.parentNode.appendChild(this.calendarButtonElement);
                             this.inputElement.parentNode.classList.add("ds_input__wrapper--has-icon");
@@ -802,7 +825,7 @@
                     this.calendarButtonElement.setAttribute("aria-expanded", !1);
                     this.dialogElement = a;
 
-                    // Place dialog: inside <details> container (inline) or appended to parent (popup)
+                    // Place dialog: inside calendar-container (inline) or appended to parent (popup)
                     if (this.useInlineMode) {
                         this.calendarContainer.appendChild(a);
                         this.dialogElement.classList.add("ds_datepicker__dialog--open");
@@ -859,11 +882,13 @@
                     if (this.useInlineMode) {
                         this.cancelButton.addEventListener("click", t => {
                             t.preventDefault();
-                            this.detailsElement.removeAttribute("open");
+                            this.calendarContainer.style.display = "none";
+                            this.calendarToggleButton.setAttribute("aria-expanded", "false");
                         });
                         this.okButton.addEventListener("click", () => {
                             this.selectDate(this.currentDate);
-                            this.detailsElement.removeAttribute("open");
+                            this.calendarContainer.style.display = "none";
+                            this.calendarToggleButton.setAttribute("aria-expanded", "false");
                         });
                     } else {
                         this.cancelButton.addEventListener("click", t => {
@@ -871,7 +896,7 @@
                                 this.closeDialog(t)
                         }
                         ),
-                        this.okButton.addEventListener("click", () => this.selectDate(this.currentDate));
+                            this.okButton.addEventListener("click", () => this.selectDate(this.currentDate));
                     }
 
                     // Focus trap within the dialog
@@ -881,10 +906,15 @@
                     this.firstButtonInDialog.addEventListener("keydown", t => this.firstButtonKeyup(t));
                     this.lastButtonInDialog.addEventListener("keydown", t => this.lastButtonKeyup(t));
 
-                    // Wire toggle: <details> toggle event (inline) or calendar button click (popup)
+                    // Wire toggle: calendar icon button click (inline) or calendar button click (popup)
                     if (this.useInlineMode) {
-                        this.detailsElement.addEventListener("toggle", () => {
-                            if (this.detailsElement.open) {
+                        this.calendarToggleButton.addEventListener("click", (evt) => {
+                            evt.preventDefault();
+                            const isVisible = this.calendarContainer.style.display !== "none";
+                            if (isVisible) {
+                                this.calendarContainer.style.display = "none";
+                                this.calendarToggleButton.setAttribute("aria-expanded", "false");
+                            } else {
                                 this.setMinAndMaxDatesOnCalendar();
                                 if (this.isMultipleInput) {
                                     const d = this.dateInput.value.trim();
@@ -900,6 +930,8 @@
                                 }
                                 this.updateCalendar();
                                 this.setCurrentDate(!1);
+                                this.calendarContainer.style.display = "";
+                                this.calendarToggleButton.setAttribute("aria-expanded", "true");
                             }
                         });
                     } else {
