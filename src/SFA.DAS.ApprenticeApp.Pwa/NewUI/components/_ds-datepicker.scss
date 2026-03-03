@@ -371,20 +371,21 @@ legend {
             visibility: hidden;
         }
 
-        // Circle indicator for the currently-set date value
+        // Dot indicator for the currently-set date value
         &.ds_datepicker__current {
             outline: none !important;
 
             &::before {
                 content: "";
                 position: absolute;
-                top: 50%;
+                bottom: 4px;
                 left: 50%;
-                transform: translate(-50%, -50%);
-                width: 32px;
-                height: 32px;
+                transform: translateX(-50%);
+                width: 6px;
+                height: 6px;
                 border-radius: 50%;
-                border: 2px solid $color-selected;
+                background-color: $color-selected;
+                border: 0;
                 pointer-events: none;
             }
         }
@@ -422,7 +423,7 @@ legend {
                 box-shadow: none;
             }
 
-            // When selected AND current, hide the circle so it doesn't clash with the filled blue
+            // When selected AND current, hide the dot so it doesn't clash with the filled blue
             &.ds_datepicker__current::before {
                 display: none;
             }
