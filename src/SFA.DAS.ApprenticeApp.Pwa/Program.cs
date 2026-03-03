@@ -94,6 +94,7 @@ app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 // Remove UseEndpoints and use the new minimal API routing
 app.MapControllerRoute(

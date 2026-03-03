@@ -11,5 +11,6 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public string Email { get; set; } = null!;
         public bool TermsOfUseAccepted { get; set; }
         public DateTime? AppLastLoggedIn { get; set; }
+        public string? GovUkIdentifier { get; set; }
     }
 }
