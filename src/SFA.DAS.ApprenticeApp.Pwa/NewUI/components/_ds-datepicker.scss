@@ -407,23 +407,23 @@ legend {
         }
 
         &.ds_selected {
-            background-color: $color-selected;
-            color: $color-bg;
+            background-color: #0b0c0c;
+            color: #ffffff;
 
             &:hover {
-                background-color: $color-selected-hover;
-                color: $color-bg;
+                background-color: #333333;
+                color: #ffffff;
             }
 
             &:focus {
-                background-color: $color-selected;
-                color: $color-bg;
-                outline: 0.125rem solid $color-selected;
+                background-color: #0b0c0c;
+                color: #ffffff;
+                outline: 0.125rem solid #0b0c0c;
                 outline-offset: -0.125rem;
                 box-shadow: none;
             }
 
-            // When selected AND current, hide the dot so it doesn't clash with the filled blue
+            // When selected AND current, hide the dot so it doesn't clash with the filled background
             &.ds_datepicker__current::before {
                 display: none;
             }
