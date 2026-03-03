@@ -230,7 +230,7 @@ legend {
             background: transparent;
             border: 0;
             border-radius: 0;
-            color: $color-text;
+            color: #1d70b8;
             cursor: pointer;
             display: inline-flex;
             font-weight: $font-weight-normal;
@@ -264,7 +264,7 @@ legend {
 
             &:hover {
                 background-color: #d9eeff;
-                color: #00437d;
+                color: $color-selected-hover;
             }
 
             &:focus {
@@ -328,7 +328,7 @@ legend {
     button {
         font-size: 0.875rem;
         line-height: 1.7142857143;
-        color: $color-text;
+        color: #1a65a6;
         font-weight: $font-weight-normal;
         height: 40px;
         width: 100%;
