@@ -22,7 +22,6 @@
         }
         click(t) {
             this.picker.goToDate(this.date),
-                this.picker.selectDate(this.date),
                 t.stopPropagation(),
                 t.preventDefault()
         }
