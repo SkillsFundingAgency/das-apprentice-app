@@ -22,6 +22,7 @@
         }
         click(t) {
             this.picker.goToDate(this.date),
+                this.picker.setDate(this.date),
                 t.stopPropagation(),
                 t.preventDefault()
         }
@@ -1089,8 +1090,8 @@
                 }
                 setDate(t) {
                     if (this.isMultipleInput)
-                        this.dateInput.value = t.getDate(),
-                            this.monthInput.value = t.getMonth() + 1,
+                        this.dateInput.value = this.leadingZeroes(t.getDate()),
+                            this.monthInput.value = this.leadingZeroes(t.getMonth() + 1),
                             this.yearInput.value = t.getFullYear();
                     else
                         switch (this.inputElement.value = `${this.leadingZeroes(t.getDate())}/${this.leadingZeroes(t.getMonth() + 1)}/${t.getFullYear()}`,
