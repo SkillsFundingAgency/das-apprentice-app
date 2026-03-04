@@ -399,20 +399,6 @@ legend {
         // Dot indicator for the currently-set date value
         &.ds_datepicker__current {
             outline: none !important;
-
-            &::before {
-                content: "";
-                position: absolute;
-                bottom: 4px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background-color: $color-selected;
-                border: 0;
-                pointer-events: none;
-            }
         }
 
         &.ds_datepicker__today {
@@ -427,7 +413,7 @@ legend {
                 width: 4px;
                 height: 4px;
                 border-radius: 50%;
-                background-color: currentColor;
+                background-color: #0B0C0C;
             }
         }
 
