@@ -21,7 +21,8 @@
                 e ? this.button.classList.add("fully-hidden") : this.button.classList.remove("fully-hidden")
         }
         click(t) {
-            this.picker.goToDate(this.date),
+            this.picker.hasUserSelectedDate = !0,
+                this.picker.goToDate(this.date),
                 this.picker.setDate(this.date),
                 t.stopPropagation(),
                 t.preventDefault()
@@ -737,6 +738,7 @@
                         this.currentDate.setHours(0, 0, 0, 0),
                         this.calendarDays = [],
                         this.disabledDates = [],
+                        this.hasUserSelectedDate = !1,
                         this.keycodes = {
                             tab: 9,
                             pageup: 33,
@@ -916,6 +918,7 @@
                                 this.calendarToggleButton.setAttribute("aria-expanded", "false");
                             } else {
                                 this.setMinAndMaxDatesOnCalendar();
+                                this.hasUserSelectedDate = !1;
                                 if (this.isMultipleInput) {
                                     const d = this.dateInput.value.trim();
                                     const m = this.monthInput.value.trim();
@@ -925,7 +928,10 @@
                                         if (!isNaN(parsed.getTime())) {
                                             this.inputDate = parsed;
                                             this.currentDate = new Date(parsed);
+                                            this.hasUserSelectedDate = !0;
                                         }
+                                    } else {
+                                        this.inputDate = null;
                                     }
                                 }
                                 this.updateCalendar();
@@ -1078,17 +1084,25 @@
                         t.match(/ds_!_off-l-/) && this.dialogElement.classList.remove(t)
                     }
                     ),
-                        this.dialogElement.classList.add(`ds_!_off-l-${a}`),
-                        e.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/) && (this.inputDate = this.formattedDateFromString(e),
-                            this.currentDate = this.inputDate),
-                        this.updateCalendar(),
+                        this.dialogElement.classList.add(`ds_!_off-l-${a}`);
+                    // Only treat as a pre-selected date if the input actually has a complete date
+                    if (e.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
+                        this.inputDate = this.formattedDateFromString(e);
+                        this.currentDate = this.inputDate;
+                        this.hasUserSelectedDate = !0;
+                    } else {
+                        this.inputDate = null;
+                        this.hasUserSelectedDate = !1;
+                    }
+                    this.updateCalendar(),
                         this.setCurrentDate()
                 }
                 selectDate(t) {
                     if (this.isDisabledDate(t))
                         return !1;
                     this.calendarButtonElement.querySelector("span").textContent = "Choose date",
-                        this.setDate(t);
+                        this.setDate(t),
+                        this.hasUserSelectedDate = !0;
                     const e = document.createEvent("Event");
                     e.initEvent("change", !0, !0),
                         this.inputElement.dispatchEvent(e),
@@ -1106,7 +1120,7 @@
                         n.setHours(0, 0, 0, 0);
                         const s = new Date;
                         s.setHours(0, 0, 0, 0),
-                            n.getTime() !== e.getTime() || a.disabled || t && (a.button.setAttribute("tabindex", 0),
+                            n.getTime() !== e.getTime() || a.disabled || t && this.hasUserSelectedDate && (a.button.setAttribute("tabindex", 0),
                                 a.button.focus(),
                                 a.button.classList.add("ds_selected")),
                             this.inputDate && !this.isDisabledDate(this.inputDate) && n.getTime() === this.inputDate.getTime() ? (a.button.classList.add("ds_datepicker__current"),
