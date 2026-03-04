@@ -136,6 +136,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
         var filtersSet = document.getElementById('filters-set');
+        var lastAction = sessionStorage.getItem('filterAction-ksb');
+        sessionStorage.removeItem('filterAction-ksb');
 
         if (cookieFilter != null && cookieFilter != "") {
             document.getElementById('filterKSBs').open = true;
@@ -170,6 +172,9 @@
                 }
             }
         } else {
+            if (lastAction === 'remove') {
+                document.getElementById('filterKSBs').open = true;
+            }
             filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
         }
 
@@ -184,6 +189,7 @@
                 var checkbox = document.getElementById(filterNames);
                 if (checkbox) checkbox.checked = false;
 
+                sessionStorage.setItem('filterAction-ksb', 'remove');
                 applyAndSaveFiltersKsb();
             });
         }
