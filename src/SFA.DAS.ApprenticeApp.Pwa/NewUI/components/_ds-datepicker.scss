@@ -304,6 +304,11 @@ legend {
         outline: 0;
         padding: 0;
         text-align: center;
+
+        // Empty day cells – light blue tint
+        &:has(button.fully-hidden) {
+            background: #f4f8fb;
+        }
     }
 
     th {
