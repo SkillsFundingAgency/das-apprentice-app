@@ -8,6 +8,21 @@ $color-border: #b3b3b3;
 $color-focus: #fdd522;
 $color-selected: #1d70b8;
 $color-selected-hover: #144e81;
+$color-nav-arrow: #1d70b8;
+$color-day-number: #1a65a6;
+$color-day-hover: #00437d;
+$color-day-hover-bg: #d9eeff;
+$color-empty-day-bg: #f4f8fb;
+$color-disabled-bg: #ebebeb;
+$color-selected-day: #0b0c0c;
+$color-selected-day-hover: #333333;
+$color-btn-select: #00703c;
+$color-btn-select-border: #002d18;
+$color-btn-select-hover: #005a30;
+$color-btn-close: #dee0e2;
+$color-btn-close-text: #0b0c0c;
+$color-btn-close-border: #929598;
+$color-btn-close-hover: #c9cbcd;
 $font-weight-bold: 700;
 $font-weight-normal: 400;
 $breakpoint-medium: 768px;
@@ -235,7 +250,7 @@ legend {
             background: transparent;
             border: 0;
             border-radius: 0;
-            color: #1d70b8;
+            color: $color-nav-arrow;
             cursor: pointer;
             display: inline-flex;
             font-weight: $font-weight-normal;
@@ -268,7 +283,7 @@ legend {
             }
 
             &:hover {
-                background-color: #d9eeff;
+                background-color: $color-day-hover-bg;
                 color: $color-selected-hover;
             }
 
@@ -307,7 +322,7 @@ legend {
 
         // Empty day cells – light blue tint
         &:has(button.fully-hidden) {
-            background: #f4f8fb;
+            background: $color-empty-day-bg;
         }
     }
 
@@ -338,7 +353,7 @@ legend {
     button {
         font-size: 0.875rem;
         line-height: 1.7142857143;
-        color: #1a65a6;
+        color: $color-day-number;
         font-weight: $font-weight-normal;
         height: 40px;
         width: 100%;
@@ -356,8 +371,8 @@ legend {
         position: relative;
 
         &:hover {
-            color: #00437d;
-            background-color: #d9eeff;
+            color: $color-day-hover;
+            background-color: $color-day-hover-bg;
         }
 
         &:focus {
@@ -372,7 +387,7 @@ legend {
 
         &[disabled="true"],
         &[aria-disabled="true"] {
-            background-color: #ebebeb;
+            background-color: $color-disabled-bg;
             color: $color-text-secondary;
             pointer-events: none;
         }
@@ -417,18 +432,18 @@ legend {
         }
 
         &.ds_selected {
-            background-color: #0b0c0c;
-            color: #ffffff;
+            background-color: $color-selected-day;
+            color: $color-bg;
 
             &:hover {
-                background-color: #333333;
-                color: #ffffff;
+                background-color: $color-selected-day-hover;
+                color: $color-bg;
             }
 
             &:focus {
-                background-color: #0b0c0c;
-                color: #ffffff;
-                outline: 0.125rem solid #0b0c0c;
+                background-color: $color-selected-day;
+                color: $color-bg;
+                outline: 0.125rem solid $color-selected-day;
                 outline-offset: -0.125rem;
                 box-shadow: none;
             }
@@ -473,10 +488,10 @@ legend {
 
     // "Select" button – green background, white foreground
     .js-datepicker-ok {
-        background-color: #00703c;
-        color: #fff;
+        background-color: $color-btn-select;
+        color: $color-bg;
         border: none;
-        border-bottom: 2px solid #002d18;
+        border-bottom: 2px solid $color-btn-select-border;
         padding: 8px 16px;
         font-weight: $font-weight-bold;
         font-size: 1rem;
@@ -485,8 +500,8 @@ legend {
         width: auto;
 
         &:hover {
-            background-color: #005a30;
-            color: #fff;
+            background-color: $color-btn-select-hover;
+            color: $color-bg;
         }
 
         &:focus {
@@ -500,10 +515,10 @@ legend {
 
     // "Close" button – light grey background, dark foreground
     .js-datepicker-cancel {
-        background-color: #dee0e2;
-        color: #0b0c0c;
+        background-color: $color-btn-close;
+        color: $color-btn-close-text;
         border: none;
-        border-bottom: 2px solid #929598;
+        border-bottom: 2px solid $color-btn-close-border;
         padding: 8px 16px;
         font-weight: $font-weight-normal;
         font-size: 1rem;
@@ -512,8 +527,8 @@ legend {
         width: auto;
 
         &:hover {
-            background-color: #c9cbcd;
-            color: #0b0c0c;
+            background-color: $color-btn-close-hover;
+            color: $color-btn-close-text;
         }
 
         &:focus {
