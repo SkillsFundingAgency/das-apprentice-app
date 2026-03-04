@@ -8978,6 +8978,8 @@ p + .govuk-heading-s,
   .app-fab {
     position: relative;
     width: 100%;
+    bottom: auto;
+    right: auto;
   }
 }
 

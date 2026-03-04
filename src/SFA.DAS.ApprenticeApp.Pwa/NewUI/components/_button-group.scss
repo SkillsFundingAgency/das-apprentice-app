@@ -19,5 +19,7 @@
   @include helpers.govuk-media-query(tablet) {
     position: relative;
     width: 100%;
+    bottom: auto;
+    right: auto;
   }
 }
