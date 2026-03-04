@@ -788,7 +788,7 @@
                             const wrapper = document.createElement("div");
                             wrapper.className = "govuk-date-input__item";
                             wrapper.style.alignSelf = "flex-end";
-                            wrapper.style.marginLeft = "4px";
+                            wrapper.style.marginLeft = "1px";
                             // Remove any default styling from the button itself
                             this.calendarButtonElement.style.background = "none";
                             this.calendarButtonElement.style.border = "none";
