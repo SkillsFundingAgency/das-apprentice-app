@@ -23,7 +23,6 @@
         click(t) {
             this.picker.hasUserSelectedDate = !0,
                 this.picker.goToDate(this.date),
-                this.picker.setDate(this.date),
                 t.stopPropagation(),
                 t.preventDefault()
         }
