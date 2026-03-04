@@ -188,6 +188,11 @@ legend {
     &--open {
         display: block;
         left: 0;
+        margin-top: 15px;
+
+        @media (min-width: $breakpoint-medium) {
+            margin-top: 78px;
+        }
     }
     // --------------------------------------------------------
     // Header: flex row — nav groups flank the centred title
