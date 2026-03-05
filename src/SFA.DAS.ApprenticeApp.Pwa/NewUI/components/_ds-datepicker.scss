@@ -297,7 +297,7 @@ legend {
     th {
         font-size: 0.75rem;
         line-height: 2;
-        color: $color-text-secondary;
+        color: #0B0C0C;
         font-weight: $font-weight-bold;
         text-align: center;
         overflow: hidden;
@@ -431,16 +431,17 @@ legend {
 
     button {
         margin: 0;
-        font-family: inherit;
+        font-family: "GDS Transport", arial, sans-serif;
     }
 
+    // "Select" button – green background, white foreground
     .js-datepicker-ok {
         background-color: $color-btn-select;
         color: $color-bg;
         border: none;
         border-bottom: 2px solid $color-btn-select-border;
         padding: 8px 16px;
-        font-weight: $font-weight-bold;
+        font-weight: $font-weight-normal;
         font-size: 1rem;
         cursor: pointer;
         min-height: 40px;
@@ -460,6 +461,7 @@ legend {
         }
     }
 
+    // "Close" button – light grey background, dark foreground
     .js-datepicker-cancel {
         background-color: $color-btn-close;
         color: $color-btn-close-text;

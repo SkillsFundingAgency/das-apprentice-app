@@ -762,18 +762,11 @@
                         double_chevron_right: '<svg focusable="false" class="ds_icon" aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.6 12 5 7.4 6.4 6l6 6-6 6L5 16.6 9.6 12Zm6.6 0-4.6-4.6L13 6l6 6-6 6-1.4-1.4 4.6-4.6Z"/></svg>'
                     };
 
-                    // Look for the calendar icon button already in the HTML (placed next to date inputs)
                     this.calendarToggleButton = this.datePickerParent.querySelector(".js-calendar-toggle-btn");
-
-                    // Look for the calendar container div in the HTML
                     this.calendarContainer = this.datePickerParent.querySelector("#calendar-container");
-
-                    // Determine if we use the inline icon-toggle mode (icon button + container exist in HTML)
                     this.useInlineMode = !!(this.calendarToggleButton && this.calendarContainer);
 
-                    // Create the internal calendar button reference used by the picker logic
                     if (this.useInlineMode) {
-                        // Use the existing icon button as the toggle; create a hidden dummy for internal references
                         this.calendarButtonElement = document.createElement("button");
                         this.calendarButtonElement.type = "button";
                         this.calendarButtonElement.style.display = "none";
@@ -785,21 +778,17 @@
                         this.calendarButtonElement = e.firstChild;
                         this.calendarButtonElement.setAttribute("data-button", `datepicker-${this.inputElement.id}-toggle`);
                         if (this.isMultipleInput) {
-                            // Wrap button in a date-input item centered with the input fields
                             const wrapper = document.createElement("div");
                             wrapper.className = "govuk-date-input__item";
                             wrapper.style.alignSelf = "flex-end";
                             wrapper.style.marginLeft = "1px";
-                            // Remove any default styling from the button itself
                             this.calendarButtonElement.style.background = "none";
                             this.calendarButtonElement.style.border = "none";
                             this.calendarButtonElement.style.padding = "0";
                             this.calendarButtonElement.style.cursor = "pointer";
                             this.calendarButtonElement.style.lineHeight = "0";
-                            // Nudge icon down to vertically center with input boxes (input height 40px, icon 35px)
                             this.calendarButtonElement.style.paddingTop = "3px";
                             wrapper.appendChild(this.calendarButtonElement);
-                            // Insert the wrapper before #calendar-container so it sits in the input row
                             const calContainer = this.datePickerParent.querySelector("#calendar-container");
                             if (calContainer) {
                                 this.datePickerParent.insertBefore(wrapper, calContainer);
@@ -812,7 +801,6 @@
                         }
                     }
 
-                    // Build the dialog element
                     const a = document.createElement("div");
                     a.id = "datepicker-" + (window.DS = window.DS || {},
                         window.DS.elementIdModifier = window.DS.elementIdModifier || 0,
@@ -826,7 +814,6 @@
                     this.calendarButtonElement.setAttribute("aria-expanded", !1);
                     this.dialogElement = a;
 
-                    // Place dialog: inside calendar-container (inline) or appended to parent (popup)
                     if (this.useInlineMode) {
                         this.calendarContainer.appendChild(a);
                         this.dialogElement.classList.add("ds_datepicker__dialog--open");
@@ -840,7 +827,6 @@
                     this.dialogTitleNode = this.dialogElement.querySelector(".js-datepicker-month-year");
                     this.setMinAndMaxDatesOnCalendar();
 
-                    // Build the 6x7 calendar day grid
                     const n = this.datePickerParent.querySelector("tbody");
                     let s = 0;
                     for (let e = 0; e < 6; e++) {
@@ -859,7 +845,6 @@
                         }
                     }
 
-                    // Navigation buttons
                     this.prevMonthButton = this.dialogElement.querySelector(".js-datepicker-prev-month");
                     this.prevYearButton = this.dialogElement.querySelector(".js-datepicker-prev-year");
                     this.nextMonthButton = this.dialogElement.querySelector(".js-datepicker-next-month");
@@ -869,14 +854,12 @@
                     this.nextMonthButton.addEventListener("click", t => this.focusNextMonth(t, !1));
                     this.nextYearButton.addEventListener("click", t => this.focusNextYear(t, !1));
 
-                    // Blur handlers for inputs
                     [this.inputElement, this.dateInput, this.monthInput, this.yearInput].forEach(t => {
                         t && t.addEventListener("blur", () => {
                             this.calendarButtonElement.querySelector("span").textContent = "Choose date";
                         });
                     });
 
-                    // Cancel and OK buttons
                     this.cancelButton = this.dialogElement.querySelector(".js-datepicker-cancel");
                     this.okButton = this.dialogElement.querySelector(".js-datepicker-ok");
 
@@ -900,14 +883,12 @@
                             this.okButton.addEventListener("click", () => this.selectDate(this.currentDate));
                     }
 
-                    // Focus trap within the dialog
                     const i = this.dialogElement.querySelectorAll('button:not([disabled="true"])');
                     this.firstButtonInDialog = i[0];
                     this.lastButtonInDialog = i[i.length - 1];
                     this.firstButtonInDialog.addEventListener("keydown", t => this.firstButtonKeyup(t));
                     this.lastButtonInDialog.addEventListener("keydown", t => this.lastButtonKeyup(t));
 
-                    // Wire toggle: calendar icon button click (inline) or calendar button click (popup)
                     if (this.useInlineMode) {
                         this.calendarToggleButton.addEventListener("click", (evt) => {
                             evt.preventDefault();
@@ -943,7 +924,6 @@
                         this.calendarButtonElement.addEventListener("click", t => this.toggleDialog(t));
                     }
 
-                    // Close on background click (only for popup mode)
                     document.body.addEventListener("mouseup", t => this.backgroundClick(t));
 
                     this.updateCalendar();
@@ -1084,7 +1064,6 @@
                     }
                     ),
                         this.dialogElement.classList.add(`ds_!_off-l-${a}`);
-                    // Only treat as a pre-selected date if the input actually has a complete date
                     if (e.match(/^\d{1,2}\/\d{1,2}\/\d{4}$/)) {
                         this.inputDate = this.formattedDateFromString(e);
                         this.currentDate = this.inputDate;
@@ -1106,7 +1085,6 @@
                     e.initEvent("change", !0, !0),
                         this.inputElement.dispatchEvent(e),
                         this.dateSelectCallback && this.dateSelectCallback(t),
-                        // Only close the popup dialog in non-inline mode
                         this.useInlineMode || this.closeDialog();
                 }
                 setCurrentDate(t = !0) {
