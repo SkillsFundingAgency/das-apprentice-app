@@ -978,15 +978,7 @@
 
                     if (this.isMultipleInput) {
                         const wrapper = document.createElement("div");
-                        wrapper.className = "govuk-date-input__item";
-                        wrapper.style.alignSelf = "flex-end";
-                        wrapper.style.marginLeft = "1px";
-                        this.calendarButtonElement.style.background = "none";
-                        this.calendarButtonElement.style.border = "none";
-                        this.calendarButtonElement.style.padding = "0";
-                        this.calendarButtonElement.style.cursor = "pointer";
-                        this.calendarButtonElement.style.lineHeight = "0";
-                        this.calendarButtonElement.style.paddingTop = "3px";
+                        wrapper.className = "govuk-date-input__item ds_datepicker__button-wrapper";
                         wrapper.appendChild(this.calendarButtonElement);
 
                         const calContainer = this.datePickerParent.querySelector("#calendar-container");
@@ -1019,9 +1011,7 @@
                 if (this.useInlineMode) {
                     this.calendarContainer.appendChild(dialogContainer);
                     this.dialogElement.classList.add("ds_datepicker__dialog--open");
-                    this.dialogElement.style.position = "static";
-                    this.dialogElement.style.boxShadow = "none";
-                    this.dialogElement.style.border = "none";
+                    this.dialogElement.classList.add("ds_datepicker__dialog--inline");
                 } else {
                     this.datePickerParent.appendChild(dialogContainer);
                 }

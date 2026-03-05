@@ -489,6 +489,26 @@ legend {
     }
 }
 
+.ds_datepicker--multiple .ds_datepicker__button-wrapper {
+  align-self: flex-end;
+  margin-left: 1px;
+}
+
+.ds_datepicker--multiple .ds_datepicker__button {
+  background: none;
+  border: none;
+  padding: 0;
+  padding-top: 3px;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.ds_datepicker__dialog--inline {
+  position: static;
+  box-shadow: none;
+  border: none;
+}
+
 @media (min-width: $breakpoint-medium) {
     .ds_datepicker__dialog {
         position: absolute;
