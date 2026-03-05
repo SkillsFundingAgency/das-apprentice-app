@@ -27,9 +27,6 @@ $font-weight-bold: 700;
 $font-weight-normal: 400;
 $breakpoint-medium: 768px;
 
-// ============================================================
-// Visually hidden utility (used by datepicker button labels)
-// ============================================================
 .visually-hidden {
     clip: rect(1px, 1px, 1px, 1px);
     height: 1px;
@@ -39,9 +36,6 @@ $breakpoint-medium: 768px;
     white-space: nowrap;
 }
 
-// ============================================================
-// Fieldset and Legend
-// ============================================================
 fieldset {
     border: 0;
 }
@@ -58,9 +52,6 @@ legend {
     }
 }
 
-// ============================================================
-// Hint Text
-// ============================================================
 .ds_hint-text {
     color: $color-text-secondary;
     margin-bottom: 1rem;
@@ -70,12 +61,10 @@ legend {
     }
 }
 
-// ============================================================
-// Datepicker wrapper
-// ============================================================
 .ds_datepicker {
     position: relative;
     margin-bottom: 1.5rem;
+    font-family: "GDS Transport", arial, sans-serif;
 
     @media (min-width: $breakpoint-medium) {
         margin-bottom: 2rem;
@@ -89,7 +78,7 @@ legend {
         display: flex;
         gap: 1rem;
     }
-    // The calendar toggle button (icon-only, sits beside the input)
+   
     &__button,
     .js-calendar-button {
         align-self: end;
@@ -113,7 +102,7 @@ legend {
             width: 32px;
             pointer-events: none;
         }
-        // Keep the "Choose date" text visually hidden
+       
         > span:not(.ds_icon) {
             clip: rect(1px, 1px, 1px, 1px);
             height: 1px;
@@ -133,9 +122,6 @@ legend {
     }
 }
 
-// ============================================================
-// Labels
-// ============================================================
 .ds_label {
     font-size: 1rem;
     line-height: 1.5;
@@ -150,9 +136,6 @@ legend {
     }
 }
 
-// ============================================================
-// Inputs
-// ============================================================
 .ds_input {
     margin-bottom: 1.5rem;
     background-color: $color-bg;
@@ -183,9 +166,6 @@ legend {
     }
 }
 
-// ============================================================
-// Datepicker Dialog
-// ============================================================
 .ds_datepicker__dialog {
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
     background-color: $color-bg;
@@ -209,9 +189,7 @@ legend {
             margin-top: 78px;
         }
     }
-    // --------------------------------------------------------
-    // Header: flex row — nav groups flank the centred title
-    // --------------------------------------------------------
+    
     &__header {
         display: flex;
         flex-direction: row;
@@ -233,16 +211,14 @@ legend {
             padding: 8px 0;
         }
     }
-    // --------------------------------------------------------
-    // Nav button groups (two buttons each: year + month)
-    // --------------------------------------------------------
+   
     &__navbuttons {
         display: flex;
         flex-direction: row;
         align-items: center;
         flex-shrink: 0;
         gap: 0;
-        // Icon-only nav buttons — hide label text, show only SVG
+        
         button,
         .ds_button--icon-only {
             align-items: center;
@@ -261,7 +237,7 @@ legend {
             min-width: 36px;
             width: 36px;
             transition: color 0.2s, background-color 0.2s;
-            // Hide the visually-hidden label text inside buttons
+            
             .visually-hidden {
                 clip: rect(1px, 1px, 1px, 1px);
                 height: 1px;
@@ -297,9 +273,6 @@ legend {
     }
 }
 
-// ============================================================
-// Dialog Table
-// ============================================================
 .ds_datepicker__dialog__table {
     width: 100%;
     border-collapse: collapse;
@@ -309,9 +282,6 @@ legend {
         outline: 0.125em solid $color-focus;
     }
 
-    // --------------------------------------------------------
-    // Grid borders on day cells
-    // --------------------------------------------------------
     td {
         border: 1px solid $color-border;
         margin: 0;
@@ -319,7 +289,6 @@ legend {
         padding: 0;
         text-align: center;
 
-        // Empty day cells – light blue tint
         &:has(button.fully-hidden) {
             background: $color-empty-day-bg;
         }
@@ -329,7 +298,7 @@ legend {
         font-size: 0.75rem;
         line-height: 2;
         color: $color-text-secondary;
-        font-weight: $font-weight-normal;
+        font-weight: $font-weight-bold;
         text-align: center;
         overflow: hidden;
         white-space: nowrap;
@@ -338,7 +307,7 @@ legend {
         @media (min-width: $breakpoint-medium) {
             font-size: 0.875rem;
         }
-        // Clip the full day name; only the aria-hidden abbreviation is visible
+        
         .visually-hidden {
             clip: rect(1px, 1px, 1px, 1px);
             height: 1px;
@@ -368,6 +337,7 @@ legend {
         background: transparent;
         cursor: pointer;
         position: relative;
+        font-family: inherit;
 
         &:hover {
             color: $color-day-hover;
@@ -395,7 +365,6 @@ legend {
             visibility: hidden;
         }
 
-        // Dot indicator for the currently-set date value
         &.ds_datepicker__current {
             outline: none !important;
         }
@@ -433,7 +402,6 @@ legend {
                 box-shadow: none;
             }
 
-            // When selected AND current, hide the dot so it doesn't clash with the filled background
             &.ds_datepicker__current::before {
                 display: none;
             }
@@ -441,9 +409,6 @@ legend {
     }
 }
 
-// ============================================================
-// Table Caption
-// ============================================================
 .ds_datepicker__dialog__table-caption {
     font-size: 0.75rem;
     line-height: 2;
@@ -457,9 +422,6 @@ legend {
     }
 }
 
-// ============================================================
-// Select / Close button group
-// ============================================================
 .ds_datepicker__dialog__buttongroup {
     display: flex;
     justify-content: space-between;
@@ -469,9 +431,9 @@ legend {
 
     button {
         margin: 0;
+        font-family: inherit;
     }
 
-    // "Select" button – green background, white foreground
     .js-datepicker-ok {
         background-color: $color-btn-select;
         color: $color-bg;
@@ -498,7 +460,6 @@ legend {
         }
     }
 
-    // "Close" button – light grey background, dark foreground
     .js-datepicker-cancel {
         background-color: $color-btn-close;
         color: $color-btn-close-text;
@@ -526,9 +487,6 @@ legend {
     }
 }
 
-// ============================================================
-// Absolute positioning on medium+ screens
-// ============================================================
 @media (min-width: $breakpoint-medium) {
     .ds_datepicker__dialog {
         position: absolute;
