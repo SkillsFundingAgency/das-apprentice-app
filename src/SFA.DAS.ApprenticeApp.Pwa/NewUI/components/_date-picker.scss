@@ -78,6 +78,15 @@ legend {
         display: flex;
         gap: 1rem;
     }
+
+    &__calendar-container {
+        display: none;
+        width: 100%;
+
+        &--open {
+            display: block;
+        }
+    }
    
     &__button,
     .js-calendar-button {

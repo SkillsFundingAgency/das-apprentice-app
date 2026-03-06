@@ -1064,13 +1064,13 @@
                 if (this.useInlineMode) {
                     this.cancelButton.addEventListener("click", (event) => {
                         event.preventDefault();
-                        this.calendarContainer.style.display = "none";
+                        this.calendarContainer.classList.remove("ds_datepicker__calendar-container--open");
                         this.calendarToggleButton.setAttribute("aria-expanded", "false");
                     });
 
                     this.okButton.addEventListener("click", () => {
                         this.selectDate(this.currentDate);
-                        this.calendarContainer.style.display = "none";
+                        this.calendarContainer.classList.remove("ds_datepicker__calendar-container--open");
                         this.calendarToggleButton.setAttribute("aria-expanded", "false");
                     });
                 } else {
@@ -1091,10 +1091,10 @@
                 if (this.useInlineMode) {
                     this.calendarToggleButton.addEventListener("click", (evt) => {
                         evt.preventDefault();
-                        const isVisible = this.calendarContainer.style.display !== "none";
+                        const isVisible = this.calendarContainer.classList.contains("ds_datepicker__calendar-container--open");
 
                         if (isVisible) {
-                            this.calendarContainer.style.display = "none";
+                            this.calendarContainer.classList.remove("ds_datepicker__calendar-container--open");
                             this.calendarToggleButton.setAttribute("aria-expanded", "false");
                         } else {
                             this.setMinAndMaxDatesOnCalendar();
@@ -1119,7 +1119,7 @@
 
                             this.updateCalendar();
                             this.setCurrentDate(false);
-                            this.calendarContainer.style.display = "";
+                            this.calendarContainer.classList.add("ds_datepicker__calendar-container--open");
                             this.calendarToggleButton.setAttribute("aria-expanded", "true");
                         }
                     });
