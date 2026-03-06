@@ -62,3 +62,11 @@
     display: inline;
   }
 }
+
+.app-details--mobile-only {
+  .govuk-details__summary {
+    @include helpers.govuk-media-query(tablet) {
+      display: none;
+    }
+  }
+}

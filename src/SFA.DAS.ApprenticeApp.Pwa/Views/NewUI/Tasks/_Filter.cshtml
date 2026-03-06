@@ -34,7 +34,6 @@
                                 <div
                                         class="govuk-checkboxes govuk-checkboxes--small"
                                         data-module="govuk-checkboxes"
-                                        style="clear: both"
                                 >
                                     <div class="govuk-checkboxes__item">
                                         <input
@@ -165,6 +164,8 @@
       var container = document.getElementById('@detailsId');
       var filtersSet = document.getElementById('@filtersSetId');
       var cookieFilter = getCookie('@cookieName');
+      var lastAction = sessionStorage.getItem('filterAction-@tab');
+      sessionStorage.removeItem('filterAction-@tab');
 
       var sortSelect = document.getElementById('sort-by-@tab');
       if (sortSelect) {
@@ -204,6 +205,9 @@
           filtersSet.appendChild(tag);
         }
       } else {
+          if (lastAction === 'remove') {
+            container.open = true;
+          }
           filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
       }
 
@@ -217,6 +221,7 @@
           var checkbox = container.querySelector('input[value="' + filterName + '"]');
           if (checkbox) checkbox.checked = false;
 
+          sessionStorage.setItem('filterAction-@tab', 'remove');
           applyAndSaveFilters();
         });
       }
