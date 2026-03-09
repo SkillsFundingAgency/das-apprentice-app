@@ -1,3 +1,5 @@
+@use "govuk/helpers/index" as helpers;
+
 .app-button-group {
   justify-content: space-between;
   align-items: center;
@@ -6,5 +8,18 @@
   gap: 1rem;
   .govuk-button {
     margin: 0;
+  }
+}
+
+.app-fab {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  width: auto;
+  @include helpers.govuk-media-query(tablet) {
+    position: relative;
+    width: 100%;
+    bottom: auto;
+    right: auto;
   }
 }

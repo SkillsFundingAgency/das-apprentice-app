@@ -29,16 +29,16 @@
     var hasDate = Model.Task.DueDate != null;
 }
 <div class="govuk-form-group" id="date-group">
-    <fieldset class="govuk-fieldset" role="group" aria-describedby="date-error">
+     <fieldset class="govuk-fieldset" role="group" aria-describedby="date-error">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
             Date
         </legend>
         <div class="govuk-error-message" id="date-error"></div>
-        <div class="govuk-date-input" id="duedate">
+        <div class="govuk-date-input ds_datepicker  ds_datepicker--multiple" data-module="ds-datepicker" id="duedate">
             <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-day">Day</label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-day"
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 js-datepicker-date" id="duedate-day"
                            name="duedate-day" type="text" inputmode="numeric"
                            value="@(hasDate? dueDateValue.Day.ToString() : "")">
                 </div>
@@ -46,7 +46,7 @@
             <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-month">Month</label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="duedate-month"
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-2 js-datepicker-month" id="duedate-month"
                            name="duedate-month" type="text" inputmode="numeric"
                            value="@(hasDate? dueDateValue.Month.ToString() : "")">
                 </div>
@@ -54,11 +54,12 @@
             <div class="govuk-date-input__item">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-year">Year</label>
-                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="duedate-year"
+                    <input class="govuk-input govuk-date-input__input govuk-input--width-4 js-datepicker-year" id="duedate-year"
                            name="duedate-year" type="text" inputmode="numeric"
                            value="@(hasDate? dueDateValue.Year.ToString() : "")">
                 </div>
             </div>
+            <div id="calendar-container" class="ds_datepicker__calendar-container"></div>
         </div>
     </fieldset>
     <input type="hidden" id="duedate-hidden" name="duedate" value="@(hasDate? dueDateValue.ToString("yyyy-MM-dd") : "")">
