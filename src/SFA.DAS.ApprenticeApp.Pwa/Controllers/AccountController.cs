@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -10,6 +11,7 @@ using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -20,6 +22,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IStubAuthenticationService _stubAuthenticationService;
+        private readonly ICommitmentsService _commitmentsService;
         private readonly IConfiguration _config;
         public static ApplicationConfiguration _appConfig { get; set; }
         private readonly IOuterApiClient _client;
@@ -32,6 +35,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         
         public AccountController(ILogger<AccountController> logger,
             IStubAuthenticationService stubAuthenticationService,
+            ICommitmentsService commitmentsService,
             ApplicationConfiguration appConfig,
             IConfiguration configuration,
             IOuterApiClient client,
@@ -40,6 +44,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             _logger = logger;
             _stubAuthenticationService = stubAuthenticationService;
+            _commitmentsService = commitmentsService;
             _appConfig = appConfig;
             _config = configuration;
             _client = client;
@@ -51,50 +56,77 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> Authenticated()
         {
-            var apprenticeId = _apprenticeContext.ApprenticeId;
-            if (!string.IsNullOrEmpty(apprenticeId))
+            var authenticatedApprenticeId = _apprenticeContext.ApprenticeId;
+            if (string.IsNullOrWhiteSpace(authenticatedApprenticeId)) return RedirectToAction("AccountNotFound", "Account");
+
+            if (!Guid.TryParse(authenticatedApprenticeId, out var apprenticeId))
             {
-                string message = $"Apprentice authenticated and cookies added for {apprenticeId}";
-                _logger.LogInformation(message);
+                return RedirectToAction("AccountNotFound", "Account");
+            }                       
 
-                try
+            try
+            {
+                var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
+
+                if (apprenticeDetails == null)
                 {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    if (apprenticeDetails?.MyApprenticeship != null)
-                    {
-                        // Determine cohort membership
-                        bool isCohort = IsUserInNewUiCohort(apprenticeDetails.MyApprenticeship.TrainingProviderId);
-                        HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
-
-                        // Check opt‑in cookie
-                        bool optIn = Request.Cookies[NewUiOptInCookieName] == "true";
-                        HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
-
-                        // Set legacy UserType for backward compatibility
-                        string userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
-                        HttpContext.Session.SetString("UserType", userType);
-
-                        return RedirectToAction("Index", "Terms");
-                    }
-                    else
-                    {
-                        string cmaderrormsg = $"MyApprenticeship data not found for {apprenticeId}";
-                        _logger.LogInformation(cmaderrormsg);
-                        return RedirectToAction("CmadError", "Account");
-                    }
+                    return RedirectToAction("AccountNotFound", "Account");
                 }
-                catch (Exception ex)
+
+                // Determine cohort membership
+                var isCohort = IsUserInNewUiCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
+                HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
+
+                // Check opt‑in cookie
+                bool optIn = Request.Cookies[NewUiOptInCookieName] == "true";
+                HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
+
+                // Set legacy UserType for backward compatibility              
+                string userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
+                HttpContext.Session.SetString("UserType", userType);                                           
+
+                // Check terms
+                if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
+
+                // Check if cmad completed                
+                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+                if (cmadComplete == null)
                 {
-                    string cmaderrormsg = $"MyApprenticeship data error or not found for {apprenticeId}";
-                    _logger.LogInformation(cmaderrormsg);
-                    return RedirectToAction("CmadError", "Account");
+                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
                 }
+
+                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
+
+                // Email Matches single Apprenticeship record
+                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
+                if (registrationByEmail.Count == 1)
+                {
+                    var registration = registrationByEmail.FirstOrDefault();
+                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                        registration.RegistrationId,
+                        apprenticeId,
+                        commitment.Uln,
+                        registration.LastName,
+                        registration.DateOfBirth.ToIsoDate());
+
+                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                }
+
+                // Send to CMAD
+                return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("EmailMismatchError", "Account");
+                _logger.LogError(ex,"MyApprenticeship data error or not found for {ApprenticeId}",apprenticeId);
+                return RedirectToAction("AccountNotFound", "Account");
             }
         }
+
 
         [HttpGet]
         [Route("account-details", Name = RouteNames.StubAccountDetailsGet)]
@@ -355,8 +387,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _logger.LogInformation(logMessage);
         }
 
-        public bool IsUserInNewUiCohort(long providerId) => 
-            new long[] {  }.Contains(providerId);        
+        public bool IsUserInNewUiCohort(long? providerId)
+        {
+            if (!providerId.HasValue)
+            {
+                return false;
+            }
+
+            return new long[] { }.Contains(providerId.Value);
+        }             
     }
 
 }
