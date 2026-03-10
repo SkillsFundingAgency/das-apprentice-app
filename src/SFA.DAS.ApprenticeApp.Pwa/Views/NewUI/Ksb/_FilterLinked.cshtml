@@ -1,15 +1,15 @@
 @using SFA.DAS.ApprenticeApp.Application
 
-<details class="govuk-details app-details" id="filterKSBs">
+<details class="govuk-details app-details app-details--mobile-only" id="filterLinkedKSBs" open>
     <summary class="govuk-details__summary">
         <span class="govuk-details__summary-text app-details__show-text">
-            Show search and filters
+            Show filters
         </span>
         <span class="govuk-details__summary-text app-details__hide-text">
-            Hide search and filters
+            Hide filters
         </span>
     </summary>
-    <div class="govuk-!-margin-top-4">
+    <div class="govuk-!-margin-top-2">
         <div class="app-card app-card--highlight">
             <div class="app-card__heading">
                 <h2 class="govuk-heading-m">Filters</h2>
@@ -17,14 +17,7 @@
             <div id="filters-set" class="app-tag__wrapper">
             </div>
             <div class="app-card__body">
-                <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--s" for="keyword-filter">
-                        Keywords
-                    </label>
-                    <input class="govuk-input" id="keyword-filter" name="keyword" type="search" placeholder="Search for..." />
-                </div>
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-one-half">
+             
                         <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Status filters
@@ -95,8 +88,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </div>
-                    <div class="govuk-grid-column-one-half">
+           
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Other filters
@@ -124,8 +116,7 @@
 
                        
                         </fieldset>
-                    </div>
-                </div>
+       
                 <a href="#" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-top-3 apply">Apply filters</a>
             </div>
         </div>
@@ -134,13 +125,11 @@
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
-        var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
+        var cookieFilter = getCookieKsb("SFA.ApprenticeApp.KsbLinkedFilters");
         var filtersSet = document.getElementById('filters-set');
-        var lastAction = sessionStorage.getItem('filterAction-ksb');
-        sessionStorage.removeItem('filterAction-ksb');
 
         if (cookieFilter != null && cookieFilter != "") {
-            document.getElementById('filterKSBs').open = true;
+            document.getElementById('filterLinkedKSBs').open = true;
 
             var data = cookieFilter.split("&");
 
@@ -172,11 +161,10 @@
                 }
             }
         } else {
-            if (lastAction === 'remove') {
-                document.getElementById('filterKSBs').open = true;
-            }
             filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
         }
+
+        applyFiltersToList();
 
         if (filtersSet) {
             filtersSet.addEventListener('click', function (e) {
@@ -189,36 +177,61 @@
                 var checkbox = document.getElementById(filterNames);
                 if (checkbox) checkbox.checked = false;
 
-                sessionStorage.setItem('filterAction-ksb', 'remove');
                 applyAndSaveFiltersKsb();
             });
         }
 
-        var applyBtn = document.querySelector('#filterKSBs .apply');
+        var applyBtn = document.querySelector('#filterLinkedKSBs .apply');
         if (applyBtn) {
             applyBtn.addEventListener('click', applyAndSaveFiltersKsb);
         }
     });
 
     function applyAndSaveFiltersKsb() {
-        var checkboxes = document.querySelectorAll('#filterKSBs input[type=checkbox]:checked');
+        var checkboxes = document.querySelectorAll('#filterLinkedKSBs input[type=checkbox]:checked');
         var serialized = Array.from(checkboxes)
             .map(function (cb) { return encodeURIComponent(cb.name) + '=' + encodeURIComponent(cb.value); })
             .join('&');
-
-        // Add keyword if present
-        var keywordInput = document.getElementById('keyword-filter');
-        if (keywordInput && keywordInput.value.trim() !== "") {
-            var keywordPart = encodeURIComponent('keyword') + '=' + encodeURIComponent(keywordInput.value.trim());
-            serialized = serialized ? serialized + '&' + keywordPart : keywordPart;
-        }
-
+        
         setCookieKsb(
-            "SFA.ApprenticeApp.KsbFilters",
+            "SFA.ApprenticeApp.KsbLinkedFilters",
             serialized,
             { secure: true, "max-age": 3600 },
         );
         location.reload();
+    }
+
+    function applyFiltersToList() {
+        var statusFilters = Array.from(document.querySelectorAll('#filterLinkedKSBs input[name="filter"]:checked'))
+            .map(function (cb) { return cb.value; });
+        var otherFilters = Array.from(document.querySelectorAll('#filterLinkedKSBs input[name="other-filter"]:checked'))
+            .map(function (cb) { return cb.value; });
+
+        var counts = { knowledge: 0, skill: 0, behaviour: 0 };
+
+        document.querySelectorAll('.app-ksb-item').forEach(function (item) {
+            var status = item.dataset.ksbStatus;
+            var checkbox = item.querySelector('.link-ksb-checkbox');
+            var isLinked = checkbox && checkbox.checked;
+            var type = checkbox && checkbox.dataset.type ? checkbox.dataset.type.toLowerCase() : '';
+
+            var statusMatch = statusFilters.length === 0 || statusFilters.indexOf(status) !== -1;
+            var linkedMatch = otherFilters.indexOf('linked-to-a-task') === -1 || isLinked;
+            var visible = statusMatch && linkedMatch;
+
+            item.style.display = visible ? '' : 'none';
+
+            if (visible && counts.hasOwnProperty(type)) {
+                counts[type]++;
+            }
+        });
+
+        var kCount = document.querySelector('.k-count');
+        var sCount = document.querySelector('.s-count');
+        var bCount = document.querySelector('.b-count');
+        if (kCount) kCount.textContent = counts.knowledge;
+        if (sCount) sCount.textContent = counts.skill;
+        if (bCount) bCount.textContent = counts.behaviour;
     }
 
     function getCookieKsb(name) {
