@@ -62,7 +62,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (!Guid.TryParse(authenticatedApprenticeId, out var apprenticeId))
             {
                 return RedirectToAction("AccountNotFound", "Account");
-            }
+            }                       
 
             try
             {
@@ -74,23 +74,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
 
                 // Determine cohort membership
-                bool isCohort = IsUserInNewUiCohort(apprenticeDetails.MyApprenticeship.TrainingProviderId);
+                var isCohort = IsUserInNewUiCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
                 HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
 
                 // Check opt‑in cookie
                 bool optIn = Request.Cookies[NewUiOptInCookieName] == "true";
                 HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
 
-                // Set legacy UserType for backward compatibility
+                // Set legacy UserType for backward compatibility              
                 string userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
-                HttpContext.Session.SetString("UserType", userType);
+                HttpContext.Session.SetString("UserType", userType);                                           
 
                 // Check terms
                 if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
 
-                // Check if cmad completed
-                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
+                // Check if cmad completed                
+                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
+                if (cmadComplete == null)
+                {
+                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+                }
+
+                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
+
+                // Email Matches single Apprenticeship record
+                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
                 if (registrationByEmail.Count == 1)
                 {
                     var registration = registrationByEmail.FirstOrDefault();
@@ -106,15 +115,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
                     return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
                 }
-
-                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
-
-                if (cmadComplete == null)
-                {
-                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
-                }
-
-                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
 
                 // Send to CMAD
                 return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
@@ -387,8 +387,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             _logger.LogInformation(logMessage);
         }
 
-        public bool IsUserInNewUiCohort(long providerId) => 
-            new long[] {  }.Contains(providerId);        
+        public bool IsUserInNewUiCohort(long? providerId)
+        {
+            if (!providerId.HasValue)
+            {
+                return false;
+            }
+
+            return new long[] { }.Contains(providerId.Value);
+        }             
     }
 
 }
