@@ -1,3 +1,4 @@
+@using SFA.DAS.ApprenticeApp.Domain.Models
 @using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.ApprenticeKsbsPageModel
 @{
@@ -58,13 +59,15 @@
                                 var statusTitleDisplayClass = "";
                                 var statusTitleDisplay = "";
                                 var noteText = "";
+                                var currentStatus = KSBStatus.NotStarted;
 
                                 if (ksb.Progress != null)
                                 {
-                                    var statusTitleClass = ksb.Progress.CurrentStatus;
+                                    var statusTitleClass = ksb.Progress.CurrentStatus ?? KSBStatus.NotStarted;
                                     statusTitleDisplayClass = statusTitleClass.GetEnumDescription().Replace(" ", "-").ToLower();
                                     statusTitleDisplay = statusTitleClass.GetEnumDescription();
-                                    noteText = ksb.Progress.Note;
+                                    noteText = ksb.Progress.Note ?? "";
+                                    currentStatus = statusTitleClass;
                                 }
                                 else
                                 {
@@ -84,7 +87,7 @@
                                     }
                                     else
                                     {
-                                        var status = ksb.Progress.CurrentStatus;
+                                        var status = ksb.Progress.CurrentStatus ?? KSBStatus.NotStarted;
                                         string statusDisplay = status.GetEnumDescription();
                                         <div class="app-tag app-tag--status-@status.ToString().ToLower() govuk-!-margin-top-1 govuk-!-margin-bottom-5">
                                             <text>@statusDisplay</text>
@@ -92,8 +95,15 @@
                                     }
                                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                                         <div class="govuk-checkboxes__item">
-                                            <input class="govuk-checkboxes__input link-ksb-checkbox" type="checkbox" value="@ksb.Id"
-                                                   id="ksb-@ksb.Id" data-title="@ksb.Key" data-desc="@ksb.Detail" data-type="@ksb.Type" data-status="@statusTitleDisplay" data-note="@noteText"
+                                            <input class="govuk-checkboxes__input link-ksb-checkbox" 
+                                                   type="checkbox" 
+                                                   value="@ksb.Id"
+                                                   id="ksb-@ksb.Id" 
+                                                   data-title="@ksb.Key" 
+                                                   data-desc="@ksb.Detail" 
+                                                   data-type="@((int)ksb.Type)" 
+                                                   data-status="@((int)currentStatus)" 
+                                                   data-note="@noteText"
                                                    @(linkedIds.Contains(ksb.Id.ToString()) ? "checked" : "") />
                                             <label class="govuk-label govuk-checkboxes__label" for="ksb-@ksb.Id">
                                                 Link this KSB to the task
@@ -126,8 +136,7 @@
 </div>
 
 <script type="text/javascript">
-      (function () {
-        // Build a comma separated string of selected ids and write to the hidden input with id 'linked-ksb-ids'
+    (function () {
         function updateLinkedHidden() {
             var checked = document.querySelectorAll('.link-ksb-checkbox:checked');
             var values = Array.prototype.map.call(checked, function (c) { return c.value; });
@@ -138,14 +147,44 @@
             }
         }
 
-        // Update on change
+        function editKsbProgress(checkbox) {
+            var ksbId = checkbox.value;
+            var ksbKey = checkbox.dataset.title;
+            var ksbType = parseInt(checkbox.dataset.type);
+            var ksbStatus = parseInt(checkbox.dataset.status);
+            var note = checkbox.dataset.note || '';
+
+            var formData = new FormData();
+            formData.append('ksbId', ksbId);
+            formData.append('ksbKey', ksbKey);
+            formData.append('ksbType', ksbType);
+            formData.append('ksbStatus', ksbStatus);
+            formData.append('note', note);
+
+            fetch('@Url.Action("EditKsbProgress", "Ksb")', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+            .then(function(response) {
+                if (response.ok) {
+                    console.log('KSB progress updated successfully');
+                } else {
+                    console.error('Failed to update KSB progress');
+                }
+            })
+            .catch(function(error) {
+                console.error('Error updating KSB progress:', error);
+            });
+        }
+
         document.addEventListener('change', function (e) {
             if (e.target && e.target.classList && e.target.classList.contains('link-ksb-checkbox')) {
                 updateLinkedHidden();
+                editKsbProgress(e.target);
             }
         });
 
-        // Initialize hidden field on load
         document.addEventListener('DOMContentLoaded', function () {
             updateLinkedHidden();
         });
