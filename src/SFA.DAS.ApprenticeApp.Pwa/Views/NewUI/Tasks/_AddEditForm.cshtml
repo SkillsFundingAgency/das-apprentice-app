@@ -174,14 +174,14 @@
             </div>
             @foreach (var cat in Model.Categories)
             {
-            <div class="govuk-radios__item">
-                <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
-                       id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
-                       checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
-                <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
-                    @cat.Title
-                </label>
-            </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
+                           id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
+                           checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                    <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
+                        @(cat.Title == "End-point assessment" || cat.Title == "EPA" ? "Apprenticeship assessment" : cat.Title)
+                    </label>
+                </div>
             }
         </div>
     </fieldset>
