@@ -94,36 +94,43 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return View("AccountNotFound", "Account");
             }
 
-            foreach (var item in model.RegistrationIds)
+            try
             {
-                if (!item.CommitmentApprenticeshipIds.HasValue) continue;
-
-                var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
-                if (commitment?.Uln == model.Uln.ToString())
+                foreach (var item in model.RegistrationIds)
                 {
-                    var apprentice = await _client.GetApprentice(model.ApprenticeId);
-                    var dobIso = apprentice.DateOfBirth.HasValue
-                        ? apprentice.DateOfBirth.Value.ToIsoDate()
-                        : null;
+                    if (!item.CommitmentApprenticeshipIds.HasValue) continue;
 
-                    // Create apprenticeship and build the confirm view model                    
-                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
-                    item.RegistrationId,
-                    model.ApprenticeId,
-                    commitment.Uln,
-                    apprentice.LastName,
-                    dobIso);
-                    if (viewModel != null)
+                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
+                    if (commitment?.Uln == model.Uln.ToString())
                     {
-                        ModelState.Clear();
-                        return View("ConfirmApprenticeshipDetails", viewModel);
-                    }
+                        var apprentice = await _client.GetApprentice(model.ApprenticeId);
+                        var dobIso = apprentice.DateOfBirth.HasValue
+                            ? apprentice.DateOfBirth.Value.ToIsoDate()
+                            : null;
 
-                    return RedirectToAction("AccountNotFound", "Account");
+                        // Create apprenticeship and build the confirm view model                    
+                        var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                        item.RegistrationId,
+                        model.ApprenticeId,
+                        commitment.Uln,
+                        apprentice.LastName,
+                        dobIso);
+                        if (viewModel != null)
+                        {
+                            ModelState.Clear();
+                            return View("ConfirmApprenticeshipDetails", viewModel);
+                        }
+
+                        return RedirectToAction("AccountNotFound", "Account");
+                    }
                 }
+            } catch (Exception ex)
+            {
+                _logger.LogInformation(ex, "Error confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+                return RedirectToAction("AccountNotFound", "Account");
             }
 
-            return View("AccountNotFound");
+            return RedirectToAction("AccountNotFound", "Account");
         }
 
         [HttpPost]
