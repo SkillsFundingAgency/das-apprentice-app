@@ -99,7 +99,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 foreach (var item in model.RegistrationIds)
                 {
                     if (!item.CommitmentApprenticeshipIds.HasValue) continue;
-
+                    
                     var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
 
                     if (commitment.StopDate.HasValue) continue;
@@ -134,7 +134,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return RedirectToAction("AccountNotFound", "Account");
             }
 
-            return View("AccountNotFound");
+            _logger.LogError("Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+            return RedirectToAction("AccountNotFound", "Account");
         }
 
         [HttpPost]
