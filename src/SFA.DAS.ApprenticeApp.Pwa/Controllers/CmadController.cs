@@ -99,9 +99,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 foreach (var item in model.RegistrationIds)
                 {
                     if (!item.CommitmentApprenticeshipIds.HasValue) continue;
-                                        
-                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
                     
+                    _logger.LogInformation("Checking commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
+                    _logger.LogInformation("Got commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+
                     if (commitment.StopDate.HasValue) continue;
 
                     if (commitment?.Uln == model.Uln.ToString())
@@ -112,12 +114,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                             : null;
 
                         // Create apprenticeship and build the confirm view model                    
+                        _logger.LogInformation("Creating Apprenticeship from populated commitment: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
                         var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
                         item.RegistrationId,
                         model.ApprenticeId,
                         commitment.Uln,
                         apprentice.LastName,
                         dobIso);
+
+                        _logger.LogInformation("Created Apprenticeship from populated commitment: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+
                         if (viewModel != null)
                         {
                             ModelState.Clear();
