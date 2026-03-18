@@ -91,7 +91,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 // Check if cmad completed                
                 var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
-                if (cmadComplete == null)
+                if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
                 {
                     return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
                 }
