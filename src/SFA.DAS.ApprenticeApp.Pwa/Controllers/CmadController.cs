@@ -99,9 +99,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 foreach (var item in model.RegistrationIds)
                 {
                     if (!item.CommitmentApprenticeshipIds.HasValue) continue;
-                    
+                                        
                     var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
-
+                    
                     if (commitment.StopDate.HasValue) continue;
 
                     if (commitment?.Uln == model.Uln.ToString())
@@ -124,17 +124,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                             return View("ConfirmApprenticeshipDetails", viewModel);
                         }
 
+                        _logger.LogInformation("FIRST: Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
                         return RedirectToAction("AccountNotFound", "Account");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogInformation(ex, "Error confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+                _logger.LogInformation(ex, "SECOND: Error confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
                 return RedirectToAction("AccountNotFound", "Account");
             }
 
-            _logger.LogError("Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+            _logger.LogInformation("THIRD: Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
             return RedirectToAction("AccountNotFound", "Account");
         }
 
