@@ -106,6 +106,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     if (commitment.StopDate.HasValue) continue;
 
+                    _logger.LogInformation("Commitment does not have a StopDate Value for commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+
                     if (commitment?.Uln == model.Uln.ToString())
                     {
                         var apprentice = await _client.GetApprentice(model.ApprenticeId);
@@ -132,6 +134,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                         _logger.LogInformation("FIRST: Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
                         return RedirectToAction("AccountNotFound", "Account");
+                    } else
+                    {
+                        _logger.LogInformation("ULN did not match for commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                        continue;
                     }
                 }
             }
