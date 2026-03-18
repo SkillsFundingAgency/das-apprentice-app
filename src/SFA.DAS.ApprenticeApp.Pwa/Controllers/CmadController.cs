@@ -87,26 +87,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [HttpPost]
         public async Task<IActionResult> ConfirmUln(CheckUlnViewModel model)
-        {
+        {            
             // Guard
             if (model?.RegistrationIds == null || model.RegistrationIds.Count == 0)
             {
                 return View("AccountNotFound", "Account");
             }
 
+            _logger.LogInformation("CheckUlnViewModel: {@Model}", model);
+
             try
             {
                 foreach (var item in model.RegistrationIds)
                 {
                     if (!item.CommitmentApprenticeshipIds.HasValue) continue;
-                    
-                    _logger.LogInformation("Checking commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
-                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);
-                    _logger.LogInformation("Got commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                                        
+                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);                    
 
                     if (commitment.StopDate.HasValue) continue;
-
-                    _logger.LogInformation("Commitment does not have a StopDate Value for commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                    
                     _logger.LogInformation("User inputted ULN: {UserUln} | Commitment ULN: {CommitmentUln}", model.Uln, commitment.Uln);
 
                     if (commitment?.Uln == model.Uln.ToString())
@@ -132,8 +131,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                             ModelState.Clear();
                             return View("ConfirmApprenticeshipDetails", viewModel);
                         }
-
-                        _logger.LogInformation("FIRST: Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+                        
                         return RedirectToAction("AccountNotFound", "Account");
                     } else
                     {
@@ -143,8 +141,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 }
             }
             catch (Exception ex)
-            {
-                _logger.LogInformation(ex, "SECOND: Error confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+            {                
                 return RedirectToAction("AccountNotFound", "Account");
             }
 
