@@ -6,7 +6,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
     {
         public Guid ApprenticeId { get; set; }          
         public List<RegistrationDetails> RegistrationIds { get; set; }
-        public int? Uln { get; set; }
+        public string? Uln { get; set; }
     }
 
     public class RegistrationDetails

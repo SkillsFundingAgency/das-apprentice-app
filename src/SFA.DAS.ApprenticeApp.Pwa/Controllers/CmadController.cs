@@ -94,7 +94,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 return View("AccountNotFound", "Account");
             }
 
-            _logger.LogInformation("CheckUlnViewModel: {@Model}", model);
+            var validViewModel = ModelState.IsValid;
+            _logger.LogInformation("CheckUlnViewModelValid: {validViewModel}", validViewModel);
 
             try
             {
@@ -108,7 +109,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     
                     _logger.LogInformation("User inputted ULN: {UserUln} | Commitment ULN: {CommitmentUln}", model.Uln, commitment.Uln);
 
-                    if (commitment?.Uln == model.Uln.ToString())
+                    if (commitment?.Uln == model.Uln)
                     {
                         var apprentice = await _client.GetApprentice(model.ApprenticeId);
                         var dobIso = apprentice.DateOfBirth.HasValue
