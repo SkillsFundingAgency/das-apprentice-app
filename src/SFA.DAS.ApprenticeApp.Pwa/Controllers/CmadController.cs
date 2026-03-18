@@ -107,6 +107,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     if (commitment.StopDate.HasValue) continue;
 
                     _logger.LogInformation("Commitment does not have a StopDate Value for commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                    _logger.LogInformation("User inputted ULN: {UserUln} | Commitment ULN: {CommitmentUln}", model.Uln, commitment.Uln);
 
                     if (commitment?.Uln == model.Uln.ToString())
                     {
