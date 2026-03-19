@@ -1,10 +1,13 @@
 ﻿using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Services
 {
     public interface ICommitmentsService
     {
+
+        Task<CmadNavigationResult> HandleConfirmationStatus(ApprenticeDetails apprenticeDetails, Guid apprenticeId);
         /// <summary>
         /// Creates an apprenticeship from a registration and returns the ConfirmApprenticeshipDetailsViewModel if successful; otherwise null.
         /// </summary>

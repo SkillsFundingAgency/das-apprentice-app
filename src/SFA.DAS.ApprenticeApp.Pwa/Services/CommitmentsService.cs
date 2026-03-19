@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using System.Globalization;
@@ -14,6 +19,38 @@ public class CommitmentsService : ICommitmentsService
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }    
+    public async Task<CmadNavigationResult> HandleConfirmationStatus(ApprenticeDetails apprenticeDetails, Guid apprenticeId)
+    {
+        var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
+        var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+
+        if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
+        {
+            // Email does not match any Registration record
+            if (registrationByEmail == null) return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmDetails, RouteValues = new { apprenticeId }};
+            // Email Matches single Apprenticeship record
+            if (registrationByEmail.Count == 1)
+            {
+                var registration = registrationByEmail.FirstOrDefault();
+                var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                var viewModel = await CreateApprenticeshipAndBuildViewModelAsync(
+                    registration.RegistrationId,
+                    apprenticeId,
+                    commitment.Uln,
+                    registration.LastName,
+                    registration.DateOfBirth.ToIsoDate());
+                
+                return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmApprenticeshipDetails, ConfirmModelJson = JsonConvert.SerializeObject(viewModel) };                
+            }
+
+            return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmDetails, RouteValues = new { apprenticeId }};
+        }
+
+        if (cmadComplete.ConfirmedOn != null) return new CmadNavigationResult { NavigationType = CmadNavigationType.WelcomeIndex };
+
+        return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmDetails, RouteValues = new { apprenticeId } };
     }
 
     public async Task<ConfirmApprenticeshipDetailsViewModel?> CreateApprenticeshipAndBuildViewModelAsync(
@@ -79,18 +116,22 @@ public class CommitmentsService : ICommitmentsService
     {
         if (apprentice == null) return;
 
-        var needsPatch = string.IsNullOrWhiteSpace(apprentice.FirstName)
-                         || string.IsNullOrWhiteSpace(apprentice.LastName)
-                         || !apprentice.DateOfBirth.HasValue;
+        var needsPatch =
+         !string.Equals(apprentice.FirstName, model.FirstName, StringComparison.OrdinalIgnoreCase) ||
+         !string.Equals(apprentice.LastName, model.LastName, StringComparison.OrdinalIgnoreCase) ||
+         apprentice.DateOfBirth != dob;
 
         if (!needsPatch) return;
 
         var patchDoc = new JsonPatchDocument<Apprentice>();
-        if (string.IsNullOrWhiteSpace(apprentice.FirstName))
+
+        if (!string.Equals(apprentice.FirstName, model.FirstName, StringComparison.OrdinalIgnoreCase))
             patchDoc.Replace(x => x.FirstName, model.FirstName);
-        if (string.IsNullOrWhiteSpace(apprentice.LastName))
+
+        if (!string.Equals(apprentice.LastName, model.LastName, StringComparison.OrdinalIgnoreCase))
             patchDoc.Replace(x => x.LastName, model.LastName);
-        if (!apprentice.DateOfBirth.HasValue)
+
+        if (apprentice.DateOfBirth != dob)
             patchDoc.Replace(x => x.DateOfBirth, dob);
 
         if (patchDoc.Operations.Any())

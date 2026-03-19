@@ -6,6 +6,7 @@ using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
@@ -52,32 +53,22 @@ public class TermsController : Controller
             if (termsAccepted != null && termsAccepted == "True")
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
-                var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
-                if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
+                var nextStep = await _commitmentsService.HandleConfirmationStatus(apprenticeDetails, Guid.Parse(apprenticeId));
+                if (!string.IsNullOrEmpty(nextStep.ConfirmModelJson))
                 {
-                    // Email Matches single Apprenticeship record
-                    if (registrationByEmail.Count == 1)
-                    {
-                        var registration = registrationByEmail.FirstOrDefault();
-                        var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
-
-                        var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
-                            registration.RegistrationId,
-                            Guid.Parse(apprenticeId),
-                            commitment.Uln,
-                            registration.LastName,
-                            registration.DateOfBirth.ToIsoDate());
-
-                        TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
-                        return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
-                    }
-
-                    return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+                    TempData["ConfirmModel"] = nextStep.ConfirmModelJson;
                 }
 
-                return RedirectToAction("Index", "Welcome");
+                return nextStep.NavigationType switch
+                {
+                    CmadNavigationType.WelcomeIndex => RedirectToAction("Index", "Welcome"),
+
+                    CmadNavigationType.ConfirmApprenticeshipDetails => RedirectToAction("ConfirmApprenticeshipDetails", "Cmad"),
+
+                    // Default to ConfirmDetils for any other cases
+                    _ => RedirectToAction("ConfirmDetails", "Cmad", nextStep.RouteValues)
+                };
             }
             else
             {
@@ -102,32 +93,21 @@ public class TermsController : Controller
             _logger.LogInformation($"Apprentice accepted the Terms. ApprenticeId: {apprenticeId}");
 
             var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-            var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
-            var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
-
-            if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
+            var nextStep = await _commitmentsService.HandleConfirmationStatus(apprenticeDetails, Guid.Parse(apprenticeId));
+            if (!string.IsNullOrEmpty(nextStep.ConfirmModelJson))
             {
-                // Email Matches single Apprenticeship record
-                if (registrationByEmail.Count == 1)
-                {
-                    var registration = registrationByEmail.FirstOrDefault();
-                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+                TempData["ConfirmModel"] = nextStep.ConfirmModelJson;
+            }
 
-                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
-                        registration.RegistrationId,
-                        Guid.Parse(apprenticeId),
-                        commitment.Uln,
-                        registration.LastName,
-                        registration.DateOfBirth.ToIsoDate());
+            return nextStep.NavigationType switch
+            {
+                CmadNavigationType.WelcomeIndex => RedirectToAction("Index", "Welcome"),
 
-                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
-                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
-                }
+                CmadNavigationType.ConfirmApprenticeshipDetails => RedirectToAction("ConfirmApprenticeshipDetails", "Cmad"),
 
-                return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
-            }            
-            
-            return RedirectToAction("Index", "Welcome");
+                // Default to ConfirmDetils for any other cases
+                _ => RedirectToAction("ConfirmDetails", "Cmad", nextStep.RouteValues)
+            };
         }
 
         _logger.LogWarning($"ApprenticeId not found in user claims for Terms TermsAccept.");
