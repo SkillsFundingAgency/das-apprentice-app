@@ -52,28 +52,30 @@ public class TermsController : Controller
             if (termsAccepted != null && termsAccepted == "True")
             {
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-
                 var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
-
-                if (registrationByEmail.Count == 1)
-                {
-                    var registration = registrationByEmail.FirstOrDefault();
-                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
-
-                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
-                        registration.RegistrationId,
-                        Guid.Parse(apprenticeId),
-                        commitment.Uln,
-                        registration.LastName,
-                        registration.DateOfBirth.ToIsoDate());
-
-                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
-                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
-                }
-
                 var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
-                if (cmadComplete == null) return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+                if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
+                {
+                    // Email Matches single Apprenticeship record
+                    if (registrationByEmail.Count == 1)
+                    {
+                        var registration = registrationByEmail.FirstOrDefault();
+                        var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                        var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                            registration.RegistrationId,
+                            Guid.Parse(apprenticeId),
+                            commitment.Uln,
+                            registration.LastName,
+                            registration.DateOfBirth.ToIsoDate());
+
+                        TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                        return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                    }
+
+                    return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+                }
 
                 return RedirectToAction("Index", "Welcome");
             }
@@ -100,9 +102,30 @@ public class TermsController : Controller
             _logger.LogInformation($"Apprentice accepted the Terms. ApprenticeId: {apprenticeId}");
 
             var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+            var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
             var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
-            if (cmadComplete == null) return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+            if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
+            {
+                // Email Matches single Apprenticeship record
+                if (registrationByEmail.Count == 1)
+                {
+                    var registration = registrationByEmail.FirstOrDefault();
+                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                        registration.RegistrationId,
+                        Guid.Parse(apprenticeId),
+                        commitment.Uln,
+                        registration.LastName,
+                        registration.DateOfBirth.ToIsoDate());
+
+                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                }
+
+                return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
+            }            
             
             return RedirectToAction("Index", "Welcome");
         }
