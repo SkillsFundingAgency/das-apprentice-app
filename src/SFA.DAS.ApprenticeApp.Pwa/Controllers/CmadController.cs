@@ -54,7 +54,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 // Multiple -> ask for ULN
                 if (registrations.Count >= 2)
-                    return RedirectToAction("CheckUln", new { model.ApprenticeId });
+                    return RedirectToAction("AccountNotFound","Account");
+                    //return RedirectToAction("CheckUln", new { model.ApprenticeId });
 
                 var registration = registrations.SingleOrDefault();
                 if (registration == null)
@@ -92,10 +93,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (model?.RegistrationIds == null || model.RegistrationIds.Count == 0)
             {
                 return View("AccountNotFound", "Account");
-            }
-
-            var validViewModel = ModelState.IsValid;
-            _logger.LogInformation("CheckUlnViewModelValid: {validViewModel}", validViewModel);
+            }           
 
             try
             {
@@ -116,8 +114,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                             ? apprentice.DateOfBirth.Value.ToIsoDate()
                             : null;
 
-                        // Create apprenticeship and build the confirm view model                    
-                        _logger.LogInformation("Creating Apprenticeship from populated commitment: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                        // Create apprenticeship and build the confirm view model                                            
                         var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
                         item.RegistrationId,
                         model.ApprenticeId,
@@ -145,8 +142,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {                
                 return RedirectToAction("AccountNotFound", "Account");
             }
-
-            _logger.LogInformation("THIRD: Error Confirming ULN for apprenticeId: {ApprenticeId}", model.ApprenticeId);
+            
             return RedirectToAction("AccountNotFound", "Account");
         }
 
@@ -171,7 +167,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             
             try
             {
-                await _client.ConfirmApprenticeshipDetails(apprenticeId, apprenticeshipId, revisionId, confs);
                 await _client.CreateMyApprenticeship(apprenticeId, new CreateMyApprenticeshipRequest
                 {
                     ApprenticeshipId = revision.CommitmentsApprenticeshipId,
@@ -180,9 +175,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     StartDate = revision.PlannedStartDate.ToIsoDate(),
                     EndDate = revision.PlannedEndDate.ToIsoDate(),
                     TrainingProviderId = revision.TrainingProviderId,
-                    TrainingProviderName = revision.TrainingProviderName,                    
+                    TrainingProviderName = revision.TrainingProviderName,
                     StandardUId = commitmentsApprenticeship.StandardUId
                 });
+                await _client.ConfirmApprenticeshipDetails(apprenticeId, apprenticeshipId, revisionId, confs);               
                 return RedirectToAction("Index", "Welcome");
             }
             catch (Exception ex)

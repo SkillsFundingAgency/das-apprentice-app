@@ -89,32 +89,32 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
 
                 // Check if cmad completed                
+                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
                 var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
 
                 if (cmadComplete == null || cmadComplete.ConfirmedOn == null)
                 {
-                    return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
+                    // Email Matches single Apprenticeship record
+                    if (registrationByEmail.Count == 1)
+                    {                        
+                        var registration = registrationByEmail.FirstOrDefault();
+                        var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+
+                        var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
+                            registration.RegistrationId,
+                            apprenticeId,
+                            commitment.Uln,
+                            registration.LastName,
+                            registration.DateOfBirth.ToIsoDate());
+
+                        TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
+                        return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
+                    }
+
+                    return RedirectToAction("ConfirmDetails", "Cmad", new { apprenticeId });
                 }
 
-                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");
-
-                // Email Matches single Apprenticeship record
-                var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);
-                if (registrationByEmail.Count == 1)
-                {
-                    var registration = registrationByEmail.FirstOrDefault();
-                    var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
-
-                    var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
-                        registration.RegistrationId,
-                        apprenticeId,
-                        commitment.Uln,
-                        registration.LastName,
-                        registration.DateOfBirth.ToIsoDate());
-
-                    TempData["ConfirmModel"] = JsonConvert.SerializeObject(viewModel);
-                    return RedirectToAction("ConfirmApprenticeshipDetails", "Cmad");
-                }
+                if (cmadComplete.ConfirmedOn != null) return RedirectToAction("Index", "Welcome");                                
 
                 // Send to CMAD
                 return RedirectToAction("ConfirmDetails", "Cmad", new {apprenticeId});
