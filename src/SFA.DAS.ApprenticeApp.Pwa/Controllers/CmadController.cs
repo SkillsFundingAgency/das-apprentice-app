@@ -151,6 +151,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         {
             var revision = await _client.GetRevisionById(apprenticeId, apprenticeshipId, revisionId);
             var commitmentsApprenticeship = await _client.GetCommitmentsApprenticeshipById(revision.CommitmentsApprenticeshipId);
+            var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
 
             var confs = new Confirmations()
             {
@@ -167,17 +168,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             
             try
             {
-                await _client.CreateMyApprenticeship(apprenticeId, new CreateMyApprenticeshipRequest
+                if (apprenticeDetails.MyApprenticeship == null)
                 {
-                    ApprenticeshipId = revision.CommitmentsApprenticeshipId,
-                    Uln = model.Uln,
-                    EmployerName = revision.EmployerName,
-                    StartDate = revision.PlannedStartDate.ToIsoDate(),
-                    EndDate = revision.PlannedEndDate.ToIsoDate(),
-                    TrainingProviderId = revision.TrainingProviderId,
-                    TrainingProviderName = revision.TrainingProviderName,
-                    StandardUId = commitmentsApprenticeship.StandardUId
-                });
+                    await _client.CreateMyApprenticeship(apprenticeId, new CreateMyApprenticeshipRequest
+                    {
+                        ApprenticeshipId = revision.CommitmentsApprenticeshipId,
+                        Uln = model.Uln,
+                        EmployerName = revision.EmployerName,
+                        StartDate = revision.PlannedStartDate.ToIsoDate(),
+                        EndDate = revision.PlannedEndDate.ToIsoDate(),
+                        TrainingProviderId = revision.TrainingProviderId,
+                        TrainingProviderName = revision.TrainingProviderName,
+                        StandardUId = commitmentsApprenticeship.StandardUId
+                    });
+                }
+               
                 await _client.ConfirmApprenticeshipDetails(apprenticeId, apprenticeshipId, revisionId, confs);               
                 return RedirectToAction("Index", "Welcome");
             }
@@ -221,13 +226,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public IActionResult ConfirmApprenticeshipDetails(ConfirmApprenticeshipDetailsViewModel model)
         {
-            if (TempData["ConfirmModel"] is string json)
+            var json = TempData.Peek("ConfirmModel") as string;
+
+            if (!string.IsNullOrEmpty(json))
             {
                 var tempDataModel = JsonSerializer.Deserialize<ConfirmApprenticeshipDetailsViewModel>(json);
                 return View(tempDataModel);
             }
 
-            return View(model);
+            return RedirectToAction("AccountNotFound", "Account");
         }              
     }
 }

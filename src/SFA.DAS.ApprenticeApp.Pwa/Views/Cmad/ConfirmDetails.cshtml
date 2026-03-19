@@ -2,13 +2,13 @@
 @model CheckDetailsViewModel
 
 @{
-    Layout = "_LayoutBasic";
+    ViewBag.HideNavigation = true;
 }
 
 <div class="app-main">
     <div class="app-main__inner">
         <div class="app-page-header">
-            <h2>Find your apprenticeship</h2>
+            <h1 class="govuk-heading-xl">Find your apprenticeship</h1>
         </div>
         <p class="govuk-body">
             We need to check a few details so we can match you to your apprenticeship
@@ -16,12 +16,12 @@
 
         <form method="GET" asp-action="CheckDetails" asp-controller="Cmad">
             <input asp-for="ApprenticeId" type="hidden" />
-            <div class="app-form-group">
-                <label asp-for="FirstName" class="app-label">First name</label>
+            <div class="govuk-form-group">
+                <label asp-for="FirstName" class="govuk-label">First name</label>
                 <input asp-for="FirstName" required="required" class="govuk-input" />
             </div>
-            <div class="app-form-group">
-                <label asp-for="LastName" class="app-label">Last name</label>
+            <div class="govuk-form-group">
+                <label asp-for="LastName" class="govuk-label">Last name</label>
                 <input asp-for="LastName" required="required" class="govuk-input" />
             </div>
             <div id="DateOfBirth" class="govuk-form-group">
@@ -72,8 +72,8 @@
                 <span asp-validation-for="TrainingProvider" class="text-danger"></span>
             </div> *@
 
-            <div class="govuk-button-group">
-                <button class="app-button" type="submit">Continue</button>
+            <div class="govuk-button-group app-button-group">
+                <button class="govuk-button" type="submit">Continue</button>
             </div>
         </form>
     </div>

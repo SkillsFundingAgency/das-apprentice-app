@@ -2,13 +2,13 @@
 @model ConfirmApprenticeshipDetailsViewModel
 
 @{
-    Layout = "_LayoutBasic";
+    ViewBag.HideNavigation = true;
 }
 
 <div class="app-main">
     <div class="app-main__inner">
         <div class="app-page-header">
-            <h2>Check your apprenticeship details</h2>
+            <h2 class="govuk-heading-xl">Check your apprenticeship details</h2>
         </div>        
 
         <form method="post" asp-action="ConfirmApprenticeshipDetails" asp-controller="Cmad">
@@ -55,8 +55,8 @@
                     </tr>                   
                 </tbody>
             </table>           
-            <div class="govuk-button-group">
-                <button class="app-button" type="submit">Continue</button>
+            <div class="govuk-button-group app-button-group">
+                <button class="govuk-button" type="submit">Continue</button>
             </div>
         </form>
     </div>
