@@ -25,12 +25,16 @@ public class CommitmentsService : ICommitmentsService
     {
         try
         {
+            _logger.LogInformation("Creating apprenticeship from registration (registrationId: {RegistrationId}, apprenticeId: {ApprenticeId}, lastName: {LastName}, dob: {dobIso})",
+                registrationId, apprenticeId, lastName, dobIso);
             // create apprenticeship from registration (same behavior as controller)
             await _client.CreateApprenticeshipFromRegistration(registrationId, apprenticeId, lastName, dobIso);
 
             // refresh apprentice details and find the apprenticeship + revision
             var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
+            _logger.LogInformation("Retrieved Apprentice Details");
             var apprenticeship = apprenticeDetails?.Apprenticeship?.Apprenticeships?.SingleOrDefault();
+            _logger.LogInformation("Retrieved Apprenticeship from Apprentice Details, Apprenticeship: {apprenticeship}", apprenticeship);
             if (apprenticeship == null) return null;
 
             var revision = await _client.GetRevisionById(apprenticeDetails.Apprentice.ApprenticeId, apprenticeship.Id, apprenticeship.RevisionId);
