@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
+using SFA.DAS.ApprenticeApp.Pwa.Models;
+using SFA.DAS.ApprenticeApp.Pwa.Services;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers;
 
@@ -12,17 +15,20 @@ public class TermsController : Controller
 {
     private readonly ILogger<TermsController> _logger;
     private readonly IOuterApiClient _client;
+    private readonly ICommitmentsService _commitmentsService;
     private readonly IApprenticeContext _apprenticeContext;
 
     public TermsController
         (
         ILogger<TermsController> logger,
         IOuterApiClient client,
+        ICommitmentsService commitmentsService,
         IApprenticeContext apprenticeContext
         )
     {
         _logger = logger;
         _client = client;
+        _commitmentsService = commitmentsService;
         _apprenticeContext = apprenticeContext;
     }
 
@@ -46,7 +52,23 @@ public class TermsController : Controller
 
             if (termsAccepted != null && termsAccepted == "True")
             {
-                return RedirectToAction("Index", "Welcome");
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                var nextStep = await _commitmentsService.HandleConfirmationStatus(apprenticeDetails, Guid.Parse(apprenticeId));
+                if (!string.IsNullOrEmpty(nextStep.ConfirmModelJson))
+                {
+                    TempData["ConfirmModel"] = nextStep.ConfirmModelJson;
+                }
+
+                return nextStep.NavigationType switch
+                {
+                    CmadNavigationType.WelcomeIndex => RedirectToAction("Index", "Welcome"),
+
+                    CmadNavigationType.ConfirmApprenticeshipDetails => RedirectToAction("ConfirmApprenticeshipDetails", "Cmad"),
+
+                    // Default to ConfirmDetils for any other cases
+                    _ => RedirectToAction("ConfirmDetails", "Cmad", nextStep.RouteValues)
+                };
             }
             else
             {
@@ -68,9 +90,24 @@ public class TermsController : Controller
                                .Replace(x => x.TermsOfUseAccepted, true);
 
             await _client.UpdateApprentice(new Guid(apprenticeId), patch);
-
             _logger.LogInformation($"Apprentice accepted the Terms. ApprenticeId: {apprenticeId}");
-            return RedirectToAction("Index", "Welcome");
+
+            var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+            var nextStep = await _commitmentsService.HandleConfirmationStatus(apprenticeDetails, Guid.Parse(apprenticeId));
+            if (!string.IsNullOrEmpty(nextStep.ConfirmModelJson))
+            {
+                TempData["ConfirmModel"] = nextStep.ConfirmModelJson;
+            }
+
+            return nextStep.NavigationType switch
+            {
+                CmadNavigationType.WelcomeIndex => RedirectToAction("Index", "Welcome"),
+
+                CmadNavigationType.ConfirmApprenticeshipDetails => RedirectToAction("ConfirmApprenticeshipDetails", "Cmad"),
+
+                // Default to ConfirmDetils for any other cases
+                _ => RedirectToAction("ConfirmDetails", "Cmad", nextStep.RouteValues)
+            };
         }
 
         _logger.LogWarning($"ApprenticeId not found in user claims for Terms TermsAccept.");

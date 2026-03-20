@@ -1,23 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "We could not find your apprenticeship";
-    Layout = "_LayoutBasic";
+    ViewBag.HideNavigation = true;
+    ViewBag.HideSwitchDesign = true;
 }
 
 <div class="app-main">
     <div class="app-main__inner">
-        <div class="app-page-header govuk-!-margin-bottom-8">
-            <div class="app-page-header__back">
-                <a asp-action="SigningOut" asp-controller="Account" class="app-back-link">
-                    Close
-                </a>
+        <div class="app-page-header__back govuk-!-margin-bottom-8">
+            <a asp-action="SigningOut" asp-controller="Account" class="app-back-link">
+                Close
+            </a>
+        </div>
+        <div class="app-page-header govuk-!-margin-bottom-8">            
+            <div class="app-page-header">
+                <h2 class="govuk-heading-xl">We could not find your apprenticeship</h2>
             </div>
-            <h1 class="app-page-header__heading">We could not find your apprenticeship</h1>
             <div class="app-page-header__forward"></div>
         </div>
 
         <p class="govuk-body">
-            Check the name of your course and your training provider -
-            this information is in the first email we sent to you about your
+            Check the name of your course and your training provider - this 
+            information is in the first email we sent to you about your
             apprenticeship
         </p>
         <p class="govuk-body">

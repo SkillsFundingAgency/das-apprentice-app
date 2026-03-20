@@ -29,12 +29,15 @@
 <!-- Old UI opt‑in banner (light green) with updated colours -->
 @if (Context.Session.GetString("UserType") != "SpecialUser")
 {
-    <div class="app-banner">
-        <div class="app-banner__inner">
-        <b>We’re redesigning the app</b>
-        <a href="@Url.Action("OptInNewUi", "Account", new { returnUrl = Context.Request.Path })" class="app-link">Switch to our new design</a>
-        </div>
-    </div>
+        if (ViewBag.HideSwitchDesign != true)
+        {
+            <div class="app-banner">
+                <div class="app-banner__inner">
+                    <b>We’re redesigning the app</b>
+                    <a href="@Url.Action("OptInNewUi", "Account", new { returnUrl = Context.Request.Path })" class="app-link">Switch to our new design</a>
+                </div>
+            </div>
+        }       
 }
 
 
@@ -48,62 +51,62 @@
                 </p>
             </div>
         </main>
-        <nav class="app-navigation">
-            <a asp-controller="Tasks" asp-action="Index"
-                class="app-navigation__link  @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
-                <span class="app-navigation__icon">
-                    <svg>
-                        <use xlink:href="/assets/images/icons.svg#tasks@(ViewBag.Section == "Tasks" ? "Active" : "")">
-                        </use>
-                    </svg>
-                </span>
-                <span class="app-navigation__link-text">Tasks</span>
-            </a>
-            <a asp-controller="Ksb" asp-action="Index"
-                class="app-navigation__link @(ViewBag.Section == "Ksbs" ? "app-navigation__link--active" :"")">
-                <span class="app-navigation__icon">
-                    <svg>
-                        <use xlink:href="/assets/images/icons.svg#ksbs@(ViewBag.Section == "Ksbs" ? "Active" : "")">
-                        </use>
-                    </svg>
-                </span>
-                <span class="app-navigation__link-text">KSBs</span>
-            </a>
-            <a asp-controller="Support" asp-action="Index"
-                class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
-                <span class="app-navigation__icon">
-                    <svg>
-                        <use
-                            xlink:href="/assets/images/icons.svg#support@(ViewBag.Section == "Support" ? "Active" : "")">
-                        </use>
-                    </svg>
-                </span>
-                <span class="app-navigation__link-text">Support</span>
-            </a>
-            <a asp-controller="Notifications" asp-action="Index"
-                class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
-                <span class="app-navigation__icon">
-                    <svg>
-                        <use
-                            xlink:href="/assets/images/icons.svg#notifications@(ViewBag.Section == "Notifications" ? "Active" : "")">
-                        </use>
-                    </svg>
-                </span>
-                @await Component.InvokeAsync("NotificationCounter")
-                <span class="app-navigation__link-text">Notifications</span>
-            </a>
-            <a asp-controller="Account" asp-action="YourAccount"
-                class="app-navigation__link @(ViewBag.Section == "Account" ? "app-navigation__link--active" :"")">
-                <span class="app-navigation__icon">
-                    <svg>
-                        <use
-                            xlink:href="/assets/images/icons.svg#account@(ViewBag.Section == "Account" ? "Active" : "")">
-                        </use>
-                    </svg>
-                </span>
-                <span class="app-navigation__link-text">Account</span>
-            </a>
-        </nav>
+        @if (ViewBag.HideNavigation != true)
+        {
+            <nav class="app-navigation">
+                <a asp-controller="Tasks" asp-action="Index"
+                   class="app-navigation__link  @(ViewBag.Section == "Tasks" ? "app-navigation__link--active" :"")">
+                    <span class="app-navigation__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#tasks@(ViewBag.Section == "Tasks" ? "Active" : "")">
+                            </use>
+                        </svg>
+                    </span>
+                    <span class="app-navigation__link-text">Tasks</span>
+                </a>
+                <a asp-controller="Ksb" asp-action="Index"
+                   class="app-navigation__link @(ViewBag.Section == "Ksbs" ? "app-navigation__link--active" :"")">
+                    <span class="app-navigation__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#ksbs@(ViewBag.Section == "Ksbs" ? "Active" : "")">
+                            </use>
+                        </svg>
+                    </span>
+                    <span class="app-navigation__link-text">KSBs</span>
+                </a>
+                <a asp-controller="Support" asp-action="Index"
+                   class="app-navigation__link @(ViewBag.Section == "Support" ? "app-navigation__link--active" :"")">
+                    <span class="app-navigation__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#support@(ViewBag.Section == "Support" ? "Active" : "")">
+                            </use>
+                        </svg>
+                    </span>
+                    <span class="app-navigation__link-text">Support</span>
+                </a>
+                <a asp-controller="Notifications" asp-action="Index"
+                   class="app-navigation__link @(ViewBag.Section == "Notifications" ? "app-navigation__link--active" :"")">
+                    <span class="app-navigation__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#notifications@(ViewBag.Section == "Notifications" ? "Active" : "")">
+                            </use>
+                        </svg>
+                    </span>
+                    @await Component.InvokeAsync("NotificationCounter")
+                    <span class="app-navigation__link-text">Notifications</span>
+                </a>
+                <a asp-controller="Account" asp-action="YourAccount"
+                   class="app-navigation__link @(ViewBag.Section == "Account" ? "app-navigation__link--active" :"")">
+                    <span class="app-navigation__icon">
+                        <svg>
+                            <use xlink:href="/assets/images/icons.svg#account@(ViewBag.Section == "Account" ? "Active" : "")">
+                            </use>
+                        </svg>
+                    </span>
+                    <span class="app-navigation__link-text">Account</span>
+                </a>
+            </nav>
+        }        
     </div>
 
     <script type="module" src="/js/libs/govuk-frontend.min.js"></script>

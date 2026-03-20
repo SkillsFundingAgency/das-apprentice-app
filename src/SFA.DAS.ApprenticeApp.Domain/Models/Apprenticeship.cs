@@ -7,6 +7,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
     public class Apprenticeship
     {
         public long Id { get; set; }
+        public long RevisionId { get; set; }
         public Guid ApprenticeId { get; set; }
         public string? EmployerName { get; set; }
         public string? CourseName { get; set; }
@@ -16,5 +17,10 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public DateTime? StoppedReceivedOn { get; set; }
         public bool IsStopped => StoppedReceivedOn != null;
         public bool HasBeenConfirmedAtLeastOnce { get; set; }
+    }
+
+    public class ApprenticeshipsList
+    {
+        public List<Apprenticeship>? Apprenticeships { get; set; }
     }
 }

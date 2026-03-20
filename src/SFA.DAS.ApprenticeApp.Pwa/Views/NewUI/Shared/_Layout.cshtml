@@ -101,9 +101,12 @@
                       class="app-header__dfe-logo"
                     />
               </div>
-              <a class="app-header__link"  asp-controller="Account" asp-action="SigningOut">
-                  Sign out
-              </a>
+              @if (ViewBag.HideNavigation != true)
+                {
+                    <a class="app-header__link" asp-controller="Account" asp-action="SigningOut">
+                        Sign out
+                    </a>
+                }              
           </div>
       </div>
     </header>
