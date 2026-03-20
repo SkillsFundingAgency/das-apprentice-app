@@ -103,7 +103,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     CmadNavigationType.ConfirmApprenticeshipDetails => RedirectToAction("ConfirmApprenticeshipDetails", "Cmad"),
 
                     // Default to ConfirmDetils for any other cases
-                    _ => RedirectToAction("ConfirmDetails", "Cmad", nextStep.RouteValues)
+                    _ => RedirectToAction("ConfirmDetails", "Cmad")
                 };
             }
             catch (Exception ex)

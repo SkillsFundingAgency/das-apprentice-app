@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
@@ -14,12 +13,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         private readonly ICommitmentsService _commitmentsService;
         private readonly ILogger<CmadController> _logger;
         private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
 
-        public CmadController(ICommitmentsService commitmentsService, ILogger<CmadController> logger, IOuterApiClient client)
+        public CmadController(ICommitmentsService commitmentsService, ILogger<CmadController> logger, IOuterApiClient client, IApprenticeContext apprenticeContext)
         {
             _commitmentsService = commitmentsService;
             _logger = logger;
             _client = client;
+            _apprenticeContext = apprenticeContext;
         }
 
         [HttpGet]
@@ -54,7 +55,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 // Multiple -> ask for ULN
                 if (registrations.Count >= 2)
-                    return RedirectToAction("AccountNotFound","Account");
+                    return RedirectToAction("UlnError","Cmad");
                     //return RedirectToAction("CheckUln", new { model.ApprenticeId });
 
                 var registration = registrations.SingleOrDefault();
@@ -195,9 +196,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         
         // Views
         [HttpGet]
-        public IActionResult ConfirmDetails(Guid apprenticeId)
+        public IActionResult ConfirmDetails()
         {
-            return View(new CheckDetailsViewModel { ApprenticeId = apprenticeId });
+            var authenticatedApprenticeId = _apprenticeContext.ApprenticeId;
+            if (authenticatedApprenticeId != null)
+            {
+                return View(new CheckDetailsViewModel { ApprenticeId = Guid.Parse(authenticatedApprenticeId) });
+            }
+
+            return RedirectToAction("AccountNotFound", "Account");
         }
 
         [HttpGet]
@@ -224,7 +231,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [HttpGet]
-        public IActionResult ConfirmApprenticeshipDetails(ConfirmApprenticeshipDetailsViewModel model)
+        public IActionResult UlnError()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmApprenticeshipDetails()
         {
             var json = TempData.Peek("ConfirmModel") as string;
 

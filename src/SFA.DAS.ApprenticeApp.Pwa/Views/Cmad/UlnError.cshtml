@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.HideNavigation = true;
+    ViewBag.HideSwitchDesign = true;
+}
+
+<div class="app-main">
+    <div class="app-main__inner">
+        <div class="app-page-header__back govuk-!-margin-bottom-8">
+            <a asp-action="SigningOut" asp-controller="Account" class="app-back-link">
+                Close
+            </a>
+        </div>
+        <div class="app-page-header">          
+            <div class="app-page-header">
+                <h2 class="govuk-heading-xl">Sorry, there is a problem with Your Apprenitceship App</h2>
+            </div>
+            <div class="app-page-header__forward"></div>
+        </div>
+
+        <p class="govuk-body">
+           We're aware of the problem and we're working to fix it
+        </p>
+        <p class="govuk-body">
+           Try again in 48 hours
+        </p>        
+    </div>
+</div>

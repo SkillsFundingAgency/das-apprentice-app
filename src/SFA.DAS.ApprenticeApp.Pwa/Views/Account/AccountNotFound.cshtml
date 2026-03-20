@@ -1,15 +1,16 @@
 ﻿@{
     ViewBag.HideNavigation = true;
+    ViewBag.HideSwitchDesign = true;
 }
 
 <div class="app-main">
     <div class="app-main__inner">
-        <div class="app-page-header govuk-!-margin-bottom-8">
-            <div class="app-page-header__back govuk-!-margin-bottom-8">
-                <a asp-action="SigningOut" asp-controller="Account" class="app-back-link">
-                    Close
-                </a>
-            </div>
+        <div class="app-page-header__back govuk-!-margin-bottom-8">
+            <a asp-action="SigningOut" asp-controller="Account" class="app-back-link">
+                Close
+            </a>
+        </div>
+        <div class="app-page-header govuk-!-margin-bottom-8">            
             <div class="app-page-header">
                 <h2 class="govuk-heading-xl">We could not find your apprenticeship</h2>
             </div>

@@ -31,10 +31,16 @@ public class CommitmentsService : ICommitmentsService
             if (registrationByEmail == null) return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmDetails, RouteValues = new { apprenticeId }};
             // Email Matches single Apprenticeship record
             if (registrationByEmail.Count == 1)
-            {
-                var registration = registrationByEmail.FirstOrDefault();
-                var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
+            {                
+                var registration = registrationByEmail.FirstOrDefault();                
+                await EnsureApprenticeHasBasicFields(apprenticeDetails.Apprentice, new CheckDetailsViewModel
+                {
+                    FirstName = registration.FirstName,
+                    LastName = registration.LastName,
+                    ApprenticeId = apprenticeId
+                }, registration.DateOfBirth);
 
+                var commitment = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
                 var viewModel = await CreateApprenticeshipAndBuildViewModelAsync(
                     registration.RegistrationId,
                     apprenticeId,
