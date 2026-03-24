@@ -55,8 +55,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 // Multiple -> ask for ULN
                 if (registrations.Count >= 2)
-                    return RedirectToAction("UlnError","Cmad");
-                    //return RedirectToAction("CheckUln", new { model.ApprenticeId });
+                    return RedirectToAction("CheckUln", new { model.ApprenticeId });
 
                 var registration = registrations.SingleOrDefault();
                 if (registration == null)
@@ -104,7 +103,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                                         
                     var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);                    
 
-                    if (commitment.StopDate.HasValue) continue;
+                    if (commitment.StopDate.HasValue || commitment.EndDate <= DateTime.Now) continue;
                     
                     _logger.LogInformation("User inputted ULN: {UserUln} | Commitment ULN: {CommitmentUln}", model.Uln, commitment.Uln);
 
