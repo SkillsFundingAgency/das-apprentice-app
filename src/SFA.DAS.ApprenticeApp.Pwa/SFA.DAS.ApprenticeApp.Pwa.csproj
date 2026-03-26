@@ -32,6 +32,7 @@
     <PackageReference Include="System.Text.Json" Version="8.0.5" />     
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="wwwroot\assets\rebrand\assets\" />
     <Folder Include="wwwroot\img\" />
     <Folder Include="Configuration\" />
     <Folder Include="Views\Terms\" />
