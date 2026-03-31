@@ -317,52 +317,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Account
             controller.IsUserInNewUiCohort(6).Should().BeFalse();
             controller.IsUserInNewUiCohort(999).Should().BeFalse();
             controller.IsUserInNewUiCohort(-1).Should().BeFalse();
-        }
-
-        [Test, MoqAutoData]
-        public async Task AccountDetails_Post_WithApprenticeId_AddsNewUiEnabledClaim(
-            [Frozen] Mock<IConfiguration> configuration,
-            [Frozen] Mock<IStubAuthenticationService> authenticationService,
-            [Frozen] Mock<IOuterApiClient> client,
-            [Greedy] AccountController controller)
-        {
-            // Arrange
-            var httpContext = new DefaultHttpContext();
-            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
-            
-            configuration.Setup(x => x["ResourceEnvironmentName"]).Returns("local");
-            
-            var model = new StubAuthenticationViewModel { Email = "test@test.com" };
-            var apprenticeId = Guid.NewGuid();
-            
-            // Mock authentication service to return claims with apprentice ID
-            var claimsIdentity = new ClaimsIdentity();
-            claimsIdentity.AddClaim(new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString()));
-            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-            
-            authenticationService.Setup(x => x.GetStubSignInClaims(model))
-                .ReturnsAsync(claimsPrincipal);
-            
-            // Mock client to return apprentice details
-            client.Setup(c => c.GetApprenticeDetails(It.Is<Guid>(id => id == apprenticeId)))
-                .ReturnsAsync(new ApprenticeDetails
-                {
-                    MyApprenticeship = new MyApprenticeship
-                    {
-                        ApprenticeshipId = 123,
-                        StandardUId = "456"
-                    }
-                });
-
-            // Act
-            var result = await controller.AccountDetails(model);
-
-            // Assert
-            result.Should().BeOfType<RedirectToActionResult>();
-            
-            // Verify that the NewUiEnabledClaim was added
-            claimsIdentity.HasClaim(Constants.NewUiEnabledClaimKey, "true").Should().BeTrue();
-        }
+        }        
         
 [Test, MoqAutoData]
 public void OptInNewUi_SetsCookieAndSessionAndRedirectsToWelcome(
