@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
@@ -14,7 +13,6 @@ using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.ApprenticeApp.Pwa.Services;
 using SFA.DAS.GovUK.Auth.Services;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 
 namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 {
@@ -73,17 +71,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     return RedirectToAction("AccountNotFound", "Account");
                 }
 
-                // Determine cohort membership
-                var isCohort = IsUserInNewUiCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
-                HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
-
-                // Check opt‑in cookie
-                bool optIn = Request.Cookies[NewUiOptInCookieName] == "true";
-                HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
-
-                // Set legacy UserType for backward compatibility              
-                string userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
-                HttpContext.Session.SetString("UserType", userType);
+                SetUiSessionState(apprenticeDetails);
 
                 // Check terms
                 if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
@@ -139,21 +127,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
 
             try
-            {
+            {                
                 model.Email = model.Email.ToLower();
                 var claims = await _stubAuthenticationService.GetStubSignInClaims(model);
                 var apprenticeId = claims?.Claims?.First(c => c.Type == Constants.ApprenticeIdClaimKey)?.Value;
-
-                if (!string.IsNullOrEmpty(apprenticeId))
-                {
-                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
-                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipIdClaimKey, apprenticeDetails.MyApprenticeship.ApprenticeshipId.ToString()));
-                    claims?.Identities.First().AddClaim(new Claim(Constants.StandardUIdClaimKey, apprenticeDetails.MyApprenticeship.StandardUId.ToString()));
-                    claims?.Identities.First().AddClaim(new Claim(Constants.ApprenticeshipTitleClaimKey, apprenticeDetails.MyApprenticeship.Title ?? ""));
-
-                    // Enable new UI
-                    claims?.Identities.First().AddClaim(new Claim(Constants.NewUiEnabledClaimKey, "true"));
-                }
 
                 // Set extended cookie expiration here
                 var authProperties = new AuthenticationProperties
@@ -168,6 +145,38 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     claims,
                     authProperties); // Pass the modified properties
 
+                if (!string.IsNullOrEmpty(apprenticeId))
+                {
+                    var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                    if (apprenticeDetails == null)
+                    {
+                        return RedirectToAction("AccountNotFound", "Account");
+                    }
+
+                    SetUiSessionState(apprenticeDetails);
+
+                    // Check terms
+                    if (apprenticeDetails.Apprentice.TermsOfUseAccepted == false) return RedirectToAction("Index", "Terms");
+
+                    // Check if cmad completed
+                    var nextStep = await _commitmentsService.HandleConfirmationStatus(apprenticeDetails, Guid.Parse(apprenticeId));
+
+                    if (!string.IsNullOrEmpty(nextStep.ConfirmModelJson))
+                    {
+                        TempData["ConfirmModel"] = nextStep.ConfirmModelJson;
+                    }
+
+                    return nextStep.NavigationType switch
+                    {
+                        CmadNavigationType.WelcomeIndex => RedirectToAction("Index", "Welcome"),
+
+                        CmadNavigationType.ConfirmApprenticeshipDetails => RedirectToAction("ConfirmApprenticeshipDetails", "Cmad"),
+
+                        // Default to ConfirmDetils for any other cases
+                        _ => RedirectToAction("ConfirmDetails", "Cmad")
+                    };
+                }
+                
                 return RedirectToRoute(RouteNames.StubSignedIn, new { returnUrl = model.ReturnUrl });
             }
             catch (Exception)
@@ -359,6 +368,18 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             apprenticeAccountModel.apprenticeKsbsPageModel = apprenticeKsbsPageModel;
 
             return View(apprenticeAccountModel);
+        }
+
+        private void SetUiSessionState(ApprenticeDetails apprenticeDetails)
+        {
+            var isCohort = IsUserInNewUiCohort(apprenticeDetails?.MyApprenticeship?.TrainingProviderId);
+            HttpContext.Session.SetString(CohortUserSessionKey, isCohort ? "true" : "false");
+
+            var optIn = Request.Cookies[NewUiOptInCookieName] == "true";
+            HttpContext.Session.SetString(OptInUserSessionKey, optIn ? "true" : "false");
+
+            var userType = (optIn || isCohort) ? "SpecialUser" : "RegularUser";
+            HttpContext.Session.SetString("UserType", userType);
         }
 
         private void SetUiforCohort(long? providerId)
