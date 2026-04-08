@@ -44,6 +44,24 @@
 
 .app-onboarding__skip {
   order: 2;
+  align-self: flex-end;
+  position: relative;
+  padding-right: .875em;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: .1875em;
+    width: .4375em;
+    height: .4375em;
+    margin: auto 0;
+    transform: rotate(45deg);
+    border: solid;
+    border-width: 1px 1px 0 0;
+    border-color: currentColor;
+  }
 }
 
 .app-onboarding__image,
