@@ -91,6 +91,25 @@
 
             <p>@notification.Body</p>
 
+            <div class="app-flex-align-right">
+                <a asp-action="ConfirmDeleteLearnerNotification"
+                   asp-controller="Notifications"
+                   asp-route-notificationId="@notification.NotificationId"
+                   class="govuk-link app-link--destructive">
+                    <span class="app-icon-item">
+                        <svg width="24" height="24" class="app-icon-item__icon">
+                            <use href="/assets/icons/sprite.svg#delete"></use>
+                        </svg>
+                        <span class="app-icon-action__label">
+                            Delete
+                            <span class="govuk-visually-hidden">
+                                @notification.Heading
+                            </span>
+                        </span>
+                    </span>
+                </a>
+            </div>
+
             <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
         </div>
     }
