@@ -121,5 +121,16 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
 
         [Get("/api/learner/{accountIdentifier}/notifications")]
         Task<List<LearnerNotification>> GetLearnerNotifications([Path] Guid accountIdentifier);
+
+        [Put("/api/learner/{accountIdentifier}/notifications/{notificationIdentifier}/status")]
+    Task UpdateLearnerNotificationStatus(
+    [Path] Guid accountIdentifier,
+    [Path] long notificationIdentifier,
+    [Body] UpdateNotificationStatusRequest request);
+
+        [Delete("/api/learner/{accountIdentifier}/notifications/{notificationId}")]
+    Task DeleteLearnerNotification(
+        [Path] Guid accountIdentifier,
+        [Path] long notificationId);
     }
 }
