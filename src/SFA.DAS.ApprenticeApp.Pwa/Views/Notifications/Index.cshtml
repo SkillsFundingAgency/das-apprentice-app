@@ -29,3 +29,27 @@ else
 {
     @await Html.PartialAsync("_Notifications", Model)
 }
+<script>
+    let learnerNotificationsAcknowledged = false;
+
+    function acknowledgeLearnerNotifications() {
+        if (learnerNotificationsAcknowledged) {
+            return;
+        }
+
+        learnerNotificationsAcknowledged = true;
+
+        const url = '@Url.Action("AcknowledgeLearnerNotifications", "Notifications")';
+
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(url);
+        } else {
+            fetch(url, {
+                method: 'POST',
+                keepalive: true
+            });
+        }
+    }
+
+    window.addEventListener('pagehide', acknowledgeLearnerNotifications);
+</script>

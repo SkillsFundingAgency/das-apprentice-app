@@ -139,6 +139,39 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AcknowledgeLearnerNotifications()
+        {
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (!string.IsNullOrEmpty(apprenticeId))
+            {
+                try
+                {
+                    var apprenticeIdentifier = new Guid(apprenticeId);
+                    var learnerNotifications = await _client.GetLearnerNotifications(apprenticeIdentifier);
+
+                    foreach (var notification in learnerNotifications.Where(x => x.StatusId == 1))
+                    {
+                        await _client.UpdateLearnerNotificationStatus(apprenticeIdentifier, notification.NotificationId, new UpdateNotificationStatusRequest { StatusId = 2 });
+                    }
+
+                    return Ok();
+                }
+                catch (Exception)
+                {
+                    _logger.LogWarning("Error in Notifications: AcknowledgeLearnerNotifications");
+                }
+            }
+            else
+            {
+                _logger.LogWarning("ApprenticeId not found in user claims for Notifications AcknowledgeLearnerNotifications.");
+            }
+
+            return BadRequest();
+        }
+
+        [Authorize]
         [HttpGet]
         public IActionResult NoNotifications()
         {

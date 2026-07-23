@@ -84,10 +84,22 @@
 {
     @foreach (var notification in Model.LearnerNotifications)
     {
-        <div class="app-notification">
+        <div id="notification-@notification.NotificationId" class="app-notification">
             <h2 class="govuk-heading-m">
-                @notification.Heading
+                @if (!string.IsNullOrEmpty(notification.Link))
+                {
+                    <a href="@notification.Link" class="govuk-link govuk-link--no-visited-state">@notification.Heading</a>
+                }
+                else
+                {
+                    @notification.Heading
+                }
             </h2>
+
+            @if (notification.StatusId == 1)
+            {
+                <strong class="govuk-tag govuk-tag--red govuk-!-margin-bottom-3">New</strong>
+            }
 
             <p>@notification.Body</p>
 
