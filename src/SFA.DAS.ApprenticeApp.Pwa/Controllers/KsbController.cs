@@ -98,11 +98,28 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 SkillCount = filteredBase.Count(k => k.Type == KsbType.Skill),
                 BehaviourCount = filteredBase.Count(k => k.Type == KsbType.Behaviour),
                 SearchTerm = searchTerm,
-                MyApprenticeship = apprenticeDetails?.MyApprenticeship
+                MyApprenticeship = apprenticeDetails?.MyApprenticeship,
+                ShowPushNotificationModal = Request.Cookies[Constants.PushNotificationPromptCookieName] == null
             };
 
+            if (model.ShowPushNotificationModal)
+            {
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.Now.AddYears(99),
+                Path = "/",
+                Secure = true,
+                HttpOnly = true
+            };
+
+            Response.Cookies.Append(
+                Constants.PushNotificationPromptCookieName,
+                "1",
+                cookieOptions);
+            }
+
             return View(model);
-        }
+            }
 
         [Authorize]
         [HttpGet]

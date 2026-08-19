@@ -1,0 +1,93 @@
+@use "govuk/settings/index" as settings;
+@use "govuk/helpers/index" as helpers;
+
+.app-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: app-modal-fade-in ease-in 0.2s;
+}
+
+// Only show a modal if JS is enabled 
+.js-enabled {
+  .app-modal--visible {
+    display: flex;
+  }
+}
+
+.app-modal__dialog,
+.app-modal > .app-modal__content {
+  position: relative;
+  width: 100%;
+  max-width: 32rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  background-color: settings.$govuk-body-background-colour;
+  border: settings.$govuk-border-width solid settings.$govuk-text-colour;
+}
+
+.app-modal__content {
+  padding: 1.5rem;
+
+  @include helpers.govuk-media-query(tablet) {
+    padding: 2rem;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+  
+  &:focus {
+    outline: settings.$govuk-focus-width solid settings.$govuk-focus-colour;
+    outline-offset: calc(settings.$govuk-focus-width * -1);
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+.app-modal__close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+
+  @include helpers.govuk-media-query(tablet) {
+    top: 2rem;
+    right: 2rem;
+  }
+}
+
+.app-modal__actions {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+// Stops the page behind the modal scrolling while it is open.
+.app-template__body--modal-open {
+  overflow: hidden;
+}
+
+@keyframes app-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-modal {
+    animation: none;
+  }
+}

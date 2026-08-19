@@ -190,5 +190,9 @@
       initAll();
     </script>
     <script src="~/js/application.js" asp-append-version="true"></script>
+    @if (ViewContext.RouteData.Values["controller"]?.ToString() != "Settings")
+    {
+        <partial name="_PushNotificationsJs" />
+    }
   </body>
 </html>
