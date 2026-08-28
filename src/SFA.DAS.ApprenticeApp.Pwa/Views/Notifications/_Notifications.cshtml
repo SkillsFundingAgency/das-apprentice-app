@@ -80,3 +80,18 @@
         </div>
     }
 }
+@if (Model.LearnerNotifications != null)
+{
+    @foreach (var notification in Model.LearnerNotifications)
+    {
+        <div class="app-notification">
+            <h2 class="govuk-heading-m">
+                @notification.Heading
+            </h2>
+
+            <p>@notification.Body</p>
+
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        </div>
+    }
+}

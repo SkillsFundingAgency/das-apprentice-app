@@ -17,7 +17,11 @@
 {
     @await Html.PartialAsync("_Notifications", Model)
 }
-else if(Model.TaskReminders == null || Model.TaskReminders.Count == 0)
+else if (
+    (Model.TaskReminders == null || Model.TaskReminders.Count == 0)
+    &&
+    (Model.LearnerNotifications == null || Model.LearnerNotifications.Count == 0)
+)
 {
     @await Html.PartialAsync("_NoNotifications")
 }

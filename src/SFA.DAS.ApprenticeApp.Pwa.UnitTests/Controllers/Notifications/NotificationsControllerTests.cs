@@ -82,10 +82,17 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Notifications
                 TaskReminders = taskReminderResult
             });
 
+            client.Setup(x => x.GetLearnerNotifications(apprenticeId))
+            .ReturnsAsync(new List<LearnerNotification>());
+
             //Act
             var result = await controller.Index() as ViewResult;
-            
+
             //Assert
+            client.Verify(
+            x => x.GetLearnerNotifications(It.IsAny<Guid>()),
+            Times.Once);
+
             result.Should().NotBe(null);
         }
 
