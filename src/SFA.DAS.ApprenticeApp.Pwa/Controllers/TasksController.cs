@@ -273,6 +273,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                 task.ReminderValue = reminder;
             }
 
+            if (int.TryParse(Request.Form["ApprenticeshipCategoryId"].FirstOrDefault(), out var categoryId))
+            {
+                task.ApprenticeshipCategoryId = categoryId;
+            }
+            else
+            {
+                task.ApprenticeshipCategoryId = 0;
+            }
+
             var linked = Request.Form["ksbslinked"].FirstOrDefault() ?? Request.Form["linked-ksb-ids"].FirstOrDefault() ?? string.Empty;
 
             // Build EditTaskPageModel so the Add view (which uses the same partial as Edit) receives the expected model type.

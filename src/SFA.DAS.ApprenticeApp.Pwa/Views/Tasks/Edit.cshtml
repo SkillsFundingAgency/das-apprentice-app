@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
+            <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" id="edit-task-form" class="form" data-module="task-validation" novalidate>
                 <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
                 <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
                 <input type="hidden" id="StatusId" name="StatusId" value="@Model.StatusId" />
@@ -43,12 +43,12 @@
                         @foreach (var ksbProgressData in Model.KsbProgressData)
                         {
                             <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksbProgressData.KsbId" class="app-card">
-                                    <div class="app-card__header">
-                                        <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
-                                    </div>
-                                    <p>@ksbProgressData.Detail</p>
-                                    <span>
-                                        @{
+                                <div class="app-card__header">
+                                    <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                                </div>
+                                <p>@ksbProgressData.Detail</p>
+                                <span>
+                                    @{
                                         var statusItem = @ksbProgressData.CurrentStatus;
                                         if (statusItem == null)
                                         {
@@ -58,21 +58,21 @@
                                         <div class="ksb-status-display app-tag app-tag--status-@statusItemDisplay.ToLower().Replace(" ", "").Replace("-", "")">
                                             <text>@statusItemDisplay</text>
                                         </div>
-                                        }
-                                    </span>
-                          </a>
+                                    }
+                                </span>
+                            </a>
                         }
                     </div>
                 </div>
 
             
-            <div class="govuk-button-group app-button-group">
-                <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
-                <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
-                    Save and continue
-                </button>
-            </div>
-             </form>
+                <div class="govuk-button-group app-button-group">
+                    <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
+                    <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
+                        Save and continue
+                    </button>
+                </div>
+            </form>
             <form id="link-ksb-form" action="@Url.Action("LinkKsbs", "Ksb")" method="post" class="govuk-!-display-none">
                 <input type="hidden" name="taskId" value="@Model.Task.TaskId" />
                 <input type="hidden" name="linkedKsbGuids" value="@Model.LinkedKsbGuids" />
@@ -120,24 +120,25 @@
 <script src="~/js/date-picker.js" asp-append-version="true"></script>
 <script>
     document.getElementById('share-task').addEventListener('click', function (e) {
-        e.preventDefault();
-        if (!navigator.share) return;
-        var title = document.getElementById('Task_Title').value;
-        var note = document.getElementById('note').value.trim();
-        var shareData = { title: title };
-        if (note) shareData.text = note;
-        navigator.share(shareData).catch(function () {});
+    e.preventDefault();
+    if (!navigator.share) return;
+    var title = document.getElementById('Task_Title').value;
+    var note = document.getElementById('note').value.trim();
+    var shareData = { title: title };
+    if (note) shareData.text = note;
+    navigator.share(shareData).catch(function () {});
     });
 
     document.getElementById('move-task-status').addEventListener('click', function (e) {
-        e.preventDefault();
-        var taskId = document.getElementById('TaskId').value;
-        var statusId = this.dataset.statusId;
-        var url = '@Url.Action("ChangeTaskStatus", "Tasks")' + '?taskId=' + encodeURIComponent(taskId) + '&statusId=' + statusId;
+    e.preventDefault();
+    var taskId = document.getElementById('TaskId').value;
+    var statusId = this.dataset.statusId;
+    var url = '@Url.Action("ChangeTaskStatus", "Tasks")' + '?taskId=' + encodeURIComponent(taskId) + '&statusId=' + statusId;
 
-        fetch(url)
-                .then(function () {
-                    window.location.href = '@Url.Action("Index", "Tasks")' + '?status=' + statusId;
-                });
+    fetch(url)
+    .then(function () {
+    window.location.href = '@Url.Action("Index", "Tasks")' + '?status=' + statusId;
+    });
     });
 </script>
+<script src="~/js/store-task-draft.js" asp-append-version="true"></script>

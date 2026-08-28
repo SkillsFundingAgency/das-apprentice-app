@@ -169,7 +169,7 @@
         <div class="govuk-radios govuk-radios--small" id="app-collapse-task-cat">
             <div class="govuk-radios__item">
                 <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
-                       id="category_0" type="radio" value="0" checked />
+                       id="category_0" type="radio" value="0" @(Model.Task.ApprenticeshipCategoryId == 0 ? "checked" : "") />
                 <label class="govuk-label govuk-radios__label" for="category_0">None</label>
             </div>
             @foreach (var cat in Model.Categories)
@@ -177,7 +177,7 @@
             <div class="govuk-radios__item">
                 <input class="govuk-radios__input task-category" name="ApprenticeshipCategoryId"
                        id="category_@cat.CategoryId" type="radio" value="@cat.CategoryId"
-                       checked="@(Model.Task.ApprenticeshipCategoryId == cat.CategoryId)" />
+                       @(Model.Task.ApprenticeshipCategoryId == cat.CategoryId ? "checked" : "") />
                 <label class="govuk-label govuk-radios__label" for="category_@cat.CategoryId">
                     @cat.Title
                 </label>
