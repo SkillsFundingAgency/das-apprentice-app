@@ -53,6 +53,19 @@ public class CommitmentsService : ICommitmentsService
         // Existing Confirmed Apprenticeship
         if (cmadComplete?.ConfirmedOn != null) return new CmadNavigationResult { NavigationType = CmadNavigationType.WelcomeIndex };
 
+        if (cmadComplete?.ConfirmedOn == null && cmadComplete.PlannedEndDate >= DateTime.Now)
+        {
+            var commitment = await _client.GetCommitmentsApprenticeshipById(registrationByEmail.CommitmentsApprenticeshipId);
+            var viewModel = await CreateApprenticeshipAndBuildViewModelAsync(
+                registrationByEmail.RegistrationId,
+                apprenticeId,
+                commitment.Uln,
+                registrationByEmail.LastName,
+                registrationByEmail.DateOfBirth.ToIsoDate());
+
+            return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmApprenticeshipDetails, ConfirmModelJson = JsonConvert.SerializeObject(viewModel) };
+        }
+
         // No new registration found and No confirmed Apprenticeship
         return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmDetails, RouteValues = new { apprenticeId } };
     }
@@ -74,7 +87,9 @@ public class CommitmentsService : ICommitmentsService
             var apprenticeship = apprenticeDetails?
                 .Apprenticeship?
                 .Apprenticeships?
-                .Where(x => x.PlannedEndDate >= DateTime.Today)
+                .Where(
+                    x => x.PlannedEndDate >= DateTime.Today &&
+                    x.ConfirmedOn == null)
                 .MaxBy(x => x.PlannedEndDate);
 
             if (apprenticeship == null) return null;
