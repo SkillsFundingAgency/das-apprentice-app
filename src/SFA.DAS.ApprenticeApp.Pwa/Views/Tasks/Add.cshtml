@@ -1,4 +1,4 @@
-@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 @{
     ViewData["Title"] = "Tasks";
@@ -6,7 +6,7 @@
     ViewBag.HideNavigation = true;
 }
 @section BackLink {
-    <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
+    <a class="govuk-back-link app-back-link js-back-link"  asp-controller="Tasks" asp-action="Index">Back without saving</a>
 }
 
 <div class="govuk-grid-row">
@@ -33,8 +33,8 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-            <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
-                <partial name="_AddEditForm" model="@Model" />
+            <form method="post" action="@Url.Action("Add", "Tasks")" enctype="multipart/form-data" class="form" data-module="task-validation">
+            <partial name="_AddEditForm" model="@Model" />
 
             <input type="hidden" id="linked-ksb-ids" name="ksbslinked" value="@Model.LinkedKsbGuids" asp-for="@Model.Task.KsbsLinked" />
             <div id="linked-ksb-details">

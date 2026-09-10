@@ -2,6 +2,9 @@
   var form = document.querySelector('[data-module="task-validation"]');
   if (!form) return;
 
+  // Turn off HTML validation if JS is enabled 
+  form.noValidate = true;
+
   var errorSummary = document.getElementById("errorSummary");
 
   // Detect whether this is a GDS date input (3 fields) or a single date input

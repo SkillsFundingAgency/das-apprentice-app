@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
@@ -67,34 +68,36 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddOrUpdateApprenticeArticle(string entryId, string entryTitle, bool? likeStatus = null, bool? isSaved = null)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateSavedArticle(string entryId, string entryTitle, bool isSaved, string? slug = null)
         {
             var apprenticeId = _apprenticeContext.ApprenticeId;
 
-            if (!string.IsNullOrEmpty(apprenticeId))
+            if (string.IsNullOrEmpty(apprenticeId))
             {
-                await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, entryTitle, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
+                return RedirectToAction("Index", "Home");
+            }
+
+            await _client.AddUpdateApprenticeArticle(new Guid(apprenticeId), entryId, Slugify(entryTitle), new ApprenticeArticleRequest() { IsSaved = isSaved });
+
+            // The enhanced journey posts this form in the background and updates the
+            // button itself, so there is nothing to redirect to.
+            if (Request.Headers.XRequestedWith == "XMLHttpRequest")
+            {
                 return Ok();
             }
 
-            return Unauthorized();
+            // A slug means the post came from a category page, where we send the
+            // apprentice back to the article they acted on. Without one it came from
+            // their saved articles, where a removed article is no longer on the page.
+            return string.IsNullOrEmpty(slug)
+                ? RedirectToAction("SavedArticles")
+                : RedirectToAction("ArticlesPage", "Support", new { slug }, $"accordion-default-content-{entryId}");
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> RemoveApprenticeArticle(string entryId, bool? likeStatus = null, bool? isSaved = null)
-        {
-            var apprenticeId = _apprenticeContext.ApprenticeId;
-
-            if (!string.IsNullOrEmpty(apprenticeId))
-            {
-                await _client.RemoveApprenticeArticle(new Guid(apprenticeId), entryId, new ApprenticeArticleRequest() { LikeStatus = likeStatus, IsSaved = isSaved });
-                return Ok();
-            }
-
-            return Unauthorized();
-        }
+        private static string Slugify(string entryTitle) =>
+            Regex.Replace(entryTitle ?? string.Empty, @"\s+", "-").ToLowerInvariant();
     }
 }

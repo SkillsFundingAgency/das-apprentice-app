@@ -14,8 +14,8 @@
     "build-new-ui": "sass --no-source-map --quiet-deps --style=compressed --load-path=node_modules/govuk-frontend/dist UI/:wwwroot/css"
   },
   "dependencies": {
-    "govuk-frontend": "^5.14.0",
-    "sass": "^1.97.2",
+    "govuk-frontend": "^6.4.0",
+    "sass": "^1.103.1",
     "watch": "1.0.2"
   },
   "devDependencies": {

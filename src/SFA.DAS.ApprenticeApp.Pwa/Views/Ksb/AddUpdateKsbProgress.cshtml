@@ -1,4 +1,4 @@
-@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
+﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @using TaskStatus = SFA.DAS.ApprenticeApp.Domain.Models.TaskStatus
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditKsbPageModel
 
@@ -6,9 +6,12 @@
     ViewData["Title"] = "Manage a knowledge, skill or behaviour (KSB)";
     ViewData["Section"] = "Ksbs";
     ViewBag.HideNavigation = true;
+
+    // Passed to the task edit page so its back link returns here rather than to the task list.
+    var returnUrl = Url.Action("AddUpdateKsbProgress", "Ksb", new { id = Model.KsbProgress?.KsbId });
 }
 @section BackLink {
-    <a href="#" class="govuk-back-link app-back-link js-back-link">Back without saving</a>
+    <a class="govuk-back-link app-back-link js-back-link" asp-controller="Ksb" asp-action="Index">Back without saving</a>
 }
 
 <h1 class="govuk-heading-xl">
@@ -65,7 +68,7 @@
 
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
-                        <a class="app-card" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId })">
+                        <a class="app-card" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId, returnUrl = returnUrl})">
                             <div class="app-card__header">
                                 <h2 class="app-card__heading">@task.Title</h2>
                                 <p>@task.Note</p>
@@ -153,7 +156,7 @@
             <input type="hidden" id="KsbProgressType" name="KsbProgressType" value="@Model.KsbProgress.KsbProgressType" />
 
             <div class="govuk-button-group app-button-group">
-                <a href="#" class="govuk-back-link app-back-link js-back-link">Back without saving</a>
+                <a class="govuk-back-link app-back-link js-back-link" asp-controller="Ksb" asp-action="Index">Back without saving</a>
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Save and continue
                 </button>

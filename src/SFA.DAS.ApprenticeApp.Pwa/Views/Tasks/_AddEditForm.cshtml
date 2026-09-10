@@ -1,12 +1,13 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 
 <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150" data-threshold="85">
     <label class="govuk-label" asp-for="@Model.Task.Title">
         Task name
     </label>
     <div class="govuk-error-message" id="Task_Title-error"></div>
+    @* required/maxlength give users without JS the same rules task-validation.js applies. *@
     <input class="govuk-input govuk-js-character-count" name="title" type="text" asp-for="@Model.Task.Title"
-           aria-describedby="Task_Title-info">
+           required maxlength="150" aria-describedby="Task_Title-info">
     <div id="Task_Title-info" class="govuk-hint govuk-character-count__message">
         You can enter up to 150 characters
     </div>
@@ -40,6 +41,7 @@
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-day">Day</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2 js-datepicker-date" id="duedate-day"
                            name="duedate-day" type="text" inputmode="numeric"
+                           required pattern="[0-9]{1,2}" title="Day must be a number, like 21"
                            value="@(hasDate? dueDateValue.Day.ToString() : "")">
                 </div>
             </div>
@@ -48,6 +50,7 @@
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-month">Month</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2 js-datepicker-month" id="duedate-month"
                            name="duedate-month" type="text" inputmode="numeric"
+                           required pattern="[0-9]{1,2}" title="Month must be a number, like 8"
                            value="@(hasDate? dueDateValue.Month.ToString() : "")">
                 </div>
             </div>
@@ -56,6 +59,7 @@
                     <label class="govuk-label govuk-date-input__label govuk-!-font-weight-regular" for="duedate-year">Year</label>
                     <input class="govuk-input govuk-date-input__input govuk-input--width-4 js-datepicker-year" id="duedate-year"
                            name="duedate-year" type="text" inputmode="numeric"
+                           required pattern="[0-9]{4}" title="Year must be 4 numbers, like 2026"
                            value="@(hasDate? dueDateValue.Year.ToString() : "")">
                 </div>
             </div>
@@ -72,12 +76,12 @@
     <div class="govuk-error-message" id="time-error"></div>
     @if (Model.StatusId == 0)
     {
-        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time"
+        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time" required
                value="@(Model.Task.DueDate == null ? "" : Model.Task.DueDate.GetValueOrDefault().ToString("HH:mm"))">
     }
     else
     {
-        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time"
+        <input class="govuk-input govuk-!-width-one-half" id="time" name="time" type="time" required
                value="@(Model.Task.CompletionDateTime == null ? "" : Model.Task.CompletionDateTime.GetValueOrDefault().ToString("HH:mm"))">
     }
 </div>
@@ -187,7 +191,7 @@
     </fieldset>
 </div>
 
-<div class="govuk-form-group">
+<div class="govuk-form-group show-if-js-enabled">
     <p class="govuk-label govuk-!-margin-bottom-4">
         Linked KSBs <span class="govuk-!-font-weight-regular">(optional)</span>
     </p>

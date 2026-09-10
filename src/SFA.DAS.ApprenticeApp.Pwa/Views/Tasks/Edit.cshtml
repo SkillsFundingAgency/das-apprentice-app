@@ -1,13 +1,20 @@
-@using SFA.DAS.ApprenticeApp.Domain.Models
+﻿@using SFA.DAS.ApprenticeApp.Domain.Models
 @using SFA.DAS.ApprenticeApp.Pwa.ViewHelpers
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.EditTaskPageModel
 @{
     ViewData["Title"] = "Tasks";
     ViewData["Section"] = "Tasks";
     ViewBag.HideNavigation = true;
+
+    // With a return URL we know where the apprentice came from, so the back link points
+    // there directly. Without one it falls back to the history-based script as before.
+    var backLinkUrl = Model.ReturnUrl ?? Url.Action("Index", "Tasks");
+    var backLinkClass = Model.ReturnUrl == null
+        ? "govuk-back-link app-back-link js-back-link"
+        : "govuk-back-link app-back-link";
 }
 @section BackLink {
-    <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
+    <a class="@backLinkClass" href="@backLinkUrl">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
     Edit task
@@ -27,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form" data-module="task-validation" novalidate>
+            <form action="@Url.Action("Edit", "Tasks")" method="post" enctype="multipart/form-data" class="form" data-module="task-validation">
                 <input type="hidden" id="TaskId" name="TaskId" value="@Model.Task.TaskId" />
                 <input type="hidden" id="Status" name="Status" value="@Model.Task.Status" />
                 <input type="hidden" id="StatusId" name="StatusId" value="@Model.StatusId" />
@@ -67,7 +74,7 @@
 
             
             <div class="govuk-button-group app-button-group">
-                <a class="govuk-back-link app-back-link js-back-link" href="#">Back without saving</a>
+                <a class="@backLinkClass" href="@backLinkUrl">Back without saving</a>
                 <button type="submit" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
                     Save and continue
                 </button>
@@ -92,7 +99,7 @@
                     </span>
                 </a>
             </li>
-            <li>
+            <li class="show-if-js-enabled">
                 <a href="#" id="share-task" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
                     <span class="app-icon-item">
                         <svg width="24" height="24" class="app-icon-item__icon">

@@ -1,7 +1,8 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksBaseModel
 @using SFA.DAS.ApprenticeApp.Pwa.Configuration
 @using SFA.DAS.ApprenticeApp.Web.Extensions
 @using Newtonsoft.Json
+@using SFA.DAS.ApprenticeApp.Pwa.ViewModels
 @inject ApplicationConfiguration applicationConfiguration
 
 @{
@@ -17,26 +18,39 @@
             <ul class="app-tabs__list">
                 <li class="app-tabs__list-item">
                     <a class="app-tabs__tab todo" href="#tasks-todo">
-                        To do  <span id="todo-task-count"></span>
+                        To do  <span id="todo-task-count">(@(Model.ToDoTasks?.Count ?? 0))</span>
                     </a>
                 </li>
                 <li class="app-tabs__list-item">
                     <a class="app-tabs__tab done" href="#tasks-done">
-                        Done  <span id="done-task-count"></span>
+                        Done  <span id="done-task-count">(@(Model.DoneTasks?.Count ?? 0))</span>
                     </a>
                 </li>
             </ul>
             <div class="app-tabs__panel" id="tasks-todo">
+                @* Without JS both panels are shown at once, so each needs its own heading. *@
+                <h2 class="govuk-heading-m hide-if-js-enabled">To do</h2>
                 <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />
-                <div data-fetch="true" data-url="@Url.Action("ToDoTasks", "Tasks")">
-                    <p class="govuk-hint">Loading</p>
-                </div>
+                @if (Model.ToDoTasks != null)
+                {
+                    <partial name="_TasksToDo" model="@(new TasksPageModel { Year = Model.Year, Tasks = Model.ToDoTasks })" />
+                }
+                else
+                {
+                    <partial name="_TasksNotStarted" model="@("ToDo")" />
+                }
             </div>
             <div class="app-tabs__panel" id="tasks-done">
+                <h2 class="govuk-heading-m hide-if-js-enabled">Done</h2>
                 <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "done" } })' />
-                <div data-fetch="true" data-url="@Url.Action("DoneTasks", "Tasks")">
-                    <p class="govuk-hint">Loading</p>
-                </div>
+                @if (Model.DoneTasks != null)
+                {
+                    <partial name="_TasksDone" model="@(new TasksPageModel { Year = Model.Year, Tasks = Model.DoneTasks })" />
+                }
+                else
+                {
+                    <partial name="_TasksNotStarted" model="@("Done")" />
+                }
             </div>
         </div>
     </div>

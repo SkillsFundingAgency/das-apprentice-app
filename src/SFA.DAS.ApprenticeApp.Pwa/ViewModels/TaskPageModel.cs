@@ -12,6 +12,10 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
 
         public List<ApprenticeKsbData>? KsbProgressData { get; set; }
         public string? LinkedKsbGuids { get; set; }
+
+        // Where "back without saving" goes, when the apprentice arrived from a page
+        // other than the task list. Null unless a local URL was passed in.
+        public string? ReturnUrl { get; set; }
     }
 
     public class TaskViewModelBase 

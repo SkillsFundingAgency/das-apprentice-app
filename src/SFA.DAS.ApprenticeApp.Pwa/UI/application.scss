@@ -1,10 +1,13 @@
 @use "govuk/index" with (
   $govuk-font-family: "Inter",
   $govuk-global-styles: true,
-
 );
 @use "core";
 @use "components";
+
+.govuk-template {
+  scroll-behavior: smooth;
+}
 
 .app-dropdown__menu-icon,
 .app-icon-list__icon,
