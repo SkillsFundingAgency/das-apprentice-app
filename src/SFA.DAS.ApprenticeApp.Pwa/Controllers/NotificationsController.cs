@@ -52,6 +52,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         LearnerNotifications = learnerNotifications,
                         SurveyNotificationSeen = Convert.ToBoolean(surveryCookieValue)
                     };
+
+                    foreach(var notification in learnerNotifications)
+                    {
+                        if (notification.StatusId == 1) await _client.UpdateLearnerNotificationStatus(new Guid(apprenticeId), notification.NotificationId, new UpdateNotificationStatusRequest { StatusId = 2 });
+                    }
+
                     return View(vm);
                 }
                 catch (Exception)

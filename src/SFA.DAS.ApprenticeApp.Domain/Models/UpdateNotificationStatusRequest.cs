@@ -8,6 +8,6 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
 {
     public class UpdateNotificationStatusRequest
     {
-         public int StatusId { get; set; }
+        public byte StatusId { get; set; }
     }
 }
