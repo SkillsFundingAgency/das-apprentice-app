@@ -44,7 +44,7 @@ public class TermsController : Controller
         }
 
         // update apprentice log in time
-        await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
+        //await _client.UpdateApprentice(new Guid(apprenticeId), new JsonPatchDocument<Apprentice>().Replace(x => x.AppLastLoggedIn, DateTime.Now));
 
         if (!string.IsNullOrEmpty(apprenticeId))
         {

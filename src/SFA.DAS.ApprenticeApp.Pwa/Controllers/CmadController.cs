@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
@@ -90,18 +91,16 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         public async Task<IActionResult> ConfirmUln(CheckUlnViewModel model)
         {            
             // Guard
-            if (model?.RegistrationIds == null || model.RegistrationIds.Count == 0)
+            if (model?.ApprenticeshipIds == null || model.ApprenticeshipIds.Count == 0)
             {
                 return View("AccountNotFound", "Account");
             }           
 
             try
             {
-                foreach (var item in model.RegistrationIds)
-                {
-                    if (!item.CommitmentApprenticeshipIds.HasValue) continue;
-                                        
-                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentApprenticeshipIds);                    
+                foreach (var item in model.ApprenticeshipIds)
+                {                    
+                    var commitment = await _client.GetCommitmentsApprenticeshipById((long)item.CommitmentsApprenticeshipId);                    
 
                     if (commitment.StopDate.HasValue || commitment.EndDate <= DateTime.Now) continue;
                     
@@ -122,7 +121,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         apprentice.LastName,
                         dobIso);
 
-                        _logger.LogInformation("Created Apprenticeship from populated commitment: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                        _logger.LogInformation("Created Apprenticeship from populated commitment: {CommitmentApprenticeshipId}", item.CommitmentsApprenticeshipId);
 
                         if (viewModel != null)
                         {
@@ -133,7 +132,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         return RedirectToAction("AccountNotFound", "Account");
                     } else
                     {
-                        _logger.LogInformation("ULN did not match for commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentApprenticeshipIds.Value);
+                        _logger.LogInformation("ULN did not match for commitment apprenticeship with id: {CommitmentApprenticeshipId}", item.CommitmentsApprenticeshipId);
                         continue;
                     }
                 }
@@ -181,6 +180,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         TrainingProviderName = revision.TrainingProviderName,
                         StandardUId = commitmentsApprenticeship.StandardUId
                     });
+                } else
+                {
+                    var patch = new JsonPatchDocument<MyApprenticeship>();
+
+                    patch.Replace(x => x.ApprenticeshipId, revision.CommitmentsApprenticeshipId);
+                    patch.Replace(x => x.Uln, model.Uln);
+                    patch.Replace(x => x.EmployerName, revision.EmployerName);
+                    patch.Replace(x => x.StartDate, revision.PlannedStartDate);
+                    patch.Replace(x => x.EndDate, revision.PlannedEndDate);
+                    patch.Replace(x => x.TrainingProviderId, revision.TrainingProviderId);
+                    patch.Replace(x => x.TrainingProviderName, revision.TrainingProviderName);
+                    patch.Replace(x => x.StandardUId, commitmentsApprenticeship.StandardUId);
+
+                    await _client.PatchMyApprenticeship(apprenticeId, patch);
                 }
                
                 await _client.ConfirmApprenticeshipDetails(apprenticeId, apprenticeshipId, revisionId, confs);               
@@ -209,22 +222,42 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         [HttpGet]
         public async Task<IActionResult> CheckUln(Guid apprenticeId, string token)
         {
-            var model = new CheckUlnViewModel();
             var registrations = new List<Registration>();
+            var apprenticeDetails = await _client.GetApprenticeDetails(apprenticeId);
+            var apprenticeships = apprenticeDetails.Apprenticeship.Apprenticeships
+                .Where(x => x.PlannedEndDate >= DateTime.Today)
+                .ToList();
 
+            var apprenticeshipIds = new List<ApprenticeshipIds>();
             if (TempData["Registrations"] is string json)
             {
                 registrations = JsonSerializer.Deserialize<List<Registration>>(json) ?? new List<Registration>();
             }
 
-            var registrationIds = registrations.Select(r => new RegistrationDetails
+            foreach (var item in apprenticeships)
             {
-                CommitmentApprenticeshipIds = r.CommitmentsApprenticeshipId,
-                RegistrationId = r.RegistrationId
-            }).ToList();            
+                var revision = await _client.GetRevisionById(
+                    apprenticeId,
+                    item.Id,
+                    item.RevisionId);
 
-            model.ApprenticeId = apprenticeId;
-            model.RegistrationIds = registrationIds;
+                var registrationid = registrations.FirstOrDefault(x => x.ApprenticeshipId == item.Id);
+
+                apprenticeshipIds.Add(new ApprenticeshipIds
+                {
+                    RegistrationId = registrationid.RegistrationId,
+                    ApprenticeshipId = item.Id,
+                    RevisionId = item.RevisionId,
+                    CommitmentsApprenticeshipId = revision.CommitmentsApprenticeshipId
+                });
+            }
+
+            // New model that has the revisions apprenticeshipId = Id apprenticedetails
+            var model = new CheckUlnViewModel
+            {
+                ApprenticeId = apprenticeId,
+                ApprenticeshipIds = apprenticeshipIds
+            };
 
             return View(model);
         }

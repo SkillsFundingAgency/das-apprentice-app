@@ -35,13 +35,17 @@ namespace SFA.DAS.ApprenticeApp.Domain.Interfaces
         Task<List<Registration>> GetRegistrationByAccountDetails([Query] string firstName, [Query] string lastName, [Query] string dateOfBirth);
 
         [Get("registrations/email")]
-        Task<List<Registration>> GetRegistrationByEmail([Query] string email);
+        Task<Registration> GetRegistrationByEmail([Query] string email);
 
         [Get("revisionsById")]
         Task<Revision> GetRevisionById([Query] Guid apprenticeId, [Query] long apprenticeshipId, [Query] long revisionId);
 
         [Get("/commitments-apprenticeships/{apprenticeshipId}")]
         Task<CommitmentsApprenticeship> GetCommitmentsApprenticeshipById([Path] long apprenticeshipId);
+
+        [Patch("/apprentice/{apprenticeId}/MyApprenticeship")]
+        [Header("Content-Type", "application/json-patch+json")]
+        Task PatchMyApprenticeship([Path] Guid apprenticeId, [Body] JsonPatchDocument<MyApprenticeship> patch);
 
         [Patch("/apprentices/{apprenticeId}/apprenticeships/{apprenticeshipId}/revisions/{revisionId}/confirmations")]
         Task ConfirmApprenticeshipDetails([Path] Guid apprenticeId, [Path] long apprenticeshipId, [Path] long revisionId, [Body] Confirmations patch);

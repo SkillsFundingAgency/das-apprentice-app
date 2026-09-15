@@ -5,6 +5,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
     {
         public Guid RegistrationId { get; set; }
         public long CommitmentsApprenticeshipId { get; set; }
+        public long? ApprenticeshipId { get; set; }
         public DateTime CommitmentsApprovedOn { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
