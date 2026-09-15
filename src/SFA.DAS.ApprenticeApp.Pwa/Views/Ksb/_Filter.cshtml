@@ -1,28 +1,6 @@
 @using SFA.DAS.ApprenticeApp.Application
-@using Microsoft.AspNetCore.WebUtilities
 
-@{
-    var savedFilters = QueryHelpers.ParseQuery(
-        Context.Request.Cookies[Constants.KsbFiltersCookieName] ?? string.Empty);
-
-    var selectedStatuses = savedFilters.TryGetValue("filter", out var statuses)
-        ? statuses.ToArray()
-        : Array.Empty<string>();
-
-    var selectedOthers = savedFilters.TryGetValue("other-filter", out var others)
-        ? others.ToArray()
-        : Array.Empty<string>();
-
-    var keyword = savedFilters.TryGetValue("keyword", out var keywords)
-        ? keywords.ToString()
-        : string.Empty;
-
-    var hasFilters = selectedStatuses.Length > 0 ||
-                     selectedOthers.Length > 0 ||
-                     !string.IsNullOrWhiteSpace(keyword);
-}
-
-<details class="govuk-details app-details" id="filterKSBs" open="@hasFilters">
+<details class="govuk-details app-details" id="filterKSBs">
     <summary class="govuk-details__summary">
         <span class="govuk-details__summary-text app-details__show-text">
             Show search and filters
@@ -31,64 +9,19 @@
             Hide search and filters
         </span>
     </summary>
-    <form class="govuk-!-margin-top-4" action="@Url.Action("ApplyFilters", "Ksb")" method="post">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="searchTerm" value="@Context.Request.Query["searchTerm"].ToString()" />
-
+    <div class="govuk-!-margin-top-4">
         <div class="app-card app-card--highlight">
             <div class="app-card__heading">
                 <h2 class="govuk-heading-m">Filters</h2>
             </div>
             <div id="filters-set" class="app-tag__wrapper">
-                @foreach (var filter in savedFilters)
-                {
-                    if (filter.Key != "filter" &&
-                        filter.Key != "other-filter" &&
-                        filter.Key != "keyword")
-                    {
-                        continue;
-                    }
-
-                    foreach (var value in filter.Value)
-                    {
-                        if (string.IsNullOrWhiteSpace(value))
-                        {
-                            continue;
-                        }
-
-                        var label = filter.Key == "keyword"
-                            ? value
-                            : value.Replace("-", " ");
-
-                        var removeValue = filter.Key == "keyword"
-                            ? "keyword"
-                            : filter.Key + ":" + value;
-
-                        <div class="app-tag app-tag--filter">
-                            <span>@label</span>
-                            <button type="submit"
-                                    name="removeFilter"
-                                    value="@removeValue"
-                                    class="app-tag__action app-tag__action--remove">
-                                <span class="govuk-visually-hidden">
-                                    Remove @label from your filters
-                                </span>
-                            </button>
-                        </div>
-                    }
-                }
-
-                @if (!hasFilters)
-                {
-                    <span class="govuk-hint">No filters selected</span>
-                }
             </div>
             <div class="app-card__body">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--s" for="keyword-filter">
                         Keywords
                     </label>
-                    <input class="govuk-input" id="keyword-filter" name="keyword" type="search" placeholder="Search for..." value="@keyword" />
+                    <input class="govuk-input" id="keyword-filter" name="keyword" type="search" placeholder="Search for..." />
                 </div>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-half">
@@ -96,52 +29,66 @@
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Status filters
                             </legend>
-                            <div class="govuk-checkboxes govuk-checkboxes--small"
-                                 data-module="govuk-checkboxes">
+                            <div
+                                class="govuk-checkboxes govuk-checkboxes--small"
+                                data-module="govuk-checkboxes"
+                            >
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="not-started"
-                                           name="filter"
-                                           type="checkbox"
-                                           value="not-started"
-                                           checked="@(selectedStatuses.Contains("not-started"))" />
+                                    <input
+                                        class="govuk-checkboxes__input"
+                                        id="not-started"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="not-started"
+                                    />
                                     <label class="govuk-label govuk-checkboxes__label" for="not-started">
-                                        <span>Not started</span>
+              <span
+              >Not started</span
+              >
                                     </label>
                                 </div>
 
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="in-progress"
-                                           name="filter"
-                                           type="checkbox"
-                                           value="in-progress"
-                                           checked="@(selectedStatuses.Contains("in-progress"))" />
+                                    <input
+                                        class="govuk-checkboxes__input"
+                                        id="in-progress"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="in-progress"
+                                    />
                                     <label class="govuk-label govuk-checkboxes__label" for="in-progress">
-                                        <span>In progress</span>
+              <span
+              >In progress</span
+              >
                                     </label>
                                 </div>
 
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="ready-for-review"
-                                           name="filter"
-                                           type="checkbox"
-                                           value="ready-for-review"
-                                           checked="@(selectedStatuses.Contains("ready-for-review"))" />
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                           for="ready-for-review">
-                                        <span>Ready for review</span>
+                                    <input
+                                        class="govuk-checkboxes__input"
+                                        id="ready-for-review"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="ready-for-review"
+                                    />
+                                    <label
+                                        class="govuk-label govuk-checkboxes__label"
+                                        for="ready-for-review"
+                                    >
+              <span
+              >Ready for review</span
+              >
                                     </label>
                                 </div>
 
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="completed"
-                                           name="filter"
-                                           type="checkbox"
-                                           value="completed"
-                                           checked="@(selectedStatuses.Contains("completed"))" />
+                                    <input
+                                        class="govuk-checkboxes__input"
+                                        id="completed"
+                                        name="filter"
+                                        type="checkbox"
+                                        value="completed"
+                                    />
                                     <label class="govuk-label govuk-checkboxes__label" for="completed">
                                         <span>Completed</span>
                                     </label>
@@ -154,17 +101,22 @@
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Other filters
                             </legend>
-                            <div class="govuk-checkboxes govuk-checkboxes--small"
-                                 data-module="govuk-checkboxes">
+                            <div
+                                class="govuk-checkboxes govuk-checkboxes--small"
+                                data-module="govuk-checkboxes"
+                            >
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input"
-                                           id="linked-to-a-task"
-                                           name="other-filter"
-                                           type="checkbox"
-                                           value="linked-to-a-task"
-                                           checked="@(selectedOthers.Contains("linked-to-a-task"))" />
-                                    <label class="govuk-label govuk-checkboxes__label"
-                                           for="linked-to-a-task">
+                                    <input
+                                        class="govuk-checkboxes__input"
+                                        id="linked-to-a-task"
+                                        name="other-filter"
+                                        type="checkbox"
+                                        value="linked-to-a-task"
+                                    />
+                                    <label
+                                        class="govuk-label govuk-checkboxes__label"
+                                        for="linked-to-a-task"
+                                    >
                                         Linked to a task
                                     </label>
                                 </div>
@@ -174,8 +126,132 @@
                         </fieldset>
                     </div>
                 </div>
-                <button type="submit" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-top-3">Apply filters</button>
+                <a href="#" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-top-3 apply">Apply filters</a>
             </div>
         </div>
-    </form>
+    </div>
 </details>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
+        var filtersSet = document.getElementById('filters-set');
+        var lastAction = sessionStorage.getItem('filterAction-ksb');
+        sessionStorage.removeItem('filterAction-ksb');
+
+        if (cookieFilter != null && cookieFilter != "") {
+            document.getElementById('filterKSBs').open = true;
+
+            var data = cookieFilter.split("&");
+
+            for (var k in data) {
+                var line = data[k].split("=");
+                var key = decodeURIComponent(line[0]);
+                var value = decodeURIComponent(line[1] || "");
+
+                if (key === "keyword") {
+                    // Populate keyword input
+                    var keywordInput = document.getElementById('keyword-filter');
+                    if (keywordInput) keywordInput.value = value;
+                } else {
+                    // Handle checkbox filters
+                    var checkbox = document.getElementById(value);
+                    if (checkbox) checkbox.checked = true;
+
+                    var tag = document.createElement('div');
+                    tag.className = 'app-tag app-tag--filter';
+                    tag.innerHTML =
+                        "<span>" +
+                        value.replace(/\-/g, " ") +
+                        "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
+                        value +
+                        "'><span class='govuk-visually-hidden'>Remove " +
+                        value.replace(/\-/g, " ") +
+                        " from your filters</span></a> ";
+                    filtersSet.appendChild(tag);
+                }
+            }
+        } else {
+            if (lastAction === 'remove') {
+                document.getElementById('filterKSBs').open = true;
+            }
+            filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
+        }
+
+        if (filtersSet) {
+            filtersSet.addEventListener('click', function (e) {
+                var target = e.target.closest('.remove-filter');
+                if (!target) return;
+                e.preventDefault();
+
+                // Untick the checkbox in the hidden popup
+                var filterNames = target.dataset.id;
+                var checkbox = document.getElementById(filterNames);
+                if (checkbox) checkbox.checked = false;
+
+                sessionStorage.setItem('filterAction-ksb', 'remove');
+                applyAndSaveFiltersKsb();
+            });
+        }
+
+        var applyBtn = document.querySelector('#filterKSBs .apply');
+        if (applyBtn) {
+            applyBtn.addEventListener('click', applyAndSaveFiltersKsb);
+        }
+    });
+
+    function applyAndSaveFiltersKsb() {
+        var checkboxes = document.querySelectorAll('#filterKSBs input[type=checkbox]:checked');
+        var serialized = Array.from(checkboxes)
+            .map(function (cb) { return encodeURIComponent(cb.name) + '=' + encodeURIComponent(cb.value); })
+            .join('&');
+
+        // Add keyword if present
+        var keywordInput = document.getElementById('keyword-filter');
+        if (keywordInput && keywordInput.value.trim() !== "") {
+            var keywordPart = encodeURIComponent('keyword') + '=' + encodeURIComponent(keywordInput.value.trim());
+            serialized = serialized ? serialized + '&' + keywordPart : keywordPart;
+        }
+
+        setCookieKsb(
+            "SFA.ApprenticeApp.KsbFilters",
+            serialized,
+            { secure: true, "max-age": 3600 },
+        );
+        location.reload();
+    }
+
+    function getCookieKsb(name) {
+        let matchess = document.cookie.match(
+            new RegExp(
+                "(?:^|; )" +
+                name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+                "=([^;]*)",
+            ),
+        );
+        return matchess ? decodeURIComponent(matchess[1]) : undefined;
+    }
+
+    function setCookieKsb(name, value, attributes = {}) {
+        attributes = {
+            path: "/",
+        };
+
+        if (attributes.expires instanceof Date) {
+            attributes.expires = attributes.expires.toUTCString();
+        }
+
+        let updatedCookies =
+            encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let attributeKeys in attributes) {
+            updatedCookies += "; " + attributeKeys;
+            let attributeValues = attributes[attributeKeys];
+            if (attributeValues !== true) {
+                updatedCookies += "=" + attributeValues;
+            }
+        }
+
+        document.cookie = updatedCookies;
+    }
+</script>
