@@ -43,11 +43,21 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                     }                    
                     
                     var notificationsResult = await _client.GetTaskReminderNotifications(new Guid(apprenticeId));
+
+                    var learnerNotifications = await _client.GetLearnerNotifications(new Guid(apprenticeId));
+
                     var vm = new NotificationPageModel
                     {
                         TaskReminders = notificationsResult.TaskReminders,
+                        LearnerNotifications = learnerNotifications,
                         SurveyNotificationSeen = Convert.ToBoolean(surveryCookieValue)
                     };
+
+                    foreach(var notification in learnerNotifications)
+                    {
+                        if (notification.StatusId == 1) await _client.UpdateLearnerNotificationStatus(new Guid(apprenticeId), notification.NotificationId, new UpdateNotificationStatusRequest { StatusId = 2 });
+                    }
+
                     return View(vm);
                 }
                 catch (Exception)
@@ -92,6 +102,42 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
+[HttpGet]
+public async Task<IActionResult> ConfirmDeleteLearnerNotification(long notificationId)
+{
+    var apprenticeId = _apprenticeContext.ApprenticeId;
+
+    if (!string.IsNullOrEmpty(apprenticeId))
+    {
+        try
+        {
+            var learnerNotifications =
+                await _client.GetLearnerNotifications(new Guid(apprenticeId));
+
+            var notification = learnerNotifications?
+                .FirstOrDefault(n => n.NotificationId == notificationId);
+
+            if (notification != null)
+            {
+                return View(notification);
+            }
+        }
+        catch (Exception)
+        {
+            _logger.LogWarning(
+                "Error in Notifications: ConfirmDeleteLearnerNotification");
+        }
+    }
+    else
+    {
+        _logger.LogWarning(
+            "ApprenticeId not found in user claims for Notifications ConfirmDeleteLearnerNotification.");
+    }
+
+    return RedirectToAction("Index");
+}
+
+        [Authorize]
         [HttpGet]
         public IActionResult ConfirmDeleteSurveyNotification()
         {
@@ -133,6 +179,39 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [Authorize]
+[HttpPost]
+public async Task<IActionResult> DeleteLearnerNotification(long notificationId)
+{
+    var apprenticeId = _apprenticeContext.ApprenticeId;
+
+    if (!string.IsNullOrEmpty(apprenticeId))
+    {
+        try
+        {
+            _logger.LogInformation(
+            "Deleting learner notification {notificationId}",
+            notificationId);
+
+           await _client.DeleteLearnerNotification(
+            new Guid(apprenticeId),
+            notificationId);
+        }
+        catch (Exception)
+        {
+            _logger.LogWarning(
+                "Error in Notifications: DeleteLearnerNotification");
+        }
+    }
+    else
+    {
+        _logger.LogWarning(
+            "ApprenticeId not found in user claims for Notifications DeleteLearnerNotification.");
+    }
+
+    return RedirectToAction("Index");
+}
 
         [Authorize]
         [HttpGet]
