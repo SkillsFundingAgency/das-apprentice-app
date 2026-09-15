@@ -84,3 +84,18 @@
 .remove-filter, .edit-btn {
   cursor: pointer;
 }
+
+#filterKSBs button.app-tag__action {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+    #filterKSBs button.app-tag__action:focus-visible {
+        outline: 3px solid #ffdd00;
+        outline-offset: 2px;
+    }
