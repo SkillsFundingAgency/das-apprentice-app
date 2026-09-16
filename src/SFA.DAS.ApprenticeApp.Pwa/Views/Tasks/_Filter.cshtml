@@ -24,80 +24,12 @@
                     <h2 class="govuk-heading-m">Filters</h2>
                 </div>
                 <div id="@filtersSetId" class="app-tag__wrapper"></div>
-                <div class="app-card__body">
-                    <div class="govuk-grid-row">
-                        <div class="govuk-grid-column-one-half">
-                            <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                    Category filters
-                                </legend>
-                                <div
-                                        class="govuk-checkboxes govuk-checkboxes--small"
-                                        data-module="govuk-checkboxes"
-                                >
-                                    <div class="govuk-checkboxes__item">
-                                        <input
-                                                class="govuk-checkboxes__input"
-                                                id="none-@tab"
-                                                name="filter"
-                                                type="checkbox"
-                                                value="none"
-                                        />
-                                        <label class="govuk-label govuk-checkboxes__label" for="none-@tab">
-                                            None
-                                        </label>
-                                    </div>
-    
-                                    <div class="govuk-checkboxes__item">
-                                        <input
-                                                class="govuk-checkboxes__input"
-                                                id="assignment-@tab"
-                                                name="filter"
-                                                type="checkbox"
-                                                value="assignment"
-                                        />
-                                        <label class="govuk-label govuk-checkboxes__label" for="assignment-@tab">
-                                            <span>Assignment</span>
-                                        </label>
-                                    </div>
-    
-                                    <div class="govuk-checkboxes__item">
-                                        <input
-                                                class="govuk-checkboxes__input"
-                                                id="epa-@tab"
-                                                name="filter"
-                                                type="checkbox"
-                                                value="epa"
-                                        />
-                                        <label class="govuk-label govuk-checkboxes__label" for="epa-@tab">
-                                            <span>Apprenticeship assessment</span>
-                                        </label>
-                                    </div>
-    
-                                    <div class="govuk-checkboxes__item">
-                                        <input
-                                                class="govuk-checkboxes__input"
-                                                id="deadline-@tab"
-                                                name="filter"
-                                                type="checkbox"
-                                                value="deadline"
-                                        />
-                                        <label class="govuk-label govuk-checkboxes__label" for="deadline-@tab">
-                                            <span>Deadline</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="govuk-grid-column-one-half">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                    Other filters
-                                </legend>
-                                <div
-                                        class="govuk-checkboxes govuk-checkboxes--small"
-                                        data-module="govuk-checkboxes"
-                                >
+                <div class="app-card__body">                                                              
+                            <div class="app-card__heading">
+                                <h2 class="govuk-heading-s">Filters</h2>
+                            </div>
+                            <fieldset class="govuk-fieldset">                                
+                                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                                     <div class="govuk-checkboxes__item">
                                         <input
                                                 class="govuk-checkboxes__input"
@@ -109,52 +41,30 @@
                                         <label class="govuk-label govuk-checkboxes__label" for="ksb-@tab">
                                             Linked to KSB
                                         </label>
-                                    </div>
-    
-                                    <div class="govuk-checkboxes__item reminder-filter">
-                                        <input
-                                                class="govuk-checkboxes__input"
-                                                id="reminder-@tab"
-                                                name="other-filter"
-                                                type="checkbox"
-                                                value="reminder"
-                                        />
-                                        <label class="govuk-label govuk-checkboxes__label" for="reminder-@tab">
-                                            Reminder set
-                                        </label>
-                                    </div>
-    
+                                    </div>                                       
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                                     <div class="govuk-checkboxes__item">
                                         <input
                                                 class="govuk-checkboxes__input"
-                                                id="note-added-@tab"
+                                                id="ksb-@tab"
                                                 name="other-filter"
                                                 type="checkbox"
-                                                value="note-added"
+                                                value="ksb"
                                         />
-                                        <label class="govuk-label govuk-checkboxes__label" for="note-added-@tab">
-                                            Has note
+                                        <label class="govuk-label govuk-checkboxes__label" for="ksb-@tab">
+                                            Not Linked to KSB
                                         </label>
-                                    </div>
+                                    </div>                                       
                                 </div>
-                            </fieldset>
-                        </div>
-                    </div>
+                            </fieldset>                                            
                     <a href="#" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-top-3 apply">Apply filters</a>
                 </div>
             </div>
         </div>
     </details>
     
-    <div class="app-task-list__sort-by">
-        <label for="sort-by-@tab" class="govuk-visually-hidden">
-            Sort by
-        </label>
-        <select class="govuk-select" id="sort-by-@tab" name="sort-by">
-            <option value="recently_added">Sort by recently added</option>
-            <option value="date_due">Sort by due date</option>
-        </select>
-    </div>
+  
     
 </div>
 
@@ -167,13 +77,45 @@
       var lastAction = sessionStorage.getItem('filterAction-@tab');
       sessionStorage.removeItem('filterAction-@tab');
 
+      /*
+       * Responsive filter behaviour
+       *
+       * Desktop: filters are always open.
+       * Mobile: filters are closed by default and can be toggled
+       * using the <summary>.
+       */
+      var desktopMediaQuery = window.matchMedia('(min-width: 40.0625em)');
+
+      if (desktopMediaQuery.matches) {
+        container.open = true;
+      } else {
+        container.open = false;
+      }
+
+      desktopMediaQuery.addEventListener('change', function (event) {
+        if (event.matches) {
+          // Moving to desktop - always show filters
+          container.open = true;
+        } else {
+          // Moving to mobile - close filters
+          container.open = false;
+        }
+      });
+
+
+      /*
+       * Sort
+       */
       var sortSelect = document.getElementById('sort-by-@tab');
+
       if (sortSelect) {
         var params = new URLSearchParams(window.location.search);
         var sortParam = params.get('sort');
+
         if (sortParam) {
           sortSelect.value = sortParam;
         }
+
         sortSelect.addEventListener('change', function () {
           var params = new URLSearchParams(window.location.search);
           params.set('sort', this.value);
@@ -181,100 +123,169 @@
         });
       }
 
-      if (cookieFilter != null && cookieFilter != "") {
-        container.open = true;
 
+      /*
+       * Restore saved filters
+       */
+      if (cookieFilter != null && cookieFilter != "") {
         var data = cookieFilter.split("&");
 
         for (var k in data) {
           var newData = data[k].split("=");
 
-          var checkbox = container.querySelector('input[value="' + newData[1] + '"]');
-          if (checkbox) checkbox.checked = true;
+          var checkbox = container.querySelector(
+            'input[value="' + newData[1] + '"]'
+          );
+
+          if (checkbox) {
+            checkbox.checked = true;
+          }
 
           var tag = document.createElement('div');
           tag.className = 'app-tag app-tag--filter';
+
           tag.innerHTML =
             "<span>" +
             userFriendlyTag(newData[1]) +
             "</span> <a class='app-tag__action app-tag__action--remove remove-filter' data-id='" +
             newData[1] +
             "'><span class='govuk-visually-hidden'>Remove " +
-                  userFriendlyTag(newData[1]) +
+            userFriendlyTag(newData[1]) +
             " from your filters</span></a>";
+
           filtersSet.appendChild(tag);
         }
       } else {
-          if (lastAction === 'remove') {
-            container.open = true;
-          }
-          filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
+        /*
+         * Only reopen after removing a filter on desktop.
+         * Mobile remains closed by default.
+         */
+        if (lastAction === 'remove' && desktopMediaQuery.matches) {
+          container.open = true;
+        }
+
+        filtersSet.innerHTML =
+          "<span class='govuk-hint'>No filters selected</span>";
       }
 
+
+      /*
+       * Remove filter
+       */
       if (filtersSet) {
         filtersSet.addEventListener('click', function (e) {
           var target = e.target.closest('.remove-filter');
-          if (!target) return;
+
+          if (!target) {
+            return;
+          }
+
           e.preventDefault();
 
           var filterName = target.dataset.id;
-          var checkbox = container.querySelector('input[value="' + filterName + '"]');
-          if (checkbox) checkbox.checked = false;
+
+          var checkbox = container.querySelector(
+            'input[value="' + filterName + '"]'
+          );
+
+          if (checkbox) {
+            checkbox.checked = false;
+          }
 
           sessionStorage.setItem('filterAction-@tab', 'remove');
+
           applyAndSaveFilters();
         });
       }
 
+
+      /*
+       * Apply filters
+       */
       var applyBtn = container.querySelector('.apply');
+
       if (applyBtn) {
         applyBtn.addEventListener('click', applyAndSaveFilters);
       }
 
+
       function applyAndSaveFilters() {
-        var serialized = Array.from(container.querySelectorAll('input[type=checkbox]:checked'))
-          .map(function (cb) { return encodeURIComponent(cb.name) + '=' + encodeURIComponent(cb.value); })
+        var serialized = Array.from(
+          container.querySelectorAll('input[type=checkbox]:checked')
+        )
+          .map(function (cb) {
+            return encodeURIComponent(cb.name) +
+              '=' +
+              encodeURIComponent(cb.value);
+          })
           .join('&');
 
-        setCookie('@cookieName', serialized, { secure: true, "max-age": 3600 });
+        setCookie(
+          '@cookieName',
+          serialized,
+          {
+            secure: true,
+            "max-age": 3600
+          }
+        );
+
         location.reload();
       }
     });
   })();
-  
+
+
   function userFriendlyTag(tag) {
-      switch (tag) {
-        case "none":
-            return "None";
-        case "assignment":
-            return "Assignment";
-        case "epa":
-            return "Apprenticeship assessment";
-        case "deadline":
-            return "Deadline";
-        case "ksb":
-            return "Linked to KSB";
-        case "reminder":
-            return "Reminder set";
-        case "note-added"  :
-            return "Has note";
-      }
+    switch (tag) {
+      case "none":
+        return "None";
+
+      case "assignment":
+        return "Assignment";
+
+      case "epa":
+        return "Apprenticeship assessment";
+
+      case "deadline":
+        return "Deadline";
+
+      case "ksb":
+        return "Linked to KSB";
+
+      case "reminder":
+        return "Reminder set";
+
+      case "note-added":
+        return "Has note";
+    }
   }
+
 
   window.getCookie = window.getCookie || function (name) {
     let matches = document.cookie.match(
       new RegExp(
         "(?:^|; )" +
-          name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-          "=([^;]*)",
-      ),
+        name.replace(
+          /([\.$?*|{}\(\)\[\]\\\/\+^])/g,
+          "\\$1"
+        ) +
+        "=([^;]*)"
+      )
     );
-    return matches ? decodeURIComponent(matches[1]) : undefined;
+
+    return matches
+      ? decodeURIComponent(matches[1])
+      : undefined;
   };
 
-  window.setCookie = window.setCookie || function (name, value, attributes = {}) {
+
+  window.setCookie = window.setCookie || function (
+    name,
+    value,
+    attributes = {}
+  ) {
     attributes = {
-      path: "/",
+      path: "/"
     };
 
     if (attributes.expires instanceof Date) {
@@ -282,11 +293,15 @@
     }
 
     let updatedCookie =
-      encodeURIComponent(name) + "=" + encodeURIComponent(value);
+      encodeURIComponent(name) +
+      "=" +
+      encodeURIComponent(value);
 
     for (let attributeKey in attributes) {
       updatedCookie += "; " + attributeKey;
+
       let attributeValue = attributes[attributeKey];
+
       if (attributeValue !== true) {
         updatedCookie += "=" + attributeValue;
       }
