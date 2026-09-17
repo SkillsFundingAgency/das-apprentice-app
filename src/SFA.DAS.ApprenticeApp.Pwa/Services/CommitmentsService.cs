@@ -24,7 +24,7 @@ public class CommitmentsService : ICommitmentsService
     public async Task<CmadNavigationResult> HandleConfirmationStatus(ApprenticeDetails apprenticeDetails, Guid apprenticeId)
     {
         var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);        
-        var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+        var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();        
 
         // New registration found that has not been completed
         if (registrationByEmail != null && registrationByEmail.ApprenticeId == null)
@@ -53,7 +53,7 @@ public class CommitmentsService : ICommitmentsService
         // Existing Confirmed Apprenticeship
         if (cmadComplete?.ConfirmedOn != null) return new CmadNavigationResult { NavigationType = CmadNavigationType.WelcomeIndex };
 
-        if (cmadComplete?.ConfirmedOn == null && cmadComplete.PlannedEndDate >= DateTime.Now)
+        if (cmadComplete?.ConfirmedOn == null && cmadComplete?.PlannedEndDate >= DateTime.Now)
         {
             var commitment = await _client.GetCommitmentsApprenticeshipById(registrationByEmail.CommitmentsApprenticeshipId);
             var viewModel = await CreateApprenticeshipAndBuildViewModelAsync(
