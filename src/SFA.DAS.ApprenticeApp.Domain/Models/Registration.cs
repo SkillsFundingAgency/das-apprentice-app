@@ -13,7 +13,7 @@ namespace SFA.DAS.ApprenticeApp.Domain.Models
         public Email Email { get; set; }
         public Guid? ApprenticeId { get; set; }
         public ApprenticeDetails Approvals { get; set; }
-        public DateTime? CreatedOn { get; private set; } = DateTime.UtcNow;
+        public DateTime? CreatedOn { get; set; }
         public DateTime? FirstViewedOn { get; private set; }
         public DateTime? SignUpReminderSentOn { get; private set; }
         public Apprenticeship? Apprenticeship { get; private set; }
