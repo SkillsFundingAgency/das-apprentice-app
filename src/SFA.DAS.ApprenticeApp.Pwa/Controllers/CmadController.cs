@@ -42,7 +42,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {                
                 // fetch registrations and apprentice
                 var registrations = await _client.GetRegistrationByAccountDetails(model.FirstName, model.LastName, dob.ToIsoDate());
-                var apprentice = await _client.GetApprentice(model.ApprenticeId);
+                var apprentice = await _client.GetApprentice(model.ApprenticeId);                
 
                 // ensure apprentice has basic fields populated
                 await _commitmentsService.EnsureApprenticeHasBasicFields(apprentice, model, dob);                
@@ -53,6 +53,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                 // Save for next page
                 TempData["Registrations"] = JsonSerializer.Serialize(registrations);
+
+                var latestRegistration = registrations.Max(r => r.CreatedOn);
+                registrations = registrations.Where(r => r.CreatedOn == latestRegistration).ToList();
 
                 // Multiple -> ask for ULN
                 if (registrations.Count >= 2)
@@ -93,7 +96,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             // Guard
             if (model?.ApprenticeshipIds == null || model.ApprenticeshipIds.Count == 0)
             {
-                return View("AccountNotFound", "Account");
+                return RedirectToAction("AccountNotFound", "Account");
             }           
 
             try
