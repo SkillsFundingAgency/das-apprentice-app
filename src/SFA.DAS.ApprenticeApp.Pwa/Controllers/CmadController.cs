@@ -67,7 +67,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
 
                 var commitmentsApprenticeship = await _client.GetCommitmentsApprenticeshipById(registration.CommitmentsApprenticeshipId);
-
+                apprentice = await _client.GetApprentice(model.ApprenticeId);
                 // Create apprenticeship and prepare view model                
                 var viewModel = await _commitmentsService.CreateApprenticeshipAndBuildViewModelAsync(
                     registration.RegistrationId,
