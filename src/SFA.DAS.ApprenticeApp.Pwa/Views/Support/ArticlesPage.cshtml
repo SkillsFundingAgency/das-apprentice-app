@@ -34,12 +34,17 @@
                         }
         
                         <div class="app-article-actions">
-                            @if (Model.ApprenticeArticles != null)
-                            {
-                                var isSaved = Model.ApprenticeArticles.Any(x => x.EntryId == item.Id && x.IsSaved == true);
+                            @{
+                                var isSaved = Model.ApprenticeArticles?.Any(x => x.EntryId == item.Id && x.IsSaved == true) == true;
+                            }
+                            <form class="app-article-actions__form" method="post" asp-action="UpdateSavedArticle" asp-controller="Support">
+                                <input type="hidden" name="entryId" value="@item.Id" />
+                                <input type="hidden" name="entryTitle" value="@item.Heading" />
+                                <input type="hidden" name="slug" value="@Model.Slug" />
+                                <input type="hidden" name="isSaved" value="@(isSaved ? "false" : "true")" />
                                 @if (isSaved)
                                 {
-                                    <button class="app-article-actions__button unsave" data-title="@item.Heading">
+                                    <button type="submit" class="app-article-actions__button unsave" data-title="@item.Heading">
                                         <span class="icon">
                                             <svg width="24" height="24">
                                                 <use href="/assets/icons/sprite.svg#pin-filled"></use>
@@ -50,7 +55,7 @@
                                 }
                                 else
                                 {
-                                    <button class="app-article-actions__button save" data-title="@item.Heading">
+                                    <button type="submit" class="app-article-actions__button save" data-title="@item.Heading">
                                         <span class="icon">
                                             <svg width="24" height="24">
                                                 <use href="/assets/icons/sprite.svg#pin"></use>
@@ -59,16 +64,19 @@
                                         <span class="text">Save<span class="govuk-visually-hidden"> "@item.Heading" to your saved articles</span></span>
                                     </button>
                                 }
-                            }
+                            </form>
         
-                            <button class="app-article-actions__button share-btn">
-                                <span class="icon">
-                                    <svg width="24" height="24">
-                                        <use href="/assets/icons/sprite.svg#share"></use>
-                                    </svg>
-                                </span>
-                                <span class="text">Share<span class="govuk-visually-hidden"> "@item.Heading"</span></span>
-                            </button>
+                            @* Sharing needs the Web Share API, so the button is only shown when JS can run it. *@
+                            <div class="show-if-js-enabled">
+                                <button class="app-article-actions__button share-btn">
+                                    <span class="icon">
+                                        <svg width="24" height="24">
+                                            <use href="/assets/icons/sprite.svg#share"></use>
+                                        </svg>
+                                    </span>
+                                    <span class="text">Share<span class="govuk-visually-hidden"> "@item.Heading"</span></span>
+                                </button>
+                            </div>
                         </div>
         
                         <input class="article-title" type="hidden" value="@item.Heading" />

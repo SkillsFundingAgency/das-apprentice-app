@@ -54,60 +54,6 @@ Tabs.prototype.handleTabClick = function (event) {
   }
 };
 
-// Function to update the task counts – called only after content is loaded
-function updateTaskCounts() {
-  const todoContainer = document.querySelector(
-    '#tasks-todo [data-fetch="true"]',
-  );
-  const doneContainer = document.querySelector(
-    '#tasks-done [data-fetch="true"]',
-  );
-
-  const todoCount = todoContainer
-    ? todoContainer.querySelectorAll(".app-card").length
-    : 0;
-  const doneCount = doneContainer
-    ? doneContainer.querySelectorAll(".app-card").length
-    : 0;
-
-  const todoSpan = document.getElementById("todo-task-count");
-  const doneSpan = document.getElementById("done-task-count");
-
-  if (todoSpan) todoSpan.textContent = "(" + todoCount + ")";
-  if (doneSpan) doneSpan.textContent = "(" + doneCount + ")";
-}
-
-function initDataFetch() {
-  const elements = document.querySelectorAll('[data-fetch="true"][data-url]');
-
-  elements.forEach(function (element) {
-    const url = element.dataset.url;
-
-    if (!url) {
-      return;
-    }
-
-    fetch(url)
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.text();
-      })
-      .then(function (html) {
-        element.innerHTML = html;
-        convertMinutesToReadableDate();
-        updateTaskCounts(); // <-- count appears here, never shows (0) before data loads
-      })
-      .catch(function (error) {
-        element.innerHTML =
-          "<p class='govuk-error-message'>Failed to load content</p>";
-        console.error("Data fetch error:", error);
-        updateTaskCounts(); // optionally show (0) on error
-      });
-  });
-}
-
 const convertMinutesToReadableDate = () => {
   const dates = document.querySelectorAll(`.app-js-convert-minutes-to-date`);
   dates.forEach(function (element) {
@@ -144,9 +90,7 @@ const appInit = () => {
   }
 
   initBackLinks();
-  initDataFetch();
   convertMinutesToReadableDate();
-  // No call to updateTaskCounts() here – avoids the (0) flash
 };
 
 appInit();

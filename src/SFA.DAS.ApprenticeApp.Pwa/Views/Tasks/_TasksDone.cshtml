@@ -1,4 +1,4 @@
-@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
+﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.TasksPageModel
 
 @{
     Layout = null;
@@ -75,9 +75,13 @@
                                     <text>1 day before</text>
                                     break;
                                 default:
+                                    // Rendered server side so the time is there without JavaScript; the script
+                                    // rewrites it in the reader's own locale.
+                                    var reminderValue = task.TaskReminders.Select(r => r.ReminderValue).First() ?? 0;
+                                    var reminderTime = task.DueDate?.AddMinutes(-reminderValue);
                                     <span class="app-js-convert-minutes-to-date"
                                           data-due="@string.Format("{0:d MMMM yyyy, HH:mm}", task.DueDate)"
-                                          data-val="@task.TaskReminders.Select(r => r.ReminderValue).First()"></span>
+                                          data-val="@reminderValue">@string.Format("{0:d MMMM yyyy, h:mm}", reminderTime)@string.Format("{0:tt}", reminderTime).ToLower()</span>
                 break;
                 }
                 </span>
