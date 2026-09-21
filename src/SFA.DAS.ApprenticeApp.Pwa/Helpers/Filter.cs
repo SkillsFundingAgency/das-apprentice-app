@@ -78,11 +78,11 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
 
             foreach (string filter in ksbFiltersValue.Split('&', StringSplitOptions.RemoveEmptyEntries))
             {
-                var parts = filter.Split('=');
+                var parts = filter.Split('=', 2);
                 if (parts.Length != 2) continue;
 
-                var filterType = parts[0];
-                var filterValue = parts[1];
+                var filterType = System.Net.WebUtility.UrlDecode(parts[0]);
+                var filterValue = System.Net.WebUtility.UrlDecode(parts[1]);
 
                 if (filterType == "filter")
                     statusFilters.Add(filterValue);
