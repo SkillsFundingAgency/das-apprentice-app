@@ -40,14 +40,19 @@
 a.app-card {
   text-decoration: none;
   color: inherit;
-  display: block;
+  display: block;  
+}
 
-    &:hover {
-      background-color: settings.$govuk-brand-colour;
-      border-color: settings.$govuk-brand-colour;
-      color: white;
-      .app-card__heading, p, ul, li {
-        color: inherit;
-      }
+#tasks-todo .app-card {
+    border: none;
+    border-bottom: 1px solid var(--govuk-border-colour, #cecece);
+    margin-bottom: .5rem;
+
+    &:first-child {
+        border-top: 1px solid var(--govuk-border-color, #cecece);
+    }
+
+    &:hover .app-card__heading {
+        text-decoration: underline;
     }
 }

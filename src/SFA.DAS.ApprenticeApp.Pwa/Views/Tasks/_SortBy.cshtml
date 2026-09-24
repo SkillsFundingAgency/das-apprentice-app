@@ -1,0 +1,14 @@
+﻿@using SFA.DAS.ApprenticeApp.Application
+@{  
+    var tab = ViewData["Tab"] as string ?? "todo";
+} 
+ 
+<div class="app-task-list__sort-by">
+    <h2 for="sort-by-@tab" class="govuk-heading-s">
+            Sort by
+        </h2>
+        <select class="govuk-select" id="sort-by-@tab" name="sort-by">
+            <option value="recently_added">Newest</option>
+            <option value="date_due">Oldest</option>
+        </select>
+    </div>
