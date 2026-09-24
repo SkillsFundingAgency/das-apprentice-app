@@ -10,27 +10,28 @@
     ViewData["Section"] = "Tasks";
     Layout = "_Layout";
 }
-<h1 class="govuk-heading-xl">Tasks</h1>
+<h1 class="govuk-heading-xl">Notes and evidence</h1>
 <partial name="_HelpTasks.cshtml" />
 <div class="govuk-grid-row">
+
+    <div class="govuk-grid-column-one-third app-column-sticky">
+        <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width app-fab">
+            <span>Add note or evidence</span>
+        </a>
+        @if (Model.ToDoTasks != null)
+        {
+         <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />   
+        }        
+    </div>
+
     <div class="govuk-grid-column-two-thirds">
-        <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
-            <ul class="app-tabs__list">
-                <li class="app-tabs__list-item">
-                    <a class="app-tabs__tab todo" href="#tasks-todo">
-                        To do  <span id="todo-task-count">(@(Model.ToDoTasks?.Count ?? 0))</span>
-                    </a>
-                </li>
-                <li class="app-tabs__list-item">
-                    <a class="app-tabs__tab done" href="#tasks-done">
-                        Done  <span id="done-task-count">(@(Model.DoneTasks?.Count ?? 0))</span>
-                    </a>
-                </li>
-            </ul>
+        @if (Model.ToDoTasks != null)
+        {
+            <partial name="_SortBy.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />    
+        }        
+        <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">          
             <div class="app-tabs__panel" id="tasks-todo">
-                @* Without JS both panels are shown at once, so each needs its own heading. *@
-                <h2 class="govuk-heading-m hide-if-js-enabled">To do</h2>
-                <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />
+                @* Without JS both panels are shown at once, so each needs its own heading. *@                                
                 @if (Model.ToDoTasks != null)
                 {
                     <partial name="_TasksToDo" model="@(new TasksPageModel { Year = Model.Year, Tasks = Model.ToDoTasks })" />
@@ -39,25 +40,8 @@
                 {
                     <partial name="_TasksNotStarted" model="@("ToDo")" />
                 }
-            </div>
-            <div class="app-tabs__panel" id="tasks-done">
-                <h2 class="govuk-heading-m hide-if-js-enabled">Done</h2>
-                <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "done" } })' />
-                @if (Model.DoneTasks != null)
-                {
-                    <partial name="_TasksDone" model="@(new TasksPageModel { Year = Model.Year, Tasks = Model.DoneTasks })" />
-                }
-                else
-                {
-                    <partial name="_TasksNotStarted" model="@("Done")" />
-                }
-            </div>
+            </div>           
         </div>
-    </div>
-
-    <div class="govuk-grid-column-one-third app-column-sticky">
-        <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width app-fab">
-            <span>Add a task</span>
-        </a>
-    </div>
+    </div> 
+    
 </div>

@@ -15,11 +15,13 @@
   position: fixed;
   bottom: 5rem;
   right: 1rem;
+  left: 1rem;
   width: auto;
   @include helpers.govuk-media-query(tablet) {
     position: relative;
     width: 100%;
     bottom: auto;
     right: auto;
+    left: auto;
   }
 }
