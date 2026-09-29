@@ -328,6 +328,37 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
         }
 
         [Test, MoqAutoData]
+        public async Task Edit_Keeps_A_Local_ReturnUrl([Greedy] TasksController controller)
+        {
+            SetUpUrlHelper(controller);
+
+            var result = await controller.Edit(1, 0, "/Ksb/AddUpdateKsbProgress/123") as ViewResult;
+
+            var model = result.Model.Should().BeOfType<EditTaskPageModel>().Subject;
+            model.ReturnUrl.Should().Be("/Ksb/AddUpdateKsbProgress/123");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Edit_Drops_A_ReturnUrl_To_Another_Site([Greedy] TasksController controller)
+        {
+            SetUpUrlHelper(controller);
+
+            var result = await controller.Edit(1, 0, "https://example.com/phishing") as ViewResult;
+
+            var model = result.Model.Should().BeOfType<EditTaskPageModel>().Subject;
+            model.ReturnUrl.Should().BeNull();
+        }
+
+        // The framework supplies Url at runtime; a unit test has to provide it.
+        private static void SetUpUrlHelper(TasksController controller)
+        {
+            var urlHelper = new Mock<IUrlHelper>();
+            urlHelper.Setup(u => u.IsLocalUrl(It.IsAny<string>()))
+                .Returns<string>(url => !string.IsNullOrEmpty(url) && url.StartsWith("/") && !url.StartsWith("//"));
+            controller.Url = urlHelper.Object;
+        }
+
+        [Test, MoqAutoData]
         public async Task Edit_Returns_View_NoApprenticeId(
     [Frozen] Mock<IApprenticeContext> apprenticeContext,
     [Greedy] TasksController controller)
@@ -414,6 +445,73 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
 
             var result = await controller.Add();
             result.Should().BeOfType(typeof(ViewResult));
+        }
+
+        [Test, MoqAutoData]
+        public async Task AddTask_Builds_DueDate_From_The_Posted_Date_Parts(
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] ApprenticeTask task,
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, Guid.NewGuid().ToString());
+            httpContext.User = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
+
+            // No hidden duedate value, which is what a form posted without JavaScript looks like.
+            httpContext.Request.ContentType = "application/x-www-form-urlencoded";
+            httpContext.Request.Form = new FormCollection(new Dictionary<string, StringValues>
+            {
+                { "duedate-day", "9" },
+                { "duedate-month", "3" },
+                { "duedate-year", "2026" },
+                { "time", "14:30" }
+            });
+
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+            client.Setup(c => c.GetApprenticeDetails(It.IsAny<Guid>()))
+                .ReturnsAsync(new ApprenticeDetails { MyApprenticeship = new MyApprenticeship { ApprenticeshipId = 123 } });
+
+            task.ApprenticeshipId = 123;
+            task.DueDate = null;
+
+            await controller.Add(task);
+
+            client.Verify(c => c.AddApprenticeTask(123, It.Is<ApprenticeTask>(t =>
+                t.DueDate == new DateTime(2026, 3, 9, 14, 30, 0))));
+        }
+
+        [Test, MoqAutoData]
+        public async Task AddTask_With_No_Time_Posted_Keeps_The_Date(
+            [Frozen] Mock<IOuterApiClient> client,
+            [Frozen] ApprenticeTask task,
+            [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, Guid.NewGuid().ToString());
+            httpContext.User = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
+
+            httpContext.Request.ContentType = "application/x-www-form-urlencoded";
+            httpContext.Request.Form = new FormCollection(new Dictionary<string, StringValues>
+            {
+                { "duedate-day", "9" },
+                { "duedate-month", "3" },
+                { "duedate-year", "2026" },
+                { "time", "" }
+            });
+
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+            client.Setup(c => c.GetApprenticeDetails(It.IsAny<Guid>()))
+                .ReturnsAsync(new ApprenticeDetails { MyApprenticeship = new MyApprenticeship { ApprenticeshipId = 123 } });
+
+            task.ApprenticeshipId = 123;
+            task.DueDate = null;
+
+            await controller.Add(task);
+
+            client.Verify(c => c.AddApprenticeTask(123, It.Is<ApprenticeTask>(t =>
+                t.DueDate == new DateTime(2026, 3, 9))));
         }
 
         [Test, MoqAutoData]
@@ -614,10 +712,30 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Tasks
             string sortoder = "sort";
             int year = 2024;
 
-            var result = controller.Index(sortoder, year);
+            var result = await controller.Index(sortoder, year);
 
             result.Should().NotBeNull();
 
+        }
+
+        [Test, MoqAutoData]
+        public async Task Task_Index_Renders_Both_Task_Lists(
+          [Greedy] TasksController controller)
+        {
+            var httpContext = new DefaultHttpContext();
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, Guid.NewGuid().ToString());
+            httpContext.User = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var result = await controller.Index(null, 0) as ViewResult;
+
+            var model = result.Model.Should().BeOfType<TasksBaseModel>().Subject;
+            model.ToDoTasks.Should().NotBeNullOrEmpty();
+            model.DoneTasks.Should().NotBeNullOrEmpty();
         }
 
         [Test, MoqAutoData]

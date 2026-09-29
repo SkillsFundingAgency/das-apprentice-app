@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.ApplicationInsights;
 using SFA.DAS.ApprenticeApp.Pwa.AppStart;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticePortal.SharedUi.GoogleAnalytics;
+using SFA.DAS.GovUK.Auth.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using WebEssentials.AspNetCore.Pwa;
 
@@ -18,6 +21,15 @@ builder.Services.AddControllersWithViews();
 
 var environment = builder.Environment;
 builder.Services.AddServiceRegistration(environment, rootConfiguration, applicationConfiguration);
+
+builder.Services.AddOptions<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme)
+                .Configure<GovUkOidcConfiguration, ITicketStore>(
+                    (options, config, ticketStore) =>
+                    {
+                        options.ExpireTimeSpan = TimeSpan.FromMinutes(config.LoginSlidingExpiryTimeOutInMinutes);
+                        options.SlidingExpiration = false;
+                        options.SessionStore = ticketStore;                        
+                    });
 
 // Add outerapi
 builder.Services.AddOuterApi(applicationConfiguration.ApprenticeAppApimApi);

@@ -80,29 +80,47 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Home
         }
 
         [Test, MoqAutoData]
-        public async Task Add_Update_Apprentice_ArticlesAsync([Greedy] SupportController controller)
+        public async Task Update_Saved_Article_Redirects_To_Category_PageAsync([Greedy] SupportController controller)
+        {
+            controller.ControllerContext = new ControllerContext { HttpContext = BuildHttpContext() };
+
+            var result = await controller.UpdateSavedArticle("123", "An article title", true, "wellbeing");
+
+            var redirect = result.Should().BeOfType<RedirectToActionResult>().Subject;
+            redirect.ActionName.Should().Be("ArticlesPage");
+            redirect.RouteValues.Should().ContainKey("slug").WhoseValue.Should().Be("wellbeing");
+            redirect.Fragment.Should().Be("accordion-default-content-123");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Update_Saved_Article_Without_Slug_Redirects_To_Saved_ArticlesAsync([Greedy] SupportController controller)
+        {
+            controller.ControllerContext = new ControllerContext { HttpContext = BuildHttpContext() };
+
+            var result = await controller.UpdateSavedArticle("123", "An article title", false);
+
+            var redirect = result.Should().BeOfType<RedirectToActionResult>().Subject;
+            redirect.ActionName.Should().Be("SavedArticles");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Update_Saved_Article_Returns_Ok_For_Background_PostAsync([Greedy] SupportController controller)
+        {
+            var httpContext = BuildHttpContext();
+            httpContext.Request.Headers.XRequestedWith = "XMLHttpRequest";
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+            var result = await controller.UpdateSavedArticle("123", "An article title", true, "wellbeing");
+
+            result.Should().BeOfType(typeof(OkResult));
+        }
+
+        private static DefaultHttpContext BuildHttpContext()
         {
             var httpContext = new DefaultHttpContext();
-            string entryId = "123";
-            string entryTitle = "title";
-            bool likeStatus = true;
-            bool isSaved = true;
-
-            var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-            {
-                apprenticeIdClaim
-            })});
-            httpContext.User = claimsPrincipal;
-
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var result = await controller.AddOrUpdateApprenticeArticle(entryId, entryTitle, likeStatus, isSaved);
-            result.Should().BeOfType(typeof(OkResult));
+            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, Guid.NewGuid().ToString());
+            httpContext.User = new ClaimsPrincipal(new[] { new ClaimsIdentity(new[] { apprenticeIdClaim }) });
+            return httpContext;
         }
     }
 }

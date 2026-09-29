@@ -1,31 +1,59 @@
-﻿@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportCategoryPageModel
+﻿@using SFA.DAS.ApprenticeApp.Pwa.Helpers
+@model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportCategoryPageModel
 
 @{
     ViewData["Title"] = "Support and guidance";
     ViewData["Section"] = "Support";
     Layout = "_Layout";
+
+    // Materialised once so the jump links can only ever point at a section that
+    // is actually rendered below.
+    var categorySections = SupportSections.GroupCategories(Model.Categories).ToList();
 }
 
-<h1 class="govuk-heading-xl">Support and guidance</h1>
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Support and guidance</h1>
+<p class="govuk-body-l govuk-!-margin-bottom-9">Get help from us, and find out about how to succeed in your apprenticeship.</p>
 <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        @if (categorySections.Count > 1)
+        {
+            <nav class="govuk-!-margin-bottom-6" aria-labelledby="jump-to">
+                <h2 class="govuk-heading-s" id="jump-to">On this page</h2>
+                <ul class="govuk-list govuk-list--spaced govuk-!-font-size-16 app-jump-links">
+                    @foreach (var categorySection in categorySections)
+                    {
+                        <li>
+                            <a class="govuk-link" href="#@categorySection.Id">@categorySection.Title</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
     <div class="govuk-grid-column-two-thirds">
-        <ul class="app-stack">
+        
+        @foreach (var categorySection in categorySections)
+        {
+            <h2 class="govuk-heading-m" id="@categorySection.Id">@categorySection.Title</h2>
+            <ul class="app-stack govuk-!-margin-bottom-6">
+                @foreach (var item in categorySection.Categories)
+                {
+                    <li class="app-stack__list-item">
+                        <a asp-controller="Support" asp-action="ArticlesPage" asp-route-slug="@item.Slug" class="app-stack__link">
+                            @item.Heading
+                            <span class="app-stack__description">@item.Description</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+
+        <ul class="app-stack app-stack--last govuk-!-margin-bottom-6">
             <li class="app-stack__list-item">
                 <a asp-controller="Support" asp-action="SavedArticles" class="app-stack__link">
                     Your saved articles
                 </a>
             </li>
-            @foreach (var item in Model.Categories.OrderBy(x => x.ArticleOrder))
-            {
-                @if (item.Slug != null)
-                {
-                    <li class="app-stack__list-item">
-                        <a asp-controller="Support" asp-action="ArticlesPage" asp-route-slug="@item.Slug" class="app-stack__link">
-                            @item.Heading
-                        </a>
-                    </li>
-                }
-            }
         </ul>
     </div>
 </div>

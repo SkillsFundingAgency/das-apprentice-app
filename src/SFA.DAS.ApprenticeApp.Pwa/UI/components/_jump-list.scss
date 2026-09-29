@@ -1,0 +1,16 @@
+.app-jump-links {
+  li {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    
+    &::before {
+      content: "—";
+      color: #484949;
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      text-align: center;
+    }
+  }
+}

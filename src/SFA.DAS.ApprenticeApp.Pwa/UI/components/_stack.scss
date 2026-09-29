@@ -1,10 +1,18 @@
 @use "govuk/settings/index" as settings;
+@use "govuk/helpers/index" as helpers;
 
 .app-stack {
   margin: 0 0 2rem;
   padding: 0;
   list-style: none;
   border-top: 1px solid settings.$govuk-border-colour;
+}
+
+.app-stack--last {
+  margin-top: -21px;
+  @include helpers.govuk-media-query(tablet) {
+    margin-top: -31px;
+  }
 }
 
 .app-stack__list-item {
@@ -34,6 +42,17 @@
   &:before{
     transform: translateY(-50%) rotate(-45deg);
     margin-top: -2px;
+  }
+}
+
+.app-stack__description {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: normal;
+  color: settings.$govuk-secondary-text-colour;
+  &:empty {
+    display: none;
   }
 }
 

@@ -41,25 +41,34 @@ else
                     }
 
                     <div class="app-article-actions">
-                        @if (Model.ApprenticeArticles.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == true))
+                        @if (Model.ApprenticeArticles?.Any(x => x.EntryId == item.Sys.Id && x.IsSaved == true) == true)
                         {
-                            <button class="app-article-actions__button unsave" data-title="@item.Heading">
+                            @* No slug is posted, so the controller sends the apprentice back to this page. *@
+                            <form class="app-article-actions__form" method="post" asp-action="UpdateSavedArticle" asp-controller="Support">
+                                <input type="hidden" name="entryId" value="@item.Sys.Id" />
+                                <input type="hidden" name="entryTitle" value="@item.Heading" />
+                                <input type="hidden" name="isSaved" value="false" />
+                                <button type="submit" class="app-article-actions__button unsave" data-title="@item.Heading">
                                             <span class="icon">
                                                 <svg width="24" height="24">
                                                     <use href="/assets/icons/sprite.svg#pin-filled"></use>
                                                 </svg>
                                             </span>
-                                <span class="text">Remove<span class="govuk-visually-hidden"> "@item.Heading" from your saved articles</span></span>
-                            </button>
+                                    <span class="text">Remove<span class="govuk-visually-hidden"> "@item.Heading" from your saved articles</span></span>
+                                </button>
+                            </form>
                         }
-                        <button class="app-article-actions__button share-btn">
+                        @* Sharing needs the Web Share API, so the button is only shown when JS can run it. *@
+                        <div class="show-if-js-enabled">
+                            <button class="app-article-actions__button share-btn">
                                 <span class="icon">
                                     <svg width="24" height="24">
                                         <use href="/assets/icons/sprite.svg#share"></use>
                                     </svg>
                                 </span>
-                            <span class="text">Share<span class="govuk-visually-hidden"> "@item.Heading"</span></span>
-                        </button>
+                                <span class="text">Share<span class="govuk-visually-hidden"> "@item.Heading"</span></span>
+                            </button>
+                        </div>
                     </div>
                     <input class="article-title" type="hidden" value="@item.Heading" />
                     <input class="entryid" type="hidden" value="@item.Sys.Id" />

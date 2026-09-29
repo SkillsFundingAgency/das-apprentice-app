@@ -121,12 +121,11 @@
     </div>
 
     <div class="app-pages-home__bottom">
-        <button id="js-sign-in"
-                class="app-button"
-                type="button"
-                onclick="location.href='@Url.Action("Authenticated", "Account")'">
+        <a id="js-sign-in"
+            class="app-button"
+            asp-controller="Account" asp-action="Authenticated">
             Sign in
-        </button>
+        </a>
 
         <p class="govuk-body-s govuk-!-margin-bottom-2">Your Apprenticeship app version 1.5</p>
         <p class="govuk-body-s govuk-!-margin-bottom-8">You'll need a GOV.UK One Login to use this service</p>

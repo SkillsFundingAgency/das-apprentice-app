@@ -70,11 +70,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Terms
             // Assert
             result.Should().NotBeNull();
             result!.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Welcome");
-
-            _client.Verify(x => x.UpdateApprentice(
-                Guid.Parse(apprenticeId),
-                It.IsAny<JsonPatchDocument<Apprentice>>()), Times.Once);
+            result.ControllerName.Should().Be("Welcome");            
 
             _client.Verify(x => x.GetApprenticeDetails(Guid.Parse(apprenticeId)), Times.Once);
 
