@@ -10,7 +10,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
         string[] Body,
         string Image,
         string ImageAlt,
-        bool HasMobileImage = true);
+        bool HasMobileImage = true,
+        string[]? ListItems = null);
 
     /// <summary>
     /// The welcome tour, one record per screen. Each screen is its own page, so the order
@@ -32,27 +33,41 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
             new("All your knowledge, skills and behaviours (KSBs) in one place",
                 ["View, search and filter your KSBs, link them to tasks, track your progress and capture notes and reflections."],
                 "screen-2",
-                "KSBs"),
+                "KSBs",
+                HasMobileImage: false),
 
-            new("Keep on top of things with tasks",
-                ["Create tasks to help manage your apprenticeship, with reminders to keep you on track."],
+            new("Show your learning with notes and evidence",
+                ["Your apprenticeship will involve showing what you've learnt.", 
+                "Add notes to start building evidence for your apprenticeship assessments.",
+                "Share with your tutors and get their feedback and support."],
                 "screen-3",
-                "Keep on top of things with tasks"),
+                "Keep on top of things with tasks",
+                HasMobileImage: false),
 
-            new("Information you can trust",
-                ["Get Government-approved information about what you’re entitled to, what you can claim, and where to go if you need support."],
+            new("Here for you with information you can trust",
+                [
+                "We understand that sometimes things do not go smoothly. We support you every step of the way, with guidance you can trust",
+                "Get goverment-approved information about"                
+                ],
                 "screen-4",
-                "Information you can trust"),
+                "Information you can trust",
+                HasMobileImage: false,
+                ListItems: 
+                [
+                    "how to do an apprenticeship",
+                    "What to do if you need help or support",
+                    "benefits and bursaries you can get",
+                    "how to connect with other apprentices"
+                ]),            
 
-            new("Stay notified",
-                ["Get notified about your task deadlines and useful information about your apprenticeship."],
+            new("Work how you want to work",
+                [
+                "Your Apprenticeship is available on your phone, computer and tablet, so you can work on the go, or at your desk",
+                "Capture quick notes on site or write on your computer. Move seamlessly between the app and the web, picking up where you left off."
+                ],
                 "screen-5",
-                "Stay notified"),
-
-            new("Your account",
-                ["View your apprenticeship details, your progress, and change settings to make Your Apprenticeship work for you."],
-                "screen-6",
-                "Your account")
+                "Your account",
+                HasMobileImage: false)
         ];
 
         public static int Count => All.Length;

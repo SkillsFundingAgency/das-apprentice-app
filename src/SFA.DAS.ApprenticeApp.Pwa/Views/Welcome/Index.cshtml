@@ -24,16 +24,24 @@
                 {
                     <p class="govuk-body">@paragraph</p>
                 }
+                @if (Model.Step.ListItems?.Length > 0)
+                {
+                    <ul class="govuk-list govuk-list--bullet">
+                        @foreach (var item in Model.Step.ListItems)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                }
             </div>
             <div class="govuk-grid-column-one-half">
                 @if (Model.Step.HasMobileImage)
                 {
-                    <img src="@imagePath" alt="@Model.Step.ImageAlt" class="app-onboarding__image--desktop" />
-                    <img src="@mobileImagePath" alt="@Model.Step.ImageAlt" class="app-onboarding__image--mobile" />
+                    <img src="@imagePath" alt="@Model.Step.ImageAlt" class="app-onboarding__image--desktop" height="240" />                    
                 }
                 else
                 {
-                    <img src="@imagePath" alt="@Model.Step.ImageAlt" class="app-onboarding__image" />
+                    <img src="@imagePath" alt="@Model.Step.ImageAlt" class="app-onboarding__image" height="240" />
                 }
             </div>
         </div>
@@ -41,7 +49,7 @@
             <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
             @if (Model.IsLast)
             {
-                <a class="govuk-button app-onboarding__next" asp-controller="Ksb" asp-action="Index">Finish</a>
+                <a class="govuk-button app-onboarding__next" asp-controller="Ksb" asp-action="Index">Continue to homepage</a>
             }
             else
             {
