@@ -19,50 +19,33 @@
 </h1>
 <p class="govuk-body">@Model.KsbDetail</p>
 <partial name="_HelpKSBs.cshtml" />
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
               class="form submit-form">
 
-           <div class="govuk-form-group">
-              <fieldset class="govuk-fieldset" id="CurrentStatus">
-                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                      Status
-                  </legend>
-
-                  <div class="govuk-radios govuk-radios--small">
-                      @foreach (var ksbStatus in Model.KsbStatuses)
-                      {
-                          <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" name="currentstatus" type="radio"
-                                     value="@ksbStatus" checked="@(Model.KsbProgress.CurrentStatus == ksbStatus)"
-                                     asp-for="@Model.KsbProgress.CurrentStatus" id="ksbStatus_@ksbStatus" />
-                              <label class="govuk-label govuk-radios__label" for="ksbStatus_@ksbStatus">
-                                  @{
-                                      var statusItem = ksbStatus;
-                                      string statusItemDisplay = statusItem.GetEnumDescription();
-                                      <text>@statusItemDisplay</text>
-                                  }
-                              </label>
-                          </div>
-                      }
-                  </div>
-              </fieldset>
-          </div>
-
-            <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000" data-threshold="85">
-                <label class="govuk-label" for="note">
-                    Note
+              <div class="govuk-form-group">
+                <label class="govuk-label govuk-label--s" asp-for="@Model.KsbProgress.CurrentStatus">
+                    KSB status
                 </label>
-                <div class="govuk-hint">You can add a note about this KSB, for example, explaining how you've applied it to your job.</div>
-                <textarea class="govuk-textarea govuk-js-character-count" rows="8" id="note" name="note"
-                          aria-describedby="note-info" value="@Model.KsbProgress.Note">@Model.KsbProgress.Note</textarea>
-                <div id="note-info" class="govuk-hint govuk-character-count__message">
-                    You can enter up to 1000 characters
-                </div>
-            </div>
+                <select class="govuk-select" id="CurrentStatus" name="currentstatus">
+                    @foreach (var ksbStatus in Model.KsbStatuses)
+                    {
+                         if (Model.KsbProgress.CurrentStatus == ksbStatus)
+            {
+                <option value="@ksbStatus" selected>
+                    @ksbStatus.GetEnumDescription()
+                </option>
+            }
+            else
+            {
+                <option value="@ksbStatus">
+                    @ksbStatus.GetEnumDescription()
+                </option>
+            }
+                    }
+                </select>
+            </div>             
 
-             <h2 class="govuk-heading-s">Linked tasks</h2>
+             <h2 class="govuk-heading-s">Notes and evidence for @Model.KsbProgress.KsbKey</h2>
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
 
@@ -91,7 +74,7 @@
                                                     <use href="/assets/icons/sprite.svg#link"></use>
                                                 </svg>
                                                 <span class="app-icon-item__text">
-                                                    Linked to @task.TaskLinkedKsbs.Count.ToString()
+                                                    Linked to @task.TaskLinkedKsbs.Count.ToString()                                    
                                                     @if (task.TaskLinkedKsbs.Count > 1)
                                                     {
                                                         <text>KSBs</text>
@@ -101,7 +84,7 @@
                                                         <text>KSB</text>
                                                     }
                                                 </span>
-                                            </li>
+                                            </li>                                           
                                         }
                                         <li class="app-icon-item">
                                            <svg width="24" height="24" class="app-icon-item__icon">
@@ -147,7 +130,13 @@
                         }
 
             } else {
-                <p class="govuk-hint">You have no tasks linked to this KSB.</p>
+                <div class="govuk-grid-column-one-third app-column-sticky">
+                    <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width app-fab">
+                        <span>Add note or evidence</span>
+                    </a>
+                </div>
+                <p class="govuk-hint">You have no notes of evidence for this KSB. Add a note to get started.</p>                 
+            
             }
 
             <input type="hidden" id="ksbProgressId" name="KsbProgressId" value="@Model.KsbProgress.KsbProgressId" />
@@ -161,6 +150,4 @@
                     Save and continue
                 </button>
             </div>
-        </form>
-    </div>
-</div>
+        </form>  
