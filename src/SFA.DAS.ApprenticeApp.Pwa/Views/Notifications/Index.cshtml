@@ -17,7 +17,11 @@
 {
     @await Html.PartialAsync("_Notifications", Model)
 }
-else if(Model.TaskReminders == null || Model.TaskReminders.Count == 0)
+else if (
+    (Model.TaskReminders == null || Model.TaskReminders.Count == 0)
+    &&
+    (Model.LearnerNotifications == null || Model.LearnerNotifications.Count == 0)
+)
 {
     @await Html.PartialAsync("_NoNotifications")
 }
@@ -25,3 +29,27 @@ else
 {
     @await Html.PartialAsync("_Notifications", Model)
 }
+<script>
+    let learnerNotificationsAcknowledged = false;
+
+    function acknowledgeLearnerNotifications() {
+        if (learnerNotificationsAcknowledged) {
+            return;
+        }
+
+        learnerNotificationsAcknowledged = true;
+
+        const url = '@Url.Action("AcknowledgeLearnerNotifications", "Notifications")';
+
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(url);
+        } else {
+            fetch(url, {
+                method: 'POST',
+                keepalive: true
+            });
+        }
+    }
+
+    window.addEventListener('pagehide', acknowledgeLearnerNotifications);
+</script>

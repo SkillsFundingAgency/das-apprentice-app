@@ -80,3 +80,49 @@
         </div>
     }
 }
+@if (Model.LearnerNotifications != null)
+{
+    @foreach (var notification in Model.LearnerNotifications)
+    {
+        <div id="notification-@notification.NotificationId" class="app-notification">
+            <h2 class="govuk-heading-m">
+                @if (!string.IsNullOrEmpty(notification.Link))
+                {
+                    <a href="@notification.Link" class="govuk-link govuk-link--no-visited-state">@notification.Heading</a>
+                }
+                else
+                {
+                    @notification.Heading
+                }
+            </h2>
+
+            @if (notification.StatusId == 1)
+            {
+                <strong class="govuk-tag govuk-tag--red govuk-!-margin-bottom-3">New</strong>
+            }
+
+            <p>@notification.Body</p>
+
+            <div class="app-flex-align-right">
+                <a asp-action="ConfirmDeleteLearnerNotification"
+                   asp-controller="Notifications"
+                   asp-route-notificationId="@notification.NotificationId"
+                   class="govuk-link app-link--destructive">
+                    <span class="app-icon-item">
+                        <svg width="24" height="24" class="app-icon-item__icon">
+                            <use href="/assets/icons/sprite.svg#delete"></use>
+                        </svg>
+                        <span class="app-icon-action__label">
+                            Delete
+                            <span class="govuk-visually-hidden">
+                                @notification.Heading
+                            </span>
+                        </span>
+                    </span>
+                </a>
+            </div>
+
+            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+        </div>
+    }
+}
