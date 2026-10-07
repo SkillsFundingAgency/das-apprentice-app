@@ -4,10 +4,17 @@
   Layout = "_Layout";
 }
 <h1 class="govuk-heading-xl">Knowledge, skills and behaviours (KSBs)</h1>
+
 <partial name="_HelpKSBs.cshtml" />
+<div class="ksb-progress-card">
+    <partial name="_YourKSBs.cshtml" />
+</div>
+
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-      <partial name="_Filter.cshtml" />
+      <div class="govuk-grid-column-one-third">    
+      <partial name="_Filter.cshtml" />    
+  </div>
+  <div class="govuk-grid-column-two-thirds">      
     <div class="app-tabs" data-module="app-tabs" data-activeTabStatus="status">
       <ul class="app-tabs__list">
         <li class="app-tabs__list-item">
@@ -28,9 +35,5 @@
       </ul>
       <partial name="_KsbsAll.cshtml" />
     </div>
-  </div>
-  <div class="govuk-grid-column-one-third">
-    <partial name="_YourKSBs.cshtml" />
-    <partial name="_YourApprenticeship.cshtml" />
   </div>
 </div>

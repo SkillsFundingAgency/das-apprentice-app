@@ -32,6 +32,10 @@
   }
 }
 
+.ksb-progress-card .app-tag-group {
+    flex-direction: row;
+}
+
 .app-tag__wrapper {
   display: flex;
   flex-wrap: wrap;
