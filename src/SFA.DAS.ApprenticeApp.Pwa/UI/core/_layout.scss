@@ -128,6 +128,13 @@
     }
 }
 
+@include helpers.govuk-media-query(tablet) {
+    #filterKSBs.govuk-details[open] .govuk-details__summary {
+        margin-bottom: 3rem;
+        display: none;
+    }
+}
+
 .app-task-list__sort-by {
     margin-bottom: 20px;
 

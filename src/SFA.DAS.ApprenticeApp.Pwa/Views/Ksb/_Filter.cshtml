@@ -21,111 +21,61 @@
                     <label class="govuk-label govuk-label--s" for="keyword-filter">
                         Keywords
                     </label>
-                    <input class="govuk-input" id="keyword-filter" name="keyword" type="search" placeholder="Search for..." />
-                </div>
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-one-half">
+                    <input class="govuk-input" id="keyword-filter" name="keyword" type="search"
+                        placeholder="Search for..." />
+                </div>                
                         <fieldset class="govuk-fieldset govuk-!-margin-bottom-4">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Status filters
                             </legend>
-                            <div
-                                class="govuk-checkboxes govuk-checkboxes--small"
-                                data-module="govuk-checkboxes"
-                            >
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                                 <div class="govuk-checkboxes__item">
-                                    <input
-                                        class="govuk-checkboxes__input"
-                                        id="not-started"
-                                        name="filter"
-                                        type="checkbox"
-                                        value="not-started"
-                                    />
+                                    <input class="govuk-checkboxes__input" id="not-started" name="filter"
+                                        type="checkbox" value="not-started" />
                                     <label class="govuk-label govuk-checkboxes__label" for="not-started">
-              <span
-              >Not started</span
-              >
+                                        <span>Not started</span>
                                     </label>
                                 </div>
 
                                 <div class="govuk-checkboxes__item">
-                                    <input
-                                        class="govuk-checkboxes__input"
-                                        id="in-progress"
-                                        name="filter"
-                                        type="checkbox"
-                                        value="in-progress"
-                                    />
+                                    <input class="govuk-checkboxes__input" id="in-progress" name="filter"
+                                        type="checkbox" value="in-progress" />
                                     <label class="govuk-label govuk-checkboxes__label" for="in-progress">
-              <span
-              >In progress</span
-              >
+                                        <span>In progress</span>
                                     </label>
                                 </div>
 
                                 <div class="govuk-checkboxes__item">
-                                    <input
-                                        class="govuk-checkboxes__input"
-                                        id="ready-for-review"
-                                        name="filter"
-                                        type="checkbox"
-                                        value="ready-for-review"
-                                    />
-                                    <label
-                                        class="govuk-label govuk-checkboxes__label"
-                                        for="ready-for-review"
-                                    >
-              <span
-              >Ready for review</span
-              >
+                                    <input class="govuk-checkboxes__input" id="ready-for-review" name="filter"
+                                        type="checkbox" value="ready-for-review" />
+                                    <label class="govuk-label govuk-checkboxes__label" for="ready-for-review">
+                                        <span>Ready for review</span>
                                     </label>
                                 </div>
 
                                 <div class="govuk-checkboxes__item">
-                                    <input
-                                        class="govuk-checkboxes__input"
-                                        id="completed"
-                                        name="filter"
-                                        type="checkbox"
-                                        value="completed"
-                                    />
+                                    <input class="govuk-checkboxes__input" id="completed" name="filter" type="checkbox"
+                                        value="completed" />
                                     <label class="govuk-label govuk-checkboxes__label" for="completed">
                                         <span>Completed</span>
                                     </label>
                                 </div>
                             </div>
                         </fieldset>
-                    </div>
-                    <div class="govuk-grid-column-one-half">
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                 Other filters
                             </legend>
-                            <div
-                                class="govuk-checkboxes govuk-checkboxes--small"
-                                data-module="govuk-checkboxes"
-                            >
+                            <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                                 <div class="govuk-checkboxes__item">
-                                    <input
-                                        class="govuk-checkboxes__input"
-                                        id="linked-to-a-task"
-                                        name="other-filter"
-                                        type="checkbox"
-                                        value="linked-to-a-task"
-                                    />
-                                    <label
-                                        class="govuk-label govuk-checkboxes__label"
-                                        for="linked-to-a-task"
-                                    >
+                                    <input class="govuk-checkboxes__input" id="linked-to-a-task" name="other-filter"
+                                        type="checkbox" value="linked-to-a-task" />
+                                    <label class="govuk-label govuk-checkboxes__label" for="linked-to-a-task">
                                         Linked to a task
                                     </label>
                                 </div>
                             </div>
-
-                       
-                        </fieldset>
-                    </div>
-                </div>
+                        </fieldset>                
                 <a href="#" class="govuk-button govuk-!-margin-bottom-0 govuk-!-margin-top-3 apply">Apply filters</a>
             </div>
         </div>
@@ -134,13 +84,36 @@
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
+        var filterDetails = document.getElementById('filterKSBs');
+        var filterSummary = filterDetails.querySelector('.govuk-details__summary');
+        var desktopMediaQuery = window.matchMedia('(min-width: 40.0625em)');
+
+        function setFilterState() {
+            // Desktop: filters are always visible.
+            // Mobile: filters are collapsed and can be opened with the summary link.
+            filterDetails.open = desktopMediaQuery.matches;
+        }
+
+        setFilterState();
+
+        desktopMediaQuery.addEventListener('change', setFilterState);
+
+        // Prevent the desktop filter panel from being closed.
+        filterSummary.addEventListener('click', function (event) {
+            if (desktopMediaQuery.matches) {
+                event.preventDefault();
+                filterDetails.open = true;
+            }
+        });
+
         var cookieFilter = getCookieKsb("@Constants.KsbFiltersCookieName");
         var filtersSet = document.getElementById('filters-set');
         var lastAction = sessionStorage.getItem('filterAction-ksb');
         sessionStorage.removeItem('filterAction-ksb');
 
         if (cookieFilter != null && cookieFilter != "") {
-            document.getElementById('filterKSBs').open = true;
+            // Keep the mobile panel collapsed even when filters are saved.
+            filterDetails.open = desktopMediaQuery.matches;
 
             var data = cookieFilter.split("&");
 
@@ -173,7 +146,7 @@
             }
         } else {
             if (lastAction === 'remove') {
-                document.getElementById('filterKSBs').open = true;
+                filterDetails.open = desktopMediaQuery.matches;
             }
             filtersSet.innerHTML = "<span class='govuk-hint'>No filters selected</span>";
         }
