@@ -141,5 +141,27 @@
       : window.location.hostname;
   }
 
+const exampleSettingCookie = "SFA.ApprenticeApp.ExampleSetting";
+
+function initialiseExampleSetting() {
+    const settingSwitch = document.getElementById("progressDashboardSwitch");
+
+    if (!settingSwitch) {
+        return;
+    }
+
+    settingSwitch.checked = getCookie(exampleSettingCookie) === "1";
+
+    settingSwitch.addEventListener("change", () => {
+        if (settingSwitch.checked) {
+            setCookie(exampleSettingCookie, "1");
+        } else {
+            eraseCookie(exampleSettingCookie);
+        }
+    });
+}
+
+initialiseExampleSetting();
+
   
 </script>

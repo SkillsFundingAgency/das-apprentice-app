@@ -2,9 +2,18 @@
   ViewData["Title"] = "Your knowledge, skills and behaviours (KSBs)";
   ViewData["Section"] = "Ksbs";
   Layout = "_Layout";
+    var progressDashboardEnabled = Context.Request.Cookies["SFA.ApprenticeApp.ProgressDashboard"] == "1";
 }
 <h1 class="govuk-heading-xl">Knowledge, skills and behaviours (KSBs)</h1>
 <partial name="_HelpKSBs.cshtml" />
+
+@if(!progressDashboardEnabled)
+{
+ <div class="ksb-progress-card">
+    <partial name="_YourKSBs.cshtml" />
+</div>   
+}
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
       <partial name="_Filter.cshtml" />
