@@ -40,27 +40,22 @@
                                         <text>@statusDisplay</text>
                                     </div>
                                 }
-                                <p>@Html.Raw(ksb.Detail)</p>
                                 @if (ksb.Progress != null && ksb.Progress?.Tasks?.Count > 0)
-                                {
-                                    <p class="app-icon-item">
-
-                                        <svg width="24" height="24" class="app-icon-item__icon">
-                                            <use href="/assets/icons/sprite.svg#link"></use>
-                                        </svg>
-
-                                        <span class="app-icon-item__text">Linked to @ksb.Progress.Tasks.Count.ToString()
+                                {                   
+                                    <div class="app-tag app-tag--status-completed govuk-!-margin-bottom-3 govuk-!-margin-left-3">
+                                         <span class="app-icon-item__text">@ksb.Progress.Tasks.Count.ToString()
                                         @if (@ksb.Progress.Tasks.Count > 1)
                                         {
-                                            <span>tasks</span>
+                                            <span>notes</span>
                                         }
                                         else
                                         {
-                                            <span>task</span>
+                                            <span>note</span>
                                         }
-                                        </span>
-                                    </p>
+                                        </span>         
+                                    </div>                                                                  
                                 }
+                                <p>@Html.Raw(ksb.Detail)</p>                                
                             </div>
                         </a>
                     }
