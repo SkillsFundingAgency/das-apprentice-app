@@ -252,8 +252,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         //temporarily handle any 500 errors
                     }
 
-                    return NoContent();
-                    //return RedirectToAction("Index", "Ksb");
+                    return NoContent();                    
                 }
 
                 _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
