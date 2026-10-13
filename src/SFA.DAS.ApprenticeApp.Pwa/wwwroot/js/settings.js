@@ -247,7 +247,8 @@ const initTextSize = () => {
 
 // --- Progress Dashboard Setting ---
 
-const PROGRESS_DASHBOARD_COOKIE = "SFA.ApprenticeApp.ProgressDashboard";
+const PROGRESS_DASHBOARD_COOKIE =
+  "SFA.ApprenticeApp.ProgressDashboard";
 
 const eraseCookie = (name) => {
   document.cookie =
@@ -259,16 +260,17 @@ const initProgressDashboardSetting = () => {
 
   if (!toggle) return;
 
-  // Restore the saved state when the page loads
-  toggle.checked = getCookie(PROGRESS_DASHBOARD_COOKIE) === "1";
+  // Checked by default.
+  // An existing cookie means the user previously unchecked it.
+  toggle.checked = getCookie(PROGRESS_DASHBOARD_COOKIE) !== "1";
 
   toggle.addEventListener("change", () => {
     if (toggle.checked) {
-      // Persist for 999 days
-      setCookie(PROGRESS_DASHBOARD_COOKIE, "1", 999);
-    } else {
-      // Remove the cookie when unchecked
+      // Restore the default state and remove the saved preference.
       eraseCookie(PROGRESS_DASHBOARD_COOKIE);
+    } else {
+      // Persist the unchecked state for 999 days.
+      setCookie(PROGRESS_DASHBOARD_COOKIE, "1", 999);
     }
   });
 };

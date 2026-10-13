@@ -4,6 +4,7 @@
 );
 @use "core";
 @use "components";
+@use "settings";
 
 .govuk-template {
   scroll-behavior: smooth;
