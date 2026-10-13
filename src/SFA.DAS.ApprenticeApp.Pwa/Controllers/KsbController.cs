@@ -244,14 +244,15 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     try
                     {
-                        await _client.AddUpdateKsbProgress(new Guid(apprenticeId), ksbProgressData);
+                        await _client.AddUpdateKsbProgress(new Guid(apprenticeId), ksbProgressData);                        
                     }
                     catch
                     {
                         //temporarily handle any 500 errors
                     }
 
-                    return RedirectToAction("Index", "Ksb");
+                    return NoContent();
+                    //return RedirectToAction("Index", "Ksb");
                 }
 
                 _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
