@@ -5,5 +5,6 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
     public class SupportCategoryPageModel
     {
         public List<ApprenticeAppCategoryPage>? Categories { get; set; }
+        public string? FirstName { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             // onwards - by then the cookie has been set.
             if (cookie != null && step == null)
             {
-                return RedirectToAction("Index", "Ksb");
+                return RedirectToAction("Index", "Support");
             }
 
             if (cookie == null)

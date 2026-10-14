@@ -2,8 +2,8 @@
 @model SFA.DAS.ApprenticeApp.Pwa.ViewModels.SupportCategoryPageModel
 
 @{
-    ViewData["Title"] = "Support and guidance";
-    ViewData["Section"] = "Support";
+    ViewData["Title"] = "Home";
+    ViewData["Section"] = "Home";
     Layout = "_Layout";
 
     // Materialised once so the jump links can only ever point at a section that
@@ -11,7 +11,7 @@
     var categorySections = SupportSections.GroupCategories(Model.Categories).ToList();
 }
 
-<h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Support and guidance</h1>
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-4">Welcome, @Model.FirstName</h1>
 <p class="govuk-body-l govuk-!-margin-bottom-9">Get help from us, and find out about how to succeed in your apprenticeship.</p>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
@@ -36,6 +36,14 @@
         {
             <h2 class="govuk-heading-m" id="@categorySection.Id">@categorySection.Title</h2>
             <ul class="app-stack govuk-!-margin-bottom-6">
+                @if (categorySection.Id == SupportSections.Support.Id)
+                {
+                    <li class="app-stack__list-item">
+                        <a asp-controller="Support" asp-action="SavedArticles" class="app-stack__link">
+                            Your saved articles
+                        </a>
+                    </li>
+                }
                 @foreach (var item in categorySection.Categories)
                 {
                     <li class="app-stack__list-item">
@@ -48,12 +56,5 @@
             </ul>
         }
 
-        <ul class="app-stack app-stack--last govuk-!-margin-bottom-6">
-            <li class="app-stack__list-item">
-                <a asp-controller="Support" asp-action="SavedArticles" class="app-stack__link">
-                    Your saved articles
-                </a>
-            </li>
-        </ul>
     </div>
 </div>
