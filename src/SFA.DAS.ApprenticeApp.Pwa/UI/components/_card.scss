@@ -43,12 +43,14 @@ a.app-card {
   display: block;  
 }
 
-#tasks-todo .app-card {
+#tasks-todo .app-card,
+#ksb-tasks .app-card,
+#linked-ksb-details .app-card {
     border: none;
     border-bottom: 1px solid var(--govuk-border-colour, #cecece);
     margin-bottom: .5rem;
 
-    &:first-child {
+    &:first-of-type {
         border-top: 1px solid var(--govuk-border-color, #cecece);
     }
 
