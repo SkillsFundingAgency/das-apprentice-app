@@ -11,6 +11,8 @@
 
 @model NotificationPageModel
 
+<a href="@Url.Action("YourAccount", "Account")" class="govuk-back-link app-back-link">Back</a>
+
 <h1 class="govuk-heading-xl">Notifications</h1>
 
 @if(Model.SurveyNotificationSeen == false)
