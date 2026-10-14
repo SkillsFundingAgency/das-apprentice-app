@@ -24,7 +24,7 @@ public class CommitmentsService : ICommitmentsService
     public async Task<CmadNavigationResult> HandleConfirmationStatus(ApprenticeDetails apprenticeDetails, Guid apprenticeId)
     {
         var registrationByEmail = await _client.GetRegistrationByEmail(apprenticeDetails.Apprentice.Email);        
-        var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();
+        var cmadComplete = apprenticeDetails.Apprenticeship?.Apprenticeships?.FirstOrDefault();        
 
         // New registration found that has not been completed
         if (registrationByEmail != null && registrationByEmail.ApprenticeId == null)
@@ -53,8 +53,38 @@ public class CommitmentsService : ICommitmentsService
         // Existing Confirmed Apprenticeship
         if (cmadComplete?.ConfirmedOn != null) return new CmadNavigationResult { NavigationType = CmadNavigationType.WelcomeIndex };
 
-        if (cmadComplete?.ConfirmedOn == null && cmadComplete.PlannedEndDate >= DateTime.Now)
-        {
+        // Email Matches no registration
+        if (registrationByEmail == null)
+        {            
+            if (apprenticeDetails.Apprentice.FirstName is { } firstName &&
+                apprenticeDetails.Apprentice.LastName is { } lastName &&
+                apprenticeDetails.Apprentice.DateOfBirth is { } dob)
+            {
+                var isoDob = dob.ToIsoDate();
+                var registration = await _client.GetRegistrationByAccountDetails(firstName, lastName, isoDob);
+
+                registrationByEmail = registration.MaxBy(r => r.CreatedOn);                
+
+                var revision = await _client.GetRevisionById(apprenticeDetails.Apprentice.ApprenticeId, cmadComplete.Id, cmadComplete.RevisionId);
+
+                if (revision.ConfirmedOn == null && revision.PlannedEndDate >= DateTime.Now)
+                {
+                    var commitment = await _client.GetCommitmentsApprenticeshipById(revision.CommitmentsApprenticeshipId);
+                    var viewModel = await CreateApprenticeshipAndBuildViewModelAsync(
+                    registrationByEmail.RegistrationId,
+                    apprenticeId,
+                    commitment.Uln,
+                    registrationByEmail.LastName,
+                    registrationByEmail.DateOfBirth.ToIsoDate());
+                }
+            }    else
+            {
+                return new CmadNavigationResult { NavigationType = CmadNavigationType.ConfirmDetails, RouteValues = new { apprenticeId } };
+            }                    
+        }
+
+        if (cmadComplete?.ConfirmedOn == null && cmadComplete?.PlannedEndDate >= DateTime.Now)
+        {            
             var commitment = await _client.GetCommitmentsApprenticeshipById(registrationByEmail.CommitmentsApprenticeshipId);
             var viewModel = await CreateApprenticeshipAndBuildViewModelAsync(
                 registrationByEmail.RegistrationId,

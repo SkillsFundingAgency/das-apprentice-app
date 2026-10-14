@@ -1,7 +1,16 @@
-﻿<h2 class="govuk-heading-m">You have no notifications.</h2>
-<p>You’ll see notifications:</p>
-<ul class="govuk-list govuk-list--bullet">
-    <li>when you’ve set task reminders</li>
-    <li>if we need to tell you something about the Your Apprenticeship service</li>
-</ul>
-<p>Notifications will always appear in the app. You can also choose to receive notifications on your device, which you can turn on or off in account settings.</p>
+﻿<details class="govuk-details app-details govuk-!-margin-bottom-9" data-module="govuk-details" open>
+    <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+            Help with notifications
+        </span>
+    </summary>
+    <div class="govuk-details__text">
+        <p>You'll see notifications when we need to tell you something</p>
+        <p>
+            Notifications will always appear in the app. You can turn push notifications on or off in
+            <a asp-controller="Settings" asp-action="Index" class="govuk-link">settings</a>.
+        </p>
+    </div>
+</details>
+
+<p>You have no notifications.</p>
