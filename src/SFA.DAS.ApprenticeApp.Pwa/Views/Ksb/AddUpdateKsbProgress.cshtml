@@ -5,7 +5,8 @@
 @{
     ViewData["Title"] = "Manage a knowledge, skill or behaviour (KSB)";
     ViewData["Section"] = "Ksbs";
-    ViewBag.HideNavigation = true;
+    ViewBag.HideNavigation = false;
+    Layout = "_Layout";
 
     // Passed to the task edit page so its back link returns here rather than to the task list.
     var returnUrl = Url.Action("AddUpdateKsbProgress", "Ksb", new { id = Model.KsbProgress?.KsbId });
@@ -49,10 +50,12 @@
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
                 <div class="govuk-grid-row">
-                 <div class="govuk-grid-column-one-third">
+                 <div class="govuk-grid-column-one-third app-column-sticky">
+                     <div class="app-fab-wrapper">
                     <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width">
                         <span>Add note or evidence</span>
                     </a>
+                    </div>
                 </div>
                 <div class="govuk-grid-column-two-thirds" id="ksb-tasks">
                 <partial name="_SortBy.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />    

@@ -14,10 +14,12 @@
 <partial name="_HelpTasks.cshtml" />
 <div class="govuk-grid-row">
 
-    <div class="govuk-grid-column-one-third app-column-sticky">
-        <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width app-fab">
-            <span>Add note or evidence</span>
-        </a>
+    <div class="govuk-grid-column-one-third">
+        <div class="app-fab-wrapper">
+            <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width">
+                <span>Add note or evidence</span>
+            </a>
+        </div>
         @if (Model.ToDoTasks != null)
         {
          <partial name="_Filter.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />   

@@ -74,7 +74,8 @@
       var container = document.getElementById('@detailsId');
       var filtersSet = document.getElementById('@filtersSetId');
       var cookieFilter = getCookie('@cookieName');
-      var lastAction = sessionStorage.getItem('filterAction-@tab');
+      var hasFilters = cookieFilter && cookieFilter.trim() !== '';
+      // var lastAction = sessionStorage.getItem('filterAction-@tab');
       sessionStorage.removeItem('filterAction-@tab');
 
       /*
@@ -89,7 +90,8 @@
       if (desktopMediaQuery.matches) {
         container.open = true;
       } else {
-        container.open = false;
+          // On mobile, keep filters open when filters are applied
+        container.open = hasFilters;
       }
 
       desktopMediaQuery.addEventListener('change', function (event) {
@@ -98,7 +100,7 @@
           container.open = true;
         } else {
           // Moving to mobile - close filters
-          container.open = false;
+          container.open = hasFilters;
         }
       });
 
@@ -127,7 +129,7 @@
       /*
        * Restore saved filters
        */
-      if (cookieFilter != null && cookieFilter != "") {
+      if (hasFilters) {
         var data = cookieFilter.split("&");
 
         for (var k in data) {
@@ -155,15 +157,7 @@
 
           filtersSet.appendChild(tag);
         }
-      } else {
-        /*
-         * Only reopen after removing a filter on desktop.
-         * Mobile remains closed by default.
-         */
-        if (lastAction === 'remove' && desktopMediaQuery.matches) {
-          container.open = true;
-        }
-
+      } else {       
         filtersSet.innerHTML =
           "<span class='govuk-hint'>No filters selected</span>";
       }
