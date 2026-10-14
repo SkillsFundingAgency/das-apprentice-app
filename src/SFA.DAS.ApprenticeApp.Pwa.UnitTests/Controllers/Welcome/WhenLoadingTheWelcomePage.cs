@@ -39,8 +39,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
                 HttpContext = httpContext
             };
             var result = controller.Index() as RedirectToActionResult;
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Ksb");
+           result.ActionName.Should().Be("Index");
+           result.ControllerName.Should().Be("Support");
         }
 
         [Test, MoqAutoData]
