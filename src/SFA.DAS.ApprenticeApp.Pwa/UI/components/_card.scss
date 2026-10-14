@@ -63,3 +63,7 @@ a.app-card {
         text-decoration: underline;
     }
 }
+
+.app-card--highlight {
+    border: 1px solid var(--govuk-border-colour, #cecece);
+}
