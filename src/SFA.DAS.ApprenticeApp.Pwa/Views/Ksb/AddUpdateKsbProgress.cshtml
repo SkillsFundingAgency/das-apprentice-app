@@ -61,35 +61,26 @@
                 <partial name="_SortBy.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />    
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
-                        <a class="app-card" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId, returnUrl = returnUrl})">
+                        <div class="app-card">
+                        <a href="@Url.Action("Edit", "Tasks", new { id = task.TaskId, returnUrl = returnUrl})">
                             <div class="app-card__header">
-                                <h2 class="app-card__heading">@task.Title</h2>
-                                <p>@task.Note</p>
-                            </div>                                                                       
-                            <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
-                                        @if (task.TaskLinkedKsbs != null)
-                                        {
-                                            <li class="app-icon-item">                                               
-                                                <span class="app-icon-item__text">
-                                                    <b>Linked to</b> 
-                                                    @task.TaskLinkedKsbs.Count.ToString()                                    
-                                                    @if (task.TaskLinkedKsbs.Count > 1)
-                                                    {
-                                                        <text>KSBs</text>
-                                                    }
-                                                    else
-                                                    {
-                                                        <text>KSB</text>
-                                                    }
-                                                </span>
-                                            </li>                                           
-                                        }
-                                        <li class="app-icon-item">                                                                                      
-                                            <span class="app-icon-item__text govuk-!-margin-right-5"><b>Date</b></span>
-                                            <span class="app-icon-item__text">@string.Format("{0:d MMMM yyyy}", task.DueDate)</span>
-                                        </li>                                    
-                                    </ul>
-                                </a>                                          
+                                <h2 class="app-card__heading">@task.Title</h2>                                
+                            </div> 
+                            </a>   
+                            <p>@task.Note</p>
+                             <dl class="govuk-list govuk-list--spaced app-task-meta">                  
+                    <dt class="app-icon-item__text">Date</dt>
+                    <dd class="app-icon-item__text">@string.Format("{0:d MMMM yyyy}", task.DueDate)</dd>
+                          @if (task.TaskLinkedKsbs != null)
+                    {
+                    <dt class="app-icon-item__text">Linked to</dt>
+                    <dd class="app-icon-item__text">
+                        @task.TaskLinkedKsbs.Count
+                        @(task.TaskLinkedKsbs.Count > 1 ? "KSBs" : "KSB")
+                    </dd>
+                    }
+                </dl>                    
+                                </div>
                             }
                             </div>
                         </div>

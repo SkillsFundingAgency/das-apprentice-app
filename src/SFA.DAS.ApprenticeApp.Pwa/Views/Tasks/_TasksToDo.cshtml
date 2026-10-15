@@ -2,10 +2,12 @@
 
 @foreach (var task in Model.Tasks)
 {
-    <a class="app-card" id="task-@task.TaskId" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId })">
+    <div class="app-card">
+    <a id="task-@task.TaskId" href="@Url.Action("Edit", "Tasks", new { id = task.TaskId })">
         <div class="app-card__header">
             <h2 class="app-card__heading">@task.Title</h2>
         </div>
+        </a>
 
         <div class="app-card__content">                                              
             @if (!String.IsNullOrEmpty(task.Note))
@@ -15,31 +17,18 @@
                 </p>
             }
 
-        <ul class="govuk-list govuk-list--spaced govuk-!-margin-bottom-0">
+          <dl class="govuk-list govuk-list--spaced app-task-meta">           
+            <dt class="app-icon-item__text">Date</dt>
+            <dd class="app-icon-item__text">@string.Format("{0:d MMMM yyyy}", task.DueDate)</dd>
              @if (task.TaskLinkedKsbs.Any())
-                        {
-                            <li class="app-icon-item">                                
-                                <span class="app-icon-item__text">
-                                    <b>Linked to</b>
-                                    @task.TaskLinkedKsbs.Count.ToString()
-                                    @if (task.TaskLinkedKsbs.Count > 1)
-                                    {
-                                        <text>KSBs</text>
-                                    }
-                                    else
-                                    {
-                                        <text>KSB</text>
-                                    }
-                                </span>
-                            </li>
-                        }
-             <li class="app-icon-item">                 
-                <span class="app-icon-item__text govuk-!-margin-right-5"><b>Date</b></span>
-                <span class="app-icon-item__text">@string.Format("{0:d MMMM yyyy}", task.DueDate)</span>
-            </li>                    
-
-
-        </ul>
-        </div>
-    </a>
+            {
+            <dt class="app-icon-item__text">Linked to</dt>
+            <dd class="app-icon-item__text">
+                @task.TaskLinkedKsbs.Count
+                @(task.TaskLinkedKsbs.Count > 1 ? "KSBs" : "KSB")
+            </dd>
+            }
+        </dl>
+        </div>    
+    </div>
 }
