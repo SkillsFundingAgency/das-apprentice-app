@@ -46,10 +46,10 @@
             </div>
         </div>
         <div class="app-onboarding__actions">
-            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Ksb" asp-action="Index">Skip tour</a>
+            <a class="govuk-link govuk-link--no-visited-state app-onboarding__skip" asp-controller="Support" asp-action="Index">Skip tour</a>
             @if (Model.IsLast)
             {
-                <a class="govuk-button app-onboarding__next" asp-controller="Ksb" asp-action="Index">Continue to homepage</a>
+                <a class="govuk-button app-onboarding__next" asp-controller="Support" asp-action="Index">Continue to homepage</a>
             }
             else
             {
