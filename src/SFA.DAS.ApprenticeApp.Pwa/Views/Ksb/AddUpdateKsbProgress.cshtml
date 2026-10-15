@@ -68,8 +68,10 @@
                             </div> 
                             </a>   
                             <p>@task.Note</p>
-                             <dl class="govuk-list govuk-list--spaced app-task-meta">
-                    @if (task.TaskLinkedKsbs != null)
+                             <dl class="govuk-list govuk-list--spaced app-task-meta">                  
+                    <dt class="app-icon-item__text">Date</dt>
+                    <dd class="app-icon-item__text">@string.Format("{0:d MMMM yyyy}", task.DueDate)</dd>
+                          @if (task.TaskLinkedKsbs != null)
                     {
                     <dt class="app-icon-item__text">Linked to</dt>
                     <dd class="app-icon-item__text">
@@ -77,9 +79,6 @@
                         @(task.TaskLinkedKsbs.Count > 1 ? "KSBs" : "KSB")
                     </dd>
                     }
-
-                    <dt class="app-icon-item__text">Date</dt>
-                    <dd class="app-icon-item__text">@string.Format("{0:d MMMM yyyy}", task.DueDate)</dd>
                 </dl>                    
                                 </div>
                             }
