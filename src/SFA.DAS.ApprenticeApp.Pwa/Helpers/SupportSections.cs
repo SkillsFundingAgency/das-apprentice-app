@@ -18,9 +18,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
     /// </summary>
     public static class SupportSections
     {
-        public static readonly SupportSection NeedHelpNow = new("need-help-now", "Need help now?");
+        public static readonly SupportSection NeedHelpNow = new("need-help-now", "Need help?");
         public static readonly SupportSection HowToDoYourApprenticeship = new("how-to", "How to do an apprenticeship");
-        public static readonly SupportSection Benefits = new("benefits", "Apprentice benefits");
         public static readonly SupportSection Support = new("support", "Support with your apprenticeship");
 
         public static readonly SupportSection Fallback = Support;
@@ -28,10 +27,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
         /// <summary>The order sections appear on the page.</summary>
         public static readonly SupportSection[] Order =
         [
-            NeedHelpNow,
             HowToDoYourApprenticeship,
-            Benefits,
-            Support
+            Support,
+            NeedHelpNow
         ];
 
         private static readonly Dictionary<string, SupportSection> SectionBySlug = new()
@@ -46,8 +44,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
             ["off-the-job-otj-training"] = HowToDoYourApprenticeship,
             ["apprenticeship-assessments"] = HowToDoYourApprenticeship,
 
-            ["get-student-discounts"] = Benefits,
-            ["connect-and-network-with-other-apprentices"] = Benefits,
+            ["get-student-discounts"] = Support,
+            ["connect-and-network-with-other-apprentices"] = Support,
 
             ["your-rights-as-an-apprentice"] = Support,
             ["roles-and-responsibilities"] = Support,

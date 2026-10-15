@@ -42,7 +42,7 @@
             @foreach (var (typeName, ksbs) in ksbsByType)
             {
                 <div class="app-summary-list__row">
-                    <dt class="app-summary-list__key">@typeName</dt>
+                    <dt class="app-summary-list__key"><b>@typeName</b></dt>
                     <dd class="app-summary-list__value">
                         <div class="app-tag-group">
                             @foreach (var (status, cssClass, label) in statusConfig)

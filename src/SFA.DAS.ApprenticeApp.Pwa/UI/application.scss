@@ -15,3 +15,35 @@
 .app-icon-action {
   display: none;
 }
+
+.app-task-meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 16px;
+    row-gap: 8px;
+    margin: 0;
+}
+
+.app-task-meta dt {
+    font-weight: 700;
+    color: var(--govuk-secondary-text-colour, #484949)
+}
+
+.app-task-meta dd {
+    margin: 0;
+    color: var(--govuk-secondary-text-colour, #484949)
+}
+
+.text--mobile {
+    display: none;
+}
+
+@media (max-width: 40.0525em) {
+    .text--desktop {
+        display: none;
+    }
+
+    .text--mobile {
+        display: inline;
+    }
+}
