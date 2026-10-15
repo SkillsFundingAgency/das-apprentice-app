@@ -62,8 +62,13 @@ a.app-card {
     &:hover .app-card__heading {
         text-decoration: underline;
     }
+
+    @include helpers.govuk-media-query(tablet) {
+        padding: 1.5rem 0;        
+    }
 }
 
+#knowledge .app-card,
 .app-card--highlight {
     border: 1px solid var(--govuk-border-colour, #cecece);
 }
