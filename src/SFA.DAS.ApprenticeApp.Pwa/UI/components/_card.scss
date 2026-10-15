@@ -48,6 +48,22 @@ a.app-card {
   display: block;  
 }
 
+#knowledge a.app-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+
+    &:hover {
+        background-color: settings.$govuk-brand-colour;
+        border-color: settings.$govuk-brand-colour;
+        color: white;
+
+        .app-card__heading, p, ul, li {
+            color: inherit;
+        }
+    }
+}
+
 #tasks-todo .app-card,
 #ksb-tasks .app-card,
 #linked-ksb-details .app-card {

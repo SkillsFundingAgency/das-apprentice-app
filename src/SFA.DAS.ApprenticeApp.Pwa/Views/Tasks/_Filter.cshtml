@@ -47,12 +47,12 @@
                                     <div class="govuk-checkboxes__item">
                                         <input
                                                 class="govuk-checkboxes__input"
-                                                id="ksb-@tab"
+                                                id="noksb-@tab"
                                                 name="other-filter"
                                                 type="checkbox"
-                                                value="ksb"
+                                                value="noksb"
                                         />
-                                        <label class="govuk-label govuk-checkboxes__label" for="ksb-@tab">
+                                        <label class="govuk-label govuk-checkboxes__label" for="noksb-@tab">
                                             Not Linked to KSB
                                         </label>
                                     </div>                                       
@@ -245,6 +245,9 @@
 
       case "ksb":
         return "Linked to KSB";
+
+      case "noksb":
+        return "Not linked to KSB";
 
       case "reminder":
         return "Reminder set";
