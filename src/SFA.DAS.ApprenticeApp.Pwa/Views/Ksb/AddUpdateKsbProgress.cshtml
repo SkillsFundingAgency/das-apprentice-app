@@ -49,15 +49,15 @@
              <h2 class="govuk-heading-l">Notes and evidence for @Model.KsbProgress.KsbKey</h2>
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
             {
-                <div class="govuk-grid-row">
-                 <div class="govuk-grid-column-one-third app-column-sticky">
+                
+                 
                      <div class="app-fab-wrapper">
-                    <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width">
+                    <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button">
                         <span>Add note or evidence</span>
                     </a>
                     </div>
-                </div>
-                <div class="govuk-grid-column-two-thirds" id="ksb-tasks">
+                
+                <div id="ksb-tasks">
                 <partial name="_SortBy.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />    
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
@@ -83,7 +83,7 @@
                                 </div>
                             }
                             </div>
-                        </div>
+                      
             } else {
                 <div class="govuk-grid-column-one-third app-column-sticky">
                     <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width app-fab">
