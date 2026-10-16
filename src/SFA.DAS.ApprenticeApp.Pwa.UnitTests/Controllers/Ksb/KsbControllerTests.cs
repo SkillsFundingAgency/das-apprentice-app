@@ -527,78 +527,86 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Ksb
 
         [Test, MoqAutoData]
         public async Task Add_Update_KsbProgress_HttpPost_Async(
-           [Frozen] Mock<IOuterApiClient> client,
-           ApprenticeDetails apprenticeDetails,
-           [Frozen] Mock<ILogger<KsbController>> logger,
-           [Frozen] ApprenticeKsbProgressData ksbProgressData,
-           [Greedy] KsbController controller)
+    [Frozen] Mock<IOuterApiClient> client,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    ApprenticeKsbProgressData ksbProgressData,
+    [Frozen] Mock<ILogger<KsbController>> logger,
+    [Greedy] KsbController controller)
         {
-            var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            apprenticeIdClaim
-        })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
+
+            apprenticeContext
+                .SetupGet(x => x.ApprenticeId)
+                .Returns(apprenticeId.ToString());
 
             ksbProgressData.ApprenticeshipId = 0;
-            var result = await controller.AddUpdateKsbProgress(ksbProgressData) as RedirectToActionResult;
+
+            client
+                .Setup(x => x.AddUpdateKsbProgress(
+                    apprenticeId,
+                    ksbProgressData))
+                .Returns(Task.CompletedTask);
+
+            var result = await controller.AddUpdateKsbProgress(ksbProgressData);
 
             using (new AssertionScope())
             {
-                logger.Verify(x => x.Log(LogLevel.Information,
-                   It.IsAny<EventId>(),
-                   It.Is<It.IsAnyType>((object v, Type _) =>
-                           v.ToString().Contains($"AddUpdateKsbProgress for KSB")),
-                   It.IsAny<Exception>(),
-                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
-                result.Should().NotBeNull();
-                result.ActionName.Should().Be("Index");
-                result.ControllerName.Should().Be("Ksb");
+                result.Should().BeOfType<NoContentResult>();
+
+                client.Verify(x => x.AddUpdateKsbProgress(
+                    apprenticeId,
+                    ksbProgressData), Times.Once);
+
+                logger.Verify(x => x.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((value, _) =>
+                        value.ToString()!.Contains("AddUpdateKsbProgress for KSB")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()));
             }
         }
 
         [Test, MoqAutoData]
         public async Task Add_Update_KsbProgress_HttpPost_Async_Catch(
-          [Frozen] Mock<IOuterApiClient> client,
-          ApprenticeDetails apprenticeDetails,
-          [Frozen] Mock<ILogger<KsbController>> logger,
-          [Frozen] ApprenticeKsbProgressData ksbProgressData,
-          [Greedy] KsbController controller)
+    [Frozen] Mock<IOuterApiClient> client,
+    [Frozen] Mock<IApprenticeContext> apprenticeContext,
+    [Frozen] Mock<ILogger<KsbController>> logger,
+    ApprenticeKsbProgressData ksbProgressData,
+    [Greedy] KsbController controller)
         {
-            var httpContext = new DefaultHttpContext();
             var apprenticeId = Guid.NewGuid();
-            var apprenticeIdClaim = new Claim(Constants.ApprenticeIdClaimKey, apprenticeId.ToString());
-            var claimsPrincipal = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[]
-        {
-            apprenticeIdClaim
-        })});
-            httpContext.User = claimsPrincipal;
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
+
+            apprenticeContext
+                .SetupGet(x => x.ApprenticeId)
+                .Returns(apprenticeId.ToString());
 
             ksbProgressData.ApprenticeshipId = 0;
-            client.Setup(c => c.AddUpdateKsbProgress(apprenticeId, It.IsAny<ApprenticeKsbProgressData>())).ThrowsAsync(new Exception("Error"));
-            var result = await controller.AddUpdateKsbProgress(ksbProgressData) as RedirectToActionResult;
+
+            client
+                .Setup(x => x.AddUpdateKsbProgress(
+                    apprenticeId,
+                    ksbProgressData))
+                .ThrowsAsync(new Exception("Error"));
+
+            var result = await controller.AddUpdateKsbProgress(ksbProgressData);
 
             using (new AssertionScope())
             {
-                logger.Verify(x => x.Log(LogLevel.Information,
-                   It.IsAny<EventId>(),
-                   It.Is<It.IsAnyType>((object v, Type _) =>
-                           v.ToString().Contains($"AddUpdateKsbProgress for KSB")),
-                   It.IsAny<Exception>(),
-                   (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()));
-                result.Should().NotBeNull();
-                result.ActionName.Should().Be("Index");
-                result.ControllerName.Should().Be("Ksb");
+                result.Should().BeOfType<NoContentResult>();
+
+                client.Verify(x => x.AddUpdateKsbProgress(
+                    apprenticeId,
+                    ksbProgressData), Times.Once);
+
+                logger.Verify(x => x.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((value, _) =>
+                        value.ToString()!.Contains(
+                            "AddUpdateKsbProgress for KSB")),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()));
             }
         }
 

@@ -76,7 +76,7 @@
               </div>
               @if (ViewBag.HideNavigation != true)
                 {
-                    <a class="app-header__link" asp-controller="Account" asp-action="SigningOut">
+                    <a class="app-header__link header__sign-out" asp-controller="Account" asp-action="SigningOut">
                         Sign out
                     </a>
                 }              
@@ -93,7 +93,7 @@
         <div class="govuk-service-navigation__container">
           <p class="govuk-service-navigation__service-name">
               
-              Your Apprenticeship: @(User.FindFirst(Constants.ApprenticeshipTitleClaimKey)?.Value)
+              Your Apprenticeship @(User.FindFirst(Constants.ApprenticeshipTitleClaimKey)?.Value)
       
           </p>
           @if (ViewBag.HideNavigation != true)
