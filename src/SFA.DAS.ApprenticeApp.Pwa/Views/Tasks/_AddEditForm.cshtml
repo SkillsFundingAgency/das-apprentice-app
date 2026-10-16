@@ -2,7 +2,7 @@
 
 <!--TITLE-->
 <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="150" data-threshold="85">
-    <label class="govuk-label" asp-for="@Model.Task.Title">
+    <label class="govuk-fieldset__legend govuk-fieldset__legend--m" asp-for="@Model.Task.Title">
         Title
     </label>
     <div class="govuk-hint" id="duedate-hint">For example, Health and safety training</div>
@@ -17,12 +17,12 @@
 
 <!--DATE-->
 @{
-    var dueDateValue = Model.Task.DueDate.GetValueOrDefault();
-    var hasDate = Model.Task.DueDate != null;
+    var dueDateValue = Model.Task.DueDate ?? DateTime.Today;
+    var hasDate = Model.Task.DueDate != null;    
 }
 <div class="govuk-form-group" id="date-group">
      <fieldset class="govuk-fieldset" role="group" aria-describedby="date-error">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
             Date
         </legend>
         <div class="govuk-error-message" id="date-error"></div>
@@ -33,7 +33,7 @@
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2 js-datepicker-date" id="duedate-day"
                            name="duedate-day" type="text" inputmode="numeric"
                            required pattern="[0-9]{1,2}" title="Day must be a number, like 21"
-                           value="@(hasDate? dueDateValue.Day.ToString() : "")">
+                           value="@dueDateValue.Day">
                 </div>
             </div>
             <div class="govuk-date-input__item">
@@ -42,7 +42,7 @@
                     <input class="govuk-input govuk-date-input__input govuk-input--width-2 js-datepicker-month" id="duedate-month"
                            name="duedate-month" type="text" inputmode="numeric"
                            required pattern="[0-9]{1,2}" title="Month must be a number, like 8"
-                           value="@(hasDate? dueDateValue.Month.ToString() : "")">
+                           value="@dueDateValue.Month">
                 </div>
             </div>
             <div class="govuk-date-input__item">
@@ -51,7 +51,7 @@
                     <input class="govuk-input govuk-date-input__input govuk-input--width-4 js-datepicker-year" id="duedate-year"
                            name="duedate-year" type="text" inputmode="numeric"
                            required pattern="[0-9]{4}" title="Year must be 4 numbers, like 2026"
-                           value="@(hasDate? dueDateValue.Year.ToString() : "")">
+                           value="@dueDateValue.Year">
                 </div>
             </div>
             <div id="calendar-container" class="ds_datepicker__calendar-container"></div>
@@ -62,7 +62,7 @@
 
 <!--NOTE-->
 <div class="govuk-form-group govuk-character-count" data-module="govuk-character-count" data-maxlength="1000" data-threshold="85">
-    <label class="govuk-label" for="note">
+    <label class="govuk-fieldset__legend govuk-fieldset__legend--m" for="note">
         Note <span class="govuk-!-font-weight-regular">(optional)</span>
     </label>
     <div class="govuk-hint" id="duedate-hint">You can use this to describe what you did or what you learnt</div>
@@ -76,7 +76,7 @@
 
 <!--LINK TO KSB-->
 <div class="govuk-form-group show-if-js-enabled">
-    <label class="govuk-label govuk-!-margin-bottom-4">
+    <label class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-4">
         Linked KSBs <span class="govuk-!-font-weight-regular">(optional)</span>
     </label>
     <div class="govuk-hint" id="duedate-hint">You can link this to KSBs yourself, or ask your tutor what KSBs this links to</div>

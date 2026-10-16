@@ -53,6 +53,10 @@ a.app-card {
     color: inherit;
     display: block;
 
+    .app-card__heading {
+        text-decoration: underline;
+    }
+
     &:hover {
         background-color: settings.$govuk-brand-colour;
         border-color: settings.$govuk-brand-colour;

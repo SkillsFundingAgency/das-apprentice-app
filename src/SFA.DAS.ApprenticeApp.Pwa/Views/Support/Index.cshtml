@@ -39,7 +39,7 @@
                 {
                     <li class="app-stack__list-item">
                         <a asp-controller="Support" asp-action="SavedArticles" class="app-stack__link">
-                            Your saved articles
+                            <span class="app-stack__header">Your saved articles</span>    
                         </a>
                     </li>
                 }
@@ -47,7 +47,7 @@
                 {
                     <li class="app-stack__list-item">
                         <a asp-controller="Support" asp-action="ArticlesPage" asp-route-slug="@item.Slug" class="app-stack__link">
-                            @item.Heading
+                            <span class="app-stack__header">@item.Heading</span>                            
                             <span class="app-stack__description">@item.Description</span>
                         </a>
                     </li>

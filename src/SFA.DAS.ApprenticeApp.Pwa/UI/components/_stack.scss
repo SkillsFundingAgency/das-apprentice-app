@@ -69,5 +69,11 @@
 }
 
 .app-stack__link:visited:hover {
-  color: settings.$govuk-link-hover-colour;
+  color: settings.$govuk-link-hover-colour;  
+}
+
+.app-stack__link:hover {
+    .app-stack__header {
+        text-decoration: underline;
+    }
 }

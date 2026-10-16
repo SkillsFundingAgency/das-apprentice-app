@@ -18,7 +18,7 @@
 <h1 class="govuk-heading-xl">
     @Model.KsbProgress.KsbKey
 </h1>
-<p class="govuk-body">@Model.KsbDetail</p>
+<p class="govuk-body-l">@Model.KsbDetail</p>
 <partial name="_HelpKSBs.cshtml" />
         <form method="post" asp-controller="Ksb" asp-action="AddUpdateKsbProgress" enctype="multipart/form-data"
               class="form submit-form">
@@ -48,17 +48,9 @@
 
              <h2 class="govuk-heading-l">Notes and evidence for @Model.KsbProgress.KsbKey</h2>
             @if (Model.KsbProgress.Tasks != null && Model.KsbProgress.Tasks.Count > 0)
-            {
-                
-                 
-                     <div class="app-fab-wrapper">
-                    <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button">
-                        <span>Add note or evidence</span>
-                    </a>
-                    </div>
-                
-                <div id="ksb-tasks">
-                <partial name="_SortBy.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />    
+            {                
+                <partial name="_SortBy.cshtml" view-data='@(new ViewDataDictionary(ViewData) { { "Tab", "todo" } })' />
+                <div id="ksb-tasks">                
                         @foreach (var task in Model.KsbProgress.Tasks)
                         {
                         <div class="app-card">
