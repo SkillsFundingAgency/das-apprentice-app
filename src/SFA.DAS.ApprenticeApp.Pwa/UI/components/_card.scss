@@ -92,3 +92,41 @@ a.app-card {
 .app-card--highlight {
     border: 1px solid var(--govuk-border-colour, #cecece);
 }
+
+#linked-ksb-details .app-card {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 1rem;
+
+    .app-card__header {
+        flex: 0 0 5rem;
+
+        .app-card__heading {
+            margin: 0;
+            color: #000;            
+        }
+    }
+
+    p {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .ksb-status-display {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    &:hover {
+        .app-card__heading {
+            text-decoration: none;
+        }
+    }
+}
+
+@media (max-width: 40.0525em) {
+    #linked-ksb-details .app-card {
+        display: block;
+    }
+}
