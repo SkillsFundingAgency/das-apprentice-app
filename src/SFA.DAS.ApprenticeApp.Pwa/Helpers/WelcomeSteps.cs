@@ -21,7 +21,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
     {
         public static readonly WelcomeStep[] All =
         [
-            new("Welcome, let’s take a quick tour of Your Apprenticeship",
+            new("Welcome to Your Apprenticeship",
                 [
                     "We have everything you need so you can succeed in your apprenticeship.",
                     "Take our tour or watch our video to see how Your Apprenticeship can help you."
@@ -33,7 +33,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
             new("All your knowledge, skills and behaviours (KSBs) in one place",
                 [
                     "In an apprenticeship, you’ll do regular training to learn the KSBs you need for your job.",
-                    "We have all your KSBs in one place, with an easy way to track your progress, make notes, and record the time you’ve spent on them."
+                    "We have all your KSBs in one place, with an easy way to track your progress and make notes."
                 ],
                 "screen-2",
                 "KSBs",
@@ -41,7 +41,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
 
             new("Show your learning with notes and evidence",
                 ["Your apprenticeship will involve showing what you’ve learnt.",
-                "Add notes, photos, documents and more to start building evidence for your apprenticeship assessments. Share with your tutors and get their feedback and support.",
+                "Add notes to start building evidence for your apprenticeship assessments. Share with your tutors and get their feedback and support.",
                 ],
                 "screen-3",
                 "Keep on top of things with tasks",
@@ -66,7 +66,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
             new("Work how you want to work",
                 [
                 "Your Apprenticeship is available on your phone, computer and tablet, so you can work on the go, or at your desk.",
-                "Capture quick notes on site, upload photos while you're on the bus, or write notes on your computer. Move seamlessly between the app and the web, picking up where you left off."
+                "Capture quick notes on site or write on your computer. Move seamlessly between the app and the web, picking up where you left off. "
                 ],
                 "screen-5",
                 "Your account",

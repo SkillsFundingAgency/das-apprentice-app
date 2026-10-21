@@ -46,14 +46,15 @@
     justify-content: space-between;
     width: 100%;
     order: 2;
+    margin-top: 20px;
 
     @media (min-width: 40.0625em) {
         justify-content: flex-end;
-        width: 75%;
-        margin-right: 15%;
+        gap: 10px;
     }
 
     .app-onboarding__back {
+        order: 1;
         align-self: flex-start;
         position: relative;
         padding-left: .875rem;
@@ -65,10 +66,15 @@
     }
 
     .app-onboarding__skip {
+        order: 2;
         align-self: flex-end;
         position: relative;
         padding-right: .875em;
         margin-left: auto;
+
+        @media (min-width: 40.0625em) {
+            margin: 0;
+        }
 
         &:before {
             content: "";
