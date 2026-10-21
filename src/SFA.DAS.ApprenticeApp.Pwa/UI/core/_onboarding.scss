@@ -15,8 +15,7 @@
   flex-direction: column;
   position: absolute;
   left: 15px;
-  right: 15px;
-  bottom: 30px;
+  right: 15px;  
   @media (min-width: 40.0625em) {
     flex-direction: row;
     position: relative;
@@ -42,35 +41,69 @@
   margin-bottom: 0;
 }
 
-.app-onboarding__skip {
-  order: 2;
-  align-self: flex-end;
-  position: relative;
-  padding-right: .875em;
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: .1875em;
-    width: .4375em;
-    height: .4375em;
-    margin: auto 0;
-    transform: rotate(45deg);
-    border: solid;
-    border-width: 1px 1px 0 0;
-    border-color: currentColor;
-  }
+.app-onboarding__navigation-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    order: 2;
+    margin-top: 20px;
+
+    @media (min-width: 40.0625em) {
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .app-onboarding__back {
+        order: 1;
+        align-self: flex-start;
+        position: relative;
+        padding-left: .875rem;
+        margin: 0;
+
+        @media (min-width: 40.0625em) {
+            margin: 0 30px;
+        }
+    }
+
+    .app-onboarding__skip {
+        order: 2;
+        align-self: flex-end;
+        position: relative;
+        padding-right: .875em;
+        margin-left: auto;
+
+        @media (min-width: 40.0625em) {
+            margin: 0;
+        }
+
+        &:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: .1875em;
+            width: .4375em;
+            height: .4375em;
+            margin: auto 0;
+            transform: rotate(45deg);
+            border: solid;
+            border-width: 1px 1px 0 0;
+            border-color: currentColor;
+        }
+    }
 }
+
+
 
 .app-onboarding__image,
 .app-onboarding__image--desktop,
 .app-onboarding__image--mobile {
-  width: 100%;
-  margin-top: 2rem;
+  width: 100%;  
+  height: 150px;
   @media (min-width: 40.0625em) {
     margin: 1rem;
+    height: 250px;
   }
 }
 
@@ -82,8 +115,9 @@
 }
 
 .app-onboarding__image--mobile {
-  display: block;
-  @media (min-width: 40.0625em) {
-    display: none;
-  }
+    display: block;
+
+    @media (min-width: 40.0625em) {
+        display: none;
+    }  
 }
