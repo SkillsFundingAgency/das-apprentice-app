@@ -11,18 +11,15 @@
 @media (max-width: 40.0525em) and (orientation: portrait) {
   .govuk-template--rebranded {
     background: #fff;
-  }
-  .govuk-header {
-    display: none;
-  }
-  .govuk-service-navigation__service-name {
-    display: none;
-  }
+  }    
   .govuk-template--rebranded .govuk-service-navigation {
     border: none;
   }
   .govuk-service-navigation__toggle {
     display: none;
+  }
+  .header__sign-out {
+      display: none;
   }
   .govuk-service-navigation__wrapper {
     position: fixed;
@@ -110,27 +107,40 @@
 }
 
 .app-task-list {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  .govuk-details[open] {
-    margin-bottom: 0;
-  }
-  @include helpers.govuk-media-query(tablet) {
-    position: relative;
-    .govuk-details[open] .govuk-details__summary {
-      margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    .govuk-details[open] {
+        margin-bottom: 0;
     }
-  }
+
+    @include helpers.govuk-media-query(tablet) {
+        position: relative;
+
+        .govuk-details[open] .govuk-details__summary {
+            margin-bottom: 3rem;
+            display: none;
+        }
+    }
+}
+
+@include helpers.govuk-media-query(tablet) {
+    #filterKSBs.govuk-details[open] .govuk-details__summary {
+        margin-bottom: 3rem;
+        display: none;
+    }
 }
 
 .app-task-list__sort-by {
-  select {
-    width: 100%;
-  }
-  @include helpers.govuk-media-query(tablet) {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
+    margin-bottom: 20px;
+
+    select {
+        width: 100%;
+    }
+
+    @include helpers.govuk-media-query(tablet) {
+        position: relative;
+        margin-bottom: 20px;
+    }
 }

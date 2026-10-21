@@ -28,12 +28,21 @@
 
 <div class="app-card app-card--highlight">
     <div class="app-card__header">
-        <h2 class="govuk-heading-m">Your KSBs</h2>
+        <div class="govuk-grid-row progress-dashboard-heading">
+            <div class="govuk-grid-column-two-thirds">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Your progress</h2>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <span class="progress-dashboard-toggle-link">
+                    <a href="/settings/Index">Hide in settings</a>
+                </span>
+            </div>
+        </div>       
         <dl class="app-summary-list">
             @foreach (var (typeName, ksbs) in ksbsByType)
             {
                 <div class="app-summary-list__row">
-                    <dt class="app-summary-list__key">@typeName</dt>
+                    <dt class="app-summary-list__key"><b>@typeName</b></dt>
                     <dd class="app-summary-list__value">
                         <div class="app-tag-group">
                             @foreach (var (status, cssClass, label) in statusConfig)
