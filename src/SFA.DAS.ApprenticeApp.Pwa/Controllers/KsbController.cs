@@ -105,6 +105,74 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ApplyFilters(
+            [FromForm(Name = "filter")] string[] statusFilters,
+            [FromForm(Name = "other-filter")] string[] otherFilters,
+            string keyword,
+            string searchTerm,
+            string removeFilter)
+        {
+            var statuses = (statusFilters ?? Array.Empty<string>()).ToList();
+            var others = (otherFilters ?? Array.Empty<string>()).ToList();
+
+            if (!string.IsNullOrEmpty(removeFilter))
+            {
+                if (removeFilter.StartsWith("filter:"))
+                {
+                    statuses.RemoveAll(x => x == removeFilter["filter:".Length..]);
+                }
+                else if (removeFilter.StartsWith("other-filter:"))
+                {
+                    others.RemoveAll(x => x == removeFilter["other-filter:".Length..]);
+                }
+                else if (removeFilter == "keyword")
+                {
+                    keyword = string.Empty;
+                }
+            }
+
+            var filters = new List<string>();
+
+            foreach (var status in statuses.Distinct())
+            {
+                filters.Add($"filter={Uri.EscapeDataString(status)}");
+            }
+
+            foreach (var other in others.Distinct())
+            {
+                filters.Add($"other-filter={Uri.EscapeDataString(other)}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                filters.Add($"keyword={Uri.EscapeDataString(keyword.Trim())}");
+            }
+
+            if (filters.Count > 0)
+            {
+                Response.Cookies.Append(
+                    Constants.KsbFiltersCookieName,
+                    string.Join("&", filters),
+                    new CookieOptions
+                    {
+                        Path = "/",
+                        Secure = Request.IsHttps,
+                        SameSite = SameSiteMode.Lax
+                    });
+            }
+            else
+            {
+                Response.Cookies.Delete(
+                    Constants.KsbFiltersCookieName,
+                    new CookieOptions { Path = "/" });
+            }
+
+            return RedirectToAction(nameof(Index), new { searchTerm });
+        }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> LinkKsbs()
         {
