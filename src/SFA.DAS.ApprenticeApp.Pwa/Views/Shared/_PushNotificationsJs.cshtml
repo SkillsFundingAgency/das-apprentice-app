@@ -1,5 +1,4 @@
-﻿<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script type="text/javascript">
+﻿<script type="text/javascript">
 
 
     //step 3: register the service worker
@@ -22,14 +21,14 @@
     }
     async function requestNotificationPermission() {
 
-        // Remove the notifications dialogue on continue click
-        const notificationDiv = document.querySelector('.enable-notifications');
-        if (notificationDiv) {
-            notificationDiv.remove();
-            console.log('Notification dialogue removed successfully');
+        // The modal closes itself via data-modal-close on the Continue button.
+        const permission = await Notification.requestPermission();
+
+        if (permission === "granted") {
+            const worker = await navigator.serviceWorker.getRegistration();
+            await registerPush(worker);
         }
-        
-        await Notification.requestPermission();
+
         displayNotificationButtons();
     }
 
@@ -47,7 +46,9 @@
                 return sendSubscriptionToServer(subscription, false);
             })
             .catch((error) => {
-                console.error("Failed to subscribe the user: ", error);
+                console.error("Failed to subscribe the user:", error);
+                alert(error.message);
+                throw error;
             });
     }
 
