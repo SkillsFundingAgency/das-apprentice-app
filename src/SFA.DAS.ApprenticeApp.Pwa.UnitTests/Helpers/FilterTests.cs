@@ -167,7 +167,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Helpers
             };
 
             // Act
-            var result = Filter.FilterKsbResults(ksbs, "other-filter=LINKED-TO-A-TASK");
+            var result = Filter.FilterKsbResults(ksbs, "other-filter=HAS-NOTES");
 
             // Assert
             result.FilteredKsbs.Count.Should().Be(1);

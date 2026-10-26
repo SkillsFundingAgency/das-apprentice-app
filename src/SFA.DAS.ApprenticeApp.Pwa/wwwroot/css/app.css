@@ -333,11 +333,6 @@ a:focus, .govuk-link:focus {
   margin-top: 0;
   margin-bottom: 30px;
 }
-@media (min-width: 40.0625em) {
-  .govuk-heading-xl, .app-pages-welcome__heading {
-    margin-bottom: 50px;
-  }
-}
 
 .govuk-heading-l, .app-page-header__heading {
   color: #0b0c0c;
