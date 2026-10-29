@@ -16,5 +16,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewModels
         public List<KSBStatus> KsbStatuses { get; set; }
 
         public MyApprenticeship? MyApprenticeship { get; set; }
+
+        public bool ShowPushNotificationModal { get; set; }
     }
 }
