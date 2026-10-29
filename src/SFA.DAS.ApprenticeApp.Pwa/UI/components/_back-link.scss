@@ -1,15 +1,25 @@
 @use "govuk/settings/index" as settings;
 
 .app-back-link {
-  &, &:link, &:visited {
-    color: settings.$govuk-link-colour;
-  }
-  &:focus {
-    color: #000
-  }
-  font-size: 1rem;
-  align-self: start;
-  &:before, &:after {
-    border-color: currentColor;
-  }
+    margin-top: 20px;
+    margin-bottom: 0px;
+
+    &, &:link, &:visited {
+        color: settings.$govuk-link-colour;
+    }
+
+    &:focus {
+        color: #000
+    }
+
+    font-size: 1rem;
+    align-self: start;
+
+    &:before, &:after {
+        border-color: currentColor;
+    }
+
+    @media (min-width: 40.0625em) {
+        margin-top: 40px;
+    }
 }
