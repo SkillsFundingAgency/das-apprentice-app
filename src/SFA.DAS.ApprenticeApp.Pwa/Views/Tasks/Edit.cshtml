@@ -17,9 +17,8 @@
     <a class="@backLinkClass" href="@backLinkUrl">Back without saving</a>
 }
 <h1 class="govuk-heading-xl">
-    Edit task
+    @Model.Task.Title
 </h1>
-<partial name="_HelpTasks.cshtml" />
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <div class="app-overlay__content add-edit-content-area">
@@ -48,12 +47,12 @@
                            asp-for="@Model.Task.KsbsLinked" />
                     <div id="linked-ksb-details">
                         @foreach (var ksbProgressData in Model.KsbProgressData)
-                        {
-                            <a asp-controller="Ksb" asp-action="AddUpdateKsbProgress" asp-route-id="@ksbProgressData.KsbId" class="app-card">
+                        {                            
+                                <div class="app-card">
                                     <div class="app-card__header">
-                                        <h2 class="app-card__heading">@ksbProgressData.KsbKey</h2>
+                                    <h2 class="app-card__heading govuk-body-m"><b>@ksbProgressData.KsbKey</b></h2>
                                     </div>
-                                    <p>@ksbProgressData.Detail</p>
+                                    <p class="govuk-body-s">@ksbProgressData.Detail</p>
                                     <span>
                                         @{
                                         var statusItem = @ksbProgressData.CurrentStatus;
@@ -67,7 +66,7 @@
                                         </div>
                                         }
                                     </span>
-                          </a>
+                                 </div>                          
                         }
                     </div>
                 </div>
@@ -88,34 +87,14 @@
         </div>
     </div>
     <div class="govuk-grid-column-one-third app-column-sticky">
-        <ul class="govuk-list govuk-list--spaced">
-            <li>
-                <a href="#" id="move-task-status" data-status-id="@(Model.StatusId == 0 ? 1 : 0)" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
-                    <span class="app-icon-item">
-                        <svg width="24" height="24" class="app-icon-item__icon">
-                            <use href="/assets/icons/sprite.svg#checkbox-done"></use>
-                        </svg>
-                        <span class="app-icon__text">Move this task to @(Model.StatusId == 0 ? "Done" : "To do")</span>
-                    </span>
-                </a>
-            </li>
-            <li class="show-if-js-enabled">
-                <a href="#" id="share-task" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap">
-                    <span class="app-icon-item">
-                        <svg width="24" height="24" class="app-icon-item__icon">
-                            <use href="/assets/icons/sprite.svg#share"></use>
-                        </svg>
-                        <span class="app-icon__text">Share this task</span>
-                    </span>
-                </a>
-            </li>
+        <ul class="govuk-list govuk-list--spaced">         
             <li>
                 <a href="@Url.Action("ConfirmDelete", "Tasks", new { id = Model.Task.TaskId, status = Model.StatusId })" class="govuk-link govuk-link--no-visited-state app-icon-list__link-wrap app-link--destructive">
                     <span class="app-icon-item">
                         <svg width="24" height="24" class="app-icon-item__icon">
                             <use href="/assets/icons/sprite.svg#delete"></use>
                         </svg>
-                        <span class="app-icon__text">Delete task</span>
+                        <span class="app-icon__text">Delete this note</span>
                     </span>
                 </a>
             </li>

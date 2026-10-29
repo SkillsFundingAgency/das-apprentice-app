@@ -1,6 +1,21 @@
 ﻿@using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 @model NotificationPageModel
 
+<details class="govuk-details app-details govuk-!-margin-bottom-9" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+            Help with notifications
+        </span>
+    </summary>
+    <div class="govuk-details__text">
+        <p>You'll see notifications when we need to tell you something</p>
+        <p>
+            Notifications will always appear in the app. You can turn push notifications on or off in
+            <a asp-controller="Settings" asp-action="Index" class="govuk-link">settings</a>.
+        </p>
+    </div>
+</details>
+
 <!--todo surveys -->
 @if (Model.SurveyNotificationSeen == false)
 {
