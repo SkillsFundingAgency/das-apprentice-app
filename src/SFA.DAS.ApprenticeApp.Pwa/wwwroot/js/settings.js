@@ -71,7 +71,8 @@ const hideNotificationHint = () => {
 
 const updateToggleState = async (toggle) => {
   if (Notification.permission === "granted") {
-    const registration = await navigator.serviceWorker.getRegistration();
+      await navigator.serviceWorker.register("/service-worker.js");
+      const registration = await navigator.serviceWorker.ready;
     if (registration) {
       const subscription = await registration.pushManager.getSubscription();
       toggle.checked = !!subscription;
