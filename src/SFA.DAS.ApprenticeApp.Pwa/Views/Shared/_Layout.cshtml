@@ -105,8 +105,12 @@
     </section>
 
     <div class="govuk-width-container">
-      @await RenderSectionAsync("BackLink", required: false)
-      <main class="govuk-main-wrapper" id="main-content">@RenderBody()</main>
+        @await RenderSectionAsync("BackLink", required: false)
+        @if (ViewContext.RouteData.Values["controller"]?.ToString() != "Settings" && !Context.Request.Cookies.ContainsKey("pushNotificationsEnabled"))
+        {
+            <partial name="_PushNotificationPrompt" />
+        }
+        <main class="govuk-main-wrapper" id="main-content">@RenderBody()</main>
     </div>
 
     <footer class="govuk-footer">
