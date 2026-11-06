@@ -10,6 +10,7 @@
         public const string TaskFilterSortCookieName = "SFA.ApprenticeApp.TaskFilterSort";
         public const string KsbFiltersCookieName = "SFA.ApprenticeApp.KsbFilters";
         public const string CookieTrackCookieName = "SFA.ApprenticeApp.CookieTrack";
+        public const string PushNotificationPromptCookieName = "SFA.ApprenticeApp.PushNotificationPrompt";
         public const string ApprenticeIdClaimKey = "apprentice_id";
         public const string TermsAcceptedClaimKey = "TermsOfUseAccepted";
         public const string ApprenticeshipIdClaimKey = "ApprenticeshipId";
