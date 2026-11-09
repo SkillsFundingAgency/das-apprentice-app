@@ -3,9 +3,10 @@
     var showPrompt = !Context.Request.Cookies.ContainsKey(cookieName);
 }
 
-<div class="enable-notifications app-modal @(showPrompt ? "app-modal--visible" : "")">
-     id="push-notification-prompt"
-     data-module="app-modal">
+<div class="enable-notifications app-modal @(showPrompt ? "app-modal--visible" : "")" 
+        id="push-notification-prompt"
+        data-module="app-modal">
+        >
     <div class="app-modal__dialog"
          role="dialog"
          aria-modal="true"
