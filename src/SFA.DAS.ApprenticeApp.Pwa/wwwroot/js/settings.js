@@ -58,10 +58,12 @@ const registerPush = async (registration) => {
 };
 
 const showNotificationHint = (message) => {
-  const hint = document.getElementById("notificationHint");
-  if (!hint) return;
-  hint.textContent = message;
-  hint.hidden = false;
+    const hint = document.getElementById("notificationHint");
+    const wrapper = hint.closest('.govuk-form-group');
+    if (!hint) return;
+    hint.textContent = message;   
+    hint.hidden = false;
+    wrapper.classList.add('govuk-form-group--error');
 };
 
 const hideNotificationHint = () => {
