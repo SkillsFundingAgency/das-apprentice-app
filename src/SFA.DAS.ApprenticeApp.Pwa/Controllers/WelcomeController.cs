@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
+using SFA.DAS.ApprenticeApp.Domain.Interfaces;
 using SFA.DAS.ApprenticeApp.Pwa.Configuration;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
@@ -10,12 +11,27 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
     [Authorize]
     public class WelcomeController : Controller
     {
-        public WelcomeController() { }
+        private readonly IOuterApiClient _client;
+        private readonly IApprenticeContext _apprenticeContext;
+
+        public WelcomeController(IOuterApiClient client, IApprenticeContext apprenticeContext) 
+        {
+            _client = client;
+            _apprenticeContext = apprenticeContext;
+        }
 
         [Route("~/Welcome/{step:int?}")]
-        public IActionResult Index(int? step = null)
+        public async Task<IActionResult> Index(int? step = null)
         {
-            var cookie = Request.Cookies[Constants.WelcomeSplashScreenCookieName];
+            // Create Notifications if they do not already exists
+            var apprenticeId = _apprenticeContext.ApprenticeId;
+
+            if (apprenticeId != null )
+            {
+                await _client.AddApprenticeshipProgress(new Guid(apprenticeId));
+            }            
+
+        var cookie = Request.Cookies[Constants.WelcomeSplashScreenCookieName];
 
             // The cookie records that the tour has already been shown, so arriving at
             // /Welcome again moves the apprentice on. A step in the URL is an explicit
