@@ -84,15 +84,26 @@
   }
   .govuk-footer,
   .govuk-template--rebranded .govuk-footer {
-    background: none;
+    background: #F4F8FB;
     border: none;
     text-align: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
   .govuk-footer__meta {
     display: none;
   }
   .govuk-footer__crown {
     color: #ccc;
+    width: 56px;
+    height: 52px;
+  }
+
+  body:has(.app-fab-wrapper) .govuk-footer {
+    margin-bottom: 150px;
+  }
+  body:not(:has(.app-fab-wrapper)) .govuk-footer {
+    margin-bottom: 80px;
   }
 }
 
