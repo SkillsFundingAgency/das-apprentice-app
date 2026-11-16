@@ -48,6 +48,9 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                             case "KSB":
                                 filteredTasks.AddRange(tasks.Where(x => x.TaskLinkedKsbs.Count > 0).ToList());
                                 break;
+                            case "NOKSB":
+                                filteredTasks.AddRange(tasks.Where(x => x.TaskLinkedKsbs.Count == 0).ToList());
+                                break;
                             case "NOTE-ADDED":
                                 filteredTasks.AddRange(tasks.Where(x => x.Note != null).ToList());
                                 break;
@@ -126,8 +129,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Helpers
                 });
             }
 
-            // Apply other filters (currently only "LINKED-TO-A-TASK")
-            if (otherFilters.Contains("linked-to-a-task", StringComparer.OrdinalIgnoreCase))
+            // Apply other filters (currently only "HAS-NOTES")
+            if (otherFilters.Contains("has-notes", StringComparer.OrdinalIgnoreCase))
             {
                 result = result.Where(ksb => ksb.Progress?.Tasks?.Count > 0);
             }

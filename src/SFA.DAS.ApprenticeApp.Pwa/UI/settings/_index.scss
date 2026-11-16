@@ -1,1 +1,28 @@
+@use "govuk/helpers/index" as helpers;
 @use "typography";
+
+.progress-dashboard-heading {
+    container-type: inline-size;
+}
+
+.progress-dashboard-toggle-link {
+    display: flex;
+    justify-content: start;
+
+    @include helpers.govuk-media-query(tablet) {
+        justify-content: end;
+    }
+}
+
+@container (max-width: 600px) {
+    .progress-dashboard-heading .govuk-grid-column-two-thirds, .progress-dashboard-heading .govuk-grid-column-one-third {
+        width: 100%;
+        float: none;
+    }
+
+    .progress-dashboard-toggle-link {
+        margin-top: 5px;
+        text-align: left;
+        justify-content: start;
+    }
+}

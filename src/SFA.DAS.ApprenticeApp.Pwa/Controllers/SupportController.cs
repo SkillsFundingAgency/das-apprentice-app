@@ -34,7 +34,12 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             if (!string.IsNullOrEmpty(apprenticeId))
             {
                 var pages = await _client.GetCategories(Constants.ContentfulTopLevelPageTypeName);
-                return View(new SupportCategoryPageModel() { Categories = pages });
+                var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+                return View(new SupportCategoryPageModel()
+                {
+                    Categories = pages,
+                    FirstName = apprenticeDetails?.Apprentice?.FirstName
+                });
             }
             return RedirectToAction("Index", "Home");
         }

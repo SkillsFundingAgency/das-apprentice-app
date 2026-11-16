@@ -15,11 +15,32 @@
   position: fixed;
   bottom: 5rem;
   right: 1rem;
+  left: 1rem;
   width: auto;
   @include helpers.govuk-media-query(tablet) {
     position: relative;
     width: 100%;
     bottom: auto;
     right: auto;
+    left: auto;
   }
+}
+
+@media (max-width: 40.0525em) {
+    .app-fab-wrapper {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        right: 0;
+        bottom: 80px;
+        padding: 12px 16px;
+        background: #f4f8fb;
+        border-top: 1px solid var(--govuk-border-color, #cecece);
+    }
+}
+
+.app-fab-wrapper {
+    .app-button {
+        width: 100%;
+    }
 }

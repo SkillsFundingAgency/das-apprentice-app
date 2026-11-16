@@ -1,0 +1,55 @@
+﻿@using SFA.DAS.ApprenticeApp.Application
+@{  
+    var tab = ViewData["Tab"] as string ?? "todo";
+} 
+ 
+<div class="app-task-list__sort-by">
+    <h2 for="sort-by-@tab" class="govuk-heading-s">
+            Sort by
+        </h2>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-one-third">
+                 <select class="govuk-select" id="ksb-sort-by-@tab" name="sort-by">
+                    <option value="recently_added">Newest</option>
+                    <option value="date_due">Oldest</option>
+                </select>
+            </div>
+            <div class="govuk-grid-column-one-third">
+                <div class="app-fab-wrapper">
+                    <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button">
+                        <span>Add note or evidence</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+    <script type="text/javascript">
+     document.addEventListener('DOMContentLoaded', function () {
+    /*
+    * Sort
+    */
+   var sortSelect = document.getElementById('ksb-sort-by-@tab');
+
+   console.log(sortSelect);
+
+   if (sortSelect) {
+     var params = new URLSearchParams(window.location.search);
+     var sortParam = params.get('sort');
+      
+     console.log(sortParam);
+
+     if (sortParam) {
+       sortSelect.value = sortParam;
+     }
+
+     sortSelect.addEventListener('change', function () {
+       var params = new URLSearchParams(window.location.search);
+       params.set('sort', this.value);
+       console.log(params);
+       window.location.search = params.toString();
+     });
+   }
+     })
+</script>

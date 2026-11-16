@@ -5,11 +5,13 @@
 @using SFA.DAS.ApprenticeApp.Pwa.ViewModels
 @{
     ViewData["Title"] = "Notifications";
-    ViewData["Section"] = "Notifications";
+    ViewData["Section"] = "Account";
     Layout = "_Layout";
 }
 
 @model NotificationPageModel
+
+<a href="@Url.Action("YourAccount", "Account")" class="govuk-back-link app-back-link">Back</a>
 
 <h1 class="govuk-heading-xl">Notifications</h1>
 

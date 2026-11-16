@@ -39,8 +39,8 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
                 HttpContext = httpContext
             };
             var result = controller.Index() as RedirectToActionResult;
-            result.ActionName.Should().Be("Index");
-            result.ControllerName.Should().Be("Ksb");
+           result.ActionName.Should().Be("Index");
+           result.ControllerName.Should().Be("Support");
         }
 
         [Test, MoqAutoData]
@@ -55,7 +55,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 
             var model = result.Model.Should().BeOfType<WelcomePageModel>().Subject;
             model.Number.Should().Be(1);
-            model.Total.Should().Be(6);
+            model.Total.Should().Be(5);
             model.IsFirst.Should().BeTrue();
             controllerContext.HttpContext.Response.Headers.SetCookie.ToString()
                 .Should().Contain(Constants.WelcomeSplashScreenCookieName);
@@ -83,7 +83,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
         {
             controller.ControllerContext = BuildContext(cookies, cookieValue: "1");
 
-            var result = controller.Index(6) as ViewResult;
+            var result = controller.Index(5) as ViewResult;
 
             result.Model.Should().BeOfType<WelcomePageModel>().Subject.IsLast.Should().BeTrue();
         }

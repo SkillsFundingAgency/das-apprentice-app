@@ -245,12 +245,43 @@ const initTextSize = () => {
   });
 };
 
+// --- Progress Dashboard Setting ---
+
+const PROGRESS_DASHBOARD_COOKIE =
+  "SFA.ApprenticeApp.ProgressDashboard";
+
+const eraseCookie = (name) => {
+  document.cookie =
+    `${name}=; Max-Age=0; path=/; SameSite=None; Secure`;
+};
+
+const initProgressDashboardSetting = () => {
+  const toggle = document.getElementById("progressDashboardSwitch");
+
+  if (!toggle) return;
+
+  // Checked by default.
+  // An existing cookie means the user previously unchecked it.
+  toggle.checked = getCookie(PROGRESS_DASHBOARD_COOKIE) !== "1";
+
+  toggle.addEventListener("change", () => {
+    if (toggle.checked) {
+      // Restore the default state and remove the saved preference.
+      eraseCookie(PROGRESS_DASHBOARD_COOKIE);
+    } else {
+      // Persist the unchecked state for 999 days.
+      setCookie(PROGRESS_DASHBOARD_COOKIE, "1", 999);
+    }
+  });
+};
+
 // --- Init ---
 
 const settingsInit = () => {
   initPushNotifications();
   initAdditionalCookies();
   initTextSize();
+  initProgressDashboardSetting();
 };
 
 settingsInit();

@@ -38,7 +38,7 @@ public class HomeController : Controller
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
                 if (apprenticeDetails != null && apprenticeDetails.MyApprenticeship != null)
                 {
-                    return RedirectToAction("Index", "Tasks");
+                    return RedirectToAction("Index", "Support");
                 }
             }
         }

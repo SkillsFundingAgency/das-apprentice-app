@@ -181,7 +181,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> AddUpdateKsbProgress(Guid id)
+        public async Task<IActionResult> AddUpdateKsbProgress(Guid id, string sort = "recently_added")
         {
             var apprenticeId = _apprenticeContext.ApprenticeId;
 
@@ -196,6 +196,7 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
                         if (ksbResult.Progress != null)
                         {
                             vm.KsbProgress = ksbResult.Progress;
+                        vm.KsbProgress.Tasks = SortKsbTasks(vm.KsbProgress.Tasks, sort);
                         }
                         else
                         {
@@ -244,14 +245,14 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
                     try
                     {
-                        await _client.AddUpdateKsbProgress(new Guid(apprenticeId), ksbProgressData);
+                        await _client.AddUpdateKsbProgress(new Guid(apprenticeId), ksbProgressData);                        
                     }
                     catch
                     {
                         //temporarily handle any 500 errors
                     }
 
-                    return RedirectToAction("Index", "Ksb");
+                    return NoContent();                    
                 }
 
                 _logger.LogWarning("Invalid apprentice id for HttpPost method AddUpdateKsbProgress in KsbController");
@@ -328,6 +329,22 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
 
             _logger.LogWarning("Invalid apprentice id for method EditKsbProgress in KsbController");
             return Unauthorized();
+        }
+
+        private List<ApprenticeTask> SortKsbTasks(IEnumerable<ApprenticeTask> tasks, string sort)
+        {
+            if (tasks == null)
+            {
+                return new List<ApprenticeTask>();
+            }
+
+            return sort switch
+            {
+                "date_due" => tasks.OrderBy(task => task.DueDate).ToList(),
+
+                "recently_added" => tasks.OrderByDescending(task => task.TaskId).ToList(),
+                _ => tasks.ToList()
+            };
         }
     }
 }
