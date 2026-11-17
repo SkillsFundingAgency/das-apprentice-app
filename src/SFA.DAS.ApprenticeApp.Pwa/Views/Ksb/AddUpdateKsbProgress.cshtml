@@ -78,9 +78,11 @@
                       
             } else {
                 <div class="govuk-grid-column-one-third app-column-sticky">
-                    <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width app-fab">
-                        <span>Add note or evidence</span>
-                    </a>
+                    <div class="app-fab-wrapper">
+                <a href="@Url.Action("Add", "Tasks")" class="govuk-button app-button--full-width">
+                    <span>Add note or evidence</span>
+                </a>
+            </div>
                 </div>
                 <p class="govuk-hint">You have no notes of evidence for this KSB. Add a note to get started.</p>                 
             
