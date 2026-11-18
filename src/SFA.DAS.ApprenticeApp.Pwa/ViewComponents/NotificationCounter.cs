@@ -27,7 +27,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.ViewComponents
                 {
                     notificationValue += taskNotificationsResult.TaskReminders.Count;
                 }
-                
+
+                var progressNotifications = await _client.GetLearnerNotifications(new Guid(apprenticeId));
+                if (progressNotifications != null && progressNotifications.Count > 0)
+                {
+                    notificationValue += progressNotifications.Count(notification => notification.StatusId == 1);
+                }
+
                 var surveryCookie = Request.Cookies["SFA.DAS.ApprenticeApp.SurveyNotificationSeen"];
                 if (surveryCookie == null)
                 {

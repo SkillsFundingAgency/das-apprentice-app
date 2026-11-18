@@ -58,10 +58,12 @@ const registerPush = async (registration) => {
 };
 
 const showNotificationHint = (message) => {
-  const hint = document.getElementById("notificationHint");
-  if (!hint) return;
-  hint.textContent = message;
-  hint.hidden = false;
+    const hint = document.getElementById("notificationHint");
+    const wrapper = hint.closest('.govuk-form-group');
+    if (!hint) return;
+    hint.textContent = message;   
+    hint.hidden = false;
+    wrapper.classList.add('govuk-form-group--error');
 };
 
 const hideNotificationHint = () => {
@@ -71,7 +73,8 @@ const hideNotificationHint = () => {
 
 const updateToggleState = async (toggle) => {
   if (Notification.permission === "granted") {
-    const registration = await navigator.serviceWorker.getRegistration();
+      await navigator.serviceWorker.register("/service-worker.js");
+      const registration = await navigator.serviceWorker.ready;
     if (registration) {
       const subscription = await registration.pushManager.getSubscription();
       toggle.checked = !!subscription;

@@ -105,8 +105,12 @@
     </section>
 
     <div class="govuk-width-container">
-      @await RenderSectionAsync("BackLink", required: false)
-      <main class="govuk-main-wrapper" id="main-content">@RenderBody()</main>
+        @await RenderSectionAsync("BackLink", required: false)
+        @if (ViewContext.RouteData.Values["controller"]?.ToString() != "Settings")
+        {
+            <partial name="_PushNotificationPrompt" />
+        }
+        <main class="govuk-main-wrapper" id="main-content">@RenderBody()</main>
     </div>
 
     <footer class="govuk-footer">
@@ -182,5 +186,9 @@
       initAll();
     </script>
     <script src="~/js/application.js" asp-append-version="true"></script>
+    @if (ViewContext.RouteData.Values["controller"]?.ToString() != "Settings")
+    {
+        <partial name="_PushNotificationsJs" />
+    }
   </body>
 </html>

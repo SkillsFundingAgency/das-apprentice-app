@@ -11,13 +11,14 @@ using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 using SFA.DAS.Testing.AutoFixture;
 using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
 {
     [TestFixture]
     public class WhenLoadingTheWelcomePage
     {
         [Test, MoqAutoData]
-        public void User_CanUse_App(
+        public async Task User_CanUse_App(
             [Frozen] ApplicationConfiguration configuration,
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
@@ -38,20 +39,20 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
             {
                 HttpContext = httpContext
             };
-            var result = controller.Index() as RedirectToActionResult;
-           result.ActionName.Should().Be("Index");
+            var result = (await controller.Index()) as RedirectToActionResult;
+            result.ActionName.Should().Be("Index");
            result.ControllerName.Should().Be("Support");
         }
 
         [Test, MoqAutoData]
-        public void First_Visit_Shows_The_First_Step(
+        public async Task First_Visit_Shows_The_First_Step(
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
         {
             var controllerContext = BuildContext(cookies, cookieValue: null);
             controller.ControllerContext = controllerContext;
 
-            var result = controller.Index() as ViewResult;
+            var result = (await controller.Index()) as ViewResult;
 
             var model = result.Model.Should().BeOfType<WelcomePageModel>().Subject;
             model.Number.Should().Be(1);
@@ -62,13 +63,13 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
         }
 
         [Test, MoqAutoData]
-        public void A_Step_Is_Shown_Even_Once_The_Cookie_Is_Set(
+        public async Task A_Step_Is_Shown_Even_Once_The_Cookie_Is_Set(
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
         {
             controller.ControllerContext = BuildContext(cookies, cookieValue: "1");
 
-            var result = controller.Index(3) as ViewResult;
+            var result = (await controller.Index(3)) as ViewResult;
 
             var model = result.Model.Should().BeOfType<WelcomePageModel>().Subject;
             model.Number.Should().Be(3);
@@ -77,25 +78,25 @@ namespace SFA.DAS.ApprenticeApp.Pwa.UnitTests.Controllers.Welcome
         }
 
         [Test, MoqAutoData]
-        public void The_Last_Step_Is_Marked_As_Such(
+        public async Task The_Last_Step_Is_Marked_As_Such(
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
         {
             controller.ControllerContext = BuildContext(cookies, cookieValue: "1");
 
-            var result = controller.Index(5) as ViewResult;
+            var result = (await controller.Index(5)) as ViewResult;
 
             result.Model.Should().BeOfType<WelcomePageModel>().Subject.IsLast.Should().BeTrue();
         }
 
         [Test, MoqAutoData]
-        public void A_Step_Outside_The_Tour_Goes_Back_To_The_Start(
+        public async Task A_Step_Outside_The_Tour_Goes_Back_To_The_Start(
             [Frozen] Mock<IRequestCookieCollection> cookies,
             [Greedy] WelcomeController controller)
         {
             controller.ControllerContext = BuildContext(cookies, cookieValue: "1");
 
-            var result = controller.Index(99) as RedirectToActionResult;
+            var result = (await controller.Index(99)) as RedirectToActionResult;
 
             result.ActionName.Should().Be("Index");
             result.RouteValues["step"].Should().Be(1);
