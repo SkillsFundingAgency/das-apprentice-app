@@ -130,3 +130,46 @@ a.app-card {
         display: block;
     }
 }
+
+.your-progress-home {
+    border: 1px solid var(--govuk-border-color, #cecece);
+    background: #f4f8fb;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    .your-progress-home-header {
+        display: flow-root;
+        padding: 1rem 1rem 0rem 1rem;
+        width: 100%;
+    }
+
+    .govuk-grid-column-one-half {
+        float: none;
+        display: flex;
+
+        .app-card {
+            flex: 1;
+        }
+    }
+
+    .your-progress-home-end-date .app-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .app-card--highlight {
+        border: none;
+        margin-bottom: 0;
+
+        .progress-dashboard-heading {
+            display: none;
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: bolder;
+        }
+    }
+}
