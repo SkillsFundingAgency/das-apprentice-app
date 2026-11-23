@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.ApprenticeApp.Application;
 using SFA.DAS.ApprenticeApp.Domain.Api;
 using SFA.DAS.ApprenticeApp.Domain.Interfaces;
+using SFA.DAS.ApprenticeApp.Domain.Models;
 using SFA.DAS.ApprenticeApp.Pwa.Helpers;
 using SFA.DAS.ApprenticeApp.Pwa.ViewModels;
 
@@ -35,10 +36,36 @@ namespace SFA.DAS.ApprenticeApp.Pwa.Controllers
             {
                 var pages = await _client.GetCategories(Constants.ContentfulTopLevelPageTypeName);
                 var apprenticeDetails = await _client.GetApprenticeDetails(new Guid(apprenticeId));
+
+                var apprenticeKsbsPageModel = new ApprenticeKsbsPageModel();
+                var apprenticeKsbResult = await _client.GetApprenticeshipKsbs(new Guid(apprenticeId));
+                var allKsbs = apprenticeKsbResult?.ToList() ?? new List<ApprenticeKsb>();
+
+                if (Request.Cookies[Constants.KsbFiltersCookieName] != null)
+                {
+                    var filterKsbs = Filter.FilterKsbResults(
+                        apprenticeKsbResult,
+                        Request.Cookies[Constants.KsbFiltersCookieName]);
+
+                    if (filterKsbs.HasFilterRun)
+                    {
+                        apprenticeKsbResult = filterKsbs.FilteredKsbs;
+                    }
+                }
+
+                apprenticeKsbsPageModel.AllKsbs = allKsbs;
+                apprenticeKsbsPageModel.Ksbs = apprenticeKsbResult;
+                apprenticeKsbsPageModel.KnowledgeCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Knowledge);
+                apprenticeKsbsPageModel.SkillCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Skill);
+                apprenticeKsbsPageModel.BehaviourCount = apprenticeKsbResult?.Count(k => k.Type == KsbType.Behaviour);
+                apprenticeKsbsPageModel.SearchTerm = null;
+                apprenticeKsbsPageModel.MyApprenticeship = apprenticeDetails?.MyApprenticeship;
+
                 return View(new SupportCategoryPageModel()
                 {
                     Categories = pages,
-                    FirstName = apprenticeDetails?.Apprentice?.FirstName
+                    FirstName = apprenticeDetails?.Apprentice?.FirstName,
+                    ApprenticeKsbs = apprenticeKsbsPageModel
                 });
             }
             return RedirectToAction("Index", "Home");
