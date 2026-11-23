@@ -47,3 +47,12 @@
         display: inline;
     }
 }
+// AAD-2404: Notifications page navigation-to-back-link spacing
+.notifications-main {
+  padding-top: 30px;
+
+  .app-back-link {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+}
