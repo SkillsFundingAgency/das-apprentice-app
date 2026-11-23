@@ -110,8 +110,7 @@
         {
             <partial name="_PushNotificationPrompt" />
         }
-        <main class="govuk-main-wrapper" id="main-content">@RenderBody()</main>
-    </div>
+        <main class="govuk-main-wrapper @(ViewData["Section"]?.ToString() == "Account" && ViewData["Title"]?.ToString() == "Notifications" ? "notifications-main" : "")" id="main-content">@RenderBody()</main>    </div>
 
     <footer class="govuk-footer">
       <div class="govuk-width-container">
